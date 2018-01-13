@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.xteam.plus.mars.dao.ApplyInfoDao">
+    <!--结果集对应列-->
+    <resultMap id="BaseResultMap" type="org.xteam.plus.mars.domain.ApplyInfo">
+        <id column="APPLY_ID" property="applyId" jdbcType="DECIMAL"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
+        <result column="APPLY_REASON" property="applyReason" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="USER_ID" property="userId" jdbcType="DECIMAL"/>
+        <result column="APPLY_WAY" property="applyWay" jdbcType="INTEGER"/>
+        <result column="APPLY_TYPE" property="applyType" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--公用选择列-->
+    <sql id="selectColumns">
+        APPLY_ID,
+        CREATED
+        ,UPDATED
+        ,APPLY_REASON
+        ,STATUS
+        ,USER_ID
+        ,APPLY_WAY
+        ,APPLY_TYPE
+    </sql>
+
+    <!--公用查询条件-->
+    <sql id="queryWhere">
+        <where>
+            <if test="created!=null ">
+                <![CDATA[
+                        and CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and CREATED<= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="updated!=null ">
+                <![CDATA[
+                        and UPDATED>= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="applyReason!=null and  applyReason!=''">
+                <![CDATA[
+                    and APPLY_REASON=#{applyReason,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="status!=null ">
+                <![CDATA[
+                    and STATUS=#{status,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="userId!=null ">
+                <![CDATA[
+                    and USER_ID=#{userId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="applyId!=null ">
+                <![CDATA[
+                    and APPLY_ID=#{applyId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="applyWay!=null ">
+                <![CDATA[
+                    and APPLY_WAY=#{applyWay,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="applyType!=null ">
+                <![CDATA[
+                    and APPLY_TYPE=#{applyType,jdbcType=INTEGER}
+                    ]]>
+            </if>
+        </where>
+    </sql>
+
+    <!--删除记录-->
+    <delete id="delete" parameterType="org.xteam.plus.mars.domain.ApplyInfo">
+        delete from T_MARS_APPLY_INFO
+        where APPLY_ID= #{applyId,jdbcType=DECIMAL}
+    </delete>
+
+    <!--插入记录-->
+    <insert id="insert" parameterType="org.xteam.plus.mars.domain.ApplyInfo" useGeneratedKeys="true" keyProperty="applyId">
+        insert into T_MARS_APPLY_INFO (
+        CREATED
+        ,UPDATED
+        ,APPLY_REASON
+        ,STATUS
+        ,USER_ID
+        ,APPLY_WAY
+        ,APPLY_TYPE
+        )values(
+        #{created,jdbcType=TIMESTAMP}
+        ,#{updated,jdbcType=TIMESTAMP}
+        ,#{applyReason,jdbcType=VARCHAR}
+        ,#{status,jdbcType=INTEGER}
+        ,#{userId,jdbcType=DECIMAL}
+        ,#{applyWay,jdbcType=INTEGER}
+        ,#{applyType,jdbcType=INTEGER}
+        )
+    </insert>
+
+    <!--批量插入记录-->
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="applyId">
+        insert into T_MARS_APPLY_INFO (
+        CREATED
+        ,UPDATED
+        ,APPLY_REASON
+        ,STATUS
+        ,USER_ID
+        ,APPLY_WAY
+        ,APPLY_TYPE
+        )values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.created,jdbcType=TIMESTAMP}
+            ,#{item.updated,jdbcType=TIMESTAMP}
+            ,#{item.applyReason,jdbcType=VARCHAR}
+            ,#{item.status,jdbcType=INTEGER}
+            ,#{item.userId,jdbcType=DECIMAL}
+            ,#{item.applyWay,jdbcType=INTEGER}
+            ,#{item.applyType,jdbcType=INTEGER}
+            )
+        </foreach>
+    </insert>
+
+    <!--更新记录-->
+    <update id="update" parameterType="org.xteam.plus.mars.domain.ApplyInfo">
+        update T_MARS_APPLY_INFO
+        <set>
+            <trim prefix="" suffix="" suffixOverrides=",">
+                <if test="created!=null ">
+                    CREATED=#{created,jdbcType=TIMESTAMP},
+                </if>
+                <if test="updated!=null ">
+                    UPDATED=#{updated,jdbcType=TIMESTAMP},
+                </if>
+                <if test="applyReason!=null ">
+                    APPLY_REASON=#{applyReason,jdbcType=VARCHAR},
+                </if>
+                <if test="status!=null ">
+                    STATUS=#{status,jdbcType=INTEGER},
+                </if>
+                <if test="userId!=null ">
+                    USER_ID=#{userId,jdbcType=DECIMAL},
+                </if>
+                <if test="applyWay!=null ">
+                    APPLY_WAY=#{applyWay,jdbcType=INTEGER},
+                </if>
+                <if test="applyType!=null ">
+                    APPLY_TYPE=#{applyType,jdbcType=INTEGER},
+                </if>
+            </trim>
+        </set>
+        where APPLY_ID= #{applyId,jdbcType=DECIMAL}
+    </update>
+
+    <!--查询单条记录-->
+    <select id="get" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.ApplyInfo">
+        select
+        APPLY_ID
+        ,CREATED
+        ,UPDATED
+        ,APPLY_REASON
+        ,STATUS
+        ,USER_ID
+        ,APPLY_WAY
+        ,APPLY_TYPE
+        from T_MARS_APPLY_INFO
+        where APPLY_ID= #{applyId,jdbcType=DECIMAL}
+    </select>
+
+
+    <!--分页查询记录-->
+    <select id="query" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.ApplyInfo">
+        select
+        <include refid="selectColumns"></include>
+        from T_MARS_APPLY_INFO
+        <include refid="queryWhere"></include>
+        limit #{start},#{limit}
+    </select>
+
+    <!--查询记录数-->
+    <select id="queryCount" resultType="int" parameterType="org.xteam.plus.mars.domain.ApplyInfo">
+        select count(1)
+        from T_MARS_APPLY_INFO
+        <include refid="queryWhere"></include>
+    </select>
+</mapper>

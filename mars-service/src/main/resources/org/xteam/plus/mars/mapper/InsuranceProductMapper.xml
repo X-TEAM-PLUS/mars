@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.xteam.plus.mars.dao.InsuranceProductDao">
+    <!--结果集对应列-->
+    <resultMap id="BaseResultMap" type="org.xteam.plus.mars.domain.InsuranceProduct">
+        <id column="INSURANCE_PRODUCT_NO" property="insuranceProductNo" jdbcType="DECIMAL"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
+        <result column="INSURANCE_NAME" property="insuranceName" jdbcType="VARCHAR"/>
+        <result column="INSURANCE_COMPANY_ID" property="insuranceCompanyId" jdbcType="DECIMAL"/>
+        <result column="PRICE" property="price" jdbcType="DECIMAL"/>
+        <result column="IMG_INFO" property="imgInfo" jdbcType="VARCHAR"/>
+        <result column="PERIODS_NUM" property="periodsNum" jdbcType="INTEGER"/>
+        <result column="PERIODS_MODE" property="periodsMode" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--公用选择列-->
+    <sql id="selectColumns">
+        INSURANCE_PRODUCT_NO,
+        REMARK
+        ,CREATED
+        ,STATUS
+        ,UPDATED
+        ,INSURANCE_NAME
+        ,INSURANCE_COMPANY_ID
+        ,PRICE
+        ,IMG_INFO
+        ,PERIODS_NUM
+        ,PERIODS_MODE
+    </sql>
+
+    <!--公用查询条件-->
+    <sql id="queryWhere">
+        <where>
+            <if test="remark!=null and  remark!=''">
+                <![CDATA[
+                    and REMARK=#{remark,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="created!=null ">
+                <![CDATA[
+                        and CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and CREATED<= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="status!=null ">
+                <![CDATA[
+                    and STATUS=#{status,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="insuranceProductNo!=null ">
+                <![CDATA[
+                    and INSURANCE_PRODUCT_NO=#{insuranceProductNo,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="updated!=null ">
+                <![CDATA[
+                        and UPDATED>= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="insuranceName!=null and  insuranceName!=''">
+                <![CDATA[
+                    and INSURANCE_NAME=#{insuranceName,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="insuranceCompanyId!=null ">
+                <![CDATA[
+                    and INSURANCE_COMPANY_ID=#{insuranceCompanyId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="price!=null ">
+                <![CDATA[
+                    and PRICE=#{price,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="imgInfo!=null and  imgInfo!=''">
+                <![CDATA[
+                    and IMG_INFO=#{imgInfo,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="periodsNum!=null ">
+                <![CDATA[
+                    and PERIODS_NUM=#{periodsNum,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="periodsMode!=null ">
+                <![CDATA[
+                    and PERIODS_MODE=#{periodsMode,jdbcType=INTEGER}
+                    ]]>
+            </if>
+        </where>
+    </sql>
+
+    <!--删除记录-->
+    <delete id="delete" parameterType="org.xteam.plus.mars.domain.InsuranceProduct">
+        delete from T_MARS_INSURANCE_PRODUCT
+        where INSURANCE_PRODUCT_NO= #{insuranceProductNo,jdbcType=DECIMAL}
+    </delete>
+
+    <!--插入记录-->
+    <insert id="insert" parameterType="org.xteam.plus.mars.domain.InsuranceProduct" useGeneratedKeys="true" keyProperty="insuranceProductNo">
+        insert into T_MARS_INSURANCE_PRODUCT (
+        REMARK
+        ,CREATED
+        ,STATUS
+        ,UPDATED
+        ,INSURANCE_NAME
+        ,INSURANCE_COMPANY_ID
+        ,PRICE
+        ,IMG_INFO
+        ,PERIODS_NUM
+        ,PERIODS_MODE
+        )values(
+        #{remark,jdbcType=VARCHAR}
+        ,#{created,jdbcType=TIMESTAMP}
+        ,#{status,jdbcType=INTEGER}
+        ,#{updated,jdbcType=TIMESTAMP}
+        ,#{insuranceName,jdbcType=VARCHAR}
+        ,#{insuranceCompanyId,jdbcType=DECIMAL}
+        ,#{price,jdbcType=DECIMAL}
+        ,#{imgInfo,jdbcType=VARCHAR}
+        ,#{periodsNum,jdbcType=INTEGER}
+        ,#{periodsMode,jdbcType=INTEGER}
+        )
+    </insert>
+
+    <!--批量插入记录-->
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="insuranceProductNo">
+        insert into T_MARS_INSURANCE_PRODUCT (
+        REMARK
+        ,CREATED
+        ,STATUS
+        ,UPDATED
+        ,INSURANCE_NAME
+        ,INSURANCE_COMPANY_ID
+        ,PRICE
+        ,IMG_INFO
+        ,PERIODS_NUM
+        ,PERIODS_MODE
+        )values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.remark,jdbcType=VARCHAR}
+            ,#{item.created,jdbcType=TIMESTAMP}
+            ,#{item.status,jdbcType=INTEGER}
+            ,#{item.updated,jdbcType=TIMESTAMP}
+            ,#{item.insuranceName,jdbcType=VARCHAR}
+            ,#{item.insuranceCompanyId,jdbcType=DECIMAL}
+            ,#{item.price,jdbcType=DECIMAL}
+            ,#{item.imgInfo,jdbcType=VARCHAR}
+            ,#{item.periodsNum,jdbcType=INTEGER}
+            ,#{item.periodsMode,jdbcType=INTEGER}
+            )
+        </foreach>
+    </insert>
+
+    <!--更新记录-->
+    <update id="update" parameterType="org.xteam.plus.mars.domain.InsuranceProduct">
+        update T_MARS_INSURANCE_PRODUCT
+        <set>
+            <trim prefix="" suffix="" suffixOverrides=",">
+                <if test="remark!=null ">
+                    REMARK=#{remark,jdbcType=VARCHAR},
+                </if>
+                <if test="created!=null ">
+                    CREATED=#{created,jdbcType=TIMESTAMP},
+                </if>
+                <if test="status!=null ">
+                    STATUS=#{status,jdbcType=INTEGER},
+                </if>
+                <if test="updated!=null ">
+                    UPDATED=#{updated,jdbcType=TIMESTAMP},
+                </if>
+                <if test="insuranceName!=null ">
+                    INSURANCE_NAME=#{insuranceName,jdbcType=VARCHAR},
+                </if>
+                <if test="insuranceCompanyId!=null ">
+                    INSURANCE_COMPANY_ID=#{insuranceCompanyId,jdbcType=DECIMAL},
+                </if>
+                <if test="price!=null ">
+                    PRICE=#{price,jdbcType=DECIMAL},
+                </if>
+                <if test="imgInfo!=null ">
+                    IMG_INFO=#{imgInfo,jdbcType=VARCHAR},
+                </if>
+                <if test="periodsNum!=null ">
+                    PERIODS_NUM=#{periodsNum,jdbcType=INTEGER},
+                </if>
+                <if test="periodsMode!=null ">
+                    PERIODS_MODE=#{periodsMode,jdbcType=INTEGER},
+                </if>
+            </trim>
+        </set>
+        where INSURANCE_PRODUCT_NO= #{insuranceProductNo,jdbcType=DECIMAL}
+    </update>
+
+    <!--查询单条记录-->
+    <select id="get" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.InsuranceProduct">
+        select
+        INSURANCE_PRODUCT_NO
+        ,REMARK
+        ,CREATED
+        ,STATUS
+        ,UPDATED
+        ,INSURANCE_NAME
+        ,INSURANCE_COMPANY_ID
+        ,PRICE
+        ,IMG_INFO
+        ,PERIODS_NUM
+        ,PERIODS_MODE
+        from T_MARS_INSURANCE_PRODUCT
+        where INSURANCE_PRODUCT_NO= #{insuranceProductNo,jdbcType=DECIMAL}
+    </select>
+
+
+    <!--分页查询记录-->
+    <select id="query" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.InsuranceProduct">
+        select
+        <include refid="selectColumns"></include>
+        from T_MARS_INSURANCE_PRODUCT
+        <include refid="queryWhere"></include>
+        limit #{start},#{limit}
+    </select>
+
+    <!--查询记录数-->
+    <select id="queryCount" resultType="int" parameterType="org.xteam.plus.mars.domain.InsuranceProduct">
+        select count(1)
+        from T_MARS_INSURANCE_PRODUCT
+        <include refid="queryWhere"></include>
+    </select>
+</mapper>

@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.xteam.plus.mars.dao.UserInfoDao">
+    <!--结果集对应列-->
+    <resultMap id="BaseResultMap" type="org.xteam.plus.mars.domain.UserInfo">
+        <id column="USER_ID" property="userId" jdbcType="DECIMAL"/>
+        <result column="CARD_NO" property="cardNo" jdbcType="DECIMAL"/>
+        <result column="ID_NUMBER" property="idNumber" jdbcType="VARCHAR"/>
+        <result column="CARD_ACTIVATE_MODE" property="cardActivateMode" jdbcType="INTEGER"/>
+        <result column="REAL_NAME" property="realName" jdbcType="VARCHAR"/>
+        <result column="CARD_TYPE" property="cardType" jdbcType="DECIMAL"/>
+        <result column="LINK_ADDRESS" property="linkAddress" jdbcType="VARCHAR"/>
+        <result column="CARD_LIFE_TIME" property="cardLifeTime" jdbcType="TIMESTAMP"/>
+        <result column="MOBILE_NO" property="mobileNo" jdbcType="VARCHAR"/>
+        <result column="CARD_ACTIVATE_TIME" property="cardActivateTime" jdbcType="TIMESTAMP"/>
+        <result column="REGISTER_TIME" property="registerTime" jdbcType="TIMESTAMP"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="WEIXIN_ACCOUNT" property="weixinAccount" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="LOGIN_COUNT" property="loginCount" jdbcType="DECIMAL"/>
+        <result column="REGISTER_SOURCE" property="registerSource" jdbcType="VARCHAR"/>
+        <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
+        <result column="PASSWORK" property="passwork" jdbcType="VARCHAR"/>
+        <result column="USER_LEVEL" property="userLevel" jdbcType="INTEGER"/>
+        <result column="LAST_LOGIN_TIME" property="lastLoginTime" jdbcType="TIMESTAMP"/>
+        <result column="NICK_NAME" property="nickName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--公用选择列-->
+    <sql id="selectColumns">
+        USER_ID,
+        CARD_NO
+        ,ID_NUMBER
+        ,CARD_ACTIVATE_MODE
+        ,REAL_NAME
+        ,CARD_TYPE
+        ,LINK_ADDRESS
+        ,CARD_LIFE_TIME
+        ,MOBILE_NO
+        ,CARD_ACTIVATE_TIME
+        ,REGISTER_TIME
+        ,CREATED
+        ,WEIXIN_ACCOUNT
+        ,STATUS
+        ,LOGIN_COUNT
+        ,REGISTER_SOURCE
+        ,UPDATED
+        ,PASSWORK
+        ,USER_LEVEL
+        ,LAST_LOGIN_TIME
+        ,NICK_NAME
+    </sql>
+
+    <!--公用查询条件-->
+    <sql id="queryWhere">
+        <where>
+            <if test="cardNo!=null ">
+                <![CDATA[
+                    and CARD_NO=#{cardNo,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="idNumber!=null and  idNumber!=''">
+                <![CDATA[
+                    and ID_NUMBER=#{idNumber,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="cardActivateMode!=null ">
+                <![CDATA[
+                    and CARD_ACTIVATE_MODE=#{cardActivateMode,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="realName!=null and  realName!=''">
+                <![CDATA[
+                    and REAL_NAME=#{realName,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="cardType!=null ">
+                <![CDATA[
+                    and CARD_TYPE=#{cardType,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="linkAddress!=null and  linkAddress!=''">
+                <![CDATA[
+                    and LINK_ADDRESS=#{linkAddress,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="cardLifeTime!=null ">
+                <![CDATA[
+                        and CARD_LIFE_TIME>= str_to_date(CONCAT(date_format(#{cardLifeTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and CARD_LIFE_TIME<= str_to_date(CONCAT(date_format(#{cardLifeTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="mobileNo!=null and  mobileNo!=''">
+                <![CDATA[
+                    and MOBILE_NO=#{mobileNo,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="cardActivateTime!=null ">
+                <![CDATA[
+                        and CARD_ACTIVATE_TIME>= str_to_date(CONCAT(date_format(#{cardActivateTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and CARD_ACTIVATE_TIME<= str_to_date(CONCAT(date_format(#{cardActivateTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="registerTime!=null ">
+                <![CDATA[
+                        and REGISTER_TIME>= str_to_date(CONCAT(date_format(#{registerTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and REGISTER_TIME<= str_to_date(CONCAT(date_format(#{registerTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="created!=null ">
+                <![CDATA[
+                        and CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and CREATED<= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="weixinAccount!=null and  weixinAccount!=''">
+                <![CDATA[
+                    and WEIXIN_ACCOUNT=#{weixinAccount,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="status!=null ">
+                <![CDATA[
+                    and STATUS=#{status,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="loginCount!=null ">
+                <![CDATA[
+                    and LOGIN_COUNT=#{loginCount,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="registerSource!=null and  registerSource!=''">
+                <![CDATA[
+                    and REGISTER_SOURCE=#{registerSource,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="updated!=null ">
+                <![CDATA[
+                        and UPDATED>= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="passwork!=null and  passwork!=''">
+                <![CDATA[
+                    and PASSWORK=#{passwork,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="userLevel!=null ">
+                <![CDATA[
+                    and USER_LEVEL=#{userLevel,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="userId!=null ">
+                <![CDATA[
+                    and USER_ID=#{userId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="lastLoginTime!=null ">
+                <![CDATA[
+                        and LAST_LOGIN_TIME>= str_to_date(CONCAT(date_format(#{lastLoginTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and LAST_LOGIN_TIME<= str_to_date(CONCAT(date_format(#{lastLoginTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="nickName!=null and  nickName!=''">
+                <![CDATA[
+                    and NICK_NAME=#{nickName,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+        </where>
+    </sql>
+
+    <!--删除记录-->
+    <delete id="delete" parameterType="org.xteam.plus.mars.domain.UserInfo">
+        delete from T_MARS_USER_INFO
+        where USER_ID= #{userId,jdbcType=DECIMAL}
+    </delete>
+
+    <!--插入记录-->
+    <insert id="insert" parameterType="org.xteam.plus.mars.domain.UserInfo" useGeneratedKeys="true" keyProperty="userId">
+        insert into T_MARS_USER_INFO (
+        CARD_NO
+        ,ID_NUMBER
+        ,CARD_ACTIVATE_MODE
+        ,REAL_NAME
+        ,CARD_TYPE
+        ,LINK_ADDRESS
+        ,CARD_LIFE_TIME
+        ,MOBILE_NO
+        ,CARD_ACTIVATE_TIME
+        ,REGISTER_TIME
+        ,CREATED
+        ,WEIXIN_ACCOUNT
+        ,STATUS
+        ,LOGIN_COUNT
+        ,REGISTER_SOURCE
+        ,UPDATED
+        ,PASSWORK
+        ,USER_LEVEL
+        ,LAST_LOGIN_TIME
+        ,NICK_NAME
+        )values(
+        #{cardNo,jdbcType=DECIMAL}
+        ,#{idNumber,jdbcType=VARCHAR}
+        ,#{cardActivateMode,jdbcType=INTEGER}
+        ,#{realName,jdbcType=VARCHAR}
+        ,#{cardType,jdbcType=DECIMAL}
+        ,#{linkAddress,jdbcType=VARCHAR}
+        ,#{cardLifeTime,jdbcType=TIMESTAMP}
+        ,#{mobileNo,jdbcType=VARCHAR}
+        ,#{cardActivateTime,jdbcType=TIMESTAMP}
+        ,#{registerTime,jdbcType=TIMESTAMP}
+        ,#{created,jdbcType=TIMESTAMP}
+        ,#{weixinAccount,jdbcType=VARCHAR}
+        ,#{status,jdbcType=INTEGER}
+        ,#{loginCount,jdbcType=DECIMAL}
+        ,#{registerSource,jdbcType=VARCHAR}
+        ,#{updated,jdbcType=TIMESTAMP}
+        ,#{passwork,jdbcType=VARCHAR}
+        ,#{userLevel,jdbcType=INTEGER}
+        ,#{lastLoginTime,jdbcType=TIMESTAMP}
+        ,#{nickName,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <!--批量插入记录-->
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="userId">
+        insert into T_MARS_USER_INFO (
+        CARD_NO
+        ,ID_NUMBER
+        ,CARD_ACTIVATE_MODE
+        ,REAL_NAME
+        ,CARD_TYPE
+        ,LINK_ADDRESS
+        ,CARD_LIFE_TIME
+        ,MOBILE_NO
+        ,CARD_ACTIVATE_TIME
+        ,REGISTER_TIME
+        ,CREATED
+        ,WEIXIN_ACCOUNT
+        ,STATUS
+        ,LOGIN_COUNT
+        ,REGISTER_SOURCE
+        ,UPDATED
+        ,PASSWORK
+        ,USER_LEVEL
+        ,LAST_LOGIN_TIME
+        ,NICK_NAME
+        )values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.cardNo,jdbcType=DECIMAL}
+            ,#{item.idNumber,jdbcType=VARCHAR}
+            ,#{item.cardActivateMode,jdbcType=INTEGER}
+            ,#{item.realName,jdbcType=VARCHAR}
+            ,#{item.cardType,jdbcType=DECIMAL}
+            ,#{item.linkAddress,jdbcType=VARCHAR}
+            ,#{item.cardLifeTime,jdbcType=TIMESTAMP}
+            ,#{item.mobileNo,jdbcType=VARCHAR}
+            ,#{item.cardActivateTime,jdbcType=TIMESTAMP}
+            ,#{item.registerTime,jdbcType=TIMESTAMP}
+            ,#{item.created,jdbcType=TIMESTAMP}
+            ,#{item.weixinAccount,jdbcType=VARCHAR}
+            ,#{item.status,jdbcType=INTEGER}
+            ,#{item.loginCount,jdbcType=DECIMAL}
+            ,#{item.registerSource,jdbcType=VARCHAR}
+            ,#{item.updated,jdbcType=TIMESTAMP}
+            ,#{item.passwork,jdbcType=VARCHAR}
+            ,#{item.userLevel,jdbcType=INTEGER}
+            ,#{item.lastLoginTime,jdbcType=TIMESTAMP}
+            ,#{item.nickName,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <!--更新记录-->
+    <update id="update" parameterType="org.xteam.plus.mars.domain.UserInfo">
+        update T_MARS_USER_INFO
+        <set>
+            <trim prefix="" suffix="" suffixOverrides=",">
+                <if test="cardNo!=null ">
+                    CARD_NO=#{cardNo,jdbcType=DECIMAL},
+                </if>
+                <if test="idNumber!=null ">
+                    ID_NUMBER=#{idNumber,jdbcType=VARCHAR},
+                </if>
+                <if test="cardActivateMode!=null ">
+                    CARD_ACTIVATE_MODE=#{cardActivateMode,jdbcType=INTEGER},
+                </if>
+                <if test="realName!=null ">
+                    REAL_NAME=#{realName,jdbcType=VARCHAR},
+                </if>
+                <if test="cardType!=null ">
+                    CARD_TYPE=#{cardType,jdbcType=DECIMAL},
+                </if>
+                <if test="linkAddress!=null ">
+                    LINK_ADDRESS=#{linkAddress,jdbcType=VARCHAR},
+                </if>
+                <if test="cardLifeTime!=null ">
+                    CARD_LIFE_TIME=#{cardLifeTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="mobileNo!=null ">
+                    MOBILE_NO=#{mobileNo,jdbcType=VARCHAR},
+                </if>
+                <if test="cardActivateTime!=null ">
+                    CARD_ACTIVATE_TIME=#{cardActivateTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="registerTime!=null ">
+                    REGISTER_TIME=#{registerTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="created!=null ">
+                    CREATED=#{created,jdbcType=TIMESTAMP},
+                </if>
+                <if test="weixinAccount!=null ">
+                    WEIXIN_ACCOUNT=#{weixinAccount,jdbcType=VARCHAR},
+                </if>
+                <if test="status!=null ">
+                    STATUS=#{status,jdbcType=INTEGER},
+                </if>
+                <if test="loginCount!=null ">
+                    LOGIN_COUNT=#{loginCount,jdbcType=DECIMAL},
+                </if>
+                <if test="registerSource!=null ">
+                    REGISTER_SOURCE=#{registerSource,jdbcType=VARCHAR},
+                </if>
+                <if test="updated!=null ">
+                    UPDATED=#{updated,jdbcType=TIMESTAMP},
+                </if>
+                <if test="passwork!=null ">
+                    PASSWORK=#{passwork,jdbcType=VARCHAR},
+                </if>
+                <if test="userLevel!=null ">
+                    USER_LEVEL=#{userLevel,jdbcType=INTEGER},
+                </if>
+                <if test="lastLoginTime!=null ">
+                    LAST_LOGIN_TIME=#{lastLoginTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="nickName!=null ">
+                    NICK_NAME=#{nickName,jdbcType=VARCHAR},
+                </if>
+            </trim>
+        </set>
+        where USER_ID= #{userId,jdbcType=DECIMAL}
+    </update>
+
+    <!--查询单条记录-->
+    <select id="get" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.UserInfo">
+        select
+        USER_ID
+        ,CARD_NO
+        ,ID_NUMBER
+        ,CARD_ACTIVATE_MODE
+        ,REAL_NAME
+        ,CARD_TYPE
+        ,LINK_ADDRESS
+        ,CARD_LIFE_TIME
+        ,MOBILE_NO
+        ,CARD_ACTIVATE_TIME
+        ,REGISTER_TIME
+        ,CREATED
+        ,WEIXIN_ACCOUNT
+        ,STATUS
+        ,LOGIN_COUNT
+        ,REGISTER_SOURCE
+        ,UPDATED
+        ,PASSWORK
+        ,USER_LEVEL
+        ,LAST_LOGIN_TIME
+        ,NICK_NAME
+        from T_MARS_USER_INFO
+        where USER_ID= #{userId,jdbcType=DECIMAL}
+    </select>
+
+
+    <!--分页查询记录-->
+    <select id="query" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.UserInfo">
+        select
+        <include refid="selectColumns"></include>
+        from T_MARS_USER_INFO
+        <include refid="queryWhere"></include>
+        limit #{start},#{limit}
+    </select>
+
+    <!--查询记录数-->
+    <select id="queryCount" resultType="int" parameterType="org.xteam.plus.mars.domain.UserInfo">
+        select count(1)
+        from T_MARS_USER_INFO
+        <include refid="queryWhere"></include>
+    </select>
+</mapper>

@@ -1,0 +1,35 @@
+server:
+  port: 8080
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8888/eureka/
+spring:
+  application:
+    name: mars-webapp
+  http:
+    converters:
+      preferred-json-mapper: jackson
+    encoding:
+      charset: UTF-8
+  jackson:
+    locale: zh_CN
+    date-format: yyyy-MM-dd HH:mm:ss
+    joda-date-time-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    deserialization: true
+    default-property-inclusion: non_null
+    generator: true
+    mapper: true
+    parser: true
+    serialization: true
+zuul:
+  routes:
+    mars-webapp:
+      path: /**
+      serviceId: mars-service
+logging:
+  path: /var/log/mars
+  level: debug
+  config: classpath:webapp-logback.xml

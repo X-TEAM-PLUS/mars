@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.xteam.plus.mars.dao.WithdrawRecordDao">
+    <!--结果集对应列-->
+    <resultMap id="BaseResultMap" type="org.xteam.plus.mars.domain.WithdrawRecord">
+        <id column="ID" property="id" jdbcType="DECIMAL"/>
+        <result column="BANK_ACCOUNT_NO" property="bankAccountNo" jdbcType="VARCHAR"/>
+        <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
+        <result column="USER_ID" property="userId" jdbcType="DECIMAL"/>
+        <result column="AMOUNT" property="amount" jdbcType="DECIMAL"/>
+        <result column="APPLY_TIME" property="applyTime" jdbcType="TIMESTAMP"/>
+        <result column="PAY_WAY" property="payWay" jdbcType="INTEGER"/>
+        <result column="TRANSACTION_NO" property="transactionNo" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="BANK_ACCOUNT_NAME" property="bankAccountName" jdbcType="VARCHAR"/>
+        <result column="PAY_TIME" property="payTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--公用选择列-->
+    <sql id="selectColumns">
+        ID,
+        BANK_ACCOUNT_NO
+        ,UPDATED
+        ,USER_ID
+        ,AMOUNT
+        ,APPLY_TIME
+        ,PAY_WAY
+        ,TRANSACTION_NO
+        ,STATUS
+        ,CREATED
+        ,BANK_ACCOUNT_NAME
+        ,PAY_TIME
+    </sql>
+
+    <!--公用查询条件-->
+    <sql id="queryWhere">
+        <where>
+            <if test="bankAccountNo!=null and  bankAccountNo!=''">
+                <![CDATA[
+                    and BANK_ACCOUNT_NO=#{bankAccountNo,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="id!=null ">
+                <![CDATA[
+                    and ID=#{id,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="updated!=null ">
+                <![CDATA[
+                        and UPDATED>= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="userId!=null ">
+                <![CDATA[
+                    and USER_ID=#{userId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="amount!=null ">
+                <![CDATA[
+                    and AMOUNT=#{amount,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="applyTime!=null ">
+                <![CDATA[
+                        and APPLY_TIME>= str_to_date(CONCAT(date_format(#{applyTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and APPLY_TIME<= str_to_date(CONCAT(date_format(#{applyTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="payWay!=null ">
+                <![CDATA[
+                    and PAY_WAY=#{payWay,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="transactionNo!=null and  transactionNo!=''">
+                <![CDATA[
+                    and TRANSACTION_NO=#{transactionNo,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="status!=null ">
+                <![CDATA[
+                    and STATUS=#{status,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="created!=null ">
+                <![CDATA[
+                        and CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and CREATED<= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="bankAccountName!=null and  bankAccountName!=''">
+                <![CDATA[
+                    and BANK_ACCOUNT_NAME=#{bankAccountName,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="payTime!=null ">
+                <![CDATA[
+                        and PAY_TIME>= str_to_date(CONCAT(date_format(#{payTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and PAY_TIME<= str_to_date(CONCAT(date_format(#{payTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+        </where>
+    </sql>
+
+    <!--删除记录-->
+    <delete id="delete" parameterType="org.xteam.plus.mars.domain.WithdrawRecord">
+        delete from T_MARS_WITHDRAW_RECORD
+        where ID= #{id,jdbcType=DECIMAL}
+    </delete>
+
+    <!--插入记录-->
+    <insert id="insert" parameterType="org.xteam.plus.mars.domain.WithdrawRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into T_MARS_WITHDRAW_RECORD (
+        BANK_ACCOUNT_NO
+        ,UPDATED
+        ,USER_ID
+        ,AMOUNT
+        ,APPLY_TIME
+        ,PAY_WAY
+        ,TRANSACTION_NO
+        ,STATUS
+        ,CREATED
+        ,BANK_ACCOUNT_NAME
+        ,PAY_TIME
+        )values(
+        #{bankAccountNo,jdbcType=VARCHAR}
+        ,#{updated,jdbcType=TIMESTAMP}
+        ,#{userId,jdbcType=DECIMAL}
+        ,#{amount,jdbcType=DECIMAL}
+        ,#{applyTime,jdbcType=TIMESTAMP}
+        ,#{payWay,jdbcType=INTEGER}
+        ,#{transactionNo,jdbcType=VARCHAR}
+        ,#{status,jdbcType=INTEGER}
+        ,#{created,jdbcType=TIMESTAMP}
+        ,#{bankAccountName,jdbcType=VARCHAR}
+        ,#{payTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <!--批量插入记录-->
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        insert into T_MARS_WITHDRAW_RECORD (
+        BANK_ACCOUNT_NO
+        ,UPDATED
+        ,USER_ID
+        ,AMOUNT
+        ,APPLY_TIME
+        ,PAY_WAY
+        ,TRANSACTION_NO
+        ,STATUS
+        ,CREATED
+        ,BANK_ACCOUNT_NAME
+        ,PAY_TIME
+        )values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.bankAccountNo,jdbcType=VARCHAR}
+            ,#{item.updated,jdbcType=TIMESTAMP}
+            ,#{item.userId,jdbcType=DECIMAL}
+            ,#{item.amount,jdbcType=DECIMAL}
+            ,#{item.applyTime,jdbcType=TIMESTAMP}
+            ,#{item.payWay,jdbcType=INTEGER}
+            ,#{item.transactionNo,jdbcType=VARCHAR}
+            ,#{item.status,jdbcType=INTEGER}
+            ,#{item.created,jdbcType=TIMESTAMP}
+            ,#{item.bankAccountName,jdbcType=VARCHAR}
+            ,#{item.payTime,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
+    <!--更新记录-->
+    <update id="update" parameterType="org.xteam.plus.mars.domain.WithdrawRecord">
+        update T_MARS_WITHDRAW_RECORD
+        <set>
+            <trim prefix="" suffix="" suffixOverrides=",">
+                <if test="bankAccountNo!=null ">
+                    BANK_ACCOUNT_NO=#{bankAccountNo,jdbcType=VARCHAR},
+                </if>
+                <if test="updated!=null ">
+                    UPDATED=#{updated,jdbcType=TIMESTAMP},
+                </if>
+                <if test="userId!=null ">
+                    USER_ID=#{userId,jdbcType=DECIMAL},
+                </if>
+                <if test="amount!=null ">
+                    AMOUNT=#{amount,jdbcType=DECIMAL},
+                </if>
+                <if test="applyTime!=null ">
+                    APPLY_TIME=#{applyTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="payWay!=null ">
+                    PAY_WAY=#{payWay,jdbcType=INTEGER},
+                </if>
+                <if test="transactionNo!=null ">
+                    TRANSACTION_NO=#{transactionNo,jdbcType=VARCHAR},
+                </if>
+                <if test="status!=null ">
+                    STATUS=#{status,jdbcType=INTEGER},
+                </if>
+                <if test="created!=null ">
+                    CREATED=#{created,jdbcType=TIMESTAMP},
+                </if>
+                <if test="bankAccountName!=null ">
+                    BANK_ACCOUNT_NAME=#{bankAccountName,jdbcType=VARCHAR},
+                </if>
+                <if test="payTime!=null ">
+                    PAY_TIME=#{payTime,jdbcType=TIMESTAMP},
+                </if>
+            </trim>
+        </set>
+        where ID= #{id,jdbcType=DECIMAL}
+    </update>
+
+    <!--查询单条记录-->
+    <select id="get" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.WithdrawRecord">
+        select
+        ID
+        ,BANK_ACCOUNT_NO
+        ,UPDATED
+        ,USER_ID
+        ,AMOUNT
+        ,APPLY_TIME
+        ,PAY_WAY
+        ,TRANSACTION_NO
+        ,STATUS
+        ,CREATED
+        ,BANK_ACCOUNT_NAME
+        ,PAY_TIME
+        from T_MARS_WITHDRAW_RECORD
+        where ID= #{id,jdbcType=DECIMAL}
+    </select>
+
+
+    <!--分页查询记录-->
+    <select id="query" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.WithdrawRecord">
+        select
+        <include refid="selectColumns"></include>
+        from T_MARS_WITHDRAW_RECORD
+        <include refid="queryWhere"></include>
+        limit #{start},#{limit}
+    </select>
+
+    <!--查询记录数-->
+    <select id="queryCount" resultType="int" parameterType="org.xteam.plus.mars.domain.WithdrawRecord">
+        select count(1)
+        from T_MARS_WITHDRAW_RECORD
+        <include refid="queryWhere"></include>
+    </select>
+</mapper>

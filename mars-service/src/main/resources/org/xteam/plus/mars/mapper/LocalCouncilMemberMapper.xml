@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.xteam.plus.mars.dao.LocalCouncilMemberDao">
+    <!--结果集对应列-->
+    <resultMap id="BaseResultMap" type="org.xteam.plus.mars.domain.LocalCouncilMember">
+        <id column="COUNCIL_MEMBER_ID" property="councilMemberId" jdbcType="DECIMAL"/>
+        <result column="COUNCIL_ID" property="councilId" jdbcType="DECIMAL"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
+        <result column="GRANT_TIME" property="grantTime" jdbcType="TIMESTAMP"/>
+        <result column="USER_ID" property="userId" jdbcType="DECIMAL"/>
+        <result column="JOB_TYPE" property="jobType" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--公用选择列-->
+    <sql id="selectColumns">
+        COUNCIL_MEMBER_ID,
+        COUNCIL_ID
+        ,CREATED
+        ,UPDATED
+        ,GRANT_TIME
+        ,USER_ID
+        ,JOB_TYPE
+    </sql>
+
+    <!--公用查询条件-->
+    <sql id="queryWhere">
+        <where>
+            <if test="councilMemberId!=null ">
+                <![CDATA[
+                    and COUNCIL_MEMBER_ID=#{councilMemberId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="councilId!=null ">
+                <![CDATA[
+                    and COUNCIL_ID=#{councilId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="created!=null ">
+                <![CDATA[
+                        and CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and CREATED<= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="updated!=null ">
+                <![CDATA[
+                        and UPDATED>= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="grantTime!=null ">
+                <![CDATA[
+                        and GRANT_TIME>= str_to_date(CONCAT(date_format(#{grantTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and GRANT_TIME<= str_to_date(CONCAT(date_format(#{grantTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="userId!=null ">
+                <![CDATA[
+                    and USER_ID=#{userId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="jobType!=null ">
+                <![CDATA[
+                    and JOB_TYPE=#{jobType,jdbcType=INTEGER}
+                    ]]>
+            </if>
+        </where>
+    </sql>
+
+    <!--删除记录-->
+    <delete id="delete" parameterType="org.xteam.plus.mars.domain.LocalCouncilMember">
+        delete from T_MARS_LOCAL_COUNCIL_MEMBER
+        where COUNCIL_MEMBER_ID= #{councilMemberId,jdbcType=DECIMAL}
+    </delete>
+
+    <!--插入记录-->
+    <insert id="insert" parameterType="org.xteam.plus.mars.domain.LocalCouncilMember" useGeneratedKeys="true" keyProperty="councilMemberId">
+        insert into T_MARS_LOCAL_COUNCIL_MEMBER (
+        COUNCIL_ID
+        ,CREATED
+        ,UPDATED
+        ,GRANT_TIME
+        ,USER_ID
+        ,JOB_TYPE
+        )values(
+        #{councilId,jdbcType=DECIMAL}
+        ,#{created,jdbcType=TIMESTAMP}
+        ,#{updated,jdbcType=TIMESTAMP}
+        ,#{grantTime,jdbcType=TIMESTAMP}
+        ,#{userId,jdbcType=DECIMAL}
+        ,#{jobType,jdbcType=INTEGER}
+        )
+    </insert>
+
+    <!--批量插入记录-->
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="councilMemberId">
+        insert into T_MARS_LOCAL_COUNCIL_MEMBER (
+        COUNCIL_ID
+        ,CREATED
+        ,UPDATED
+        ,GRANT_TIME
+        ,USER_ID
+        ,JOB_TYPE
+        )values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.councilId,jdbcType=DECIMAL}
+            ,#{item.created,jdbcType=TIMESTAMP}
+            ,#{item.updated,jdbcType=TIMESTAMP}
+            ,#{item.grantTime,jdbcType=TIMESTAMP}
+            ,#{item.userId,jdbcType=DECIMAL}
+            ,#{item.jobType,jdbcType=INTEGER}
+            )
+        </foreach>
+    </insert>
+
+    <!--更新记录-->
+    <update id="update" parameterType="org.xteam.plus.mars.domain.LocalCouncilMember">
+        update T_MARS_LOCAL_COUNCIL_MEMBER
+        <set>
+            <trim prefix="" suffix="" suffixOverrides=",">
+                <if test="councilId!=null ">
+                    COUNCIL_ID=#{councilId,jdbcType=DECIMAL},
+                </if>
+                <if test="created!=null ">
+                    CREATED=#{created,jdbcType=TIMESTAMP},
+                </if>
+                <if test="updated!=null ">
+                    UPDATED=#{updated,jdbcType=TIMESTAMP},
+                </if>
+                <if test="grantTime!=null ">
+                    GRANT_TIME=#{grantTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="userId!=null ">
+                    USER_ID=#{userId,jdbcType=DECIMAL},
+                </if>
+                <if test="jobType!=null ">
+                    JOB_TYPE=#{jobType,jdbcType=INTEGER},
+                </if>
+            </trim>
+        </set>
+        where COUNCIL_MEMBER_ID= #{councilMemberId,jdbcType=DECIMAL}
+    </update>
+
+    <!--查询单条记录-->
+    <select id="get" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.LocalCouncilMember">
+        select
+        COUNCIL_MEMBER_ID
+        ,COUNCIL_ID
+        ,CREATED
+        ,UPDATED
+        ,GRANT_TIME
+        ,USER_ID
+        ,JOB_TYPE
+        from T_MARS_LOCAL_COUNCIL_MEMBER
+        where COUNCIL_MEMBER_ID= #{councilMemberId,jdbcType=DECIMAL}
+    </select>
+
+
+    <!--分页查询记录-->
+    <select id="query" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.LocalCouncilMember">
+        select
+        <include refid="selectColumns"></include>
+        from T_MARS_LOCAL_COUNCIL_MEMBER
+        <include refid="queryWhere"></include>
+        limit #{start},#{limit}
+    </select>
+
+    <!--查询记录数-->
+    <select id="queryCount" resultType="int" parameterType="org.xteam.plus.mars.domain.LocalCouncilMember">
+        select count(1)
+        from T_MARS_LOCAL_COUNCIL_MEMBER
+        <include refid="queryWhere"></include>
+    </select>
+</mapper>

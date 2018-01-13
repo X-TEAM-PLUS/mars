@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.xteam.plus.mars.dao.UserInsuranceDao">
+    <!--结果集对应列-->
+    <resultMap id="BaseResultMap" type="org.xteam.plus.mars.domain.UserInsurance">
+        <id column="INSURANCE_ORDER_ID" property="insuranceOrderId" jdbcType="DECIMAL"/>
+        <result column="EXPIRATION_DATE" property="expirationDate" jdbcType="TIMESTAMP"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
+        <result column="CONTRACT_NO" property="contractNo" jdbcType="VARCHAR"/>
+        <result column="HOLDER_ID_NUMBER" property="holderIdNumber" jdbcType="DECIMAL"/>
+        <result column="POLICY_HOLDER" property="policyHolder" jdbcType="VARCHAR"/>
+        <result column="ACCEPT_INSURANCE_DATE" property="acceptInsuranceDate" jdbcType="TIMESTAMP"/>
+        <result column="INSURANCE_PRODUCT_NO" property="insuranceProductNo" jdbcType="DECIMAL"/>
+        <result column="USER_ID" property="userId" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <!--公用选择列-->
+    <sql id="selectColumns">
+        INSURANCE_ORDER_ID,
+        EXPIRATION_DATE
+        ,STATUS
+        ,CREATED
+        ,UPDATED
+        ,CONTRACT_NO
+        ,HOLDER_ID_NUMBER
+        ,POLICY_HOLDER
+        ,ACCEPT_INSURANCE_DATE
+        ,INSURANCE_PRODUCT_NO
+        ,USER_ID
+    </sql>
+
+    <!--公用查询条件-->
+    <sql id="queryWhere">
+        <where>
+            <if test="expirationDate!=null ">
+                <![CDATA[
+                        and EXPIRATION_DATE>= str_to_date(CONCAT(date_format(#{expirationDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and EXPIRATION_DATE<= str_to_date(CONCAT(date_format(#{expirationDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="status!=null ">
+                <![CDATA[
+                    and STATUS=#{status,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="created!=null ">
+                <![CDATA[
+                        and CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and CREATED<= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="updated!=null ">
+                <![CDATA[
+                        and UPDATED>= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="contractNo!=null and  contractNo!=''">
+                <![CDATA[
+                    and CONTRACT_NO=#{contractNo,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="holderIdNumber!=null ">
+                <![CDATA[
+                    and HOLDER_ID_NUMBER=#{holderIdNumber,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="policyHolder!=null and  policyHolder!=''">
+                <![CDATA[
+                    and POLICY_HOLDER=#{policyHolder,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="acceptInsuranceDate!=null ">
+                <![CDATA[
+                        and ACCEPT_INSURANCE_DATE>= str_to_date(CONCAT(date_format(#{acceptInsuranceDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and ACCEPT_INSURANCE_DATE<= str_to_date(CONCAT(date_format(#{acceptInsuranceDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="insuranceOrderId!=null ">
+                <![CDATA[
+                    and INSURANCE_ORDER_ID=#{insuranceOrderId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="insuranceProductNo!=null ">
+                <![CDATA[
+                    and INSURANCE_PRODUCT_NO=#{insuranceProductNo,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="userId!=null ">
+                <![CDATA[
+                    and USER_ID=#{userId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+        </where>
+    </sql>
+
+    <!--删除记录-->
+    <delete id="delete" parameterType="org.xteam.plus.mars.domain.UserInsurance">
+        delete from T_MARS_USER_INSURANCE
+        where INSURANCE_ORDER_ID= #{insuranceOrderId,jdbcType=DECIMAL}
+    </delete>
+
+    <!--插入记录-->
+    <insert id="insert" parameterType="org.xteam.plus.mars.domain.UserInsurance" useGeneratedKeys="true" keyProperty="insuranceOrderId">
+        insert into T_MARS_USER_INSURANCE (
+        EXPIRATION_DATE
+        ,STATUS
+        ,CREATED
+        ,UPDATED
+        ,CONTRACT_NO
+        ,HOLDER_ID_NUMBER
+        ,POLICY_HOLDER
+        ,ACCEPT_INSURANCE_DATE
+        ,INSURANCE_PRODUCT_NO
+        ,USER_ID
+        )values(
+        #{expirationDate,jdbcType=TIMESTAMP}
+        ,#{status,jdbcType=INTEGER}
+        ,#{created,jdbcType=TIMESTAMP}
+        ,#{updated,jdbcType=TIMESTAMP}
+        ,#{contractNo,jdbcType=VARCHAR}
+        ,#{holderIdNumber,jdbcType=DECIMAL}
+        ,#{policyHolder,jdbcType=VARCHAR}
+        ,#{acceptInsuranceDate,jdbcType=TIMESTAMP}
+        ,#{insuranceProductNo,jdbcType=DECIMAL}
+        ,#{userId,jdbcType=DECIMAL}
+        )
+    </insert>
+
+    <!--批量插入记录-->
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="insuranceOrderId">
+        insert into T_MARS_USER_INSURANCE (
+        EXPIRATION_DATE
+        ,STATUS
+        ,CREATED
+        ,UPDATED
+        ,CONTRACT_NO
+        ,HOLDER_ID_NUMBER
+        ,POLICY_HOLDER
+        ,ACCEPT_INSURANCE_DATE
+        ,INSURANCE_PRODUCT_NO
+        ,USER_ID
+        )values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.expirationDate,jdbcType=TIMESTAMP}
+            ,#{item.status,jdbcType=INTEGER}
+            ,#{item.created,jdbcType=TIMESTAMP}
+            ,#{item.updated,jdbcType=TIMESTAMP}
+            ,#{item.contractNo,jdbcType=VARCHAR}
+            ,#{item.holderIdNumber,jdbcType=DECIMAL}
+            ,#{item.policyHolder,jdbcType=VARCHAR}
+            ,#{item.acceptInsuranceDate,jdbcType=TIMESTAMP}
+            ,#{item.insuranceProductNo,jdbcType=DECIMAL}
+            ,#{item.userId,jdbcType=DECIMAL}
+            )
+        </foreach>
+    </insert>
+
+    <!--更新记录-->
+    <update id="update" parameterType="org.xteam.plus.mars.domain.UserInsurance">
+        update T_MARS_USER_INSURANCE
+        <set>
+            <trim prefix="" suffix="" suffixOverrides=",">
+                <if test="expirationDate!=null ">
+                    EXPIRATION_DATE=#{expirationDate,jdbcType=TIMESTAMP},
+                </if>
+                <if test="status!=null ">
+                    STATUS=#{status,jdbcType=INTEGER},
+                </if>
+                <if test="created!=null ">
+                    CREATED=#{created,jdbcType=TIMESTAMP},
+                </if>
+                <if test="updated!=null ">
+                    UPDATED=#{updated,jdbcType=TIMESTAMP},
+                </if>
+                <if test="contractNo!=null ">
+                    CONTRACT_NO=#{contractNo,jdbcType=VARCHAR},
+                </if>
+                <if test="holderIdNumber!=null ">
+                    HOLDER_ID_NUMBER=#{holderIdNumber,jdbcType=DECIMAL},
+                </if>
+                <if test="policyHolder!=null ">
+                    POLICY_HOLDER=#{policyHolder,jdbcType=VARCHAR},
+                </if>
+                <if test="acceptInsuranceDate!=null ">
+                    ACCEPT_INSURANCE_DATE=#{acceptInsuranceDate,jdbcType=TIMESTAMP},
+                </if>
+                <if test="insuranceProductNo!=null ">
+                    INSURANCE_PRODUCT_NO=#{insuranceProductNo,jdbcType=DECIMAL},
+                </if>
+                <if test="userId!=null ">
+                    USER_ID=#{userId,jdbcType=DECIMAL},
+                </if>
+            </trim>
+        </set>
+        where INSURANCE_ORDER_ID= #{insuranceOrderId,jdbcType=DECIMAL}
+    </update>
+
+    <!--查询单条记录-->
+    <select id="get" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.UserInsurance">
+        select
+        INSURANCE_ORDER_ID
+        ,EXPIRATION_DATE
+        ,STATUS
+        ,CREATED
+        ,UPDATED
+        ,CONTRACT_NO
+        ,HOLDER_ID_NUMBER
+        ,POLICY_HOLDER
+        ,ACCEPT_INSURANCE_DATE
+        ,INSURANCE_PRODUCT_NO
+        ,USER_ID
+        from T_MARS_USER_INSURANCE
+        where INSURANCE_ORDER_ID= #{insuranceOrderId,jdbcType=DECIMAL}
+    </select>
+
+
+    <!--分页查询记录-->
+    <select id="query" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.UserInsurance">
+        select
+        <include refid="selectColumns"></include>
+        from T_MARS_USER_INSURANCE
+        <include refid="queryWhere"></include>
+        limit #{start},#{limit}
+    </select>
+
+    <!--查询记录数-->
+    <select id="queryCount" resultType="int" parameterType="org.xteam.plus.mars.domain.UserInsurance">
+        select count(1)
+        from T_MARS_USER_INSURANCE
+        <include refid="queryWhere"></include>
+    </select>
+</mapper>

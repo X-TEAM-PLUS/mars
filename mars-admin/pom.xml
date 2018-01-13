@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>org.xteam.plus</groupId>
+        <artifactId>mars</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>mars-admin</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>admin::后台管理</name>
+
+    <packaging>jar</packaging>
+
+     <dependencies>
+        <dependency>
+            <groupId>org.xteam.plus</groupId>
+            <artifactId>mars-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>log4j-over-slf4j</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>slf4j-log4j12</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>log4j</artifactId>
+                    <groupId>log4j</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+         <dependency>
+             <groupId>org.springframework.boot</groupId>
+             <artifactId>spring-boot-starter-freemarker</artifactId>
+         </dependency>
+        <!--SpringCloud-->
+         <dependency>
+             <groupId>org.springframework.cloud</groupId>
+             <artifactId>spring-cloud-starter-zuul</artifactId>
+         </dependency>
+         <!-- Spring Cloud Netflix Eureka 依赖 -->
+         <dependency>
+             <groupId>org.springframework.cloud</groupId>
+             <artifactId>spring-cloud-starter-eureka</artifactId>
+         </dependency>
+         <dependency>
+             <groupId>org.springframework.cloud</groupId>
+             <artifactId>spring-cloud-starter-hystrix</artifactId>
+         </dependency>
+         <!-- Spring Boot Test 依赖 -->
+         <dependency>
+             <groupId>org.springframework.boot</groupId>
+             <artifactId>spring-boot-starter-test</artifactId>
+             <scope>test</scope>
+         </dependency>
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>develop</id>
+            <properties>
+                <!-- euerka注册中心地址-->
+                <mvn.spring.cloud.euerka.server>http://localhost:8888/eureka/</mvn.spring.cloud.euerka.server>
+                <!--日志输出目录-->
+                <mvn.log.path>d:/logs</mvn.log.path>
+                <mvn.log.level>DEBUG</mvn.log.level>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <!-- euerka注册中心地址-->
+                <mvn.spring.cloud.euerka.server>http://localhost:8888/eureka/,http://localhost:8889/eureka/</mvn.spring.cloud.euerka.server>
+                <!--日志输出目录-->
+                <mvn.log.path>/export/Logs/mars.local</mvn.log.path>
+                <mvn.log.level>DEBUG</mvn.log.level>
+            </properties>
+        </profile>
+        <profile>
+            <id>production</id>
+            <properties>
+                <!-- euerka注册中心地址-->
+                <mvn.spring.cloud.euerka.server>http://localhost:8888/eureka/,http://localhost:8889/eureka/</mvn.spring.cloud.euerka.server>
+                <!--日志输出目录-->
+                <mvn.log.path>/export/Logs/mars.local</mvn.log.path>
+                <mvn.log.level>INFO</mvn.log.level>
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+                <filtering>true</filtering>
+                <excludes>
+                    <exclude>static/**</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>static/**</include>
+                </includes>
+            </resource>
+        </resources>
+
+    </build>
+</project>

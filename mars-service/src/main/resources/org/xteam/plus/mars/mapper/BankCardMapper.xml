@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.xteam.plus.mars.dao.BankCardDao">
+    <!--结果集对应列-->
+    <resultMap id="BaseResultMap" type="org.xteam.plus.mars.domain.BankCard">
+        <id column="BANK_CARD_ID" property="bankCardId" jdbcType="DECIMAL"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="BANK_ACCOUNT_NAME" property="bankAccountName" jdbcType="TIMESTAMP"/>
+        <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
+        <result column="BANK_ACCOUNT_NO" property="bankAccountNo" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <!--公用选择列-->
+    <sql id="selectColumns">
+        BANK_CARD_ID,
+        CREATED
+        ,BANK_ACCOUNT_NAME
+        ,UPDATED
+        ,BANK_ACCOUNT_NO
+        ,USER_ID
+    </sql>
+
+    <!--公用查询条件-->
+    <sql id="queryWhere">
+        <where>
+            <if test="created!=null ">
+                <![CDATA[
+                        and CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and CREATED<= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="bankAccountName!=null ">
+                <![CDATA[
+                        and BANK_ACCOUNT_NAME>= str_to_date(CONCAT(date_format(#{bankAccountName,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and BANK_ACCOUNT_NAME<= str_to_date(CONCAT(date_format(#{bankAccountName,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="updated!=null ">
+                <![CDATA[
+                        and UPDATED>= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="bankCardId!=null ">
+                <![CDATA[
+                    and BANK_CARD_ID=#{bankCardId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="bankAccountNo!=null and  bankAccountNo!=''">
+                <![CDATA[
+                    and BANK_ACCOUNT_NO=#{bankAccountNo,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="userId!=null ">
+                <![CDATA[
+                    and USER_ID=#{userId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+        </where>
+    </sql>
+
+    <!--删除记录-->
+    <delete id="delete" parameterType="org.xteam.plus.mars.domain.BankCard">
+        delete from T_MARS_BANK_CARD
+        where BANK_CARD_ID= #{bankCardId,jdbcType=DECIMAL}
+    </delete>
+
+    <!--插入记录-->
+    <insert id="insert" parameterType="org.xteam.plus.mars.domain.BankCard" useGeneratedKeys="true" keyProperty="bankCardId">
+        insert into T_MARS_BANK_CARD (
+        CREATED
+        ,BANK_ACCOUNT_NAME
+        ,UPDATED
+        ,BANK_ACCOUNT_NO
+        ,USER_ID
+        )values(
+        #{created,jdbcType=TIMESTAMP}
+        ,#{bankAccountName,jdbcType=TIMESTAMP}
+        ,#{updated,jdbcType=TIMESTAMP}
+        ,#{bankAccountNo,jdbcType=VARCHAR}
+        ,#{userId,jdbcType=DECIMAL}
+        )
+    </insert>
+
+    <!--批量插入记录-->
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="bankCardId">
+        insert into T_MARS_BANK_CARD (
+        CREATED
+        ,BANK_ACCOUNT_NAME
+        ,UPDATED
+        ,BANK_ACCOUNT_NO
+        ,USER_ID
+        )values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.created,jdbcType=TIMESTAMP}
+            ,#{item.bankAccountName,jdbcType=TIMESTAMP}
+            ,#{item.updated,jdbcType=TIMESTAMP}
+            ,#{item.bankAccountNo,jdbcType=VARCHAR}
+            ,#{item.userId,jdbcType=DECIMAL}
+            )
+        </foreach>
+    </insert>
+
+    <!--更新记录-->
+    <update id="update" parameterType="org.xteam.plus.mars.domain.BankCard">
+        update T_MARS_BANK_CARD
+        <set>
+            <trim prefix="" suffix="" suffixOverrides=",">
+                <if test="created!=null ">
+                    CREATED=#{created,jdbcType=TIMESTAMP},
+                </if>
+                <if test="bankAccountName!=null ">
+                    BANK_ACCOUNT_NAME=#{bankAccountName,jdbcType=TIMESTAMP},
+                </if>
+                <if test="updated!=null ">
+                    UPDATED=#{updated,jdbcType=TIMESTAMP},
+                </if>
+                <if test="bankAccountNo!=null ">
+                    BANK_ACCOUNT_NO=#{bankAccountNo,jdbcType=VARCHAR},
+                </if>
+                <if test="userId!=null ">
+                    USER_ID=#{userId,jdbcType=DECIMAL},
+                </if>
+            </trim>
+        </set>
+        where BANK_CARD_ID= #{bankCardId,jdbcType=DECIMAL}
+    </update>
+
+    <!--查询单条记录-->
+    <select id="get" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.BankCard">
+        select
+        BANK_CARD_ID
+        ,CREATED
+        ,BANK_ACCOUNT_NAME
+        ,UPDATED
+        ,BANK_ACCOUNT_NO
+        ,USER_ID
+        from T_MARS_BANK_CARD
+        where BANK_CARD_ID= #{bankCardId,jdbcType=DECIMAL}
+    </select>
+
+
+    <!--分页查询记录-->
+    <select id="query" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.BankCard">
+        select
+        <include refid="selectColumns"></include>
+        from T_MARS_BANK_CARD
+        <include refid="queryWhere"></include>
+        limit #{start},#{limit}
+    </select>
+
+    <!--查询记录数-->
+    <select id="queryCount" resultType="int" parameterType="org.xteam.plus.mars.domain.BankCard">
+        select count(1)
+        from T_MARS_BANK_CARD
+        <include refid="queryWhere"></include>
+    </select>
+</mapper>

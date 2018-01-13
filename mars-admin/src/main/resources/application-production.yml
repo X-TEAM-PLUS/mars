@@ -1,0 +1,41 @@
+server:
+  port: 8181
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://host1:8888/eureka/,http://host2:8888/eureka/,http://host3:8888/eureka/
+spring:
+  application:
+    name: mars-admin
+  http:
+    converters:
+      preferred-json-mapper: jackson
+    encoding:
+      charset: UTF-8
+  freemarker:
+    template-loader-path: classpath:/templates
+    request-context-attribute: request
+    charset: UTF-8
+    settings:
+        number_format: 0.##
+  jackson:
+    locale: zh_CN
+    date-format: yyyy-MM-dd HH:mm:ss
+    joda-date-time-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    deserialization: true
+    default-property-inclusion: non_null
+    generator: true
+    mapper: true
+    parser: true
+    serialization: true
+zuul:
+  routes:
+    mars-admin:
+      path: /services/**
+      serviceId: mars-service-provider
+logging:
+  path: /data/log/mars
+  level: debug
+  config: classpath:admin-logback.xml

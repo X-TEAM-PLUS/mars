@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.4.RELEASE</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.xteam.plus</groupId>
+    <artifactId>mars</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <name>root::主工程</name>
+    <modules>
+        <module>mars-eurekaserver</module>
+        <module>mars-common</module>
+        <module>mars-service</module>
+        <module>mars-admin</module>
+        <module>mars-webapp</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>1.8</java.version>
+        <maven.druid.version>1.0.14</maven.druid.version>
+        <maven.springframework.version>4.2.4.RELEASE</maven.springframework.version>
+        <maven.jackson.version>2.6.0-rc1</maven.jackson.version>
+        <maven.jackson.mapper.lgpl.version>1.9.13</maven.jackson.mapper.lgpl.version>
+        <maven.mybatis.version>3.2.5</maven.mybatis.version>
+        <maven.mybatis.spring.version>1.2.2</maven.mybatis.spring.version>
+        <maven.mybatis.ehcache.version>1.0.0</maven.mybatis.ehcache.version>
+        <maven.aspectj.version>1.7.4</maven.aspectj.version>
+        <maven.ehcache.version>2.6.8</maven.ehcache.version>
+        <maven.slf4j.version>1.7.6</maven.slf4j.version>
+        <maven.log4j.version>1.2.17</maven.log4j.version>
+        <maven.freemarker.version>2.3.26-incubating</maven.freemarker.version>
+        <maven.mybatis.spring.boot.version>1.3.1</maven.mybatis.spring.boot.version>
+        <maven.mysql.driver.version>5.1.30</maven.mysql.driver.version>
+        <maven.oracle.driver.version>11.2.0.1.0</maven.oracle.driver.version>
+        <maven.druid.version>1.0.14</maven.druid.version>
+        <!--spring boot-->
+        <mvn.spring.cloud.dependencies.version>Edgware.RELEASE</mvn.spring.cloud.dependencies.version>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>develop</id>
+            <properties>
+                <mvn.profile.active>develop</mvn.profile.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <mvn.profile.active>test</mvn.profile.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>production</id>
+            <properties>
+                <mvn.profile.active>production</mvn.profile.active>
+            </properties>
+        </profile>
+    </profiles>
+
+    <!--依赖管理，用于管理spring-cloud的依赖，其中Camden.SR3是版本号-->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${mvn.spring.cloud.dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--热启动插件-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-devtools</artifactId>
+                <optional>true</optional>
+                <scope>runtime</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

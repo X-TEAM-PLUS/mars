@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>org.xteam.plus</groupId>
+        <artifactId>mars</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>mars-service</artifactId>
+    <name>service::服务提供</name>
+
+    <properties>
+        <maven.mybatis.spring.boot.version>1.3.1</maven.mybatis.spring.boot.version>
+        <maven.mysql.driver.version>5.1.30</maven.mysql.driver.version>
+        <maven.oracle.driver.version>11.2.0.1.0</maven.oracle.driver.version>
+        <maven.druid.version>1.0.14</maven.druid.version>
+    </properties>
+    <dependencies>
+
+        <dependency>
+            <groupId>org.xteam.plus</groupId>
+            <artifactId>mars-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>log4j-over-slf4j</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>slf4j-log4j12</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>log4j</artifactId>
+                    <groupId>log4j</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- Spring Cloud Netflix Eureka 依赖 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-eureka</artifactId>
+        </dependency>
+
+        <!-- Spring Boot Test 依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>${maven.mybatis.spring.boot.version}</version>
+        </dependency>
+
+        <!--druid-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>${maven.druid.version}</version>
+        </dependency>
+
+        <!--database driver-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${maven.mysql.driver.version}</version>
+        </dependency>
+
+
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Spring Cloud Netflix 依赖 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-netflix</artifactId>
+                <version>1.3.1.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+    <profiles>
+        <profile>
+            <id>develop</id>
+            <properties>
+                <!-- euerka注册中心地址-->
+                <mvn.spring.cloud.euerka.server>http://localhost:8888/eureka/</mvn.spring.cloud.euerka.server>
+                <!--数据库连接-->
+                <mvn.jdbc.url><![CDATA[jdbc:mysql://localhost:3306/mars?useUnicode=true&characterEncoding=utf-8]]></mvn.jdbc.url>
+                <mvn.jdbc.user>mars</mvn.jdbc.user>
+                <mvn.jdbc.pwd>mars</mvn.jdbc.pwd>
+                <!--日志输出目录-->
+                <mvn.log.path>d:/logs</mvn.log.path>
+                <mvn.log.level>DEBUG</mvn.log.level>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <!-- euerka注册中心地址-->
+                <mvn.spring.cloud.euerka.server>http://localhost:8888/eureka/</mvn.spring.cloud.euerka.server>
+                <!--数据库连接-->
+                <mvn.jdbc.url><![CDATA[jdbc:mysql://localhost:3306/mars?useUnicode=true&characterEncoding=utf-8]]></mvn.jdbc.url>
+                <mvn.jdbc.user>mars</mvn.jdbc.user>
+                <mvn.jdbc.pwd>mars</mvn.jdbc.pwd>
+                <!--日志输出目录-->
+                <mvn.log.path>/export/Logs/mars.local</mvn.log.path>
+                <mvn.log.level>DEBUG</mvn.log.level>
+            </properties>
+        </profile>
+        <profile>
+            <id>production</id>
+            <properties>
+                <!-- euerka注册中心地址-->
+                <mvn.spring.cloud.euerka.server>http://localhost:8888/eureka/</mvn.spring.cloud.euerka.server>
+                <!--数据库连接-->
+                <mvn.jdbc.url><![CDATA[jdbc:mysql://localhost:3306/mars?useUnicode=true&characterEncoding=utf-8]]></mvn.jdbc.url>
+                <mvn.jdbc.user>mars</mvn.jdbc.user>
+                <mvn.jdbc.pwd>mars</mvn.jdbc.pwd>
+                <!--日志输出目录-->
+                <mvn.log.path>/export/Logs/mars.local</mvn.log.path>
+                <mvn.log.level>INFO</mvn.log.level>
+            </properties>
+        </profile>
+    </profiles>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+</project>

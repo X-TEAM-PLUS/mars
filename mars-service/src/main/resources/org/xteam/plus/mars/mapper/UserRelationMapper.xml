@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.xteam.plus.mars.dao.UserRelationDao">
+    <!--结果集对应列-->
+    <resultMap id="BaseResultMap" type="org.xteam.plus.mars.domain.UserRelation">
+        <id column="RELATION_ID" property="relationId" jdbcType="DECIMAL"/>
+        <result column="REFEREE_USER_ID" property="refereeUserId" jdbcType="DECIMAL"/>
+        <result column="USER_ID" property="userId" jdbcType="DECIMAL"/>
+        <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--公用选择列-->
+    <sql id="selectColumns">
+        RELATION_ID,
+        REFEREE_USER_ID
+        ,USER_ID
+        ,UPDATED
+        ,CREATED
+    </sql>
+
+    <!--公用查询条件-->
+    <sql id="queryWhere">
+        <where>
+            <if test="relationId!=null ">
+                <![CDATA[
+                    and RELATION_ID=#{relationId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="refereeUserId!=null ">
+                <![CDATA[
+                    and REFEREE_USER_ID=#{refereeUserId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="userId!=null ">
+                <![CDATA[
+                    and USER_ID=#{userId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="updated!=null ">
+                <![CDATA[
+                        and UPDATED>= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="created!=null ">
+                <![CDATA[
+                        and CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and CREATED<= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+        </where>
+    </sql>
+
+    <!--删除记录-->
+    <delete id="delete" parameterType="org.xteam.plus.mars.domain.UserRelation">
+        delete from T_MARS_USER_RELATION
+        where RELATION_ID= #{relationId,jdbcType=DECIMAL}
+    </delete>
+
+    <!--插入记录-->
+    <insert id="insert" parameterType="org.xteam.plus.mars.domain.UserRelation" useGeneratedKeys="true" keyProperty="relationId">
+        insert into T_MARS_USER_RELATION (
+        REFEREE_USER_ID
+        ,USER_ID
+        ,UPDATED
+        ,CREATED
+        )values(
+        #{refereeUserId,jdbcType=DECIMAL}
+        ,#{userId,jdbcType=DECIMAL}
+        ,#{updated,jdbcType=TIMESTAMP}
+        ,#{created,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <!--批量插入记录-->
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="relationId">
+        insert into T_MARS_USER_RELATION (
+        REFEREE_USER_ID
+        ,USER_ID
+        ,UPDATED
+        ,CREATED
+        )values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.refereeUserId,jdbcType=DECIMAL}
+            ,#{item.userId,jdbcType=DECIMAL}
+            ,#{item.updated,jdbcType=TIMESTAMP}
+            ,#{item.created,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
+    <!--更新记录-->
+    <update id="update" parameterType="org.xteam.plus.mars.domain.UserRelation">
+        update T_MARS_USER_RELATION
+        <set>
+            <trim prefix="" suffix="" suffixOverrides=",">
+                <if test="refereeUserId!=null ">
+                    REFEREE_USER_ID=#{refereeUserId,jdbcType=DECIMAL},
+                </if>
+                <if test="userId!=null ">
+                    USER_ID=#{userId,jdbcType=DECIMAL},
+                </if>
+                <if test="updated!=null ">
+                    UPDATED=#{updated,jdbcType=TIMESTAMP},
+                </if>
+                <if test="created!=null ">
+                    CREATED=#{created,jdbcType=TIMESTAMP},
+                </if>
+            </trim>
+        </set>
+        where RELATION_ID= #{relationId,jdbcType=DECIMAL}
+    </update>
+
+    <!--查询单条记录-->
+    <select id="get" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.UserRelation">
+        select
+        RELATION_ID
+        ,REFEREE_USER_ID
+        ,USER_ID
+        ,UPDATED
+        ,CREATED
+        from T_MARS_USER_RELATION
+        where RELATION_ID= #{relationId,jdbcType=DECIMAL}
+    </select>
+
+
+    <!--分页查询记录-->
+    <select id="query" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.UserRelation">
+        select
+        <include refid="selectColumns"></include>
+        from T_MARS_USER_RELATION
+        <include refid="queryWhere"></include>
+        limit #{start},#{limit}
+    </select>
+
+    <!--查询记录数-->
+    <select id="queryCount" resultType="int" parameterType="org.xteam.plus.mars.domain.UserRelation">
+        select count(1)
+        from T_MARS_USER_RELATION
+        <include refid="queryWhere"></include>
+    </select>
+</mapper>

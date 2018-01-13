@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.xteam.plus.mars.dao.HealthCheckRecordDao">
+    <!--结果集对应列-->
+    <resultMap id="BaseResultMap" type="org.xteam.plus.mars.domain.HealthCheckRecord">
+        <id column="CHECK_RECORD_ID" property="checkRecordId" jdbcType="DECIMAL"/>
+        <result column="USER_ID" property="userId" jdbcType="DECIMAL"/>
+        <result column="UPLOAD_TIME" property="uploadTime" jdbcType="TIMESTAMP"/>
+        <result column="CHECK_REPORT" property="checkReport" jdbcType="VARCHAR"/>
+        <result column="CHECK_RESULT" property="checkResult" jdbcType="VARCHAR"/>
+        <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
+        <result column="CHECK_STATUS" property="checkStatus" jdbcType="INTEGER"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="CHECK_TIME" property="checkTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--公用选择列-->
+    <sql id="selectColumns">
+        CHECK_RECORD_ID,
+        USER_ID
+        ,UPLOAD_TIME
+        ,CHECK_REPORT
+        ,CHECK_RESULT
+        ,UPDATED
+        ,CHECK_STATUS
+        ,CREATED
+        ,CHECK_TIME
+    </sql>
+
+    <!--公用查询条件-->
+    <sql id="queryWhere">
+        <where>
+            <if test="userId!=null ">
+                <![CDATA[
+                    and USER_ID=#{userId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="uploadTime!=null ">
+                <![CDATA[
+                        and UPLOAD_TIME>= str_to_date(CONCAT(date_format(#{uploadTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and UPLOAD_TIME<= str_to_date(CONCAT(date_format(#{uploadTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="checkReport!=null and  checkReport!=''">
+                <![CDATA[
+                    and CHECK_REPORT=#{checkReport,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="checkResult!=null and  checkResult!=''">
+                <![CDATA[
+                    and CHECK_RESULT=#{checkResult,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="updated!=null ">
+                <![CDATA[
+                        and UPDATED>= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="checkRecordId!=null ">
+                <![CDATA[
+                    and CHECK_RECORD_ID=#{checkRecordId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="checkStatus!=null ">
+                <![CDATA[
+                    and CHECK_STATUS=#{checkStatus,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="created!=null ">
+                <![CDATA[
+                        and CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and CREATED<= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="checkTime!=null ">
+                <![CDATA[
+                        and CHECK_TIME>= str_to_date(CONCAT(date_format(#{checkTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and CHECK_TIME<= str_to_date(CONCAT(date_format(#{checkTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+        </where>
+    </sql>
+
+    <!--删除记录-->
+    <delete id="delete" parameterType="org.xteam.plus.mars.domain.HealthCheckRecord">
+        delete from T_MARS_HEALTH_CHECK_RECORD
+        where CHECK_RECORD_ID= #{checkRecordId,jdbcType=DECIMAL}
+    </delete>
+
+    <!--插入记录-->
+    <insert id="insert" parameterType="org.xteam.plus.mars.domain.HealthCheckRecord" useGeneratedKeys="true" keyProperty="checkRecordId">
+        insert into T_MARS_HEALTH_CHECK_RECORD (
+        USER_ID
+        ,UPLOAD_TIME
+        ,CHECK_REPORT
+        ,CHECK_RESULT
+        ,UPDATED
+        ,CHECK_STATUS
+        ,CREATED
+        ,CHECK_TIME
+        )values(
+        #{userId,jdbcType=DECIMAL}
+        ,#{uploadTime,jdbcType=TIMESTAMP}
+        ,#{checkReport,jdbcType=VARCHAR}
+        ,#{checkResult,jdbcType=VARCHAR}
+        ,#{updated,jdbcType=TIMESTAMP}
+        ,#{checkStatus,jdbcType=INTEGER}
+        ,#{created,jdbcType=TIMESTAMP}
+        ,#{checkTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <!--批量插入记录-->
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="checkRecordId">
+        insert into T_MARS_HEALTH_CHECK_RECORD (
+        USER_ID
+        ,UPLOAD_TIME
+        ,CHECK_REPORT
+        ,CHECK_RESULT
+        ,UPDATED
+        ,CHECK_STATUS
+        ,CREATED
+        ,CHECK_TIME
+        )values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.userId,jdbcType=DECIMAL}
+            ,#{item.uploadTime,jdbcType=TIMESTAMP}
+            ,#{item.checkReport,jdbcType=VARCHAR}
+            ,#{item.checkResult,jdbcType=VARCHAR}
+            ,#{item.updated,jdbcType=TIMESTAMP}
+            ,#{item.checkStatus,jdbcType=INTEGER}
+            ,#{item.created,jdbcType=TIMESTAMP}
+            ,#{item.checkTime,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
+    <!--更新记录-->
+    <update id="update" parameterType="org.xteam.plus.mars.domain.HealthCheckRecord">
+        update T_MARS_HEALTH_CHECK_RECORD
+        <set>
+            <trim prefix="" suffix="" suffixOverrides=",">
+                <if test="userId!=null ">
+                    USER_ID=#{userId,jdbcType=DECIMAL},
+                </if>
+                <if test="uploadTime!=null ">
+                    UPLOAD_TIME=#{uploadTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="checkReport!=null ">
+                    CHECK_REPORT=#{checkReport,jdbcType=VARCHAR},
+                </if>
+                <if test="checkResult!=null ">
+                    CHECK_RESULT=#{checkResult,jdbcType=VARCHAR},
+                </if>
+                <if test="updated!=null ">
+                    UPDATED=#{updated,jdbcType=TIMESTAMP},
+                </if>
+                <if test="checkStatus!=null ">
+                    CHECK_STATUS=#{checkStatus,jdbcType=INTEGER},
+                </if>
+                <if test="created!=null ">
+                    CREATED=#{created,jdbcType=TIMESTAMP},
+                </if>
+                <if test="checkTime!=null ">
+                    CHECK_TIME=#{checkTime,jdbcType=TIMESTAMP},
+                </if>
+            </trim>
+        </set>
+        where CHECK_RECORD_ID= #{checkRecordId,jdbcType=DECIMAL}
+    </update>
+
+    <!--查询单条记录-->
+    <select id="get" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.HealthCheckRecord">
+        select
+        CHECK_RECORD_ID
+        ,USER_ID
+        ,UPLOAD_TIME
+        ,CHECK_REPORT
+        ,CHECK_RESULT
+        ,UPDATED
+        ,CHECK_STATUS
+        ,CREATED
+        ,CHECK_TIME
+        from T_MARS_HEALTH_CHECK_RECORD
+        where CHECK_RECORD_ID= #{checkRecordId,jdbcType=DECIMAL}
+    </select>
+
+
+    <!--分页查询记录-->
+    <select id="query" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.HealthCheckRecord">
+        select
+        <include refid="selectColumns"></include>
+        from T_MARS_HEALTH_CHECK_RECORD
+        <include refid="queryWhere"></include>
+        limit #{start},#{limit}
+    </select>
+
+    <!--查询记录数-->
+    <select id="queryCount" resultType="int" parameterType="org.xteam.plus.mars.domain.HealthCheckRecord">
+        select count(1)
+        from T_MARS_HEALTH_CHECK_RECORD
+        <include refid="queryWhere"></include>
+    </select>
+</mapper>

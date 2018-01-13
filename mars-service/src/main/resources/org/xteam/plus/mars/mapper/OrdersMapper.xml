@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.xteam.plus.mars.dao.OrdersDao">
+    <!--结果集对应列-->
+    <resultMap id="BaseResultMap" type="org.xteam.plus.mars.domain.Orders">
+        <id column="ORDER_NO" property="orderNo" jdbcType="DECIMAL"/>
+        <result column="PRODUCT_NUM" property="productNum" jdbcType="INTEGER"/>
+        <result column="PRODUCT_PRICE" property="productPrice" jdbcType="DECIMAL"/>
+        <result column="ORDER_PRICE" property="orderPrice" jdbcType="DECIMAL"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="PAY_ORDER_NO" property="payOrderNo" jdbcType="VARCHAR"/>
+        <result column="PRODUCT_NAME" property="productName" jdbcType="VARCHAR"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="CARD_TYPE" property="cardType" jdbcType="INTEGER"/>
+        <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
+        <result column="CARD_NO" property="cardNo" jdbcType="DECIMAL"/>
+        <result column="ORDER_TYPE" property="orderType" jdbcType="INTEGER"/>
+        <result column="ORDER_TIME" property="orderTime" jdbcType="TIMESTAMP"/>
+        <result column="BUYER_USER_ID" property="buyerUserId" jdbcType="DECIMAL"/>
+        <result column="PAY_WAY" property="payWay" jdbcType="INTEGER"/>
+        <result column="SELLER_USER_ID" property="sellerUserId" jdbcType="DECIMAL"/>
+        <result column="PAY_TIME" property="payTime" jdbcType="TIMESTAMP"/>
+        <result column="PRODUCT_ID" property="productId" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <!--公用选择列-->
+    <sql id="selectColumns">
+        ORDER_NO,
+        PRODUCT_NUM
+        ,PRODUCT_PRICE
+        ,ORDER_PRICE
+        ,STATUS
+        ,PAY_ORDER_NO
+        ,PRODUCT_NAME
+        ,CREATED
+        ,CARD_TYPE
+        ,UPDATED
+        ,CARD_NO
+        ,ORDER_TYPE
+        ,ORDER_TIME
+        ,BUYER_USER_ID
+        ,PAY_WAY
+        ,SELLER_USER_ID
+        ,PAY_TIME
+        ,PRODUCT_ID
+    </sql>
+
+    <!--公用查询条件-->
+    <sql id="queryWhere">
+        <where>
+            <if test="productNum!=null ">
+                <![CDATA[
+                    and PRODUCT_NUM=#{productNum,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="productPrice!=null ">
+                <![CDATA[
+                    and PRODUCT_PRICE=#{productPrice,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="orderPrice!=null ">
+                <![CDATA[
+                    and ORDER_PRICE=#{orderPrice,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="orderNo!=null ">
+                <![CDATA[
+                    and ORDER_NO=#{orderNo,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="status!=null ">
+                <![CDATA[
+                    and STATUS=#{status,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="payOrderNo!=null and  payOrderNo!=''">
+                <![CDATA[
+                    and PAY_ORDER_NO=#{payOrderNo,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="productName!=null and  productName!=''">
+                <![CDATA[
+                    and PRODUCT_NAME=#{productName,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="created!=null ">
+                <![CDATA[
+                        and CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and CREATED<= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="cardType!=null ">
+                <![CDATA[
+                    and CARD_TYPE=#{cardType,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="updated!=null ">
+                <![CDATA[
+                        and UPDATED>= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="cardNo!=null ">
+                <![CDATA[
+                    and CARD_NO=#{cardNo,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="orderType!=null ">
+                <![CDATA[
+                    and ORDER_TYPE=#{orderType,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="orderTime!=null ">
+                <![CDATA[
+                        and ORDER_TIME>= str_to_date(CONCAT(date_format(#{orderTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and ORDER_TIME<= str_to_date(CONCAT(date_format(#{orderTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="buyerUserId!=null ">
+                <![CDATA[
+                    and BUYER_USER_ID=#{buyerUserId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="payWay!=null ">
+                <![CDATA[
+                    and PAY_WAY=#{payWay,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="sellerUserId!=null ">
+                <![CDATA[
+                    and SELLER_USER_ID=#{sellerUserId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="payTime!=null ">
+                <![CDATA[
+                        and PAY_TIME>= str_to_date(CONCAT(date_format(#{payTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and PAY_TIME<= str_to_date(CONCAT(date_format(#{payTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="productId!=null ">
+                <![CDATA[
+                    and PRODUCT_ID=#{productId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+        </where>
+    </sql>
+
+    <!--删除记录-->
+    <delete id="delete" parameterType="org.xteam.plus.mars.domain.Orders">
+        delete from T_MARS_ORDERS
+        where ORDER_NO= #{orderNo,jdbcType=DECIMAL}
+    </delete>
+
+    <!--插入记录-->
+    <insert id="insert" parameterType="org.xteam.plus.mars.domain.Orders" useGeneratedKeys="true" keyProperty="orderNo">
+        insert into T_MARS_ORDERS (
+        PRODUCT_NUM
+        ,PRODUCT_PRICE
+        ,ORDER_PRICE
+        ,STATUS
+        ,PAY_ORDER_NO
+        ,PRODUCT_NAME
+        ,CREATED
+        ,CARD_TYPE
+        ,UPDATED
+        ,CARD_NO
+        ,ORDER_TYPE
+        ,ORDER_TIME
+        ,BUYER_USER_ID
+        ,PAY_WAY
+        ,SELLER_USER_ID
+        ,PAY_TIME
+        ,PRODUCT_ID
+        )values(
+        #{productNum,jdbcType=INTEGER}
+        ,#{productPrice,jdbcType=DECIMAL}
+        ,#{orderPrice,jdbcType=DECIMAL}
+        ,#{status,jdbcType=INTEGER}
+        ,#{payOrderNo,jdbcType=VARCHAR}
+        ,#{productName,jdbcType=VARCHAR}
+        ,#{created,jdbcType=TIMESTAMP}
+        ,#{cardType,jdbcType=INTEGER}
+        ,#{updated,jdbcType=TIMESTAMP}
+        ,#{cardNo,jdbcType=DECIMAL}
+        ,#{orderType,jdbcType=INTEGER}
+        ,#{orderTime,jdbcType=TIMESTAMP}
+        ,#{buyerUserId,jdbcType=DECIMAL}
+        ,#{payWay,jdbcType=INTEGER}
+        ,#{sellerUserId,jdbcType=DECIMAL}
+        ,#{payTime,jdbcType=TIMESTAMP}
+        ,#{productId,jdbcType=DECIMAL}
+        )
+    </insert>
+
+    <!--批量插入记录-->
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="orderNo">
+        insert into T_MARS_ORDERS (
+        PRODUCT_NUM
+        ,PRODUCT_PRICE
+        ,ORDER_PRICE
+        ,STATUS
+        ,PAY_ORDER_NO
+        ,PRODUCT_NAME
+        ,CREATED
+        ,CARD_TYPE
+        ,UPDATED
+        ,CARD_NO
+        ,ORDER_TYPE
+        ,ORDER_TIME
+        ,BUYER_USER_ID
+        ,PAY_WAY
+        ,SELLER_USER_ID
+        ,PAY_TIME
+        ,PRODUCT_ID
+        )values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.productNum,jdbcType=INTEGER}
+            ,#{item.productPrice,jdbcType=DECIMAL}
+            ,#{item.orderPrice,jdbcType=DECIMAL}
+            ,#{item.status,jdbcType=INTEGER}
+            ,#{item.payOrderNo,jdbcType=VARCHAR}
+            ,#{item.productName,jdbcType=VARCHAR}
+            ,#{item.created,jdbcType=TIMESTAMP}
+            ,#{item.cardType,jdbcType=INTEGER}
+            ,#{item.updated,jdbcType=TIMESTAMP}
+            ,#{item.cardNo,jdbcType=DECIMAL}
+            ,#{item.orderType,jdbcType=INTEGER}
+            ,#{item.orderTime,jdbcType=TIMESTAMP}
+            ,#{item.buyerUserId,jdbcType=DECIMAL}
+            ,#{item.payWay,jdbcType=INTEGER}
+            ,#{item.sellerUserId,jdbcType=DECIMAL}
+            ,#{item.payTime,jdbcType=TIMESTAMP}
+            ,#{item.productId,jdbcType=DECIMAL}
+            )
+        </foreach>
+    </insert>
+
+    <!--更新记录-->
+    <update id="update" parameterType="org.xteam.plus.mars.domain.Orders">
+        update T_MARS_ORDERS
+        <set>
+            <trim prefix="" suffix="" suffixOverrides=",">
+                <if test="productNum!=null ">
+                    PRODUCT_NUM=#{productNum,jdbcType=INTEGER},
+                </if>
+                <if test="productPrice!=null ">
+                    PRODUCT_PRICE=#{productPrice,jdbcType=DECIMAL},
+                </if>
+                <if test="orderPrice!=null ">
+                    ORDER_PRICE=#{orderPrice,jdbcType=DECIMAL},
+                </if>
+                <if test="status!=null ">
+                    STATUS=#{status,jdbcType=INTEGER},
+                </if>
+                <if test="payOrderNo!=null ">
+                    PAY_ORDER_NO=#{payOrderNo,jdbcType=VARCHAR},
+                </if>
+                <if test="productName!=null ">
+                    PRODUCT_NAME=#{productName,jdbcType=VARCHAR},
+                </if>
+                <if test="created!=null ">
+                    CREATED=#{created,jdbcType=TIMESTAMP},
+                </if>
+                <if test="cardType!=null ">
+                    CARD_TYPE=#{cardType,jdbcType=INTEGER},
+                </if>
+                <if test="updated!=null ">
+                    UPDATED=#{updated,jdbcType=TIMESTAMP},
+                </if>
+                <if test="cardNo!=null ">
+                    CARD_NO=#{cardNo,jdbcType=DECIMAL},
+                </if>
+                <if test="orderType!=null ">
+                    ORDER_TYPE=#{orderType,jdbcType=INTEGER},
+                </if>
+                <if test="orderTime!=null ">
+                    ORDER_TIME=#{orderTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="buyerUserId!=null ">
+                    BUYER_USER_ID=#{buyerUserId,jdbcType=DECIMAL},
+                </if>
+                <if test="payWay!=null ">
+                    PAY_WAY=#{payWay,jdbcType=INTEGER},
+                </if>
+                <if test="sellerUserId!=null ">
+                    SELLER_USER_ID=#{sellerUserId,jdbcType=DECIMAL},
+                </if>
+                <if test="payTime!=null ">
+                    PAY_TIME=#{payTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="productId!=null ">
+                    PRODUCT_ID=#{productId,jdbcType=DECIMAL},
+                </if>
+            </trim>
+        </set>
+        where ORDER_NO= #{orderNo,jdbcType=DECIMAL}
+    </update>
+
+    <!--查询单条记录-->
+    <select id="get" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.Orders">
+        select
+        ORDER_NO
+        ,PRODUCT_NUM
+        ,PRODUCT_PRICE
+        ,ORDER_PRICE
+        ,STATUS
+        ,PAY_ORDER_NO
+        ,PRODUCT_NAME
+        ,CREATED
+        ,CARD_TYPE
+        ,UPDATED
+        ,CARD_NO
+        ,ORDER_TYPE
+        ,ORDER_TIME
+        ,BUYER_USER_ID
+        ,PAY_WAY
+        ,SELLER_USER_ID
+        ,PAY_TIME
+        ,PRODUCT_ID
+        from T_MARS_ORDERS
+        where ORDER_NO= #{orderNo,jdbcType=DECIMAL}
+    </select>
+
+
+    <!--分页查询记录-->
+    <select id="query" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.Orders">
+        select
+        <include refid="selectColumns"></include>
+        from T_MARS_ORDERS
+        <include refid="queryWhere"></include>
+        limit #{start},#{limit}
+    </select>
+
+    <!--查询记录数-->
+    <select id="queryCount" resultType="int" parameterType="org.xteam.plus.mars.domain.Orders">
+        select count(1)
+        from T_MARS_ORDERS
+        <include refid="queryWhere"></include>
+    </select>
+</mapper>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.xteam.plus.mars.dao.InsuranceCompanyDao">
+    <!--结果集对应列-->
+    <resultMap id="BaseResultMap" type="org.xteam.plus.mars.domain.InsuranceCompany">
+        <id column="INSURANCE_COMPANY_ID" property="insuranceCompanyId" jdbcType="DECIMAL"/>
+        <result column="INSURANCE_COMPANY_NAME" property="insuranceCompanyName" jdbcType="VARCHAR"/>
+        <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
+        <result column="LINK_MAN" property="linkMan" jdbcType="VARCHAR"/>
+        <result column="LINK_ADDRESS" property="linkAddress" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--公用选择列-->
+    <sql id="selectColumns">
+        INSURANCE_COMPANY_ID,
+        INSURANCE_COMPANY_NAME
+        ,UPDATED
+        ,LINK_MAN
+        ,LINK_ADDRESS
+        ,STATUS
+        ,CREATED
+    </sql>
+
+    <!--公用查询条件-->
+    <sql id="queryWhere">
+        <where>
+            <if test="insuranceCompanyId!=null ">
+                <![CDATA[
+                    and INSURANCE_COMPANY_ID=#{insuranceCompanyId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="insuranceCompanyName!=null and  insuranceCompanyName!=''">
+                <![CDATA[
+                    and INSURANCE_COMPANY_NAME=#{insuranceCompanyName,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="updated!=null ">
+                <![CDATA[
+                        and UPDATED>= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="linkMan!=null and  linkMan!=''">
+                <![CDATA[
+                    and LINK_MAN=#{linkMan,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="linkAddress!=null and  linkAddress!=''">
+                <![CDATA[
+                    and LINK_ADDRESS=#{linkAddress,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="status!=null ">
+                <![CDATA[
+                    and STATUS=#{status,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="created!=null ">
+                <![CDATA[
+                        and CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and CREATED<= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+        </where>
+    </sql>
+
+    <!--删除记录-->
+    <delete id="delete" parameterType="org.xteam.plus.mars.domain.InsuranceCompany">
+        delete from T_MARS_INSURANCE_COMPANY
+        where INSURANCE_COMPANY_ID= #{insuranceCompanyId,jdbcType=DECIMAL}
+    </delete>
+
+    <!--插入记录-->
+    <insert id="insert" parameterType="org.xteam.plus.mars.domain.InsuranceCompany" useGeneratedKeys="true" keyProperty="insuranceCompanyId">
+        insert into T_MARS_INSURANCE_COMPANY (
+        INSURANCE_COMPANY_NAME
+        ,UPDATED
+        ,LINK_MAN
+        ,LINK_ADDRESS
+        ,STATUS
+        ,CREATED
+        )values(
+        #{insuranceCompanyName,jdbcType=VARCHAR}
+        ,#{updated,jdbcType=TIMESTAMP}
+        ,#{linkMan,jdbcType=VARCHAR}
+        ,#{linkAddress,jdbcType=VARCHAR}
+        ,#{status,jdbcType=INTEGER}
+        ,#{created,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <!--批量插入记录-->
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="insuranceCompanyId">
+        insert into T_MARS_INSURANCE_COMPANY (
+        INSURANCE_COMPANY_NAME
+        ,UPDATED
+        ,LINK_MAN
+        ,LINK_ADDRESS
+        ,STATUS
+        ,CREATED
+        )values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.insuranceCompanyName,jdbcType=VARCHAR}
+            ,#{item.updated,jdbcType=TIMESTAMP}
+            ,#{item.linkMan,jdbcType=VARCHAR}
+            ,#{item.linkAddress,jdbcType=VARCHAR}
+            ,#{item.status,jdbcType=INTEGER}
+            ,#{item.created,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
+    <!--更新记录-->
+    <update id="update" parameterType="org.xteam.plus.mars.domain.InsuranceCompany">
+        update T_MARS_INSURANCE_COMPANY
+        <set>
+            <trim prefix="" suffix="" suffixOverrides=",">
+                <if test="insuranceCompanyName!=null ">
+                    INSURANCE_COMPANY_NAME=#{insuranceCompanyName,jdbcType=VARCHAR},
+                </if>
+                <if test="updated!=null ">
+                    UPDATED=#{updated,jdbcType=TIMESTAMP},
+                </if>
+                <if test="linkMan!=null ">
+                    LINK_MAN=#{linkMan,jdbcType=VARCHAR},
+                </if>
+                <if test="linkAddress!=null ">
+                    LINK_ADDRESS=#{linkAddress,jdbcType=VARCHAR},
+                </if>
+                <if test="status!=null ">
+                    STATUS=#{status,jdbcType=INTEGER},
+                </if>
+                <if test="created!=null ">
+                    CREATED=#{created,jdbcType=TIMESTAMP},
+                </if>
+            </trim>
+        </set>
+        where INSURANCE_COMPANY_ID= #{insuranceCompanyId,jdbcType=DECIMAL}
+    </update>
+
+    <!--查询单条记录-->
+    <select id="get" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.InsuranceCompany">
+        select
+        INSURANCE_COMPANY_ID
+        ,INSURANCE_COMPANY_NAME
+        ,UPDATED
+        ,LINK_MAN
+        ,LINK_ADDRESS
+        ,STATUS
+        ,CREATED
+        from T_MARS_INSURANCE_COMPANY
+        where INSURANCE_COMPANY_ID= #{insuranceCompanyId,jdbcType=DECIMAL}
+    </select>
+
+
+    <!--分页查询记录-->
+    <select id="query" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.InsuranceCompany">
+        select
+        <include refid="selectColumns"></include>
+        from T_MARS_INSURANCE_COMPANY
+        <include refid="queryWhere"></include>
+        limit #{start},#{limit}
+    </select>
+
+    <!--查询记录数-->
+    <select id="queryCount" resultType="int" parameterType="org.xteam.plus.mars.domain.InsuranceCompany">
+        select count(1)
+        from T_MARS_INSURANCE_COMPANY
+        <include refid="queryWhere"></include>
+    </select>
+</mapper>

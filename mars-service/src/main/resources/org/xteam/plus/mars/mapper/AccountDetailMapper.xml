@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.xteam.plus.mars.dao.AccountDetailDao">
+    <!--结果集对应列-->
+    <resultMap id="BaseResultMap" type="org.xteam.plus.mars.domain.AccountDetail">
+        <id column="ID" property="id" jdbcType="DECIMAL"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
+        <result column="BUSINESSE_TYPE" property="businesseType" jdbcType="INTEGER"/>
+        <result column="OPERATION_DIRECTION" property="operationDirection" jdbcType="INTEGER"/>
+        <result column="AMOUNT" property="amount" jdbcType="DECIMAL"/>
+        <result column="SERVICE_NO" property="serviceNo" jdbcType="DECIMAL"/>
+        <result column="USER_ID" property="userId" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <!--公用选择列-->
+    <sql id="selectColumns">
+        ID,
+        CREATED
+        ,UPDATED
+        ,BUSINESSE_TYPE
+        ,OPERATION_DIRECTION
+        ,AMOUNT
+        ,SERVICE_NO
+        ,USER_ID
+    </sql>
+
+    <!--公用查询条件-->
+    <sql id="queryWhere">
+        <where>
+            <if test="created!=null ">
+                <![CDATA[
+                        and CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and CREATED<= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="updated!=null ">
+                <![CDATA[
+                        and UPDATED>= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="businesseType!=null ">
+                <![CDATA[
+                    and BUSINESSE_TYPE=#{businesseType,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="operationDirection!=null ">
+                <![CDATA[
+                    and OPERATION_DIRECTION=#{operationDirection,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="amount!=null ">
+                <![CDATA[
+                    and AMOUNT=#{amount,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="serviceNo!=null ">
+                <![CDATA[
+                    and SERVICE_NO=#{serviceNo,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="id!=null ">
+                <![CDATA[
+                    and ID=#{id,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="userId!=null ">
+                <![CDATA[
+                    and USER_ID=#{userId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+        </where>
+    </sql>
+
+    <!--删除记录-->
+    <delete id="delete" parameterType="org.xteam.plus.mars.domain.AccountDetail">
+        delete from T_MARS_ACCOUNT_DETAIL
+        where ID= #{id,jdbcType=DECIMAL}
+    </delete>
+
+    <!--插入记录-->
+    <insert id="insert" parameterType="org.xteam.plus.mars.domain.AccountDetail" useGeneratedKeys="true" keyProperty="id">
+        insert into T_MARS_ACCOUNT_DETAIL (
+        CREATED
+        ,UPDATED
+        ,BUSINESSE_TYPE
+        ,OPERATION_DIRECTION
+        ,AMOUNT
+        ,SERVICE_NO
+        ,USER_ID
+        )values(
+        #{created,jdbcType=TIMESTAMP}
+        ,#{updated,jdbcType=TIMESTAMP}
+        ,#{businesseType,jdbcType=INTEGER}
+        ,#{operationDirection,jdbcType=INTEGER}
+        ,#{amount,jdbcType=DECIMAL}
+        ,#{serviceNo,jdbcType=DECIMAL}
+        ,#{userId,jdbcType=DECIMAL}
+        )
+    </insert>
+
+    <!--批量插入记录-->
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        insert into T_MARS_ACCOUNT_DETAIL (
+        CREATED
+        ,UPDATED
+        ,BUSINESSE_TYPE
+        ,OPERATION_DIRECTION
+        ,AMOUNT
+        ,SERVICE_NO
+        ,USER_ID
+        )values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.created,jdbcType=TIMESTAMP}
+            ,#{item.updated,jdbcType=TIMESTAMP}
+            ,#{item.businesseType,jdbcType=INTEGER}
+            ,#{item.operationDirection,jdbcType=INTEGER}
+            ,#{item.amount,jdbcType=DECIMAL}
+            ,#{item.serviceNo,jdbcType=DECIMAL}
+            ,#{item.userId,jdbcType=DECIMAL}
+            )
+        </foreach>
+    </insert>
+
+    <!--更新记录-->
+    <update id="update" parameterType="org.xteam.plus.mars.domain.AccountDetail">
+        update T_MARS_ACCOUNT_DETAIL
+        <set>
+            <trim prefix="" suffix="" suffixOverrides=",">
+                <if test="created!=null ">
+                    CREATED=#{created,jdbcType=TIMESTAMP},
+                </if>
+                <if test="updated!=null ">
+                    UPDATED=#{updated,jdbcType=TIMESTAMP},
+                </if>
+                <if test="businesseType!=null ">
+                    BUSINESSE_TYPE=#{businesseType,jdbcType=INTEGER},
+                </if>
+                <if test="operationDirection!=null ">
+                    OPERATION_DIRECTION=#{operationDirection,jdbcType=INTEGER},
+                </if>
+                <if test="amount!=null ">
+                    AMOUNT=#{amount,jdbcType=DECIMAL},
+                </if>
+                <if test="serviceNo!=null ">
+                    SERVICE_NO=#{serviceNo,jdbcType=DECIMAL},
+                </if>
+                <if test="userId!=null ">
+                    USER_ID=#{userId,jdbcType=DECIMAL},
+                </if>
+            </trim>
+        </set>
+        where ID= #{id,jdbcType=DECIMAL}
+    </update>
+
+    <!--查询单条记录-->
+    <select id="get" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.AccountDetail">
+        select
+        ID
+        ,CREATED
+        ,UPDATED
+        ,BUSINESSE_TYPE
+        ,OPERATION_DIRECTION
+        ,AMOUNT
+        ,SERVICE_NO
+        ,USER_ID
+        from T_MARS_ACCOUNT_DETAIL
+        where ID= #{id,jdbcType=DECIMAL}
+    </select>
+
+
+    <!--分页查询记录-->
+    <select id="query" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.AccountDetail">
+        select
+        <include refid="selectColumns"></include>
+        from T_MARS_ACCOUNT_DETAIL
+        <include refid="queryWhere"></include>
+        limit #{start},#{limit}
+    </select>
+
+    <!--查询记录数-->
+    <select id="queryCount" resultType="int" parameterType="org.xteam.plus.mars.domain.AccountDetail">
+        select count(1)
+        from T_MARS_ACCOUNT_DETAIL
+        <include refid="queryWhere"></include>
+    </select>
+</mapper>

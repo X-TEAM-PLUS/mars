@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.xteam.plus.mars.dao.UserSalesInfoDao">
+    <!--结果集对应列-->
+    <resultMap id="BaseResultMap" type="org.xteam.plus.mars.domain.UserSalesInfo">
+        <id column="USER_ID" property="userId" jdbcType="DECIMAL"/>
+        <result column="TEAM_PEOPLE_NUMBER" property="teamPeopleNumber" jdbcType="INTEGER"/>
+        <result column="TEAM_PROFIT_AMOUNT" property="teamProfitAmount" jdbcType="DECIMAL"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
+        <result column="PROMOTION_NUMBER" property="promotionNumber" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--公用选择列-->
+    <sql id="selectColumns">
+        USER_ID,
+        TEAM_PEOPLE_NUMBER
+        ,TEAM_PROFIT_AMOUNT
+        ,CREATED
+        ,UPDATED
+        ,PROMOTION_NUMBER
+    </sql>
+
+    <!--公用查询条件-->
+    <sql id="queryWhere">
+        <where>
+            <if test="userId!=null ">
+                <![CDATA[
+                    and USER_ID=#{userId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="teamPeopleNumber!=null ">
+                <![CDATA[
+                    and TEAM_PEOPLE_NUMBER=#{teamPeopleNumber,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="teamProfitAmount!=null ">
+                <![CDATA[
+                    and TEAM_PROFIT_AMOUNT=#{teamProfitAmount,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="created!=null ">
+                <![CDATA[
+                        and CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and CREATED<= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="updated!=null ">
+                <![CDATA[
+                        and UPDATED>= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="promotionNumber!=null ">
+                <![CDATA[
+                    and PROMOTION_NUMBER=#{promotionNumber,jdbcType=INTEGER}
+                    ]]>
+            </if>
+        </where>
+    </sql>
+
+    <!--删除记录-->
+    <delete id="delete" parameterType="org.xteam.plus.mars.domain.UserSalesInfo">
+        delete from T_MARS_USER_SALES_INFO
+        where USER_ID= #{userId,jdbcType=DECIMAL}
+    </delete>
+
+    <!--插入记录-->
+    <insert id="insert" parameterType="org.xteam.plus.mars.domain.UserSalesInfo" useGeneratedKeys="true" keyProperty="userId">
+        insert into T_MARS_USER_SALES_INFO (
+        TEAM_PEOPLE_NUMBER
+        ,TEAM_PROFIT_AMOUNT
+        ,CREATED
+        ,UPDATED
+        ,PROMOTION_NUMBER
+        )values(
+        #{teamPeopleNumber,jdbcType=INTEGER}
+        ,#{teamProfitAmount,jdbcType=DECIMAL}
+        ,#{created,jdbcType=TIMESTAMP}
+        ,#{updated,jdbcType=TIMESTAMP}
+        ,#{promotionNumber,jdbcType=INTEGER}
+        )
+    </insert>
+
+    <!--批量插入记录-->
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="userId">
+        insert into T_MARS_USER_SALES_INFO (
+        TEAM_PEOPLE_NUMBER
+        ,TEAM_PROFIT_AMOUNT
+        ,CREATED
+        ,UPDATED
+        ,PROMOTION_NUMBER
+        )values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.teamPeopleNumber,jdbcType=INTEGER}
+            ,#{item.teamProfitAmount,jdbcType=DECIMAL}
+            ,#{item.created,jdbcType=TIMESTAMP}
+            ,#{item.updated,jdbcType=TIMESTAMP}
+            ,#{item.promotionNumber,jdbcType=INTEGER}
+            )
+        </foreach>
+    </insert>
+
+    <!--更新记录-->
+    <update id="update" parameterType="org.xteam.plus.mars.domain.UserSalesInfo">
+        update T_MARS_USER_SALES_INFO
+        <set>
+            <trim prefix="" suffix="" suffixOverrides=",">
+                <if test="teamPeopleNumber!=null ">
+                    TEAM_PEOPLE_NUMBER=#{teamPeopleNumber,jdbcType=INTEGER},
+                </if>
+                <if test="teamProfitAmount!=null ">
+                    TEAM_PROFIT_AMOUNT=#{teamProfitAmount,jdbcType=DECIMAL},
+                </if>
+                <if test="created!=null ">
+                    CREATED=#{created,jdbcType=TIMESTAMP},
+                </if>
+                <if test="updated!=null ">
+                    UPDATED=#{updated,jdbcType=TIMESTAMP},
+                </if>
+                <if test="promotionNumber!=null ">
+                    PROMOTION_NUMBER=#{promotionNumber,jdbcType=INTEGER},
+                </if>
+            </trim>
+        </set>
+        where USER_ID= #{userId,jdbcType=DECIMAL}
+    </update>
+
+    <!--查询单条记录-->
+    <select id="get" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.UserSalesInfo">
+        select
+        USER_ID
+        ,TEAM_PEOPLE_NUMBER
+        ,TEAM_PROFIT_AMOUNT
+        ,CREATED
+        ,UPDATED
+        ,PROMOTION_NUMBER
+        from T_MARS_USER_SALES_INFO
+        where USER_ID= #{userId,jdbcType=DECIMAL}
+    </select>
+
+
+    <!--分页查询记录-->
+    <select id="query" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.UserSalesInfo">
+        select
+        <include refid="selectColumns"></include>
+        from T_MARS_USER_SALES_INFO
+        <include refid="queryWhere"></include>
+        limit #{start},#{limit}
+    </select>
+
+    <!--查询记录数-->
+    <select id="queryCount" resultType="int" parameterType="org.xteam.plus.mars.domain.UserSalesInfo">
+        select count(1)
+        from T_MARS_USER_SALES_INFO
+        <include refid="queryWhere"></include>
+    </select>
+</mapper>

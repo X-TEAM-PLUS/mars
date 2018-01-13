@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.xteam.plus.mars.dao.ProductDao">
+    <!--结果集对应列-->
+    <resultMap id="BaseResultMap" type="org.xteam.plus.mars.domain.Product">
+        <id column="PRODUCT_ID" property="productId" jdbcType="DECIMAL"/>
+        <result column="CARD_TYPE" property="cardType" jdbcType="INTEGER"/>
+        <result column="SURVIVAL_PERIOD_MODE" property="survivalPeriodMode" jdbcType="INTEGER"/>
+        <result column="SURVIVAL_PERIOD_NUM" property="survivalPeriodNum" jdbcType="INTEGER"/>
+        <result column="SEND_PERIOD_MODE" property="sendPeriodMode" jdbcType="INTEGER"/>
+        <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
+        <result column="PRODUCT_NAME" property="productName" jdbcType="VARCHAR"/>
+        <result column="SEND_PERIOD" property="sendPeriod" jdbcType="INTEGER"/>
+        <result column="SEND_TOTAL_COUNT" property="sendTotalCount" jdbcType="INTEGER"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--公用选择列-->
+    <sql id="selectColumns">
+        PRODUCT_ID,
+        CARD_TYPE
+        ,SURVIVAL_PERIOD_MODE
+        ,SURVIVAL_PERIOD_NUM
+        ,SEND_PERIOD_MODE
+        ,UPDATED
+        ,PRODUCT_NAME
+        ,SEND_PERIOD
+        ,SEND_TOTAL_COUNT
+        ,STATUS
+        ,CREATED
+    </sql>
+
+    <!--公用查询条件-->
+    <sql id="queryWhere">
+        <where>
+            <if test="cardType!=null ">
+                <![CDATA[
+                    and CARD_TYPE=#{cardType,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="survivalPeriodMode!=null ">
+                <![CDATA[
+                    and SURVIVAL_PERIOD_MODE=#{survivalPeriodMode,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="survivalPeriodNum!=null ">
+                <![CDATA[
+                    and SURVIVAL_PERIOD_NUM=#{survivalPeriodNum,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="sendPeriodMode!=null ">
+                <![CDATA[
+                    and SEND_PERIOD_MODE=#{sendPeriodMode,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="updated!=null ">
+                <![CDATA[
+                        and UPDATED>= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="productId!=null ">
+                <![CDATA[
+                    and PRODUCT_ID=#{productId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="productName!=null and  productName!=''">
+                <![CDATA[
+                    and PRODUCT_NAME=#{productName,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="sendPeriod!=null ">
+                <![CDATA[
+                    and SEND_PERIOD=#{sendPeriod,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="sendTotalCount!=null ">
+                <![CDATA[
+                    and SEND_TOTAL_COUNT=#{sendTotalCount,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="status!=null ">
+                <![CDATA[
+                    and STATUS=#{status,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="created!=null ">
+                <![CDATA[
+                        and CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and CREATED<= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+        </where>
+    </sql>
+
+    <!--删除记录-->
+    <delete id="delete" parameterType="org.xteam.plus.mars.domain.Product">
+        delete from T_MARS_PRODUCT
+        where PRODUCT_ID= #{productId,jdbcType=DECIMAL}
+    </delete>
+
+    <!--插入记录-->
+    <insert id="insert" parameterType="org.xteam.plus.mars.domain.Product" useGeneratedKeys="true" keyProperty="productId">
+        insert into T_MARS_PRODUCT (
+        CARD_TYPE
+        ,SURVIVAL_PERIOD_MODE
+        ,SURVIVAL_PERIOD_NUM
+        ,SEND_PERIOD_MODE
+        ,UPDATED
+        ,PRODUCT_NAME
+        ,SEND_PERIOD
+        ,SEND_TOTAL_COUNT
+        ,STATUS
+        ,CREATED
+        )values(
+        #{cardType,jdbcType=INTEGER}
+        ,#{survivalPeriodMode,jdbcType=INTEGER}
+        ,#{survivalPeriodNum,jdbcType=INTEGER}
+        ,#{sendPeriodMode,jdbcType=INTEGER}
+        ,#{updated,jdbcType=TIMESTAMP}
+        ,#{productName,jdbcType=VARCHAR}
+        ,#{sendPeriod,jdbcType=INTEGER}
+        ,#{sendTotalCount,jdbcType=INTEGER}
+        ,#{status,jdbcType=INTEGER}
+        ,#{created,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <!--批量插入记录-->
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="productId">
+        insert into T_MARS_PRODUCT (
+        CARD_TYPE
+        ,SURVIVAL_PERIOD_MODE
+        ,SURVIVAL_PERIOD_NUM
+        ,SEND_PERIOD_MODE
+        ,UPDATED
+        ,PRODUCT_NAME
+        ,SEND_PERIOD
+        ,SEND_TOTAL_COUNT
+        ,STATUS
+        ,CREATED
+        )values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.cardType,jdbcType=INTEGER}
+            ,#{item.survivalPeriodMode,jdbcType=INTEGER}
+            ,#{item.survivalPeriodNum,jdbcType=INTEGER}
+            ,#{item.sendPeriodMode,jdbcType=INTEGER}
+            ,#{item.updated,jdbcType=TIMESTAMP}
+            ,#{item.productName,jdbcType=VARCHAR}
+            ,#{item.sendPeriod,jdbcType=INTEGER}
+            ,#{item.sendTotalCount,jdbcType=INTEGER}
+            ,#{item.status,jdbcType=INTEGER}
+            ,#{item.created,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
+    <!--更新记录-->
+    <update id="update" parameterType="org.xteam.plus.mars.domain.Product">
+        update T_MARS_PRODUCT
+        <set>
+            <trim prefix="" suffix="" suffixOverrides=",">
+                <if test="cardType!=null ">
+                    CARD_TYPE=#{cardType,jdbcType=INTEGER},
+                </if>
+                <if test="survivalPeriodMode!=null ">
+                    SURVIVAL_PERIOD_MODE=#{survivalPeriodMode,jdbcType=INTEGER},
+                </if>
+                <if test="survivalPeriodNum!=null ">
+                    SURVIVAL_PERIOD_NUM=#{survivalPeriodNum,jdbcType=INTEGER},
+                </if>
+                <if test="sendPeriodMode!=null ">
+                    SEND_PERIOD_MODE=#{sendPeriodMode,jdbcType=INTEGER},
+                </if>
+                <if test="updated!=null ">
+                    UPDATED=#{updated,jdbcType=TIMESTAMP},
+                </if>
+                <if test="productName!=null ">
+                    PRODUCT_NAME=#{productName,jdbcType=VARCHAR},
+                </if>
+                <if test="sendPeriod!=null ">
+                    SEND_PERIOD=#{sendPeriod,jdbcType=INTEGER},
+                </if>
+                <if test="sendTotalCount!=null ">
+                    SEND_TOTAL_COUNT=#{sendTotalCount,jdbcType=INTEGER},
+                </if>
+                <if test="status!=null ">
+                    STATUS=#{status,jdbcType=INTEGER},
+                </if>
+                <if test="created!=null ">
+                    CREATED=#{created,jdbcType=TIMESTAMP},
+                </if>
+            </trim>
+        </set>
+        where PRODUCT_ID= #{productId,jdbcType=DECIMAL}
+    </update>
+
+    <!--查询单条记录-->
+    <select id="get" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.Product">
+        select
+        PRODUCT_ID
+        ,CARD_TYPE
+        ,SURVIVAL_PERIOD_MODE
+        ,SURVIVAL_PERIOD_NUM
+        ,SEND_PERIOD_MODE
+        ,UPDATED
+        ,PRODUCT_NAME
+        ,SEND_PERIOD
+        ,SEND_TOTAL_COUNT
+        ,STATUS
+        ,CREATED
+        from T_MARS_PRODUCT
+        where PRODUCT_ID= #{productId,jdbcType=DECIMAL}
+    </select>
+
+
+    <!--分页查询记录-->
+    <select id="query" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.Product">
+        select
+        <include refid="selectColumns"></include>
+        from T_MARS_PRODUCT
+        <include refid="queryWhere"></include>
+        limit #{start},#{limit}
+    </select>
+
+    <!--查询记录数-->
+    <select id="queryCount" resultType="int" parameterType="org.xteam.plus.mars.domain.Product">
+        select count(1)
+        from T_MARS_PRODUCT
+        <include refid="queryWhere"></include>
+    </select>
+</mapper>

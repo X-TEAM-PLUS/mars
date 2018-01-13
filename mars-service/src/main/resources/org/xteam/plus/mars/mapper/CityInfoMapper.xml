@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.xteam.plus.mars.dao.CityInfoDao">
+    <!--结果集对应列-->
+    <resultMap id="BaseResultMap" type="org.xteam.plus.mars.domain.CityInfo">
+        <id column="CODE" property="code" jdbcType="DECIMAL"/>
+        <result column="NAME" property="name" jdbcType="VARCHAR"/>
+        <result column="PARENT_CODE" property="parentCode" jdbcType="DECIMAL"/>
+        <result column="AREA_TYPE" property="areaType" jdbcType="INTEGER"/>
+        <result column="AREA_ORDER" property="areaOrder" jdbcType="INTEGER"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--公用选择列-->
+    <sql id="selectColumns">
+        CODE,
+        NAME
+        ,PARENT_CODE
+        ,AREA_TYPE
+        ,AREA_ORDER
+        ,CREATED
+        ,UPDATED
+    </sql>
+
+    <!--公用查询条件-->
+    <sql id="queryWhere">
+        <where>
+            <if test="code!=null ">
+                <![CDATA[
+                    and CODE=#{code,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="name!=null and  name!=''">
+                <![CDATA[
+                    and NAME=#{name,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="parentCode!=null ">
+                <![CDATA[
+                    and PARENT_CODE=#{parentCode,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="areaType!=null ">
+                <![CDATA[
+                    and AREA_TYPE=#{areaType,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="areaOrder!=null ">
+                <![CDATA[
+                    and AREA_ORDER=#{areaOrder,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="created!=null ">
+                <![CDATA[
+                        and CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and CREATED<= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="updated!=null ">
+                <![CDATA[
+                        and UPDATED>= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+        </where>
+    </sql>
+
+    <!--删除记录-->
+    <delete id="delete" parameterType="org.xteam.plus.mars.domain.CityInfo">
+        delete from T_MARS_CITY_INFO
+        where CODE= #{code,jdbcType=DECIMAL}
+    </delete>
+
+    <!--插入记录-->
+    <insert id="insert" parameterType="org.xteam.plus.mars.domain.CityInfo" useGeneratedKeys="true" keyProperty="code">
+        insert into T_MARS_CITY_INFO (
+        NAME
+        ,PARENT_CODE
+        ,AREA_TYPE
+        ,AREA_ORDER
+        ,CREATED
+        ,UPDATED
+        )values(
+        #{name,jdbcType=VARCHAR}
+        ,#{parentCode,jdbcType=DECIMAL}
+        ,#{areaType,jdbcType=INTEGER}
+        ,#{areaOrder,jdbcType=INTEGER}
+        ,#{created,jdbcType=TIMESTAMP}
+        ,#{updated,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <!--批量插入记录-->
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="code">
+        insert into T_MARS_CITY_INFO (
+        NAME
+        ,PARENT_CODE
+        ,AREA_TYPE
+        ,AREA_ORDER
+        ,CREATED
+        ,UPDATED
+        )values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.name,jdbcType=VARCHAR}
+            ,#{item.parentCode,jdbcType=DECIMAL}
+            ,#{item.areaType,jdbcType=INTEGER}
+            ,#{item.areaOrder,jdbcType=INTEGER}
+            ,#{item.created,jdbcType=TIMESTAMP}
+            ,#{item.updated,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
+    <!--更新记录-->
+    <update id="update" parameterType="org.xteam.plus.mars.domain.CityInfo">
+        update T_MARS_CITY_INFO
+        <set>
+            <trim prefix="" suffix="" suffixOverrides=",">
+                <if test="name!=null ">
+                    NAME=#{name,jdbcType=VARCHAR},
+                </if>
+                <if test="parentCode!=null ">
+                    PARENT_CODE=#{parentCode,jdbcType=DECIMAL},
+                </if>
+                <if test="areaType!=null ">
+                    AREA_TYPE=#{areaType,jdbcType=INTEGER},
+                </if>
+                <if test="areaOrder!=null ">
+                    AREA_ORDER=#{areaOrder,jdbcType=INTEGER},
+                </if>
+                <if test="created!=null ">
+                    CREATED=#{created,jdbcType=TIMESTAMP},
+                </if>
+                <if test="updated!=null ">
+                    UPDATED=#{updated,jdbcType=TIMESTAMP},
+                </if>
+            </trim>
+        </set>
+        where CODE= #{code,jdbcType=DECIMAL}
+    </update>
+
+    <!--查询单条记录-->
+    <select id="get" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.CityInfo">
+        select
+        CODE
+        ,NAME
+        ,PARENT_CODE
+        ,AREA_TYPE
+        ,AREA_ORDER
+        ,CREATED
+        ,UPDATED
+        from T_MARS_CITY_INFO
+        where CODE= #{code,jdbcType=DECIMAL}
+    </select>
+
+
+    <!--分页查询记录-->
+    <select id="query" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.CityInfo">
+        select
+        <include refid="selectColumns"></include>
+        from T_MARS_CITY_INFO
+        <include refid="queryWhere"></include>
+        limit #{start},#{limit}
+    </select>
+
+    <!--查询记录数-->
+    <select id="queryCount" resultType="int" parameterType="org.xteam.plus.mars.domain.CityInfo">
+        select count(1)
+        from T_MARS_CITY_INFO
+        <include refid="queryWhere"></include>
+    </select>
+</mapper>

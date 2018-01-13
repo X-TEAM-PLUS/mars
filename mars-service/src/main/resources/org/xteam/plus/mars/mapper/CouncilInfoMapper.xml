@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.xteam.plus.mars.dao.CouncilInfoDao">
+    <!--结果集对应列-->
+    <resultMap id="BaseResultMap" type="org.xteam.plus.mars.domain.CouncilInfo">
+        <id column="COUNCIL_ID" property="councilId" jdbcType="DECIMAL"/>
+        <result column="CITY_NO" property="cityNo" jdbcType="DECIMAL"/>
+        <result column="OPEN_DATE" property="openDate" jdbcType="TIMESTAMP"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--公用选择列-->
+    <sql id="selectColumns">
+        COUNCIL_ID,
+        CITY_NO
+        ,OPEN_DATE
+        ,CREATED
+        ,UPDATED
+    </sql>
+
+    <!--公用查询条件-->
+    <sql id="queryWhere">
+        <where>
+            <if test="councilId!=null ">
+                <![CDATA[
+                    and COUNCIL_ID=#{councilId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="cityNo!=null ">
+                <![CDATA[
+                    and CITY_NO=#{cityNo,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="openDate!=null ">
+                <![CDATA[
+                        and OPEN_DATE>= str_to_date(CONCAT(date_format(#{openDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and OPEN_DATE<= str_to_date(CONCAT(date_format(#{openDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="created!=null ">
+                <![CDATA[
+                        and CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and CREATED<= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="updated!=null ">
+                <![CDATA[
+                        and UPDATED>= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+        </where>
+    </sql>
+
+    <!--删除记录-->
+    <delete id="delete" parameterType="org.xteam.plus.mars.domain.CouncilInfo">
+        delete from T_MARS_COUNCIL_INFO
+        where COUNCIL_ID= #{councilId,jdbcType=DECIMAL}
+    </delete>
+
+    <!--插入记录-->
+    <insert id="insert" parameterType="org.xteam.plus.mars.domain.CouncilInfo" useGeneratedKeys="true" keyProperty="councilId">
+        insert into T_MARS_COUNCIL_INFO (
+        CITY_NO
+        ,OPEN_DATE
+        ,CREATED
+        ,UPDATED
+        )values(
+        #{cityNo,jdbcType=DECIMAL}
+        ,#{openDate,jdbcType=TIMESTAMP}
+        ,#{created,jdbcType=TIMESTAMP}
+        ,#{updated,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <!--批量插入记录-->
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="councilId">
+        insert into T_MARS_COUNCIL_INFO (
+        CITY_NO
+        ,OPEN_DATE
+        ,CREATED
+        ,UPDATED
+        )values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.cityNo,jdbcType=DECIMAL}
+            ,#{item.openDate,jdbcType=TIMESTAMP}
+            ,#{item.created,jdbcType=TIMESTAMP}
+            ,#{item.updated,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
+    <!--更新记录-->
+    <update id="update" parameterType="org.xteam.plus.mars.domain.CouncilInfo">
+        update T_MARS_COUNCIL_INFO
+        <set>
+            <trim prefix="" suffix="" suffixOverrides=",">
+                <if test="cityNo!=null ">
+                    CITY_NO=#{cityNo,jdbcType=DECIMAL},
+                </if>
+                <if test="openDate!=null ">
+                    OPEN_DATE=#{openDate,jdbcType=TIMESTAMP},
+                </if>
+                <if test="created!=null ">
+                    CREATED=#{created,jdbcType=TIMESTAMP},
+                </if>
+                <if test="updated!=null ">
+                    UPDATED=#{updated,jdbcType=TIMESTAMP},
+                </if>
+            </trim>
+        </set>
+        where COUNCIL_ID= #{councilId,jdbcType=DECIMAL}
+    </update>
+
+    <!--查询单条记录-->
+    <select id="get" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.CouncilInfo">
+        select
+        COUNCIL_ID
+        ,CITY_NO
+        ,OPEN_DATE
+        ,CREATED
+        ,UPDATED
+        from T_MARS_COUNCIL_INFO
+        where COUNCIL_ID= #{councilId,jdbcType=DECIMAL}
+    </select>
+
+
+    <!--分页查询记录-->
+    <select id="query" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.CouncilInfo">
+        select
+        <include refid="selectColumns"></include>
+        from T_MARS_COUNCIL_INFO
+        <include refid="queryWhere"></include>
+        limit #{start},#{limit}
+    </select>
+
+    <!--查询记录数-->
+    <select id="queryCount" resultType="int" parameterType="org.xteam.plus.mars.domain.CouncilInfo">
+        select count(1)
+        from T_MARS_COUNCIL_INFO
+        <include refid="queryWhere"></include>
+    </select>
+</mapper>

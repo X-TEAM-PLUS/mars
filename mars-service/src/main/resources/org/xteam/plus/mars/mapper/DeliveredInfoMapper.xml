@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.xteam.plus.mars.dao.DeliveredInfoDao">
+    <!--结果集对应列-->
+    <resultMap id="BaseResultMap" type="org.xteam.plus.mars.domain.DeliveredInfo">
+        <id column="DELIVERED_ID" property="deliveredId" jdbcType="DECIMAL"/>
+        <result column="NEXT_DATE" property="nextDate" jdbcType="TIMESTAMP"/>
+        <result column="WAYBILL_NO" property="waybillNo" jdbcType="TIMESTAMP"/>
+        <result column="DELIVERED_DATE" property="deliveredDate" jdbcType="TIMESTAMP"/>
+        <result column="USER_ID" property="userId" jdbcType="DECIMAL"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="ADDRESS" property="address" jdbcType="VARCHAR"/>
+        <result column="DELIVERED_COUNT" property="deliveredCount" jdbcType="INTEGER"/>
+        <result column="DELIVERED_FEE" property="deliveredFee" jdbcType="DECIMAL"/>
+        <result column="PREVIOUS_DATE" property="previousDate" jdbcType="TIMESTAMP"/>
+        <result column="PROVINCE" property="province" jdbcType="VARCHAR"/>
+        <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
+        <result column="CITY" property="city" jdbcType="VARCHAR"/>
+        <result column="AREA" property="area" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--公用选择列-->
+    <sql id="selectColumns">
+        DELIVERED_ID,
+        NEXT_DATE
+        ,WAYBILL_NO
+        ,DELIVERED_DATE
+        ,USER_ID
+        ,CREATED
+        ,ADDRESS
+        ,DELIVERED_COUNT
+        ,DELIVERED_FEE
+        ,PREVIOUS_DATE
+        ,PROVINCE
+        ,UPDATED
+        ,CITY
+        ,AREA
+    </sql>
+
+    <!--公用查询条件-->
+    <sql id="queryWhere">
+        <where>
+            <if test="nextDate!=null ">
+                <![CDATA[
+                        and NEXT_DATE>= str_to_date(CONCAT(date_format(#{nextDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and NEXT_DATE<= str_to_date(CONCAT(date_format(#{nextDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="waybillNo!=null ">
+                <![CDATA[
+                        and WAYBILL_NO>= str_to_date(CONCAT(date_format(#{waybillNo,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and WAYBILL_NO<= str_to_date(CONCAT(date_format(#{waybillNo,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="deliveredId!=null ">
+                <![CDATA[
+                    and DELIVERED_ID=#{deliveredId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="deliveredDate!=null ">
+                <![CDATA[
+                        and DELIVERED_DATE>= str_to_date(CONCAT(date_format(#{deliveredDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and DELIVERED_DATE<= str_to_date(CONCAT(date_format(#{deliveredDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="userId!=null ">
+                <![CDATA[
+                    and USER_ID=#{userId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="created!=null ">
+                <![CDATA[
+                        and CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and CREATED<= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="address!=null and  address!=''">
+                <![CDATA[
+                    and ADDRESS=#{address,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="deliveredCount!=null ">
+                <![CDATA[
+                    and DELIVERED_COUNT=#{deliveredCount,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="deliveredFee!=null ">
+                <![CDATA[
+                    and DELIVERED_FEE=#{deliveredFee,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="previousDate!=null ">
+                <![CDATA[
+                        and PREVIOUS_DATE>= str_to_date(CONCAT(date_format(#{previousDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and PREVIOUS_DATE<= str_to_date(CONCAT(date_format(#{previousDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="province!=null and  province!=''">
+                <![CDATA[
+                    and PROVINCE=#{province,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="updated!=null ">
+                <![CDATA[
+                        and UPDATED>= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="city!=null and  city!=''">
+                <![CDATA[
+                    and CITY=#{city,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="area!=null and  area!=''">
+                <![CDATA[
+                    and AREA=#{area,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+        </where>
+    </sql>
+
+    <!--删除记录-->
+    <delete id="delete" parameterType="org.xteam.plus.mars.domain.DeliveredInfo">
+        delete from T_MARS_DELIVERED_INFO
+        where DELIVERED_ID= #{deliveredId,jdbcType=DECIMAL}
+    </delete>
+
+    <!--插入记录-->
+    <insert id="insert" parameterType="org.xteam.plus.mars.domain.DeliveredInfo" useGeneratedKeys="true" keyProperty="deliveredId">
+        insert into T_MARS_DELIVERED_INFO (
+        NEXT_DATE
+        ,WAYBILL_NO
+        ,DELIVERED_DATE
+        ,USER_ID
+        ,CREATED
+        ,ADDRESS
+        ,DELIVERED_COUNT
+        ,DELIVERED_FEE
+        ,PREVIOUS_DATE
+        ,PROVINCE
+        ,UPDATED
+        ,CITY
+        ,AREA
+        )values(
+        #{nextDate,jdbcType=TIMESTAMP}
+        ,#{waybillNo,jdbcType=TIMESTAMP}
+        ,#{deliveredDate,jdbcType=TIMESTAMP}
+        ,#{userId,jdbcType=DECIMAL}
+        ,#{created,jdbcType=TIMESTAMP}
+        ,#{address,jdbcType=VARCHAR}
+        ,#{deliveredCount,jdbcType=INTEGER}
+        ,#{deliveredFee,jdbcType=DECIMAL}
+        ,#{previousDate,jdbcType=TIMESTAMP}
+        ,#{province,jdbcType=VARCHAR}
+        ,#{updated,jdbcType=TIMESTAMP}
+        ,#{city,jdbcType=VARCHAR}
+        ,#{area,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <!--批量插入记录-->
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="deliveredId">
+        insert into T_MARS_DELIVERED_INFO (
+        NEXT_DATE
+        ,WAYBILL_NO
+        ,DELIVERED_DATE
+        ,USER_ID
+        ,CREATED
+        ,ADDRESS
+        ,DELIVERED_COUNT
+        ,DELIVERED_FEE
+        ,PREVIOUS_DATE
+        ,PROVINCE
+        ,UPDATED
+        ,CITY
+        ,AREA
+        )values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.nextDate,jdbcType=TIMESTAMP}
+            ,#{item.waybillNo,jdbcType=TIMESTAMP}
+            ,#{item.deliveredDate,jdbcType=TIMESTAMP}
+            ,#{item.userId,jdbcType=DECIMAL}
+            ,#{item.created,jdbcType=TIMESTAMP}
+            ,#{item.address,jdbcType=VARCHAR}
+            ,#{item.deliveredCount,jdbcType=INTEGER}
+            ,#{item.deliveredFee,jdbcType=DECIMAL}
+            ,#{item.previousDate,jdbcType=TIMESTAMP}
+            ,#{item.province,jdbcType=VARCHAR}
+            ,#{item.updated,jdbcType=TIMESTAMP}
+            ,#{item.city,jdbcType=VARCHAR}
+            ,#{item.area,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <!--更新记录-->
+    <update id="update" parameterType="org.xteam.plus.mars.domain.DeliveredInfo">
+        update T_MARS_DELIVERED_INFO
+        <set>
+            <trim prefix="" suffix="" suffixOverrides=",">
+                <if test="nextDate!=null ">
+                    NEXT_DATE=#{nextDate,jdbcType=TIMESTAMP},
+                </if>
+                <if test="waybillNo!=null ">
+                    WAYBILL_NO=#{waybillNo,jdbcType=TIMESTAMP},
+                </if>
+                <if test="deliveredDate!=null ">
+                    DELIVERED_DATE=#{deliveredDate,jdbcType=TIMESTAMP},
+                </if>
+                <if test="userId!=null ">
+                    USER_ID=#{userId,jdbcType=DECIMAL},
+                </if>
+                <if test="created!=null ">
+                    CREATED=#{created,jdbcType=TIMESTAMP},
+                </if>
+                <if test="address!=null ">
+                    ADDRESS=#{address,jdbcType=VARCHAR},
+                </if>
+                <if test="deliveredCount!=null ">
+                    DELIVERED_COUNT=#{deliveredCount,jdbcType=INTEGER},
+                </if>
+                <if test="deliveredFee!=null ">
+                    DELIVERED_FEE=#{deliveredFee,jdbcType=DECIMAL},
+                </if>
+                <if test="previousDate!=null ">
+                    PREVIOUS_DATE=#{previousDate,jdbcType=TIMESTAMP},
+                </if>
+                <if test="province!=null ">
+                    PROVINCE=#{province,jdbcType=VARCHAR},
+                </if>
+                <if test="updated!=null ">
+                    UPDATED=#{updated,jdbcType=TIMESTAMP},
+                </if>
+                <if test="city!=null ">
+                    CITY=#{city,jdbcType=VARCHAR},
+                </if>
+                <if test="area!=null ">
+                    AREA=#{area,jdbcType=VARCHAR},
+                </if>
+            </trim>
+        </set>
+        where DELIVERED_ID= #{deliveredId,jdbcType=DECIMAL}
+    </update>
+
+    <!--查询单条记录-->
+    <select id="get" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.DeliveredInfo">
+        select
+        DELIVERED_ID
+        ,NEXT_DATE
+        ,WAYBILL_NO
+        ,DELIVERED_DATE
+        ,USER_ID
+        ,CREATED
+        ,ADDRESS
+        ,DELIVERED_COUNT
+        ,DELIVERED_FEE
+        ,PREVIOUS_DATE
+        ,PROVINCE
+        ,UPDATED
+        ,CITY
+        ,AREA
+        from T_MARS_DELIVERED_INFO
+        where DELIVERED_ID= #{deliveredId,jdbcType=DECIMAL}
+    </select>
+
+
+    <!--分页查询记录-->
+    <select id="query" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.DeliveredInfo">
+        select
+        <include refid="selectColumns"></include>
+        from T_MARS_DELIVERED_INFO
+        <include refid="queryWhere"></include>
+        limit #{start},#{limit}
+    </select>
+
+    <!--查询记录数-->
+    <select id="queryCount" resultType="int" parameterType="org.xteam.plus.mars.domain.DeliveredInfo">
+        select count(1)
+        from T_MARS_DELIVERED_INFO
+        <include refid="queryWhere"></include>
+    </select>
+</mapper>
