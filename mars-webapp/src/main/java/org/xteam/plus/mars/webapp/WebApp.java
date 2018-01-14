@@ -24,9 +24,4 @@ public class WebApp {
         // 程序启动入口
         SpringApplication.run(WebApp.class, args);
     }
-
-    @RequestMapping("/mars/{model}/{path}")
-    public String forward(@PathVariable String model, @PathVariable String path) {
-        return "/" + model + "/" + path;
-    }
 }
