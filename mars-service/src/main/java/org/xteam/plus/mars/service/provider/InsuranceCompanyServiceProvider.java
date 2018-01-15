@@ -129,6 +129,9 @@ public class InsuranceCompanyServiceProvider extends AbstractServiceProvider {
             insuranceProduct.setInsuranceCompanyId(insurancecompany.getInsuranceCompanyId());
             Integer count = insuranceProductManager.queryCount(insuranceProduct);
             if(count!=null && count>0){
+                jsonResult.setSuccess(false);
+                jsonResult.setMessage("该保险公司下有保险产品，无法删除数据。");
+            }else{
                 //删除记录
                 int rowCount = insurancecompanyManager.delete(insurancecompany);
                 if (rowCount > 0) {
@@ -138,9 +141,6 @@ public class InsuranceCompanyServiceProvider extends AbstractServiceProvider {
                     jsonResult.setSuccess(false);
                     jsonResult.setMessage("删除数据失败");
                 }
-            }else{
-                jsonResult.setSuccess(false);
-                jsonResult.setMessage("该保险公司下有保险产品，无法删除数据。");
             }
         } catch (Exception e) {
             logError("删除数据异常", e);

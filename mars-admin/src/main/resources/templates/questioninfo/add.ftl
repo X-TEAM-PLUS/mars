@@ -29,7 +29,7 @@
         <div class="portlet box grey-cascade">
             <div class="portlet-title">
                 <div class="caption">
-                    <i class="fa fa-adn"></i>添加问题表
+                    <i class="fa fa-adn"></i>添加问题
                 </div>
                 <div class="tools">
                     <a href="javascript:;" class="collapse">
@@ -44,30 +44,8 @@
             </div>
             <div class="portlet-body form">
                 <!-- BEGIN FORM-->
-                <form action="/services/mars/questioninfo/post" class="form-horizontal">
+                <form action="/services/mars/questioninfo/post" class="form-horizontal" id="questioninfoForm">
                     <div class="form-body">
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                更新时间
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10 date-picker input-daterange " data-date-format="yyyy-mm-dd">
-                                    <i class="fa fa-calendar "></i>
-                                    <input type="text" name="updated" class="form-control " readonly="" validate='{required: false}'>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                问题ID<span class="required">* </span>
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10">
-                                    <i class="fa   fa-font "></i>
-                                    <input type="text" name="questionId" class="form-control" placeholder="问题ID" validate='{required: true}'>
-                                </div>
-                            </div>
-                        </div>
                         <div class="form-group">
                             <label class="col-md-3 control-label">
                                 标题<span class="required">* </span>
@@ -84,27 +62,16 @@
                                 回复<span class="required">* </span>
                             </label>
                             <div class="col-md-5">
-                                <div class="input-icon margin-top-10">
-                                    <i class="fa   fa-font "></i>
-                                    <input type="text" name="questionReply" class="form-control" placeholder="回复" validate='{required: true}'>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                创建时间<span class="required">* </span>
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10 date-picker input-daterange " data-date-format="yyyy-mm-dd">
-                                    <i class="fa fa-calendar "></i>
-                                    <input type="text" name="created" class="form-control " readonly="" validate='{required: true}'>
+                                <div class="form-group last margin-top-10">
+                                    <div  id="summernote" > </div>
+                                    <input type="hidden" name="questionReply" id="questionReply" validate='{required: true}' >
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="form-actions right">
                         <button type="button" class="btn default" onclick="history.go(-1)"><i class="fa fa-rotate-left"></i> 取消</button>
-                        <button type="submit" class="btn green"><i class="fa fa-check"></i> 保存</button>
+                        <button type="button" class="btn green" id="submitButton"><i class="fa fa-check"></i> 保存</button>
                     </div>
                 </form>
                 <!-- END FORM-->
@@ -113,6 +80,25 @@
     </div>
 </div>
 <@commonMacro.commonScript />
+<script src="/static/assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function(){
+        $('#summernote').summernote({
+            height: 300,
+            tabsize: 2,
+            lang: 'zh-CN'
+        });
+    });
+
+    $("#submitButton").click(function () {
+        $("#questionReply").val($('#summernote').code());
+        if($("#questioninfoForm").valid()){
+            $("#questioninfoForm").submitForm();
+        }
+    })
+
+</script>
+
 </body>
 </html>
 

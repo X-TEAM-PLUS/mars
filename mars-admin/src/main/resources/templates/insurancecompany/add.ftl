@@ -70,6 +70,17 @@
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 control-label">
+                                手机号
+                            </label>
+                            <div class="col-md-5">
+                                <div class="input-icon margin-top-10">
+                                    <i class="fa   fa-font "></i>
+                                    <input type="text" name="mobileNo" class="form-control" placeholder="手机号" validate='{required: false}' maxlength="11">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">
                                 联系地址
                             </label>
                             <div class="col-md-5">

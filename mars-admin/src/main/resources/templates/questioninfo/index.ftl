@@ -46,7 +46,7 @@
                             <div class="col-md-10">
                                 <div class="btn-group">
                                     <button id="newQuestionInfoButton" class="btn green" onclick="location.href = 'add';">
-                                        添加问题表 <i class="fa fa-plus"></i>
+                                        添加问题 <i class="fa fa-plus"></i>
                                     </button>
                                 </div>
                             </div>
@@ -68,12 +68,10 @@
                     <table class="table table-striped table-bordered table-hover ">
                         <thead>
                         <tr>
-                            <th column="questionId" type="checkbox" style="width: 50px"><input type="checkbox" id="allCheckBox" class="allCheckBox"></th>
-                            <th column="updated">更新时间</th>
                             <th column="questionId">问题ID</th>
                             <th column="questionTitle">标题</th>
-                            <th column="questionReply">回复</th>
                             <th column="created">创建时间</th>
+                            <th column="updated">更新时间</th>
                             <th type="action" style="width: 200px">操作</th>
                         </tr>
                         </thead>

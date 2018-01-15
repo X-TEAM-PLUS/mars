@@ -43,17 +43,14 @@
                 <div class="portlet-body" id="ordersTable">
                     <div class="table-toolbar">
                         <div class="row">
-                            <div class="col-md-10">
-                                <div class="btn-group">
-                                    <button id="newOrdersButton" class="btn green" onclick="location.href = 'add';">
-                                        添加订单表 <i class="fa fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-md-2 pull-right">
+                            <div class="col-md-12 pull-right">
                                 <form id="ordersTableForm" onsubmit="init();return false;">
                                     <div class="input-group">
-                                        <div class="input-icon">
+                                        <div class="input-icon col-md-2">
+                                            <i class="icon-magnifier"></i>
+                                            <input class="form-control" type="text" name="buyerUserId" placeholder="购卡用户ID"/>
+                                        </div>
+                                        <div class="input-icon col-md-2">
                                             <i class="icon-magnifier"></i>
                                             <input class="form-control" type="text" name="orderNo" placeholder="订单号"/>
                                         </div>
@@ -69,25 +66,20 @@
                         <thead>
                         <tr>
                             <th column="orderNo" type="checkbox" style="width: 50px"><input type="checkbox" id="allCheckBox" class="allCheckBox"></th>
-                            <th column="productNum">数量</th>
-                            <th column="productPrice">产品单价</th>
-                            <th column="orderPrice">订单总价</th>
                             <th column="orderNo">订单号</th>
-                            <th column="status">状态</th>
-                            <th column="payOrderNo">支付流水号</th>
-                            <th column="productName">产品名称</th>
-                            <th column="created">创建时间</th>
-                            <th column="cardType">卡类型</th>
-                            <th column="updated">更新时间</th>
-                            <th column="cardNo">卡号</th>
                             <th column="orderType">订单类型</th>
+                            <th column="productName">产品名称</th>
+                            <th column="cardType"  type="enum" enum-v="{0:'虚拟卡',1:'实体卡'}">卡类型</th>
+                            <th column="productNum">数量</th>
+                            <th column="productPrice">产品单价(元)</th>
+                            <th column="orderPrice">订单总价(元)</th>
+                            <th column="status"  type="enum" enum-v="{-1:'失效',0:'未支付',1:'已支付'}">状态</th>
                             <th column="orderTime">下单时间</th>
-                            <th column="buyerUserId">购卡用户ID</th>
-                            <th column="payWay">支付方式</th>
-                            <th column="sellerUserId">售卡用户ID</th>
                             <th column="payTime">支付时间</th>
-                            <th column="productId">产品ID</th>
-                            <th type="action" style="width: 200px">操作</th>
+                            <th column="payWay"  type="enum" enum-v="{1:'微信支付',1:'支付宝'}">支付方式</th>
+                            <th column="payOrderNo">支付流水号</th>
+                            <th column="updated">更新时间</th>
+                            <th type="action" >操作</th>
                         </tr>
                         </thead>
                         <tbody>

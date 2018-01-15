@@ -7,6 +7,7 @@
         <result column="INSURANCE_COMPANY_NAME" property="insuranceCompanyName" jdbcType="VARCHAR"/>
         <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
         <result column="LINK_MAN" property="linkMan" jdbcType="VARCHAR"/>
+        <result column="MOBILE_NO" property="mobileNo" jdbcType="VARCHAR"/>
         <result column="LINK_ADDRESS" property="linkAddress" jdbcType="VARCHAR"/>
         <result column="STATUS" property="status" jdbcType="INTEGER"/>
         <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
@@ -18,6 +19,7 @@
         INSURANCE_COMPANY_NAME
         ,UPDATED
         ,LINK_MAN
+        ,MOBILE_NO
         ,LINK_ADDRESS
         ,STATUS
         ,CREATED
@@ -45,6 +47,11 @@
             <if test="linkMan!=null and  linkMan!=''">
                 <![CDATA[
                     and LINK_MAN=#{linkMan,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="mobileNo!=null and  mobileNo!=''">
+                <![CDATA[
+                    and MOBILE_NO=#{mobileNo,jdbcType=VARCHAR}
                     ]]>
             </if>
             <if test="linkAddress!=null and  linkAddress!=''">
@@ -78,6 +85,7 @@
         INSURANCE_COMPANY_NAME
         ,UPDATED
         ,LINK_MAN
+        ,MOBILE_NO
         ,LINK_ADDRESS
         ,STATUS
         ,CREATED
@@ -85,6 +93,7 @@
         #{insuranceCompanyName,jdbcType=VARCHAR}
         ,#{updated,jdbcType=TIMESTAMP}
         ,#{linkMan,jdbcType=VARCHAR}
+         ,#{mobileNo,jdbcType=VARCHAR}
         ,#{linkAddress,jdbcType=VARCHAR}
         ,#{status,jdbcType=INTEGER}
         ,#{created,jdbcType=TIMESTAMP}
@@ -97,6 +106,7 @@
         INSURANCE_COMPANY_NAME
         ,UPDATED
         ,LINK_MAN
+        ,MOBILE_NO
         ,LINK_ADDRESS
         ,STATUS
         ,CREATED
@@ -106,6 +116,7 @@
             #{item.insuranceCompanyName,jdbcType=VARCHAR}
             ,#{item.updated,jdbcType=TIMESTAMP}
             ,#{item.linkMan,jdbcType=VARCHAR}
+            ,#{mobileNo,jdbcType=VARCHAR}
             ,#{item.linkAddress,jdbcType=VARCHAR}
             ,#{item.status,jdbcType=INTEGER}
             ,#{item.created,jdbcType=TIMESTAMP}
@@ -126,6 +137,9 @@
                 </if>
                 <if test="linkMan!=null ">
                     LINK_MAN=#{linkMan,jdbcType=VARCHAR},
+                </if>
+                <if test="mobileNo!=null ">
+                    MOBILE_NO=#{mobileNo,jdbcType=VARCHAR},
                 </if>
                 <if test="linkAddress!=null ">
                     LINK_ADDRESS=#{linkAddress,jdbcType=VARCHAR},
@@ -148,6 +162,7 @@
         ,INSURANCE_COMPANY_NAME
         ,UPDATED
         ,LINK_MAN
+        ,MOBILE_NO
         ,LINK_ADDRESS
         ,STATUS
         ,CREATED

@@ -71,6 +71,7 @@
                             <th column="insuranceCompanyId">保险公司ID</th>
                             <th column="insuranceCompanyName">保险公司名称</th>
                             <th column="linkMan">联系人</th>
+                            <th column="mobileNo">手机号</th>
                             <th column="linkAddress">联系地址</th>
                             <th column="status"  type="enum" enum-v="{0:'停用',1:'启用'}">状态</th>
                             <th column="created">创建时间</th>

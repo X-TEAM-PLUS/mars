@@ -44,6 +44,12 @@ public class InsuranceCompany implements Serializable {
     private String linkMan;
 
     /**
+     * 手机号
+     */
+    private String mobileNo;
+
+
+    /**
      * 联系地址
      */
     private String linkAddress;
@@ -230,5 +236,21 @@ public class InsuranceCompany implements Serializable {
     public InsuranceCompany setLimit(Integer limit) {
         this.limit = limit;
         return this;
+    }
+
+    /**
+     * 获取手机号
+     * @return
+     */
+    public String getMobileNo() {
+        return mobileNo;
+    }
+
+    /**
+     * 设置手机号
+     * @param mobileNo
+     */
+    public void setMobileNo(String mobileNo) {
+        this.mobileNo = mobileNo;
     }
 }

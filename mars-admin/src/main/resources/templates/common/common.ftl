@@ -51,6 +51,11 @@
 <link rel="stylesheet" href="${request.contextPath}/static/js/treeTable/stylesheets/jquery.treetable.theme.default.css"/>
 <link rel="stylesheet" href="${request.contextPath}/static/assets/global/css/fileinput.css"/>
 
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<link href="${request.contextPath}/static/assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.css" rel="stylesheet" type="text/css" />
+<link href="${request.contextPath}/static/assets/global/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css" rel="stylesheet" type="text/css" />
+<link href="${request.contextPath}/static/assets/global/plugins/bootstrap-summernote/summernote.css" rel="stylesheet" type="text/css" />
+<!-- END PAGE LEVEL PLUGINS -->
 </#macro>
 <#macro  commonScript>
 <script>
@@ -140,5 +145,14 @@
 <script src="${request.contextPath}/static/assets/global/plugins/bootstrap-fileinput/fileinput.js" type="text/javascript"></script>
 <script src="${request.contextPath}/static/assets/global/plugins/bootstrap-fileinput/locales/fr.js" type="text/javascript"></script>
 <script src="${request.contextPath}/static/assets/global/plugins/bootstrap-fileinput/locales/es.js" type="text/javascript"></script>
+
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<script src="${request.contextPath}/static/assets/global/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js" type="text/javascript"></script>
+<script src="${request.contextPath}/static/assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js" type="text/javascript"></script>
+<script src="${request.contextPath}/static/assets/global/plugins/bootstrap-markdown/lib/markdown.js" type="text/javascript"></script>
+<script src="${request.contextPath}/static/assets/global/plugins/bootstrap-markdown/js/bootstrap-markdown.js" type="text/javascript"></script>
+<script src="${request.contextPath}/static/assets/global/plugins/bootstrap-summernote/summernote.min.js" type="text/javascript"></script>
+<script src="${request.contextPath}/static/assets/global/plugins/bootstrap-summernote/lang/summernote-zh-CN.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL PLUGINS -->
 
 </#macro>
