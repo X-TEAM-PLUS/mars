@@ -180,6 +180,29 @@
 
     }
 
+    /**
+     * 初始化下拉列表框
+     */
+    $.fn.initSelectList=function initSelectList(url,params,keyValues) {
+        var obj = this;
+        $.ajax({
+            url: url,
+            type: "get",
+            dataType: "json",
+            data: params,
+            success: function (data) {
+                $.each(data.list, function (i) {
+                    obj.append("<option value=" + data.list[i][keyValues.valueName] + ">" + data.list[i][keyValues.keyName] + "</option>");
+                });
+                obj.selectpicker('refresh');
+            },
+            error: function (data) {
+                console.log("初始化列表框失败");
+            }
+        })
+    }
+
+
 })(jQuery);
 
 /**

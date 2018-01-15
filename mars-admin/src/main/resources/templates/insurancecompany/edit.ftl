@@ -90,7 +90,7 @@
                             </label>
                             <div class="col-md-5">
                                 <div class="input-icon margin-top-10">
-                                    <select id="status" name="status" class="form-control selectpicker" data-live-search="false" placeholder="换货状态" validate='{required: true,digits: true}'>
+                                    <select id="status" name="status" class="form-control selectpicker" data-live-search="false" placeholder="状态" validate='{required: true,digits: true}'>
                                         <option value="0"  >停用</option>
                                         <option value="1">启用</option>
                                     </select>

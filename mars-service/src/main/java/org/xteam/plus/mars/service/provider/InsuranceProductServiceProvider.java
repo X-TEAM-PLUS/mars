@@ -7,6 +7,7 @@ import org.xteam.plus.mars.domain.InsuranceProduct;
 import org.xteam.plus.mars.manager.InsuranceProductManager;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 
@@ -61,6 +62,9 @@ public class InsuranceProductServiceProvider extends AbstractServiceProvider {
     public JsonResult post(InsuranceProduct insuranceproduct) throws Exception {
         JsonResult jsonResult = new JsonResult();
         try {
+            insuranceproduct.setStatus(1);
+            insuranceproduct.setCreated(new Date());
+            insuranceproduct.setUpdated(new Date());
             //保存
             int rowCount = insuranceproductManager.insert(insuranceproduct);
             if (rowCount > 0) {

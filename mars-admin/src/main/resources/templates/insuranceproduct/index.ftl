@@ -46,7 +46,7 @@
                             <div class="col-md-10">
                                 <div class="btn-group">
                                     <button id="newInsuranceProductButton" class="btn green" onclick="location.href = 'add';">
-                                        添加保险信息表 <i class="fa fa-plus"></i>
+                                        添加保险信息 <i class="fa fa-plus"></i>
                                     </button>
                                 </div>
                             </div>
@@ -68,19 +68,17 @@
                     <table class="table table-striped table-bordered table-hover ">
                         <thead>
                         <tr>
-                            <th column="insuranceProductNo" type="checkbox" style="width: 50px"><input type="checkbox" id="allCheckBox" class="allCheckBox"></th>
-                            <th column="remark">详情</th>
-                            <th column="created">创建时间</th>
-                            <th column="status">状态</th>
                             <th column="insuranceProductNo">保险产品编号</th>
-                            <th column="updated">更新时间</th>
+                            <th column="imgInfo" type="image" imageWidth="60" imageHeight="20">展示图</th>
                             <th column="insuranceName">保险名称</th>
                             <th column="insuranceCompanyId">保险公司ID</th>
-                            <th column="price">价格</th>
-                            <th column="imgInfo">展示图</th>
+                            <th column="status"   type="enum" enum-v="{0:'停用',1:'启用'}">状态</th>
+                            <th column="periodsMode"  type="enum" enum-v="{0:'月',1:'年'}">有效期类型</th>
                             <th column="periodsNum">有效期期数</th>
-                            <th column="periodsMode">有效期类型</th>
-                            <th type="action" style="width: 200px">操作</th>
+                            <th column="price">价格</th>
+                            <th column="created">创建时间</th>
+                            <th column="updated">更新时间</th>
+                            <th type="action" >操作</th>
                         </tr>
                         </thead>
                         <tbody>

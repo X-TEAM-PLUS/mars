@@ -46,66 +46,7 @@
                 <!-- BEGIN FORM-->
                 <form action="/services/mars/insuranceproduct/put" class="form-horizontal" id="insuranceproductForm">
                     <input type="hidden" name="insuranceProductNo" id="insuranceProductNo">
-
                     <div class="form-body">
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                详情
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10">
-                                    <i class="fa fa-comment "></i>
-                                    <input type="text" name="remark" class="form-control" placeholder="详情" validate='{required: false}'
-                                    >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                创建时间<span class="required">* </span>
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10 date-picker input-daterange " data-date-format="yyyy-mm-dd">
-                                    <i class="fa fa-calendar "></i>
-                                    <input type="text" name="created" class="form-control" readonly="" validate='{required: true}'>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                状态<span class="required">* </span>
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10">
-                                    <i class="fa   fa-font "></i>
-                                    <input type="text" name="status" class="form-control" placeholder="状态" validate='{required: true,digits: true}'
-                                    >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                保险产品编号<span class="required">* </span>
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10">
-                                    <i class="fa   fa-font "></i>
-                                    <input type="text" name="insuranceProductNo" class="form-control" placeholder="保险产品编号" validate='{required: true}'
-                                    >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                更新时间
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10 date-picker input-daterange " data-date-format="yyyy-mm-dd">
-                                    <i class="fa fa-calendar "></i>
-                                    <input type="text" name="updated" class="form-control" readonly="" validate='{required: false}'>
-                                </div>
-                            </div>
-                        </div>
                         <div class="form-group">
                             <label class="col-md-3 control-label">
                                 保险名称<span class="required">* </span>
@@ -113,20 +54,18 @@
                             <div class="col-md-5">
                                 <div class="input-icon margin-top-10">
                                     <i class="fa  fa-user "></i>
-                                    <input type="text" name="insuranceName" class="form-control" placeholder="保险名称" validate='{required: true}'
-                                           maxlength="128">
+                                    <input type="text" name="insuranceName" class="form-control" placeholder="保险名称" validate='{required: true}' maxlength="128">
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 control-label">
-                                保险公司ID<span class="required">* </span>
+                                保险公司<span class="required">* </span>
                             </label>
                             <div class="col-md-5">
                                 <div class="input-icon margin-top-10">
-                                    <i class="fa   fa-font "></i>
-                                    <input type="text" name="insuranceCompanyId" class="form-control" placeholder="保险公司ID" validate='{required: true}'
-                                    >
+                                    <select id="insuranceCompanyId" name="insuranceCompanyId" class="form-control selectpicker" data-live-search="false" placeholder="保险公司" validate='{required: true,digits: true}'>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -137,20 +76,20 @@
                             <div class="col-md-5">
                                 <div class="input-icon margin-top-10">
                                     <i class="fa  fa-rmb "></i>
-                                    <input type="text" name="price" class="form-control" placeholder="价格" validate='{required: true}'
-                                           maxlength="11">
+                                    <input type="text" name="price" class="form-control" placeholder="价格" validate='{required: true}' maxlength="11">
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 control-label">
-                                展示图
+                                有效期类型<span class="required">* </span>
                             </label>
                             <div class="col-md-5">
                                 <div class="input-icon margin-top-10">
-                                    <i class="fa   fa-font "></i>
-                                    <input type="text" name="imgInfo" class="form-control" placeholder="展示图" validate='{required: false}'
-                                           maxlength="128">
+                                    <select id="periodsMode" name="periodsMode" class="form-control selectpicker" data-live-search="false" placeholder="有效期类型" validate='{required: true,digits: true}'>
+                                        <option value="0"  >月</option>
+                                        <option value="1">年</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -161,20 +100,42 @@
                             <div class="col-md-5">
                                 <div class="input-icon margin-top-10">
                                     <i class="fa   fa-font "></i>
-                                    <input type="text" name="periodsNum" class="form-control" placeholder="有效期期数" validate='{required: true,digits: true}'
-                                    >
+                                    <input type="text" name="periodsNum" class="form-control" placeholder="有效期期数" validate='{required: true,digits: true}'>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 control-label">
-                                有效期类型<span class="required">* </span>
+                                展示图
                             </label>
                             <div class="col-md-5">
                                 <div class="input-icon margin-top-10">
                                     <i class="fa   fa-font "></i>
-                                    <input type="text" name="periodsMode" class="form-control" placeholder="有效期类型" validate='{required: true,digits: true}'
-                                    >
+                                    <input type="text" name="imgInfo" class="form-control" placeholder="展示图" validate='{required: false}' maxlength="128">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">
+                                状态<span class="required">* </span>
+                            </label>
+                            <div class="col-md-5">
+                                <div class="input-icon margin-top-10">
+                                    <select id="status" name="status" class="form-control selectpicker" data-live-search="false" placeholder="状态" validate='{required: true,digits: true}'>
+                                        <option value="0"  >停用</option>
+                                        <option value="1">启用</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">
+                                详情
+                            </label>
+                            <div class="col-md-5">
+                                <div class="input-icon margin-top-10">
+                                    <i class="fa fa-comment "></i>
+                                    <input type="text" name="remark" class="form-control" placeholder="详情" validate='{required: false}'>
                                 </div>
                             </div>
                         </div>
@@ -192,6 +153,13 @@
 <@commonMacro.commonScript />
 <script>
     (function ($) {
+        //加载保险公司列表
+        $("#insuranceCompanyId").initSelectList(
+                "/services/mars/insurancecompany/list"
+                ,{limit:9999999}
+                ,{keyName:"insuranceCompanyName",valueName:"insuranceCompanyId"}
+        );
+        //加载表单
         $("#insuranceproductForm").ajaxLoadFormData("/services/mars/insuranceproduct/get?insuranceProductNo=" + getParameter("insuranceProductNo"));
     })(jQuery);
 </script>
