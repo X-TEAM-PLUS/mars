@@ -202,7 +202,7 @@
 <@commonMacro.commonScript />
 <script>
     (function ($) {
-        $("#withdrawrecordForm").ajaxLoadFormData("/services/mars/cityinfo/get?id=" + getParameter("id"));
+        $("#withdrawrecordForm").ajaxLoadFormData("/services/mars/withdrawrecord/get?id=" + getParameter("id"));
     })(jQuery);
 </script>
 </body>

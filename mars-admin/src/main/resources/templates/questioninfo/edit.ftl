@@ -120,7 +120,7 @@
 <@commonMacro.commonScript />
 <script>
     (function ($) {
-        $("#questioninfoForm").ajaxLoadFormData("/services/mars/cityinfo/get?questionId=" + getParameter("questionId"));
+        $("#questioninfoForm").ajaxLoadFormData("/services/mars/questioninfo/get?questionId=" + getParameter("questionId"));
     })(jQuery);
 </script>
 </body>

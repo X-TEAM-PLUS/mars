@@ -119,7 +119,7 @@
 <@commonMacro.commonScript />
 <script>
     (function ($) {
-        $("#councilinfoForm").ajaxLoadFormData("/services/mars/cityinfo/get?councilId=" + getParameter("councilId"));
+        $("#councilinfoForm").ajaxLoadFormData("/services/mars/councilinfo/get?councilId=" + getParameter("councilId"));
     })(jQuery);
 </script>
 </body>

@@ -192,7 +192,7 @@
 <@commonMacro.commonScript />
 <script>
     (function ($) {
-        $("#insuranceproductForm").ajaxLoadFormData("/services/mars/cityinfo/get?insuranceProductNo=" + getParameter("insuranceProductNo"));
+        $("#insuranceproductForm").ajaxLoadFormData("/services/mars/insuranceproduct/get?insuranceProductNo=" + getParameter("insuranceProductNo"));
     })(jQuery);
 </script>
 </body>

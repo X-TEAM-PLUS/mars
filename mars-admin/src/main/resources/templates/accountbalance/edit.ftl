@@ -120,7 +120,7 @@
 <@commonMacro.commonScript />
 <script>
     (function ($) {
-        $("#accountbalanceForm").ajaxLoadFormData("/services/mars/cityinfo/get?userId=" + getParameter("userId"));
+        $("#accountbalanceForm").ajaxLoadFormData("/services/mars/accountbalance/get?userId=" + getParameter("userId"));
     })(jQuery);
 </script>
 </body>

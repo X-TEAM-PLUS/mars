@@ -29,7 +29,7 @@
         <div class="portlet box grey-cascade">
             <div class="portlet-title">
                 <div class="caption">
-                    <i class="fa fa-adn"></i>添加保险公司信息表
+                    <i class="fa fa-adn"></i>添加保险公司信息
                 </div>
                 <div class="tools">
                     <a href="javascript:;" class="collapse">
@@ -48,34 +48,12 @@
                     <div class="form-body">
                         <div class="form-group">
                             <label class="col-md-3 control-label">
-                                保险公司ID<span class="required">* </span>
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10">
-                                    <i class="fa   fa-font "></i>
-                                    <input type="text" name="insuranceCompanyId" class="form-control" placeholder="保险公司ID" validate='{required: true}'>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
                                 保险公司名称<span class="required">* </span>
                             </label>
                             <div class="col-md-5">
                                 <div class="input-icon margin-top-10">
                                     <i class="fa  fa-user "></i>
                                     <input type="text" name="insuranceCompanyName" class="form-control" placeholder="保险公司名称" validate='{required: true}' maxlength="128">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                更新时间
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10 date-picker input-daterange " data-date-format="yyyy-mm-dd">
-                                    <i class="fa fa-calendar "></i>
-                                    <input type="text" name="updated" class="form-control " readonly="" validate='{required: false}'>
                                 </div>
                             </div>
                         </div>
@@ -98,28 +76,6 @@
                                 <div class="input-icon margin-top-10">
                                     <i class="fa   fa-font "></i>
                                     <input type="text" name="linkAddress" class="form-control" placeholder="联系地址" validate='{required: false}' maxlength="200">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                状态<span class="required">* </span>
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10">
-                                    <i class="fa   fa-font "></i>
-                                    <input type="text" name="status" class="form-control" placeholder="状态" validate='{required: true,digits: true}'>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                创建时间<span class="required">* </span>
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10 date-picker input-daterange " data-date-format="yyyy-mm-dd">
-                                    <i class="fa fa-calendar "></i>
-                                    <input type="text" name="created" class="form-control " readonly="" validate='{required: true}'>
                                 </div>
                             </div>
                         </div>

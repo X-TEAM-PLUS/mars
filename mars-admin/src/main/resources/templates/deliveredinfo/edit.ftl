@@ -224,7 +224,7 @@
 <@commonMacro.commonScript />
 <script>
     (function ($) {
-        $("#deliveredinfoForm").ajaxLoadFormData("/services/mars/cityinfo/get?deliveredId=" + getParameter("deliveredId"));
+        $("#deliveredinfoForm").ajaxLoadFormData("/services/mars/deliveredinfo/get?deliveredId=" + getParameter("deliveredId"));
     })(jQuery);
 </script>
 </body>

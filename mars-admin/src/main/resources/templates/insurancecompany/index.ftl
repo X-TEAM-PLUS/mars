@@ -46,7 +46,7 @@
                             <div class="col-md-10">
                                 <div class="btn-group">
                                     <button id="newInsuranceCompanyButton" class="btn green" onclick="location.href = 'add';">
-                                        添加保险公司信息表 <i class="fa fa-plus"></i>
+                                        添加保险公司信息 <i class="fa fa-plus"></i>
                                     </button>
                                 </div>
                             </div>
@@ -68,15 +68,14 @@
                     <table class="table table-striped table-bordered table-hover ">
                         <thead>
                         <tr>
-                            <th column="insuranceCompanyId" type="checkbox" style="width: 50px"><input type="checkbox" id="allCheckBox" class="allCheckBox"></th>
                             <th column="insuranceCompanyId">保险公司ID</th>
                             <th column="insuranceCompanyName">保险公司名称</th>
-                            <th column="updated">更新时间</th>
                             <th column="linkMan">联系人</th>
                             <th column="linkAddress">联系地址</th>
-                            <th column="status">状态</th>
+                            <th column="status"  type="enum" enum-v="{0:'停用',1:'启用'}">状态</th>
                             <th column="created">创建时间</th>
-                            <th type="action" style="width: 200px">操作</th>
+                            <th column="updated">更新时间</th>
+                            <th type="action">操作</th>
                         </tr>
                         </thead>
                         <tbody>

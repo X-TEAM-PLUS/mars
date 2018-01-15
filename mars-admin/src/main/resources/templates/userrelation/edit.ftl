@@ -120,7 +120,7 @@
 <@commonMacro.commonScript />
 <script>
     (function ($) {
-        $("#userrelationForm").ajaxLoadFormData("/services/mars/cityinfo/get?relationId=" + getParameter("relationId"));
+        $("#userrelationForm").ajaxLoadFormData("/services/mars/userrelation/get?relationId=" + getParameter("relationId"));
     })(jQuery);
 </script>
 </body>

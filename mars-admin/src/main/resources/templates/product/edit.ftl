@@ -192,7 +192,7 @@
 <@commonMacro.commonScript />
 <script>
     (function ($) {
-        $("#productForm").ajaxLoadFormData("/services/mars/cityinfo/get?productId=" + getParameter("productId"));
+        $("#productForm").ajaxLoadFormData("/services/mars/product/get?productId=" + getParameter("productId"));
     })(jQuery);
 </script>
 </body>

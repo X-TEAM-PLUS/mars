@@ -190,7 +190,7 @@
 <@commonMacro.commonScript />
 <script>
     (function ($) {
-        $("#userinsuranceForm").ajaxLoadFormData("/services/mars/cityinfo/get?insuranceOrderId=" + getParameter("insuranceOrderId"));
+        $("#userinsuranceForm").ajaxLoadFormData("/services/mars/userinsurance/get?insuranceOrderId=" + getParameter("insuranceOrderId"));
     })(jQuery);
 </script>
 </body>

@@ -132,7 +132,7 @@
 <@commonMacro.commonScript />
 <script>
     (function ($) {
-        $("#usersalesinfoForm").ajaxLoadFormData("/services/mars/cityinfo/get?userId=" + getParameter("userId"));
+        $("#usersalesinfoForm").ajaxLoadFormData("/services/mars/usersalesinfo/get?userId=" + getParameter("userId"));
     })(jQuery);
 </script>
 </body>

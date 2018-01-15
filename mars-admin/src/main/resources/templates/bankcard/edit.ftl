@@ -131,7 +131,7 @@
 <@commonMacro.commonScript />
 <script>
     (function ($) {
-        $("#bankcardForm").ajaxLoadFormData("/services/mars/cityinfo/get?bankCardId=" + getParameter("bankCardId"));
+        $("#bankcardForm").ajaxLoadFormData("/services/mars/bankcard/get?bankCardId=" + getParameter("bankCardId"));
     })(jQuery);
 </script>
 </body>

@@ -143,7 +143,7 @@
 <@commonMacro.commonScript />
 <script>
     (function ($) {
-        $("#localcouncilmemberForm").ajaxLoadFormData("/services/mars/cityinfo/get?councilMemberId=" + getParameter("councilMemberId"));
+        $("#localcouncilmemberForm").ajaxLoadFormData("/services/mars/localcouncilmember/get?councilMemberId=" + getParameter("councilMemberId"));
     })(jQuery);
 </script>
 </body>

@@ -250,7 +250,7 @@
 <@commonMacro.commonScript />
 <script>
     (function ($) {
-        $("#userhealthcardForm").ajaxLoadFormData("/services/mars/cityinfo/get?cardNo=" + getParameter("cardNo"));
+        $("#userhealthcardForm").ajaxLoadFormData("/services/mars/userhealthcard/get?cardNo=" + getParameter("cardNo"));
     })(jQuery);
 </script>
 </body>

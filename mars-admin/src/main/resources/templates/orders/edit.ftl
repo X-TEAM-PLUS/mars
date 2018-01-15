@@ -274,7 +274,7 @@
 <@commonMacro.commonScript />
 <script>
     (function ($) {
-        $("#ordersForm").ajaxLoadFormData("/services/mars/cityinfo/get?orderNo=" + getParameter("orderNo"));
+        $("#ordersForm").ajaxLoadFormData("/services/mars/orders/get?orderNo=" + getParameter("orderNo"));
     })(jQuery);
 </script>
 </body>

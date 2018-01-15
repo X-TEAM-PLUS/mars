@@ -4,9 +4,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.xteam.plus.mars.common.JsonResult;
 import org.xteam.plus.mars.domain.InsuranceCompany;
+import org.xteam.plus.mars.domain.InsuranceProduct;
 import org.xteam.plus.mars.manager.InsuranceCompanyManager;
+import org.xteam.plus.mars.manager.InsuranceProductManager;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 
@@ -24,6 +27,8 @@ public class InsuranceCompanyServiceProvider extends AbstractServiceProvider {
     @Resource
     private InsuranceCompanyManager insurancecompanyManager;
 
+    @Resource
+    private InsuranceProductManager insuranceProductManager;
     /**
      * 获取
      *
@@ -61,6 +66,9 @@ public class InsuranceCompanyServiceProvider extends AbstractServiceProvider {
     public JsonResult post(InsuranceCompany insurancecompany) throws Exception {
         JsonResult jsonResult = new JsonResult();
         try {
+            insurancecompany.setStatus(1);
+            insurancecompany.setCreated(new Date());
+            insurancecompany.setUpdated(new Date());
             //保存
             int rowCount = insurancecompanyManager.insert(insurancecompany);
             if (rowCount > 0) {
@@ -115,14 +123,24 @@ public class InsuranceCompanyServiceProvider extends AbstractServiceProvider {
     public JsonResult delete(InsuranceCompany insurancecompany) throws Exception {
         JsonResult jsonResult = new JsonResult();
         try {
-            //删除记录
-            int rowCount = insurancecompanyManager.delete(insurancecompany);
-            if (rowCount > 0) {
-                jsonResult.setSuccess(true);
-                jsonResult.setMessage("删除数据成功");
-            } else {
+
+            //查询保险公司下有无保险产品
+            InsuranceProduct insuranceProduct = new InsuranceProduct();
+            insuranceProduct.setInsuranceCompanyId(insurancecompany.getInsuranceCompanyId());
+            Integer count = insuranceProductManager.queryCount(insuranceProduct);
+            if(count!=null && count>0){
+                //删除记录
+                int rowCount = insurancecompanyManager.delete(insurancecompany);
+                if (rowCount > 0) {
+                    jsonResult.setSuccess(true);
+                    jsonResult.setMessage("删除数据成功");
+                } else {
+                    jsonResult.setSuccess(false);
+                    jsonResult.setMessage("删除数据失败");
+                }
+            }else{
                 jsonResult.setSuccess(false);
-                jsonResult.setMessage("删除数据失败");
+                jsonResult.setMessage("该保险公司下有保险产品，无法删除数据。");
             }
         } catch (Exception e) {
             logError("删除数据异常", e);
@@ -143,6 +161,7 @@ public class InsuranceCompanyServiceProvider extends AbstractServiceProvider {
         JsonResult jsonResult = new JsonResult();
         try {
             //更新记录
+            insurancecompany.setUpdated(new Date());
             int rowCount = insurancecompanyManager.update(insurancecompany);
             if (rowCount > 0) {
                 jsonResult.setSuccess(true);

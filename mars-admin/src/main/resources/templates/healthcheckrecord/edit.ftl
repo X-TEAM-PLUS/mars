@@ -166,7 +166,7 @@
 <@commonMacro.commonScript />
 <script>
     (function ($) {
-        $("#healthcheckrecordForm").ajaxLoadFormData("/services/mars/cityinfo/get?checkRecordId=" + getParameter("checkRecordId"));
+        $("#healthcheckrecordForm").ajaxLoadFormData("/services/mars/healthcheckrecord/get?checkRecordId=" + getParameter("checkRecordId"));
     })(jQuery);
 </script>
 </body>
