@@ -3,10 +3,13 @@ package org.xteam.plus.mars.service.provider;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.xteam.plus.mars.common.JsonResult;
+import org.xteam.plus.mars.domain.Orders;
 import org.xteam.plus.mars.domain.Product;
+import org.xteam.plus.mars.manager.OrdersManager;
 import org.xteam.plus.mars.manager.ProductManager;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 
@@ -23,6 +26,8 @@ public class ProductServiceProvider extends AbstractServiceProvider {
 
     @Resource
     private ProductManager productManager;
+    @Resource
+    private OrdersManager ordersManager;
 
     /**
      * 获取
@@ -61,6 +66,9 @@ public class ProductServiceProvider extends AbstractServiceProvider {
     public JsonResult post(Product product) throws Exception {
         JsonResult jsonResult = new JsonResult();
         try {
+            product.setCreated(new Date());
+            product.setUpdated(new Date());
+            product.setStatus(0);
             //保存
             int rowCount = productManager.insert(product);
             if (rowCount > 0) {
@@ -115,14 +123,21 @@ public class ProductServiceProvider extends AbstractServiceProvider {
     public JsonResult delete(Product product) throws Exception {
         JsonResult jsonResult = new JsonResult();
         try {
-            //删除记录
-            int rowCount = productManager.delete(product);
-            if (rowCount > 0) {
-                jsonResult.setSuccess(true);
-                jsonResult.setMessage("删除数据成功");
-            } else {
+            //查询是否有该 产品的订单
+            Integer count = ordersManager.queryCount(new Orders().setProductId(product.getProductId()));
+            if(count!=null && count==0) {
+                //删除记录
+                int rowCount = productManager.delete(product);
+                if (rowCount > 0) {
+                    jsonResult.setSuccess(true);
+                    jsonResult.setMessage("删除数据成功");
+                } else {
+                    jsonResult.setSuccess(false);
+                    jsonResult.setMessage("删除数据失败");
+                }
+            }else{
                 jsonResult.setSuccess(false);
-                jsonResult.setMessage("删除数据失败");
+                jsonResult.setMessage("已有相关的订单，不能删除（提示：可下架）");
             }
         } catch (Exception e) {
             logError("删除数据异常", e);
@@ -142,6 +157,7 @@ public class ProductServiceProvider extends AbstractServiceProvider {
     public JsonResult put(Product product) throws Exception {
         JsonResult jsonResult = new JsonResult();
         try {
+            product.setUpdated(new Date());
             //更新记录
             int rowCount = productManager.update(product);
             if (rowCount > 0) {

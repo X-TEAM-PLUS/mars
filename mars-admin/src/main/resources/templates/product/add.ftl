@@ -48,12 +48,25 @@
                     <div class="form-body">
                         <div class="form-group">
                             <label class="col-md-3 control-label">
+                                产品名称<span class="required">* </span>
+                            </label>
+                            <div class="col-md-5">
+                                <div class="input-icon margin-top-10">
+                                    <i class="fa  fa-user "></i>
+                                    <input type="text" name="productName" class="form-control" placeholder="产品名称" validate='{required: true}' maxlength="50">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">
                                 卡类型<span class="required">* </span>
                             </label>
                             <div class="col-md-5">
                                 <div class="input-icon margin-top-10">
-                                    <i class="fa   fa-font "></i>
-                                    <input type="text" name="cardType" class="form-control" placeholder="卡类型" validate='{required: true,digits: true}'>
+                                    <select id="cardType" name="cardType" class="form-control selectpicker" data-live-search="false" placeholder="卡类型" validate='{required: true,digits: true}'>
+                                        <option value="0"  >虚拟卡</option>
+                                        <option value="1">实体卡</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -63,8 +76,9 @@
                             </label>
                             <div class="col-md-5">
                                 <div class="input-icon margin-top-10">
-                                    <i class="fa   fa-font "></i>
-                                    <input type="text" name="survivalPeriodMode" class="form-control" placeholder="有效期类型" validate='{required: true,digits: true}'>
+                                    <select id="survivalPeriodMode" name="survivalPeriodMode" class="form-control selectpicker" data-live-search="false" placeholder="有效期类型" validate='{required: true,digits: true}'>
+                                        <option value="0"  >年</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -85,41 +99,9 @@
                             </label>
                             <div class="col-md-5">
                                 <div class="input-icon margin-top-10">
-                                    <i class="fa   fa-font "></i>
-                                    <input type="text" name="sendPeriodMode" class="form-control" placeholder="发货周期类型" validate='{required: true,digits: true}'>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                更新时间
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10 date-picker input-daterange " data-date-format="yyyy-mm-dd">
-                                    <i class="fa fa-calendar "></i>
-                                    <input type="text" name="updated" class="form-control " readonly="" validate='{required: false}'>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                产品ID<span class="required">* </span>
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10">
-                                    <i class="fa   fa-font "></i>
-                                    <input type="text" name="productId" class="form-control" placeholder="产品ID" validate='{required: true}'>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                产品名称<span class="required">* </span>
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10">
-                                    <i class="fa  fa-user "></i>
-                                    <input type="text" name="productName" class="form-control" placeholder="产品名称" validate='{required: true}' maxlength="50">
+                                    <select id="sendPeriodMode" name="sendPeriodMode" class="form-control selectpicker" data-live-search="false" placeholder="发货周期类型" validate='{required: true,digits: true}'>
+                                        <option value="0"  >月</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -142,28 +124,6 @@
                                 <div class="input-icon margin-top-10">
                                     <i class="fa   fa-font "></i>
                                     <input type="text" name="sendTotalCount" class="form-control" placeholder="发货总次数" validate='{required: true,digits: true}'>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                状态<span class="required">* </span>
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10">
-                                    <i class="fa   fa-font "></i>
-                                    <input type="text" name="status" class="form-control" placeholder="状态" validate='{required: true,digits: true}'>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                创建时间<span class="required">* </span>
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10 date-picker input-daterange " data-date-format="yyyy-mm-dd">
-                                    <i class="fa fa-calendar "></i>
-                                    <input type="text" name="created" class="form-control " readonly="" validate='{required: true}'>
                                 </div>
                             </div>
                         </div>

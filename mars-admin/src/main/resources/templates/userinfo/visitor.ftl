@@ -14,7 +14,7 @@
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
-            <a href="#">健康卡产品表管理</a>
+            <a href="#">访客信息</a>
             <i class="fa fa-cube"></i>
         </li>
 
@@ -29,7 +29,7 @@
             <div class="portlet box grey-cascade">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="icon-user"></i>健康卡产品表管理
+                        <i class="icon-user"></i>访客信息
                     </div>
                     <div class="tools">
                         <a href="javascript:;" class="collapse">
@@ -40,22 +40,19 @@
                         </a>
                     </div>
                 </div>
-                <div class="portlet-body" id="productTable">
+                <div class="portlet-body" id="userInfoTable">
                     <div class="table-toolbar">
                         <div class="row">
-                            <div class="col-md-10">
-                                <div class="btn-group">
-                                    <button id="newProductButton" class="btn green" onclick="location.href = 'add';">
-                                        添加健康卡产品表 <i class="fa fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-md-2 pull-right">
-                                <form id="productTableForm" onsubmit="init();return false;">
+                            <div class="col-md-12 pull-right">
+                                <form id="userInfoTableForm" onsubmit="init();return false;">
                                     <div class="input-group">
-                                        <div class="input-icon">
+                                        <div class="input-icon col-md-2">
                                             <i class="icon-magnifier"></i>
-                                            <input class="form-control" type="text" name="productId" placeholder="产品ID"/>
+                                            <input class="form-control" type="text" name="registerSource" placeholder="注册来源"/>
+                                        </div>
+                                        <div class="input-icon col-md-2">
+                                            <i class="icon-magnifier"></i>
+                                            <input class="form-control" type="text" name="userId" placeholder="用户ID"/>
                                         </div>
                                         <span class="input-group-btn">
 												<button class="btn btn-success" type="submit"><i class="fa fa-arrow-left fa-fw"/></i> 搜索</button>
@@ -68,18 +65,13 @@
                     <table class="table table-striped table-bordered table-hover ">
                         <thead>
                         <tr>
-                            <th column="productId">产品ID</th>
-                            <th column="productName">产品名称</th>
-                            <th column="cardType"   type="enum" enum-v="{0:'虚拟卡',1:'实体卡'}">卡类型</th>
-                            <th column="survivalPeriodMode"   type="enum" enum-v="{0:'年'}">有效期类型</th>
-                            <th column="survivalPeriodNum">有效期期数</th>
-                            <th column="sendPeriodMode"   type="enum" enum-v="{0:'月'}">发货周期类型</th>
-                            <th column="sendPeriod">发货周期</th>
-                            <th column="sendTotalCount">发货总次数</th>
-                            <th column="status"   type="enum" enum-v="{0:'下架',1:'上架'}">状态</th>
-                            <th column="created">创建时间</th>
-                            <th column="updated">更新时间</th>
-                            <th type="action">操作</th>
+                            <th column="userId">用户ID</th>
+                            <th column="registerTime">注册时间</th>
+                            <th column="nickName">昵称</th>
+                            <th column="registerSource">注册来源</th>
+                            <th column="lastLoginTime">最后登录时间</th>
+                            <th column="loginCount">登录次数</th>
+                            <th type="action" >操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -96,27 +88,27 @@
 <@commonMacro.commonScript />
 <script>
     function init() {
-        $("#productTable").pagingGrid(
+        $("#userInfoTable").pagingGrid(
                 {
-                    dataUrl: '/services/mars/product/list'
+                    dataUrl: '/services/mars/userinfo/list'
                     , pageSize: 10
                     , scroll: false
                     , dockedItems: [{
                         name: '修改'
                         , iconClass: 'fa fa-edit'
-                        , action: '/mars/product/edit'
+                        , action: '/mars/userinfo/edit'
                         , confirm: false
-                        , parmaName: 'productId'
-                        , column: 'productId'
+                        , parmaName: 'userId'
+                        , column: 'userId'
                     }
                         , {
                             name: '删除'
                             , iconClass: 'glyphicon glyphicon-trash'
-                            , action: '/services/mars/product/delete'
+                            , action: '/services/mars/userinfo/delete'
                             , ajax: true
                             , confirm: true
-                            , parmaName: 'productId'
-                            , column: 'productId'
+                            , parmaName: 'userId'
+                            , column: 'userId'
                         }
                     ],
                     pagingtoolbar: {
