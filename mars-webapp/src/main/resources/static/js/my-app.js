@@ -10,16 +10,18 @@ var $$ = Dom7;
 
 if (isAndroid) {
     $$('head').append(
-        '<link rel="stylesheet" href="path/to/framework7.material.min.css">' +
-        '<link rel="stylesheet" href="path/to/framework7.material.colors.min.css">' +
-        '<link rel="stylesheet" href="path/to/my-app.material.css">'
+        '<link rel="stylesheet" href="/assets/plugins/framework7-2.0.6/css/framework7.material.css">' +
+        '<link rel="stylesheet" href="/assets/plugins/framework7-2.0.6/css/framework7.material.colors.css">' +
+        '<link rel="stylesheet" href="/assets/plugins/framework7-2.0.6/css/kitchen-sink.css">' +
+        '<link rel="stylesheet" href="/css/my-app.css">'
     );
 }
 else {
     $$('head').append(
-        '<link rel="stylesheet" href="path/to/framework7.ios.min.css">' +
-        '<link rel="stylesheet" href="path/to/framework7.ios.colors.min.css">' +
-        '<link rel="stylesheet" href="path/to/my-app.ios.css">'
+        '<link rel="stylesheet" href="/assets/plugins/framework7-2.0.6/css/framework7.ios.min.css">' +
+        '<link rel="stylesheet" href="/assets/plugins/framework7-2.0.6/css/framework7.ios.colors.min.css">' +
+        '<link rel="stylesheet" href="/assets/plugins/framework7-2.0.6/css/kitchen-sink.css">' +
+        '<link rel="stylesheet" href="/css/my-app.css">'
     );
 }
 
