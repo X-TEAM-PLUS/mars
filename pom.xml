@@ -20,6 +20,7 @@
         <module>mars-service</module>
         <module>mars-admin</module>
         <module>mars-webapp</module>
+        <module>mars-external</module>
     </modules>
 
     <properties>
@@ -44,6 +45,11 @@
         <!--spring boot-->
         <mvn.spring.cloud.dependencies.version>Edgware.RELEASE</mvn.spring.cloud.dependencies.version>
     </properties>
+
+    <dependencies>
+
+    </dependencies>
+
 
     <profiles>
         <profile>
