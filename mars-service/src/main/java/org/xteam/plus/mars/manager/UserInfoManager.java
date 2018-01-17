@@ -23,6 +23,13 @@ public interface UserInfoManager {
     public UserInfo get(UserInfo userInfo) throws Exception;
 
     /**
+     * 获取社工，理事，常任理事详细信息
+     * @param userInfo
+     * @return
+     * @throws Exception
+     */
+    public UserInfo getWorker(UserInfo userInfo) throws Exception;
+    /**
      * 新增
      *
      * @param userInfo

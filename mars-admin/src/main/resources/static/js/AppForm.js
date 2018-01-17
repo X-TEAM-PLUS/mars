@@ -36,11 +36,12 @@
          */
         $.fn.loadFormData = function loadFormData(jsonValue) {
             var obj = this;
-            $.each(jsonValue, function (name, ival) {
-                var $oinput = obj.find("input[name=" + name + "]");
+            obj.find("input").each(function(index,iInput){
+                var ival = getColumnValue(jsonValue,iInput.name);
+                var $oinput = $(iInput);
                 if ($oinput.attr("type") == "checkbox") {
                     if (ival !== null) {
-                        var checkboxObj = $("[name=" + name + "]");
+                        var checkboxObj = $oinput;
                         var checkArray = ival.split(";");
                         for (var i = 0; i < checkboxObj.length; i++) {
                             for (var j = 0; j < checkArray.length; j++) {
@@ -53,7 +54,7 @@
                 }
                 else if ($oinput.attr("type") == "radio") {
                     $oinput.each(function () {
-                        var radioObj = $("[name=" + name + "]");
+                        var radioObj = $oinput;
                         for (var i = 0; i < radioObj.length; i++) {
                             if (radioObj[i].value == ival) {
                                 radioObj[i].click();
@@ -62,12 +63,18 @@
                     });
                 }
                 else if ($oinput.attr("type") == "textarea") {
-                    obj.find("[name=" + name + "]").html(ival);
+                    $oinput.html(ival);
                 }
                 else {
-                    obj.find("[name=" + name + "]").val(ival);
+                    $oinput.val(ival);
                 }
-            })
+            });
+            obj.find("textarea").each(function(index,iInput){
+                var ival = getColumnValue(jsonValue,iInput.name);
+                var $oinput = $(iInput);
+                $oinput.html(ival);
+            });
+
         },
 
         //提交表单
@@ -326,6 +333,36 @@ function getParameter(parameterName) {
             if (query[0] == parameterName) {
                 return query[1];
             }
+        }
+    }
+    return "";
+}
+
+/**
+ * 根据列名获取列值
+ * @param rowValue
+ * @param columnName
+ * @returns {*}
+ */
+function getColumnValue(rowValue, columnName) {
+    if (columnName) {
+        if (columnName.split(".").length > 1) {
+            var rootValue;
+            var valueNames = columnName.split(".");
+            for (var i = 0; i < valueNames.length; i++) {
+                if (rootValue != undefined) {
+                    rootValue = rootValue[valueNames[i]];
+                } else {
+                    rootValue = rowValue[valueNames[i]];
+                }
+            }
+
+            if (rootValue == undefined || rootValue == "null") {
+                rootValue = "";
+            }
+            return rootValue;
+        } else {
+            return rowValue[columnName] != null ? rowValue[columnName] : "";
         }
     }
     return "";

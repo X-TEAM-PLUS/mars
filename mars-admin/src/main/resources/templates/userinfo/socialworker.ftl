@@ -98,22 +98,12 @@
                     , scroll: false
                     , dockedItems: [{
                         name: '修改'
-                        , iconClass: 'fa fa-edit'
-                        , action: '/mars/userinfo/edit'
+                        , iconClass: 'fa fa-view'
+                        , action: '/mars/userinfo/socialworkerInfo'
                         , confirm: false
                         , parmaName: 'userId'
                         , column: 'userId'
-                    }
-                        , {
-                            name: '删除'
-                            , iconClass: 'glyphicon glyphicon-trash'
-                            , action: '/services/mars/userinfo/delete'
-                            , ajax: true
-                            , confirm: true
-                            , parmaName: 'userId'
-                            , column: 'userId'
-                        }
-                    ],
+                    }],
                     pagingtoolbar: {
                         displayInfo: true
                     }

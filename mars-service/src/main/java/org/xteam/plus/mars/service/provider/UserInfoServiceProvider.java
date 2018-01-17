@@ -54,6 +54,34 @@ public class UserInfoServiceProvider extends AbstractServiceProvider {
         return jsonResult;
     }
 
+
+    /**
+     * 获取
+     *
+     * @param userinfo
+     * @return int
+     */
+    @RequestMapping("/getWorker")
+    public JsonResult getWorker(UserInfo userinfo) throws Exception {
+        JsonResult jsonResult = new JsonResult();
+        try {
+            //获取记录
+            UserInfo result = userinfoManager.getWorker(userinfo);
+            if (result != null) {
+                jsonResult.setData(result);
+                jsonResult.setSuccess(true);
+            } else {
+                jsonResult.setMessage("获取数据失败");
+                jsonResult.setSuccess(false);
+            }
+        } catch (Exception e) {
+            logError("获取数据异常", e);
+            jsonResult.setMessage("获取数据异常");
+            jsonResult.setSuccess(false);
+        }
+        return jsonResult;
+    }
+
     /**
      * 新增
      *

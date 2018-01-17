@@ -441,6 +441,14 @@
         ,TUSI.CREATED
         ,TUSI.UPDATED
         ,TUSI.PROMOTION_NUMBER
+        ,TAI.APPLY_ID
+        ,TAI.CREATED
+        ,TAI.UPDATED
+        ,TAI.APPLY_REASON
+        ,TAI.STATUS
+        ,TAI.USER_ID
+        ,TAI.APPLY_WAY
+        ,TAI.APPLY_TYPE
     </sql>
 
     <sql id="queryWhereRf">
@@ -457,12 +465,12 @@
         </if>
         <if test="userinfo.nickName!=null and  userinfo.nickName!=''">
             <![CDATA[
-                    and NICK_NAME=#{userinfo.nickName,jdbcType=VARCHAR}
+                    and TUI.NICK_NAME=#{userinfo.nickName,jdbcType=VARCHAR}
                     ]]>
         </if>
         <if test="userinfo.registerSource!=null and userinfo.registerSource!=''">
             <![CDATA[
-                    and REGISTER_SOURCE=#{userinfo.registerSource,jdbcType=VARCHAR}
+                    and TUI.REGISTER_SOURCE=#{userinfo.registerSource,jdbcType=VARCHAR}
                     ]]>
         </if>
     </sql>
@@ -489,5 +497,18 @@
         LEFT JOIN T_MARS_APPLY_INFO TAI ON TUI.USER_ID = TAI.USER_ID
         WHERE TAI.APPLY_TYPE = #{applyType,jdbcType=DECIMAL} AND TAI.STATUS = 1
         <include refid="queryWhereRf"></include>
+    </select>
+
+    <select id="getWorker" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.UserInfo">
+        select
+        <include refid="selectColumnsRf"></include>
+        ,(SELECT SUM(AMOUNT) FROM T_MARS_ACCOUNT_DETAIL WHERE USER_ID = TUI.USER_ID AND BUSINESSE_TYPE = 99) AS
+        ACCUMULATIVE_WITHDRAWALS,
+        (SELECT SUM(AMOUNT) FROM T_MARS_ACCOUNT_DETAIL WHERE USER_ID = TUI.USER_ID AND BUSINESSE_TYPE &lt; 99) AS
+        ACCUMULATIVE_SUBSIDY
+        from T_MARS_USER_INFO TUI
+        LEFT JOIN T_MARS_USER_SALES_INFO TUSI ON TUI.USER_ID = TUSI.USER_ID
+        LEFT JOIN T_MARS_APPLY_INFO TAI ON TUI.USER_ID = TAI.USER_ID
+        WHERE TAI.STATUS = 1 AND TUI.USER_ID = #{userId,jdbcType=DECIMAL}
     </select>
 </mapper>

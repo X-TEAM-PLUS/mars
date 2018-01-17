@@ -32,6 +32,14 @@ public interface UserInfoDao {
     public UserInfo get(UserInfo userInfo) throws Exception;
 
     /**
+     * 获取社工，理事与常任理事详情
+     * @param userInfo
+     * @return
+     * @throws Exception
+     */
+    public UserInfo getWorker(UserInfo userInfo) throws Exception;
+
+    /**
      * 新增
      *
      * @param userInfo

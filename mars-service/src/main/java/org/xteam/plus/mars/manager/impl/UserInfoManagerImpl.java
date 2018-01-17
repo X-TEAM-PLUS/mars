@@ -31,6 +31,11 @@ public class UserInfoManagerImpl implements UserInfoManager {
     }
 
     @Override
+    public UserInfo getWorker(UserInfo userInfo) throws Exception {
+        return userInfoDao.getWorker(userInfo);
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public int insert(UserInfo userInfo) throws Exception {
         return userInfoDao.insert(userInfo);

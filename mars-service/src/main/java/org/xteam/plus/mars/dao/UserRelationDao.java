@@ -65,6 +65,19 @@ public interface UserRelationDao {
     public List<UserRelation> query(UserRelation userRelation) throws Exception;
 
     /**
+     * 关联查询user
+     * @param userRelation
+     * @return List<UserRelation>
+     */
+    public List<UserRelation> queryForUser(UserRelation userRelation) throws Exception;
+
+    /**
+     * 关联查询记录数
+     * @param  userRelation
+     * @return List<UserRelation>
+     */
+    public Integer queryForUserCount(UserRelation userRelation) throws Exception;
+    /**
      * 查询记录数
      * @param  userRelation
      * @return List<UserRelation>

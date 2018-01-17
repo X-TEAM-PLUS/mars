@@ -69,4 +69,20 @@ public interface UserRelationManager {
      * @return List<UserRelation>
      */
     public Integer queryCount(UserRelation userRelation) throws Exception;
+
+    /**
+     * 关联查询user
+     *
+     * @param userRelation
+     * @return List<UserRelation>
+     */
+    public List<UserRelation> queryForUser(UserRelation userRelation) throws Exception;
+
+    /**
+     * 关联查询user记录数
+     *
+     * @param userRelation
+     * @return List<UserRelation>
+     */
+    public Integer queryForUserCount(UserRelation userRelation) throws Exception;
 }

@@ -48,6 +48,10 @@ public class UserRelation implements Serializable {
      */
     private java.util.Date created;
 
+    /**
+     * 用户信息
+     */
+    private UserInfo userInfo;
 
     /**
      * 设置   relationId
@@ -182,5 +186,13 @@ public class UserRelation implements Serializable {
     public UserRelation setLimit(Integer limit) {
         this.limit = limit;
         return this;
+    }
+
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 }

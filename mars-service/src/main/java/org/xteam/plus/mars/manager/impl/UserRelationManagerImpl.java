@@ -64,4 +64,14 @@ public class UserRelationManagerImpl implements UserRelationManager {
         return userRelationDao.queryCount(userRelation);
     }
 
+    @Override
+    public List<UserRelation> queryForUser(UserRelation userRelation) throws Exception {
+        return userRelationDao.queryForUser(userRelation);
+    }
+
+    @Override
+    public Integer queryForUserCount(UserRelation userRelation) throws Exception {
+        return userRelationDao.queryForUserCount(userRelation);
+    }
+
 }

@@ -170,10 +170,10 @@ public class UserRelationServiceProvider extends AbstractServiceProvider {
     public JsonResult list(UserRelation userrelation) throws Exception {
         JsonResult jsonResult = new JsonResult();
         try {
-            List<UserRelation> data = userrelationManager.query(userrelation);
+            List<UserRelation> data = userrelationManager.queryForUser(userrelation);
             // 设置结果集
             jsonResult.put("list", data);
-            jsonResult.put("rowCount", userrelationManager.queryCount(userrelation));
+            jsonResult.put("rowCount", userrelationManager.queryForUserCount(userrelation));
             jsonResult.setSuccess(true);
         } catch (Exception e) {
             logError("查询异常", e);
