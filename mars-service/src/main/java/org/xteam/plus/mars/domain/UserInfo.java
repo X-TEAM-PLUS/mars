@@ -1,6 +1,7 @@
 package org.xteam.plus.mars.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 
 /**
@@ -128,6 +129,25 @@ public class UserInfo implements Serializable {
      */
     private String nickName;
 
+    /**
+     * 用户销售信息表
+     */
+    private UserSalesInfo userSalesInfo;
+
+    /**
+     * 申请记录表
+     */
+    private ApplyInfo applyInfo;
+
+    /**
+     * 累计提现金额
+     */
+    private BigDecimal accumulativeWithdrawals;
+
+    /**
+     * 累计补贴金额
+     */
+    private BigDecimal accumulativeSubsidy;
 
     /**
      * 设置   cardNo
@@ -566,5 +586,37 @@ public class UserInfo implements Serializable {
     public UserInfo setLimit(Integer limit) {
         this.limit = limit;
         return this;
+    }
+
+    public UserSalesInfo getUserSalesInfo() {
+        return userSalesInfo;
+    }
+
+    public void setUserSalesInfo(UserSalesInfo userSalesInfo) {
+        this.userSalesInfo = userSalesInfo;
+    }
+
+    public BigDecimal getAccumulativeWithdrawals() {
+        return accumulativeWithdrawals;
+    }
+
+    public void setAccumulativeWithdrawals(BigDecimal accumulativeWithdrawals) {
+        this.accumulativeWithdrawals = accumulativeWithdrawals;
+    }
+
+    public BigDecimal getAccumulativeSubsidy() {
+        return accumulativeSubsidy;
+    }
+
+    public void setAccumulativeSubsidy(BigDecimal accumulativeSubsidy) {
+        this.accumulativeSubsidy = accumulativeSubsidy;
+    }
+
+    public ApplyInfo getApplyInfo() {
+        return applyInfo;
+    }
+
+    public void setApplyInfo(ApplyInfo applyInfo) {
+        this.applyInfo = applyInfo;
     }
 }

@@ -69,4 +69,20 @@ public interface UserInfoManager {
      * @return List<UserInfo>
      */
     public Integer queryCount(UserInfo userInfo) throws Exception;
+
+    /**
+     * 查询社工，理事，常务理事列表
+     *
+     * @return
+     * @throws Exception
+     */
+    public List<UserInfo> queryWorker(UserInfo userInfo,Integer applyType) throws Exception;
+
+    /**
+     * 查询社工，理事，常务理事个数
+     * @param userInfo
+     * @return
+     * @throws Exception
+     */
+    public Integer queryWorkerCount(UserInfo userInfo,Integer applyType) throws Exception;
 }

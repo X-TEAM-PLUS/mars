@@ -24,6 +24,29 @@
         <result column="USER_LEVEL" property="userLevel" jdbcType="INTEGER"/>
         <result column="LAST_LOGIN_TIME" property="lastLoginTime" jdbcType="TIMESTAMP"/>
         <result column="NICK_NAME" property="nickName" jdbcType="VARCHAR"/>
+        <result column="ACCUMULATIVE_WITHDRAWALS" property="accumulativeWithdrawals" jdbcType="DECIMAL"/>
+        <result column="ACCUMULATIVE_SUBSIDY" property="accumulativeSubsidy" jdbcType="DECIMAL"/>
+        <association property="userSalesInfo" column="USER_ID"
+                     javaType="org.xteam.plus.mars.domain.UserSalesInfo">
+            <id column="USER_ID" property="userId" jdbcType="DECIMAL"/>
+            <result column="TEAM_PEOPLE_NUMBER" property="teamPeopleNumber" jdbcType="INTEGER"/>
+            <result column="TEAM_PROFIT_AMOUNT" property="teamProfitAmount" jdbcType="DECIMAL"/>
+            <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+            <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
+            <result column="PROMOTION_NUMBER" property="promotionNumber" jdbcType="INTEGER"/>
+        </association>
+
+        <association property="applyInfo" column="USER_ID"
+                     javaType="org.xteam.plus.mars.domain.ApplyInfo">
+            <id column="APPLY_ID" property="applyId" jdbcType="DECIMAL"/>
+            <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+            <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
+            <result column="APPLY_REASON" property="applyReason" jdbcType="VARCHAR"/>
+            <result column="STATUS" property="status" jdbcType="INTEGER"/>
+            <result column="USER_ID" property="userId" jdbcType="DECIMAL"/>
+            <result column="APPLY_WAY" property="applyWay" jdbcType="INTEGER"/>
+            <result column="APPLY_TYPE" property="applyType" jdbcType="INTEGER"/>
+        </association>
     </resultMap>
 
     <!--公用选择列-->
@@ -175,7 +198,8 @@
     </delete>
 
     <!--插入记录-->
-    <insert id="insert" parameterType="org.xteam.plus.mars.domain.UserInfo" useGeneratedKeys="true" keyProperty="userId">
+    <insert id="insert" parameterType="org.xteam.plus.mars.domain.UserInfo" useGeneratedKeys="true"
+            keyProperty="userId">
         insert into T_MARS_USER_INFO (
         CARD_NO
         ,ID_NUMBER
@@ -384,5 +408,86 @@
         select count(1)
         from T_MARS_USER_INFO
         <include refid="queryWhere"></include>
+    </select>
+
+    <!-- 关联查询方法 UserSalesInfo -->
+    <!-- 关联查询 用户销售信息表 -->
+    <!-- 关联查询选择列-->
+    <sql id="selectColumnsRf">
+        TUI.USER_ID
+        ,TUI.CARD_NO
+        ,TUI.ID_NUMBER
+        ,TUI.CARD_ACTIVATE_MODE
+        ,TUI.REAL_NAME
+        ,TUI.CARD_TYPE
+        ,TUI.LINK_ADDRESS
+        ,TUI.CARD_LIFE_TIME
+        ,TUI.MOBILE_NO
+        ,TUI.CARD_ACTIVATE_TIME
+        ,TUI.REGISTER_TIME
+        ,TUI.CREATED
+        ,TUI.WEIXIN_ACCOUNT
+        ,TUI.STATUS
+        ,TUI.LOGIN_COUNT
+        ,TUI.REGISTER_SOURCE
+        ,TUI.UPDATED
+        ,TUI.PASSWORK
+        ,TUI.USER_LEVEL
+        ,TUI.LAST_LOGIN_TIME
+        ,TUI.NICK_NAME
+        ,TUSI.USER_ID
+        ,TUSI.TEAM_PEOPLE_NUMBER
+        ,TUSI.TEAM_PROFIT_AMOUNT
+        ,TUSI.CREATED
+        ,TUSI.UPDATED
+        ,TUSI.PROMOTION_NUMBER
+    </sql>
+
+    <sql id="queryWhereRf">
+
+        <if test="userinfo.cardNo!=null ">
+            <![CDATA[
+                    and TUI.CARD_NO=#{userinfo.cardNo,jdbcType=DECIMAL}
+                    ]]>
+        </if>
+        <if test="userinfo.userLevel!=null ">
+            <![CDATA[
+                    and TUI.USER_LEVEL=#{userinfo.userLevel,jdbcType=INTEGER}
+                    ]]>
+        </if>
+        <if test="userinfo.nickName!=null and  userinfo.nickName!=''">
+            <![CDATA[
+                    and NICK_NAME=#{userinfo.nickName,jdbcType=VARCHAR}
+                    ]]>
+        </if>
+        <if test="userinfo.registerSource!=null and userinfo.registerSource!=''">
+            <![CDATA[
+                    and REGISTER_SOURCE=#{userinfo.registerSource,jdbcType=VARCHAR}
+                    ]]>
+        </if>
+    </sql>
+
+    <select id="queryWorker" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.UserInfo">
+        select
+        <include refid="selectColumnsRf"></include>
+        ,(SELECT SUM(AMOUNT) FROM T_MARS_ACCOUNT_DETAIL WHERE USER_ID = TUI.USER_ID AND BUSINESSE_TYPE = 99) AS
+        ACCUMULATIVE_WITHDRAWALS,
+        (SELECT SUM(AMOUNT) FROM T_MARS_ACCOUNT_DETAIL WHERE USER_ID = TUI.USER_ID AND BUSINESSE_TYPE &lt; 99) AS
+        ACCUMULATIVE_SUBSIDY
+        from T_MARS_USER_INFO TUI
+        LEFT JOIN T_MARS_USER_SALES_INFO TUSI ON TUI.USER_ID = TUSI.USER_ID
+        LEFT JOIN T_MARS_APPLY_INFO TAI ON TUI.USER_ID = TAI.USER_ID
+        WHERE TAI.APPLY_TYPE = #{applyType,jdbcType=DECIMAL} AND TAI.STATUS = 1
+        <include refid="queryWhereRf"></include>
+        limit #{userinfo.start},#{userinfo.limit}
+    </select>
+
+    <select id="queryWorkerCount" resultType="int" parameterType="org.xteam.plus.mars.domain.UserInfo">
+        select count(1)
+        from T_MARS_USER_INFO TUI
+        LEFT JOIN T_MARS_USER_SALES_INFO TUSI ON TUI.USER_ID = TUSI.USER_ID
+        LEFT JOIN T_MARS_APPLY_INFO TAI ON TUI.USER_ID = TAI.USER_ID
+        WHERE TAI.APPLY_TYPE = #{applyType,jdbcType=DECIMAL} AND TAI.STATUS = 1
+        <include refid="queryWhereRf"></include>
     </select>
 </mapper>

@@ -5,8 +5,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.xteam.plus.mars.common.JsonResult;
 import org.xteam.plus.mars.domain.UserInfo;
 import org.xteam.plus.mars.manager.UserInfoManager;
+import org.xteam.plus.mars.type.ApplayTypeEnum;
+import org.xteam.plus.mars.type.UserLevelEnum;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 
@@ -61,6 +64,8 @@ public class UserInfoServiceProvider extends AbstractServiceProvider {
     public JsonResult post(UserInfo userinfo) throws Exception {
         JsonResult jsonResult = new JsonResult();
         try {
+            userinfo.setRegisterTime(new Date());
+            userinfo.setCreated(new Date());
             //保存
             int rowCount = userinfoManager.insert(userinfo);
             if (rowCount > 0) {
@@ -174,6 +179,30 @@ public class UserInfoServiceProvider extends AbstractServiceProvider {
             // 设置结果集
             jsonResult.put("list", data);
             jsonResult.put("rowCount", userinfoManager.queryCount(userinfo));
+            jsonResult.setSuccess(true);
+        } catch (Exception e) {
+            logError("查询异常", e);
+            jsonResult.setMessage("查询异常");
+            jsonResult.setSuccess(false);
+        }
+        return jsonResult;
+    }
+
+    /**
+     * 社工查询
+     *
+     * @param userInfo
+     * @return List<UserInfo>
+     */
+    @RequestMapping("/socialWorkerList")
+    public JsonResult socialWorkerList(UserInfo userInfo) throws Exception {
+        JsonResult jsonResult = new JsonResult();
+        try {
+            userInfo.setUserLevel(UserLevelEnum.SOCIAL.getCode());
+            List<UserInfo> data = userinfoManager.queryWorker(userInfo, ApplayTypeEnum.SOCIAL.getCode());
+            // 设置结果集
+            jsonResult.put("list", data);
+            jsonResult.put("rowCount", userinfoManager.queryWorkerCount(userInfo, ApplayTypeEnum.SOCIAL.getCode()));
             jsonResult.setSuccess(true);
         } catch (Exception e) {
             logError("查询异常", e);

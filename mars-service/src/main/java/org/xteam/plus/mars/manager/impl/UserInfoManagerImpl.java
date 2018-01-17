@@ -64,4 +64,14 @@ public class UserInfoManagerImpl implements UserInfoManager {
         return userInfoDao.queryCount(userInfo);
     }
 
+    @Override
+    public List<UserInfo> queryWorker(UserInfo userInfo, Integer applyType) throws Exception {
+        return userInfoDao.queryWorker(userInfo, applyType);
+    }
+
+    @Override
+    public Integer queryWorkerCount(UserInfo userInfo, Integer applyType) throws Exception {
+        return userInfoDao.queryWorkerCount(userInfo, applyType);
+    }
+
 }

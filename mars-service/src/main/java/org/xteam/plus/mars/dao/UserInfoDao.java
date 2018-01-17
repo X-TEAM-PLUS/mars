@@ -1,5 +1,6 @@
 package org.xteam.plus.mars.dao;
 
+import org.apache.ibatis.annotations.Param;
 import org.xteam.plus.mars.domain.UserInfo;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public interface UserInfoDao {
 
     /**
      * 获取
+     *
      * @param userInfo
      * @return int
      */
@@ -31,6 +33,7 @@ public interface UserInfoDao {
 
     /**
      * 新增
+     *
      * @param userInfo
      * @return int 记录数
      */
@@ -38,13 +41,15 @@ public interface UserInfoDao {
 
     /**
      * 批量新增
-     * @param list   List<UserInfo>
+     *
+     * @param list List<UserInfo>
      * @return int  记录数
      */
     public int batchInsert(List<UserInfo> list) throws Exception;
 
     /**
      * 删除
+     *
      * @param userInfo
      * @return int
      */
@@ -52,6 +57,7 @@ public interface UserInfoDao {
 
     /**
      * 更新
+     *
      * @param userInfo
      * @return int 记录数
      */
@@ -59,6 +65,7 @@ public interface UserInfoDao {
 
     /**
      * 查询
+     *
      * @param userInfo
      * @return List<UserInfo>
      */
@@ -66,8 +73,27 @@ public interface UserInfoDao {
 
     /**
      * 查询记录数
-     * @param  userInfo
+     *
+     * @param userInfo
      * @return List<UserInfo>
      */
     public Integer queryCount(UserInfo userInfo) throws Exception;
+
+    /**
+     * 查询社工，理事，常务理事
+     *
+     * @param userInfo
+     * @parma 申请时的申请类型 	申请类型 1:社工 2理事 3常任理事
+     * @return List<UserInfo>
+     */
+    public List<UserInfo> queryWorker(@Param("userinfo") UserInfo userInfo, @Param("applyType") Integer applyType) throws Exception;
+
+    /**
+     * 查询社工，理事，常务理事记录数
+     *
+     * @param userInfo
+     * @parma 申请时的申请类型 	申请类型 1:社工 2理事 3常任理事
+     * @return List<UserInfo>
+     */
+    public Integer queryWorkerCount(@Param("userinfo") UserInfo userInfo, @Param("applyType") Integer applyType) throws Exception;
 }
