@@ -2,26 +2,63 @@ package org.xteam.plus.mars.common.excel;
 
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.*;
+import org.xteam.plus.mars.common.JsonUtils;
 
-import java.awt.*;
-import java.io.IOException;
+import java.awt.Color;
+import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yankun on 2017/2/28.
  */
 public class ExcelUtils {
+    private static final Log log  = LogFactory.getLog(ExcelUtils.class);
+
+    /**
+     * 导入数据
+     * @param dataIndexs  属性名
+     * @param classType   对象类型
+     * @param inputStream  导入文件输入流
+     * @param <T>
+     * @return
+     * @throws Exception
+     */
+    public  static  <T>  List<T> load(String[] dataIndexs,Class<T> classType, InputStream inputStream) throws  Exception{
+        List<T> results = null;
+        Workbook workbook =null;
+        try{
+            workbook = new HSSFWorkbook(inputStream);
+            Sheet sheet = workbook.getSheetAt(0);
+            results = new ArrayList<>();
+            for (Row row : sheet) {
+                Map<String,String> rowMap = new HashMap<String,String>();
+                for(int i=0; i< dataIndexs.length;i++){
+                    rowMap.put(dataIndexs[i],row.getCell(i).getStringCellValue());
+                }
+                results.add(JsonUtils.transform(rowMap,classType));
+            }
+            }catch (Exception e){
+            log.error("导入数据异常",e);
+        }finally {
+            if(workbook!=null){
+                workbook.close();
+            }
+        }
+        return  results;
+    }
 
 
-    public static void export(String[] heads, String[] dataIndexs, List data, OutputStream outputStream, String sheetName) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, IOException {
+    public static void export(String[] heads, String[] dataIndexs, List data, OutputStream outputStream, String sheetName) throws Exception {
         XSSFWorkbook workBook = new XSSFWorkbook();
         XSSFSheet sheet = workBook.createSheet(sheetName);
         XSSFCellStyle headStyle = getHeadStyle(workBook);
