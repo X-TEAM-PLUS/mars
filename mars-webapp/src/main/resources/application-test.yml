@@ -13,6 +13,9 @@ zuul:
     mars-webapp:
       path: /webservice/**
       serviceId: mars-service
+ribbon:
+    ReadTimeout: 30000
+    ConnectTimeout: 30000
 logging:
   path: /var/log/mars
   level: debug

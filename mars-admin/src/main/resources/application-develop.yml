@@ -39,6 +39,9 @@ zuul:
     mars-admin:
       path: /services/**
       serviceId: mars-service
+ribbon:
+    ReadTimeout: 30000
+    ConnectTimeout: 30000
 logging:
   path: d:/logs
   level: debug
