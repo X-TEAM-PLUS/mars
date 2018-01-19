@@ -44,6 +44,9 @@
         <maven.druid.version>1.0.14</maven.druid.version>
         <!--spring boot-->
         <mvn.spring.cloud.dependencies.version>Edgware.RELEASE</mvn.spring.cloud.dependencies.version>
+          <!--plugin-->
+        <mvn.maven.resources.plugin.version>3.0.2</mvn.maven.resources.plugin.version>
+        <mvn.maven.compiler.plugin.version>	3.7.0</mvn.maven.compiler.plugin.version>
     </properties>
 
     <dependencies>
@@ -98,7 +101,7 @@
             <!-- 编译plugin -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+                <version>${mvn.maven.compiler.plugin.version}</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
@@ -108,7 +111,7 @@
             <!-- resources 编码  -->
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>2.4.3</version>
+                <version>${mvn.maven.resources.plugin.version}</version>
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
