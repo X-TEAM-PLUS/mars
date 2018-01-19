@@ -56,20 +56,19 @@
         </dependency>
 
     </dependencies>
-
     <profiles>
         <profile>
             <id>develop</id>
             <properties>
                 <!-- tracker地址-->
-                <mvn.tracker.server>113.209.111.211:22122</mvn.tracker.server>
+                <mvn.tracker.server>192.168.31.69:22122</mvn.tracker.server>
             </properties>
         </profile>
         <profile>
             <id>test</id>
             <properties>
                 <!-- tracker地址-->
-                <mvn.tracker.server>113.209.111.211:22122</mvn.tracker.server>
+                <mvn.tracker.server>192.168.0.3:22122</mvn.tracker.server>
             </properties>
         </profile>
         <profile>
@@ -82,34 +81,15 @@
     </profiles>
 
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-            <!-- resources 编码  -->
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.4.3</version>
-                <configuration>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
-            </plugin>
-        </plugins>
         <resources>
             <resource>
-                <directory>src/main/resources</directory>
+                <directory>${project.basedir}/src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
             <resource>
-                <directory>src/test/resources</directory>
+                <directory>${project.basedir}/src/test/resources</directory>
                 <filtering>true</filtering>
             </resource>
         </resources>
     </build>
-
 </project>
