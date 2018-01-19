@@ -2,6 +2,7 @@ package org.xteam.plus.mars.manager;
 
 import org.xteam.plus.mars.domain.UserRelation;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -85,4 +86,22 @@ public interface UserRelationManager {
      * @return List<UserRelation>
      */
     public Integer queryForUserCount(UserRelation userRelation) throws Exception;
+
+    /**
+     * 根据地方常任理事会主键查询所有关联用户
+     *
+     * @param councilId 常任理事主键
+     * @param start
+     * @param limit
+     * @return
+     */
+    public List<UserRelation> queryForCouncil(BigDecimal councilId, int start, int limit) throws Exception;
+
+    /**
+     * 根据地方常任理事会主键查询所有关联用户
+     *
+     * @param councilId 常任理事主键
+     * @return
+     */
+    public Integer queryForCouncilCount(BigDecimal councilId) throws Exception;
 }

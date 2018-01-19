@@ -10,6 +10,18 @@
         <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
     </resultMap>
 
+    <resultMap id="TotalBaseResultMap" type="org.xteam.plus.mars.domain.CouncilInfoList">
+        <id column="councilId" property="councilId" jdbcType="DECIMAL"/>
+        <result column="totalSubsidy" property="totalSubsidy" jdbcType="DECIMAL"/>
+        <result column="totalUser" property="totalUser" jdbcType="DECIMAL"/>
+        <result column="totalSocial" property="totalSocial" jdbcType="DECIMAL"/>
+        <result column="totalDirector" property="totalDirector" jdbcType="DECIMAL"/>
+        <result column="totalStandingDirector" property="totalStandingDirector" jdbcType="DECIMAL"/>
+        <result column="openDate" property="openDate" jdbcType="TIMESTAMP"/>
+        <result column="cityName" property="cityName" jdbcType="VARCHAR"/>
+        <result column="cityNo" property="cityNo" jdbcType="DECIMAL"/>
+    </resultMap>
+
     <!--公用选择列-->
     <sql id="selectColumns">
         COUNCIL_ID,
@@ -60,7 +72,8 @@
     </delete>
 
     <!--插入记录-->
-    <insert id="insert" parameterType="org.xteam.plus.mars.domain.CouncilInfo" useGeneratedKeys="true" keyProperty="councilId">
+    <insert id="insert" parameterType="org.xteam.plus.mars.domain.CouncilInfo" useGeneratedKeys="true"
+            keyProperty="councilId">
         insert into T_MARS_COUNCIL_INFO (
         CITY_NO
         ,OPEN_DATE
@@ -141,5 +154,156 @@
         select count(1)
         from T_MARS_COUNCIL_INFO
         <include refid="queryWhere"></include>
+    </select>
+
+
+    <!-- 统计查询 -->
+    <select id="queryTotal" resultMap="TotalBaseResultMap">
+        SELECT
+        (
+        SELECT
+        SUM(AMOUNT)
+        FROM
+        T_MARS_ACCOUNT_DETAIL TMAD
+        WHERE
+        FIND_IN_SET(
+        TMAD.USER_ID ,
+        GROUP_CONCAT(TMLCM.USER_ID)
+        )
+        AND TMAD.BUSINESSE_TYPE &lt; 99
+        ) totalSubsidy ,
+        (
+        SELECT
+        COUNT(TMUR.REFEREE_USER_ID)
+        FROM
+        T_MARS_USER_RELATION TMUR
+        WHERE
+        FIND_IN_SET(
+        TMUR.REFEREE_USER_ID ,
+        GROUP_CONCAT(TMLCM.USER_ID)
+        )
+        ) totalUser ,
+        (
+        SELECT
+        COUNT(*)
+        FROM
+        T_MARS_USER_INFO TMUI2
+        WHERE
+        FIND_IN_SET(
+        TMUI2.USER_ID ,
+        GROUP_CONCAT(TMLCM.USER_ID)
+        )
+        AND TMUI2.USER_LEVEL = 2
+        ) totalSocial ,
+        (
+        SELECT
+        COUNT(*)
+        FROM
+        T_MARS_USER_INFO TMUI2
+        WHERE
+        FIND_IN_SET(
+        TMUI2.USER_ID ,
+        GROUP_CONCAT(TMLCM.USER_ID)
+        )
+        AND TMUI2.USER_LEVEL = 3
+        ) totalDirector ,
+        (
+        SELECT
+        COUNT(*)
+        FROM
+        T_MARS_USER_INFO TMUI2
+        WHERE
+        FIND_IN_SET(
+        TMUI2.USER_ID ,
+        GROUP_CONCAT(TMLCM.USER_ID)
+        )
+        AND TMUI2.USER_LEVEL = 4
+        ) totalStandingDirector ,
+        TMCI.OPEN_DATE openDate ,
+        TMCI.CITY_NO cityNo ,
+        TMCITY. NAME cityName ,
+        TMCI.COUNCIL_ID councilId
+        FROM
+        T_MARS_COUNCIL_INFO TMCI
+        LEFT JOIN T_MARS_LOCAL_COUNCIL_MEMBER TMLCM ON TMCI.COUNCIL_ID = TMLCM.COUNCIL_ID
+        LEFT JOIN T_MARS_USER_INFO TMUI ON TMUI.USER_ID = TMLCM.USER_ID
+        LEFT JOIN T_MARS_CITY_INFO TMCITY ON TMCITY. CODE = TMCI.CITY_NO
+        GROUP BY
+        TMCI.COUNCIL_ID
+    </select>
+
+    <select id="getTotal" resultMap="TotalBaseResultMap">
+        SELECT
+        (
+        SELECT
+        SUM(AMOUNT)
+        FROM
+        T_MARS_ACCOUNT_DETAIL TMAD
+        WHERE
+        FIND_IN_SET(
+        TMAD.USER_ID ,
+        GROUP_CONCAT(TMLCM.USER_ID)
+        )
+        AND TMAD.BUSINESSE_TYPE &lt; 99
+        ) totalSubsidy ,
+        (
+        SELECT
+        COUNT(TMUR.REFEREE_USER_ID)
+        FROM
+        T_MARS_USER_RELATION TMUR
+        WHERE
+        FIND_IN_SET(
+        TMUR.REFEREE_USER_ID ,
+        GROUP_CONCAT(TMLCM.USER_ID)
+        )
+        ) totalUser ,
+        (
+        SELECT
+        COUNT(*)
+        FROM
+        T_MARS_USER_INFO TMUI2
+        WHERE
+        FIND_IN_SET(
+        TMUI2.USER_ID ,
+        GROUP_CONCAT(TMLCM.USER_ID)
+        )
+        AND TMUI2.USER_LEVEL = 2
+        ) totalSocial ,
+        (
+        SELECT
+        COUNT(*)
+        FROM
+        T_MARS_USER_INFO TMUI2
+        WHERE
+        FIND_IN_SET(
+        TMUI2.USER_ID ,
+        GROUP_CONCAT(TMLCM.USER_ID)
+        )
+        AND TMUI2.USER_LEVEL = 3
+        ) totalDirector ,
+        (
+        SELECT
+        COUNT(*)
+        FROM
+        T_MARS_USER_INFO TMUI2
+        WHERE
+        FIND_IN_SET(
+        TMUI2.USER_ID ,
+        GROUP_CONCAT(TMLCM.USER_ID)
+        )
+        AND TMUI2.USER_LEVEL = 4
+        ) totalStandingDirector ,
+        TMCI.OPEN_DATE openDate ,
+        TMCI.CITY_NO cityNo ,
+        TMCITY. NAME cityName ,
+        TMCI.COUNCIL_ID councilId
+        FROM
+        T_MARS_COUNCIL_INFO TMCI
+        LEFT JOIN T_MARS_LOCAL_COUNCIL_MEMBER TMLCM ON TMCI.COUNCIL_ID = TMLCM.COUNCIL_ID
+        LEFT JOIN T_MARS_USER_INFO TMUI ON TMUI.USER_ID = TMLCM.USER_ID
+        LEFT JOIN T_MARS_CITY_INFO TMCITY ON TMCITY. CODE = TMCI.CITY_NO
+        WHERE TMCI.COUNCIL_ID= #{councilId,jdbcType=DECIMAL}
+        GROUP BY
+        TMCI.COUNCIL_ID
     </select>
 </mapper>

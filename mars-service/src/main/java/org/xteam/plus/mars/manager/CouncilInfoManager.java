@@ -1,7 +1,9 @@
 package org.xteam.plus.mars.manager;
 
 import org.xteam.plus.mars.domain.CouncilInfo;
+import org.xteam.plus.mars.domain.CouncilInfoList;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -21,6 +23,14 @@ public interface CouncilInfoManager {
      * @return int
      */
     public CouncilInfo get(CouncilInfo councilInfo) throws Exception;
+
+    /**
+     * 获取单个地方常任理事会统计数据
+     * @param councilInfo
+     * @return
+     * @throws Exception
+     */
+    public CouncilInfoList getTotal(BigDecimal councilInfo) throws Exception;
 
     /**
      * 新增
@@ -69,4 +79,12 @@ public interface CouncilInfoManager {
      * @return List<CouncilInfo>
      */
     public Integer queryCount(CouncilInfo councilInfo) throws Exception;
+
+    /**
+     * 查询地方常任理事列表
+     *
+     * @return
+     * @throws Exception
+     */
+    public List<CouncilInfoList> queryTotal() throws Exception;
 }

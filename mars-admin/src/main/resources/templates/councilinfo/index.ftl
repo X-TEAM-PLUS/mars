@@ -69,11 +69,14 @@
                         <thead>
                         <tr>
                             <th column="councilId" type="checkbox" style="width: 50px"><input type="checkbox" id="allCheckBox" class="allCheckBox"></th>
-                            <th column="councilId">理事会ID</th>
-                            <th column="cityNo">城市编号</th>
-                            <th column="openDate">开通日期</th>
-                            <th column="created">创建时间</th>
-                            <th column="updated">更新时间</th>
+                            <th column="cityNo">地区主键</th>
+                            <th column="cityName">地区名称</th>
+                            <th column="totalStandingDirector">辖内常任理事</th>
+                            <th column="totalDirector">辖内理事</th>
+                            <th column="totalSocial">辖内社工</th>
+                            <th column="totalUser">地方总人数</th>
+                            <th column="openDate">成立日期</th>
+                            <th column="totalSubsidy">总补贴(元)</th>
                             <th type="action" style="width: 200px">操作</th>
                         </tr>
                         </thead>
@@ -93,13 +96,13 @@
     function init() {
         $("#councilInfoTable").pagingGrid(
                 {
-                    dataUrl: '/services/mars/councilinfo/list'
+                    dataUrl: '/services/mars/councilinfo/totalList'
                     , pageSize: 10
                     , scroll: false
                     , dockedItems: [{
                         name: '修改'
                         , iconClass: 'fa fa-edit'
-                        , action: '/mars/councilinfo/edit'
+                        , action: '/mars/councilinfo/view'
                         , confirm: false
                         , parmaName: 'councilId'
                         , column: 'councilId'

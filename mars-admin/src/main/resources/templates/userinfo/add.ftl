@@ -112,17 +112,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                会员卡有效期
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10 date-picker input-daterange " data-date-format="yyyy-mm-dd">
-                                    <i class="fa fa-calendar "></i>
-                                    <input type="text" name="cardLifeTime" class="form-control " readonly="" validate='{required: false}'>
-                                </div>
-                            </div>
-                        </div>
+
                         <div class="form-group">
                             <label class="col-md-3 control-label">
                                 手机号
@@ -134,39 +124,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                会员卡激活日期
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10 date-picker input-daterange " data-date-format="yyyy-mm-dd">
-                                    <i class="fa fa-calendar "></i>
-                                    <input type="text" name="cardActivateTime" class="form-control " readonly="" validate='{required: false}'>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                注册时间<span class="required">* </span>
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10 date-picker input-daterange " data-date-format="yyyy-mm-dd">
-                                    <i class="fa fa-calendar "></i>
-                                    <input type="text" name="registerTime" class="form-control " readonly="" validate='{required: true}'>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                创建时间<span class="required">* </span>
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10 date-picker input-daterange " data-date-format="yyyy-mm-dd">
-                                    <i class="fa fa-calendar "></i>
-                                    <input type="text" name="created" class="form-control " readonly="" validate='{required: true}'>
-                                </div>
-                            </div>
-                        </div>
+
                         <div class="form-group">
                             <label class="col-md-3 control-label">
                                 微信账户
@@ -211,17 +169,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                更新时间
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10 date-picker input-daterange " data-date-format="yyyy-mm-dd">
-                                    <i class="fa fa-calendar "></i>
-                                    <input type="text" name="updated" class="form-control " readonly="" validate='{required: false}'>
-                                </div>
-                            </div>
-                        </div>
+
                         <div class="form-group">
                             <label class="col-md-3 control-label">
                                 密码
@@ -255,17 +203,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                最后登录时间
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10 date-picker input-daterange " data-date-format="yyyy-mm-dd">
-                                    <i class="fa fa-calendar "></i>
-                                    <input type="text" name="lastLoginTime" class="form-control " readonly="" validate='{required: false}'>
-                                </div>
-                            </div>
-                        </div>
+
                         <div class="form-group">
                             <label class="col-md-3 control-label">
                                 昵称

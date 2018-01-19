@@ -131,7 +131,6 @@
 <script src="${request.contextPath}/static/assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
 <script src="${request.contextPath}/static/assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
 <script src="${request.contextPath}/static/assets/global/plugins/table.head.fixer/tableHeadFixer.js" type="text/javascript"></script>
-<script src="${request.contextPath}/static/assets/pages/scripts/components-select2.min.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 <script src="${request.contextPath}/static/js/AppForm.js" type="text/javascript"></script>
 <script src="${request.contextPath}/static/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>

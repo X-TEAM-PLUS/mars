@@ -8,6 +8,7 @@ import org.xteam.plus.mars.dao.UserRelationDao;
 import org.xteam.plus.mars.domain.UserRelation;
 import org.xteam.plus.mars.manager.UserRelationManager;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -72,6 +73,16 @@ public class UserRelationManagerImpl implements UserRelationManager {
     @Override
     public Integer queryForUserCount(UserRelation userRelation) throws Exception {
         return userRelationDao.queryForUserCount(userRelation);
+    }
+
+    @Override
+    public List<UserRelation> queryForCouncil(BigDecimal councilId, int start, int limit) throws Exception {
+        return userRelationDao.queryForCouncil(councilId, start, limit);
+    }
+
+    @Override
+    public Integer queryForCouncilCount(BigDecimal councilId) throws Exception {
+        return userRelationDao.queryForCouncilCount(councilId);
     }
 
 }

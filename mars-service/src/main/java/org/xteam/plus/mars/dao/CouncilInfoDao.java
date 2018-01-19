@@ -1,7 +1,10 @@
 package org.xteam.plus.mars.dao;
 
+import org.apache.ibatis.annotations.Param;
 import org.xteam.plus.mars.domain.CouncilInfo;
+import org.xteam.plus.mars.domain.CouncilInfoList;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -24,6 +27,7 @@ public interface CouncilInfoDao {
 
     /**
      * 获取
+     *
      * @param councilInfo
      * @return int
      */
@@ -31,6 +35,7 @@ public interface CouncilInfoDao {
 
     /**
      * 新增
+     *
      * @param councilInfo
      * @return int 记录数
      */
@@ -38,13 +43,15 @@ public interface CouncilInfoDao {
 
     /**
      * 批量新增
-     * @param list   List<CouncilInfo>
+     *
+     * @param list List<CouncilInfo>
      * @return int  记录数
      */
     public int batchInsert(List<CouncilInfo> list) throws Exception;
 
     /**
      * 删除
+     *
      * @param councilInfo
      * @return int
      */
@@ -52,13 +59,23 @@ public interface CouncilInfoDao {
 
     /**
      * 更新
+     *
      * @param councilInfo
      * @return int 记录数
      */
     public int update(CouncilInfo councilInfo) throws Exception;
 
     /**
+     * 获取地方常任理事列表数据
+     *
+     * @return
+     * @throws Exception
+     */
+    public List<CouncilInfoList> queryTotal() throws Exception;
+
+    /**
      * 查询
+     *
      * @param councilInfo
      * @return List<CouncilInfo>
      */
@@ -66,8 +83,18 @@ public interface CouncilInfoDao {
 
     /**
      * 查询记录数
-     * @param  councilInfo
+     *
+     * @param councilInfo
      * @return List<CouncilInfo>
      */
     public Integer queryCount(CouncilInfo councilInfo) throws Exception;
+
+
+    /**
+     * 获取地方常任理事列表数据
+     *
+     * @return 获取单笔
+     * @throws Exception
+     */
+    public CouncilInfoList getTotal(@Param("councilId") BigDecimal councilId) throws Exception;
 }

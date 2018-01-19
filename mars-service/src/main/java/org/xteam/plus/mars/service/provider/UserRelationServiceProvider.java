@@ -7,6 +7,7 @@ import org.xteam.plus.mars.domain.UserRelation;
 import org.xteam.plus.mars.manager.UserRelationManager;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -174,6 +175,30 @@ public class UserRelationServiceProvider extends AbstractServiceProvider {
             // 设置结果集
             jsonResult.put("list", data);
             jsonResult.put("rowCount", userrelationManager.queryForUserCount(userrelation));
+            jsonResult.setSuccess(true);
+        } catch (Exception e) {
+            logError("查询异常", e);
+            jsonResult.setMessage("查询异常");
+            jsonResult.setSuccess(false);
+        }
+        return jsonResult;
+    }
+
+
+    /**
+     * 查询地方理事会辖内所有的用户信息
+     *
+     * @return List<UserRelation>
+     * @Parm councilId   地方常任理事主键
+     */
+    @RequestMapping("/listCouncil")
+    public JsonResult listCouncil(BigDecimal councilId, int start, int limit) throws Exception {
+        JsonResult jsonResult = new JsonResult();
+        try {
+            List<UserRelation> data = userrelationManager.queryForCouncil(councilId, start, limit);
+            // 设置结果集
+            jsonResult.put("list", data);
+            jsonResult.put("rowCount", userrelationManager.queryForCouncilCount(councilId));
             jsonResult.setSuccess(true);
         } catch (Exception e) {
             logError("查询异常", e);

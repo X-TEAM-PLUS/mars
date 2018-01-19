@@ -3,6 +3,7 @@
 <head>
 <#import '/common/common.ftl' as commonMacro>
 <@commonMacro.commonStyle />
+    <@commonMacro.commonScript />
 </head>
 <body class="page-content">
 
@@ -53,7 +54,8 @@
                             <div class="col-md-5">
                                 <div class="input-icon margin-top-10">
                                     <i class="fa   fa-font "></i>
-                                    <input type="text" name="councilId" class="form-control" placeholder="理事会ID" validate='{required: true}'>
+                                    <input type="text" name="councilId" class="form-control" placeholder="理事会ID"
+                                           validate='{required: true}'>
                                 </div>
                             </div>
                         </div>
@@ -62,48 +64,44 @@
                                 城市编号<span class="required">* </span>
                             </label>
                             <div class="col-md-5">
-                                <div class="input-icon margin-top-10">
-                                    <i class="fa   fa-font "></i>
-                                    <input type="text" name="cityNo" class="form-control" placeholder="城市编号" validate='{required: true}'>
-                                </div>
+                                <select class="area" id="area"
+                                        style="width: 100%">
+                                </select>
                             </div>
                         </div>
+
+
                         <div class="form-group">
                             <label class="col-md-3 control-label">
-                                开通日期<span class="required">* </span>
+                                添加成员
                             </label>
                             <div class="col-md-5">
-                                <div class="input-icon margin-top-10 date-picker input-daterange " data-date-format="yyyy-mm-dd">
-                                    <i class="fa fa-calendar "></i>
-                                    <input type="text" name="openDate" class="form-control " readonly="" validate='{required: true}'>
-                                </div>
+
+                                <select class="userInfo" id="userInfo" multiple="multiple"
+                                        style="width: 100%">
+                                </select>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label class="col-md-3 control-label">
-                                创建时间<span class="required">* </span>
+                                选择职务
                             </label>
                             <div class="col-md-5">
-                                <div class="input-icon margin-top-10 date-picker input-daterange " data-date-format="yyyy-mm-dd">
-                                    <i class="fa fa-calendar "></i>
-                                    <input type="text" name="created" class="form-control " readonly="" validate='{required: true}'>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                更新时间
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10 date-picker input-daterange " data-date-format="yyyy-mm-dd">
-                                    <i class="fa fa-calendar "></i>
-                                    <input type="text" name="updated" class="form-control " readonly="" validate='{required: false}'>
-                                </div>
+
+                                <select class="jobType" id="jobType" name="jobType"
+                                        style="width: 100%">
+                                    <option value="0">成员</option>
+                                    <option value="1">副理事长</option>
+                                    <option value="2">行政</option>
+                                </select>
                             </div>
                         </div>
                     </div>
                     <div class="form-actions right">
-                        <button type="button" class="btn default" onclick="history.go(-1)"><i class="fa fa-rotate-left"></i> 取消</button>
+                        <button type="button" class="btn default" onclick="history.go(-1)"><i
+                                class="fa fa-rotate-left"></i> 取消
+                        </button>
                         <button type="submit" class="btn green"><i class="fa fa-check"></i> 保存</button>
                     </div>
                 </form>
@@ -112,7 +110,79 @@
         </div>
     </div>
 </div>
-<@commonMacro.commonScript />
+
+<script>
+
+    $(".jobType").select2("enable", true);
+    $(".userInfo").select2({
+        theme: "bootstrap",
+        allowClear: true,
+        placeholder: "增加成员",
+        ajax: {
+            url: "/services/mars/userinfo/list?start=0&limit=50",
+            dataType: "json",
+            delay: 250,
+            data: function (params) {
+                return {
+                    realName: params.term
+                };
+            },
+            cache: true,
+            processResults: function (res, params) {
+                var options = [];
+                for (var i = 0;i < res.list.length;i++){
+                    var option = {"id": res.list[i].userId, "text": res.list[i].realName};
+                    options.push(option);
+                }
+                return {
+                    results: options,
+                    pagination: {
+
+                    }
+                };
+            },
+            escapeMarkup: function (markup) {
+                return markup;
+            },
+            minimumInputLength: 1
+        }
+    });
+
+    $(".area").select2({
+        theme: "bootstrap",
+        allowClear: true,
+        placeholder: "选择地市",
+        ajax: {
+            url: "/services/mars/cityinfo/list?start=0&limit=50&areaType=1",
+            dataType: "json",
+            delay: 250,
+            data: function (params) {
+                return {
+                    name: params.term
+                };
+            },
+            cache: true,
+            processResults: function (res, params) {
+                var options = [];
+                for (var i = 0;i < res.list.length;i++){
+                    var option = {"id": res.list[i].code, "text": res.list[i].name};
+                    options.push(option);
+                }
+                return {
+                    results: options,
+                    pagination: {
+
+                    }
+                };
+            },
+            escapeMarkup: function (markup) {
+                return markup;
+            },
+            minimumInputLength: 1
+        }
+    });
+
+</script>
 </body>
 </html>
 

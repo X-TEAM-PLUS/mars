@@ -6,8 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.xteam.plus.mars.dao.CouncilInfoDao;
 import org.xteam.plus.mars.domain.CouncilInfo;
+import org.xteam.plus.mars.domain.CouncilInfoList;
 import org.xteam.plus.mars.manager.CouncilInfoManager;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -28,6 +30,11 @@ public class CouncilInfoManagerImpl implements CouncilInfoManager {
     @Override
     public CouncilInfo get(CouncilInfo councilInfo) throws Exception {
         return councilInfoDao.get(councilInfo);
+    }
+
+    @Override
+    public CouncilInfoList getTotal(BigDecimal councilInfo) throws Exception {
+        return councilInfoDao.getTotal(councilInfo);
     }
 
     @Override
@@ -62,6 +69,11 @@ public class CouncilInfoManagerImpl implements CouncilInfoManager {
     @Override
     public Integer queryCount(CouncilInfo councilInfo) throws Exception {
         return councilInfoDao.queryCount(councilInfo);
+    }
+
+    @Override
+    public List<CouncilInfoList> queryTotal() throws Exception {
+        return councilInfoDao.queryTotal();
     }
 
 }

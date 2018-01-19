@@ -8,7 +8,7 @@
         <result column="USER_ID" property="userId" jdbcType="DECIMAL"/>
         <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
         <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
-        <association property="userSalesInfo" column="USER_ID"
+        <association property="userInfo" column="USER_ID"
                      javaType="org.xteam.plus.mars.domain.UserInfo">
             <id column="USER_ID" property="userId" jdbcType="DECIMAL"/>
             <result column="CARD_NO" property="cardNo" jdbcType="DECIMAL"/>
@@ -247,4 +247,53 @@
         <include refid="queryWhereRf"></include>
     </select>
 
+
+    <select id="queryForCouncil" resultMap="BaseResultMap" >
+        SELECT
+        <include refid="selectColumnsRf"></include>
+        FROM
+        T_MARS_USER_RELATION TUR
+        LEFT JOIN T_MARS_USER_INFO TUI ON TUR.REFEREE_USER_ID = TUI.USER_ID
+        WHERE
+        FIND_IN_SET(
+        TUR.REFEREE_USER_ID ,
+        (
+        SELECT
+        GROUP_CONCAT(TMLCM.USER_ID)
+        FROM
+        T_MARS_COUNCIL_INFO TMCI
+        LEFT JOIN T_MARS_LOCAL_COUNCIL_MEMBER TMLCM ON TMCI.COUNCIL_ID = TMLCM.COUNCIL_ID
+        WHERE
+        TMCI.COUNCIL_ID = #{councilId,jdbcType=DECIMAL}
+        GROUP BY
+        TMCI.COUNCIL_ID
+        )
+        )
+        limit #{start},#{limit}
+    </select>
+
+
+    <select id="queryForCouncilCount" resultType="int" parameterType="DECIMAL">
+        SELECT
+        count(*)
+        FROM
+        T_MARS_USER_RELATION TUR
+        LEFT JOIN T_MARS_USER_INFO TUI ON TUR.REFEREE_USER_ID = TUI.USER_ID
+        WHERE
+        FIND_IN_SET(
+        TUR.REFEREE_USER_ID ,
+        (
+        SELECT
+        GROUP_CONCAT(TMLCM.USER_ID)
+        FROM
+        T_MARS_COUNCIL_INFO TMCI
+        LEFT JOIN T_MARS_LOCAL_COUNCIL_MEMBER TMLCM ON TMCI.COUNCIL_ID = TMLCM.COUNCIL_ID
+        WHERE
+        TMCI.COUNCIL_ID = #{councilId,jdbcType=DECIMAL}
+        GROUP BY
+        TMCI.COUNCIL_ID
+        )
+        )
+
+    </select>
 </mapper>

@@ -4,9 +4,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.xteam.plus.mars.common.JsonResult;
 import org.xteam.plus.mars.domain.CouncilInfo;
+import org.xteam.plus.mars.domain.CouncilInfoList;
 import org.xteam.plus.mars.manager.CouncilInfoManager;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -182,4 +184,55 @@ public class CouncilInfoServiceProvider extends AbstractServiceProvider {
         }
         return jsonResult;
     }
+
+
+    /**
+     * 查询列表（后台）
+     *
+     * @return List<CouncilInfo>
+     */
+    @RequestMapping("/totalList")
+    public JsonResult totalList() throws Exception {
+        JsonResult jsonResult = new JsonResult();
+        try {
+            List<CouncilInfoList> data = councilinfoManager.queryTotal();
+            // 设置结果集
+            jsonResult.put("list", data);
+            jsonResult.put("rowCount", councilinfoManager.queryCount(new CouncilInfo()));
+            jsonResult.setSuccess(true);
+        } catch (Exception e) {
+            logError("查询异常", e);
+            jsonResult.setMessage("查询异常");
+            jsonResult.setSuccess(false);
+        }
+        return jsonResult;
+    }
+
+    /**
+     * 查询详情（后台）
+     * @param councilId 地方常任理事ID
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/getTotal")
+    public JsonResult getTotal(BigDecimal councilId) throws Exception {
+        JsonResult jsonResult = new JsonResult();
+        try {
+            //获取记录
+            CouncilInfoList result = councilinfoManager.getTotal(councilId);
+            if (result != null) {
+                jsonResult.setData(result);
+                jsonResult.setSuccess(true);
+            } else {
+                jsonResult.setMessage("获取数据失败");
+                jsonResult.setSuccess(false);
+            }
+        } catch (Exception e) {
+            logError("获取数据异常", e);
+            jsonResult.setMessage("获取数据异常");
+            jsonResult.setSuccess(false);
+        }
+        return jsonResult;
+    }
+
 }
