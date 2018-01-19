@@ -14,8 +14,8 @@
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
-            <a href="#">健康卡产品表管理</a>
             <i class="fa fa-cube"></i>
+            <a href="#">健康卡产品表管理</a>
         </li>
 
     </ul>

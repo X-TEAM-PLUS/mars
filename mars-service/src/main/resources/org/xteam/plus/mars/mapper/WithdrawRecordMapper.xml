@@ -15,22 +15,27 @@
         <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
         <result column="BANK_ACCOUNT_NAME" property="bankAccountName" jdbcType="VARCHAR"/>
         <result column="PAY_TIME" property="payTime" jdbcType="TIMESTAMP"/>
+
+        <result column="BALANCE_AMOUNT" property="balanceAmount" jdbcType="DECIMAL"/>
+        <result column="MOBILE_NO" property="mobileNo" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--公用选择列-->
     <sql id="selectColumns">
-        ID,
-        BANK_ACCOUNT_NO
-        ,UPDATED
-        ,USER_ID
-        ,AMOUNT
-        ,APPLY_TIME
-        ,PAY_WAY
-        ,TRANSACTION_NO
-        ,STATUS
-        ,CREATED
-        ,BANK_ACCOUNT_NAME
-        ,PAY_TIME
+        tmwr.ID,
+        tmwr.BANK_ACCOUNT_NO
+        ,tmwr.UPDATED
+        ,tmwr.USER_ID
+        ,tmwr.AMOUNT
+        ,tmwr.APPLY_TIME
+        ,tmwr.PAY_WAY
+        ,tmwr.TRANSACTION_NO
+        ,tmwr.STATUS
+        ,tmwr.CREATED
+        ,tmwr.BANK_ACCOUNT_NAME
+        ,tmwr.PAY_TIME
+        ,tmab.BALANCE_AMOUNT
+        ,tmui.MOBILE_NO
     </sql>
 
     <!--公用查询条件-->
@@ -216,19 +221,10 @@
     <!--查询单条记录-->
     <select id="get" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.WithdrawRecord">
         select
-        ID
-        ,BANK_ACCOUNT_NO
-        ,UPDATED
-        ,USER_ID
-        ,AMOUNT
-        ,APPLY_TIME
-        ,PAY_WAY
-        ,TRANSACTION_NO
-        ,STATUS
-        ,CREATED
-        ,BANK_ACCOUNT_NAME
-        ,PAY_TIME
-        from T_MARS_WITHDRAW_RECORD
+        <include refid="selectColumns"></include>
+        from T_MARS_WITHDRAW_RECORD tmwr
+        LEFT JOIN T_MARS_ACCOUNT_BALANCE tmab ON tmwr.USER_ID=tmab.USER_ID
+        LEFT JOIN  T_MARS_USER_INFO tmui ON  tmwr.USER_ID=tmui.USER_ID
         where ID= #{id,jdbcType=DECIMAL}
     </select>
 
@@ -237,7 +233,9 @@
     <select id="query" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.WithdrawRecord">
         select
         <include refid="selectColumns"></include>
-        from T_MARS_WITHDRAW_RECORD
+        from T_MARS_WITHDRAW_RECORD tmwr
+        LEFT JOIN T_MARS_ACCOUNT_BALANCE tmab ON tmwr.USER_ID=tmab.USER_ID
+        LEFT JOIN  T_MARS_USER_INFO tmui ON  tmwr.USER_ID=tmui.USER_ID
         <include refid="queryWhere"></include>
         limit #{start},#{limit}
     </select>
@@ -245,7 +243,9 @@
     <!--查询记录数-->
     <select id="queryCount" resultType="int" parameterType="org.xteam.plus.mars.domain.WithdrawRecord">
         select count(1)
-        from T_MARS_WITHDRAW_RECORD
+        from T_MARS_WITHDRAW_RECORD tmwr
+        LEFT JOIN T_MARS_ACCOUNT_BALANCE tmab ON tmwr.USER_ID=tmab.USER_ID
+        LEFT JOIN  T_MARS_USER_INFO tmui ON  tmwr.USER_ID=tmui.USER_ID
         <include refid="queryWhere"></include>
     </select>
 </mapper>

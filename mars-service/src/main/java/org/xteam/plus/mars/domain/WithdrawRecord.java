@@ -1,6 +1,7 @@
 package org.xteam.plus.mars.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 
 /**
@@ -83,6 +84,16 @@ public class WithdrawRecord implements Serializable {
      */
     private java.util.Date payTime;
 
+
+    /**
+     * 余额
+     */
+    private java.math.BigDecimal balanceAmount;
+
+    /**
+     * 手机号
+     */
+    private String mobileNo;
 
     /**
      * 设置   bankAccountNo
@@ -350,5 +361,37 @@ public class WithdrawRecord implements Serializable {
     public WithdrawRecord setLimit(Integer limit) {
         this.limit = limit;
         return this;
+    }
+
+    /**
+     * 获取账户余额
+     * @return
+     */
+    public BigDecimal getBalanceAmount() {
+        return balanceAmount;
+    }
+
+    /**
+     * 设置账户余额
+     * @param balanceAmount
+     */
+    public void setBalanceAmount(BigDecimal balanceAmount) {
+        this.balanceAmount = balanceAmount;
+    }
+
+    /**
+     * 获取手机号
+     * @return
+     */
+    public String getMobileNo() {
+        return mobileNo;
+    }
+
+    /**
+     * 设置手机号
+     * @param mobileNo
+     */
+    public void setMobileNo(String mobileNo) {
+        this.mobileNo = mobileNo;
     }
 }

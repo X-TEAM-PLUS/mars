@@ -14,8 +14,8 @@
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
-            <a href="#">订单表管理</a>
             <i class="fa fa-cube"></i>
+            <a href="#">订单表管理</a>
         </li>
 
     </ul>
