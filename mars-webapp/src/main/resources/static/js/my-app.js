@@ -12,16 +12,16 @@ if (isAndroid) {
     $$('head').append(
         '<link rel="stylesheet" href="/assets/plugins/framework7-2.0.6/css/framework7.material.css">' +
         '<link rel="stylesheet" href="/assets/plugins/framework7-2.0.6/css/framework7.material.colors.css">' +
-        '<link rel="stylesheet" href="/assets/plugins/framework7-2.0.6/css/kitchen-sink.css">' +
-        '<link rel="stylesheet" href="/css/my-app.css">'
+        '<link rel="stylesheet" href="/assets/plugins/framework7-2.0.6/css/kitchen-sink.css">'
+        // '<link rel="stylesheet" href="/css/my-app.css">'
     );
 }
 else {
     $$('head').append(
         '<link rel="stylesheet" href="/assets/plugins/framework7-2.0.6/css/framework7.ios.min.css">' +
         '<link rel="stylesheet" href="/assets/plugins/framework7-2.0.6/css/framework7.ios.colors.min.css">' +
-        '<link rel="stylesheet" href="/assets/plugins/framework7-2.0.6/css/kitchen-sink.css">' +
-        '<link rel="stylesheet" href="/css/my-app.css">'
+        '<link rel="stylesheet" href="/assets/plugins/framework7-2.0.6/css/kitchen-sink.css">'
+        // '<link rel="stylesheet" href="/css/my-app.css">'
     );
 }
 
