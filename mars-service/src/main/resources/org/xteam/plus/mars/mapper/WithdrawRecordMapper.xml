@@ -43,66 +43,66 @@
         <where>
             <if test="bankAccountNo!=null and  bankAccountNo!=''">
                 <![CDATA[
-                    and BANK_ACCOUNT_NO=#{bankAccountNo,jdbcType=VARCHAR}
+                    and tmwr.BANK_ACCOUNT_NO=#{bankAccountNo,jdbcType=VARCHAR}
                     ]]>
             </if>
             <if test="id!=null ">
                 <![CDATA[
-                    and ID=#{id,jdbcType=DECIMAL}
+                    and tmwr.ID=#{id,jdbcType=DECIMAL}
                     ]]>
             </if>
             <if test="updated!=null ">
                 <![CDATA[
-                        and UPDATED>= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
-                        and UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        and tmwr.UPDATED>= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and tmwr.UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
                         ]]>
             </if>
             <if test="userId!=null ">
                 <![CDATA[
-                    and USER_ID=#{userId,jdbcType=DECIMAL}
+                    and tmwr.USER_ID=#{userId,jdbcType=DECIMAL}
                     ]]>
             </if>
             <if test="amount!=null ">
                 <![CDATA[
-                    and AMOUNT=#{amount,jdbcType=DECIMAL}
+                    and tmwr.AMOUNT=#{amount,jdbcType=DECIMAL}
                     ]]>
             </if>
             <if test="applyTime!=null ">
                 <![CDATA[
-                        and APPLY_TIME>= str_to_date(CONCAT(date_format(#{applyTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
-                        and APPLY_TIME<= str_to_date(CONCAT(date_format(#{applyTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        and tmwr.APPLY_TIME>= str_to_date(CONCAT(date_format(#{applyTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and tmwr.APPLY_TIME<= str_to_date(CONCAT(date_format(#{applyTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
                         ]]>
             </if>
             <if test="payWay!=null ">
                 <![CDATA[
-                    and PAY_WAY=#{payWay,jdbcType=INTEGER}
+                    and tmwr.PAY_WAY=#{payWay,jdbcType=INTEGER}
                     ]]>
             </if>
             <if test="transactionNo!=null and  transactionNo!=''">
                 <![CDATA[
-                    and TRANSACTION_NO=#{transactionNo,jdbcType=VARCHAR}
+                    and tmwr.TRANSACTION_NO=#{transactionNo,jdbcType=VARCHAR}
                     ]]>
             </if>
             <if test="status!=null ">
                 <![CDATA[
-                    and STATUS=#{status,jdbcType=INTEGER}
+                    and tmwr.STATUS=#{status,jdbcType=INTEGER}
                     ]]>
             </if>
             <if test="created!=null ">
                 <![CDATA[
-                        and CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
-                        and CREATED<= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        and tmwr.CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and tmwr.CREATED<= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
                         ]]>
             </if>
             <if test="bankAccountName!=null and  bankAccountName!=''">
                 <![CDATA[
-                    and BANK_ACCOUNT_NAME=#{bankAccountName,jdbcType=VARCHAR}
+                    and tmwr.BANK_ACCOUNT_NAME=#{bankAccountName,jdbcType=VARCHAR}
                     ]]>
             </if>
             <if test="payTime!=null ">
                 <![CDATA[
-                        and PAY_TIME>= str_to_date(CONCAT(date_format(#{payTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
-                        and PAY_TIME<= str_to_date(CONCAT(date_format(#{payTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        and tmwr.PAY_TIME>= str_to_date(CONCAT(date_format(#{payTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and tmwr.PAY_TIME<= str_to_date(CONCAT(date_format(#{payTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
                         ]]>
             </if>
         </where>
@@ -248,4 +248,18 @@
         LEFT JOIN  T_MARS_USER_INFO tmui ON  tmwr.USER_ID=tmui.USER_ID
         <include refid="queryWhere"></include>
     </select>
+
+    <!--同意提现申请-->
+    <update id="agreeApply" parameterType="org.xteam.plus.mars.domain.WithdrawRecord">
+        update T_MARS_WITHDRAW_RECORD
+        set   STATUS=1, UPDATED=#{updated,jdbcType=TIMESTAMP}
+        where ID= #{id,jdbcType=DECIMAL} AND STATUS=0
+    </update>
+
+    <!--回绝提现申请-->
+    <update id="refuseApply" parameterType="org.xteam.plus.mars.domain.WithdrawRecord">
+        update T_MARS_WITHDRAW_RECORD
+        set   STATUS=-1,   UPDATED=#{updated,jdbcType=TIMESTAMP}
+        where ID= #{id,jdbcType=DECIMAL} AND STATUS=0
+    </update>
 </mapper>

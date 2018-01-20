@@ -69,4 +69,21 @@ public interface WithdrawRecordManager {
      * @return List<WithdrawRecord>
      */
     public Integer queryCount(WithdrawRecord withdrawRecord) throws Exception;
+
+    /**
+     * 同意提现申请
+     * @param withdrawrecord
+     * @return
+     * @throws Exception
+     */
+    public int agreeApply(WithdrawRecord withdrawrecord) throws Exception;
+
+    /**
+     * 回绝提现申请
+     * @param withdrawrecord
+     * @return
+     * @throws Exception
+     */
+    public int refuseApply(WithdrawRecord withdrawrecord) throws Exception;
+
 }

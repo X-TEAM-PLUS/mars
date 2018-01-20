@@ -54,6 +54,10 @@
                                             <i class="icon-magnifier"></i>
                                             <input class="form-control" type="text" name="bankAccountName" placeholder="提款人姓名"/>
                                         </div>
+                                        <div class="input-icon col-md-2">
+                                            <i class="icon-magnifier"></i>
+                                            <input class="form-control" type="text" name="bankAccountNo" placeholder="打款账号"/>
+                                        </div>
                                         <span class="input-group-btn">
 												<button class="btn btn-success" type="submit"><i class="fa fa-arrow-left fa-fw"/></i> 搜索</button>
 												</span>
@@ -71,8 +75,7 @@
                             <th column="amount">提取金额（元）</th>
                             <th column="balanceAmount">剩余金额（元）</th>
                             <th column="bankAccountNo">打款账号</th>
-                            <th column="payTime">打款时间</th>
-                            <th column="status" type="enum" enum-v="{'-1':'审批未通过',0:'未审批',1:'审批通过',2:'已确认'}">状态</th>
+                            <th column="status" type="enum" enum-v="{'-1':'<span class=\'bold badge badge-danger\'>审批未通过</span>',0:'<span class=\'bold badge badge-default\'>未审批</span>',1:'<span class=\'badge badge-success \'>审批通过</span>',2:'<span class=\' bold badge badge-info\'>已打款</span>',3:'<span class=\'bold badge badge-primary \'>已确认</span>'}">状态</th>
                             <th type="action" style="width: 200px">操作</th>
                         </tr>
                         </thead>
@@ -99,8 +102,9 @@
                     name: '同意提现申请'
                     ,buttonColor:'green'
                     , iconClass: 'glyphicon glyphicon-ok'
-                    , action: '/mars/withdrawrecord/edit'
+                    , action: '/services/mars/withdrawrecord/agreeApply'
                     , confirm: true
+                    , ajax: true
                     , parmaName: 'id'
                     , column: 'id'
                     , equalField: 'status'
@@ -109,32 +113,35 @@
                     name: '不同意提现申请'
                     ,buttonColor:'red'
                     , iconClass: 'glyphicon glyphicon-remove'
-                    , action: '/mars/withdrawrecord/edit'
+                    , action: '/services/mars/withdrawrecord/refuseApply'
                     , confirm: true
+                    , ajax: true
                     , parmaName: 'id'
                     , column: 'id'
                     , equalField: 'status'
                     , equalValue: '0'
-                },{
-                     name: '确认转帐'
-                    ,buttonColor:'blue'
-                    , iconClass: 'glyphicon glyphicon-earphone'
-                    , action: '/mars/withdrawrecord/edit'
-                    , confirm: true
-                    , parmaName: 'id'
-                    , column: 'id'
-                    , equalField: 'status'
-                    , equalValue: '1'
-        }
-                    , {
-                        name: '删除'
-                        , iconClass: 'glyphicon glyphicon-trash'
-                        , action: '/services/mars/withdrawrecord/delete'
-                        , ajax: true
-                        , confirm: true
-                        , parmaName: 'id'
-                        , column: 'id'
-                    }
+                }
+//                ,{
+//                     name: '确认转帐'
+//                    ,buttonColor:'blue'
+//                    , iconClass: 'glyphicon glyphicon-earphone'
+//                    , action: '/mars/withdrawrecord/edit'
+//                    , confirm: true
+//                    , ajax: true
+//                    , parmaName: 'id'
+//                    , column: 'id'
+//                    , equalField: 'status'
+//                    , equalValue: '1'
+//        }
+//                    , {
+//                        name: '删除'
+//                        , iconClass: 'glyphicon glyphicon-trash'
+//                        , action: '/services/mars/withdrawrecord/delete'
+//                        , ajax: true
+//                        , confirm: true
+//                        , parmaName: 'id'
+//                        , column: 'id'
+//                    }
                 ],
                     pagingtoolbar: {
                         displayInfo: true

@@ -8,6 +8,7 @@ import org.xteam.plus.mars.dao.WithdrawRecordDao;
 import org.xteam.plus.mars.domain.WithdrawRecord;
 import org.xteam.plus.mars.manager.WithdrawRecordManager;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -62,6 +63,21 @@ public class WithdrawRecordManagerImpl implements WithdrawRecordManager {
     @Override
     public Integer queryCount(WithdrawRecord withdrawRecord) throws Exception {
         return withdrawRecordDao.queryCount(withdrawRecord);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int agreeApply(WithdrawRecord withdrawrecord) throws Exception {
+        //TODO 调用转帐接口转帐
+        withdrawrecord.setUpdated(new Date());
+        return withdrawRecordDao.agreeApply(withdrawrecord);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int refuseApply(WithdrawRecord withdrawrecord) throws Exception {
+        withdrawrecord.setUpdated(new Date());
+        return withdrawRecordDao.refuseApply(withdrawrecord);
     }
 
 }

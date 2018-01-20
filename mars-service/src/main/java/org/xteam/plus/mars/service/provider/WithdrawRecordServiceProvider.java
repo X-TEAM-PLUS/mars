@@ -182,4 +182,61 @@ public class WithdrawRecordServiceProvider extends AbstractServiceProvider {
         }
         return jsonResult;
     }
+
+    /**
+     * 同意申请
+     *
+     * @param withdrawrecord
+     * @return
+     */
+    @RequestMapping("/agreeApply")
+    public JsonResult agreeApply(WithdrawRecord withdrawrecord) throws Exception {
+        JsonResult jsonResult = new JsonResult();
+        try {
+            //更新记录
+            int rowCount = withdrawrecordManager.agreeApply(withdrawrecord);
+            if (rowCount > 0) {
+                jsonResult.setSuccess(true);
+                jsonResult.setMessage("提现申请已审批成功.");
+            } else {
+                jsonResult.setSuccess(false);
+                jsonResult.setMessage("提现申请已审批失败.");
+            }
+            jsonResult.setSuccess(true);
+        } catch (Exception e) {
+            logError("审批提现申请时异常", e);
+            jsonResult.setMessage("审批提现申请时异常");
+            jsonResult.setSuccess(false);
+        }
+        return jsonResult;
+    }
+
+    /**
+     * 回绝申请
+     *
+     * @param withdrawrecord
+     * @return int 记录数
+     */
+    @RequestMapping("/refuseApply")
+    public JsonResult refuseApply(WithdrawRecord withdrawrecord) throws Exception {
+        JsonResult jsonResult = new JsonResult();
+        try {
+            //更新记录
+            int rowCount = withdrawrecordManager.refuseApply(withdrawrecord);
+            if (rowCount > 0) {
+                jsonResult.setSuccess(true);
+                jsonResult.setMessage("提现申请回绝成功.");
+            } else {
+                jsonResult.setSuccess(false);
+                jsonResult.setMessage("提现申请回绝失败.");
+            }
+            jsonResult.setSuccess(true);
+        } catch (Exception e) {
+            logError("回绝提现申请时异常", e);
+            jsonResult.setMessage("回绝提现申请时异常");
+            jsonResult.setSuccess(false);
+        }
+        return jsonResult;
+    }
+
 }

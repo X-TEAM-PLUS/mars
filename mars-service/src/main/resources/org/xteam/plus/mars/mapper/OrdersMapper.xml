@@ -21,28 +21,33 @@
         <result column="SELLER_USER_ID" property="sellerUserId" jdbcType="DECIMAL"/>
         <result column="PAY_TIME" property="payTime" jdbcType="TIMESTAMP"/>
         <result column="PRODUCT_ID" property="productId" jdbcType="DECIMAL"/>
+
+        <result column="MOBILE_NO" property="mobileNo" jdbcType="VARCHAR"/>
+        <result column="REAL_NAME" property="realName" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--公用选择列-->
     <sql id="selectColumns">
-        ORDER_NO,
-        PRODUCT_NUM
-        ,PRODUCT_PRICE
-        ,ORDER_PRICE
-        ,STATUS
-        ,PAY_ORDER_NO
-        ,PRODUCT_NAME
-        ,CREATED
-        ,CARD_TYPE
-        ,UPDATED
-        ,CARD_NO
-        ,ORDER_TYPE
-        ,ORDER_TIME
-        ,BUYER_USER_ID
-        ,PAY_WAY
-        ,SELLER_USER_ID
-        ,PAY_TIME
-        ,PRODUCT_ID
+        tmo.ORDER_NO,
+        tmo.PRODUCT_NUM
+        ,tmo.PRODUCT_PRICE
+        ,tmo.ORDER_PRICE
+        ,tmo.STATUS
+        ,tmo.PAY_ORDER_NO
+        ,tmo.PRODUCT_NAME
+        ,tmo.CREATED
+        ,tmo.CARD_TYPE
+        ,tmo.UPDATED
+        ,tmo.CARD_NO
+        ,tmo.ORDER_TYPE
+        ,tmo.ORDER_TIME
+        ,tmo.BUYER_USER_ID
+        ,tmo.PAY_WAY
+        ,tmo.SELLER_USER_ID
+        ,tmo.PAY_TIME
+        ,tmo.PRODUCT_ID
+        ,tmui.MOBILE_NO
+        ,tmui.REAL_NAME
     </sql>
 
     <!--公用查询条件-->
@@ -50,96 +55,96 @@
         <where>
             <if test="productNum!=null ">
                 <![CDATA[
-                    and PRODUCT_NUM=#{productNum,jdbcType=INTEGER}
+                    and tmo.PRODUCT_NUM=#{productNum,jdbcType=INTEGER}
                     ]]>
             </if>
             <if test="productPrice!=null ">
                 <![CDATA[
-                    and PRODUCT_PRICE=#{productPrice,jdbcType=DECIMAL}
+                    and tmo.PRODUCT_PRICE=#{productPrice,jdbcType=DECIMAL}
                     ]]>
             </if>
             <if test="orderPrice!=null ">
                 <![CDATA[
-                    and ORDER_PRICE=#{orderPrice,jdbcType=DECIMAL}
+                    and tmo.ORDER_PRICE=#{orderPrice,jdbcType=DECIMAL}
                     ]]>
             </if>
             <if test="orderNo!=null ">
                 <![CDATA[
-                    and ORDER_NO=#{orderNo,jdbcType=DECIMAL}
+                    and tmo.ORDER_NO=#{orderNo,jdbcType=DECIMAL}
                     ]]>
             </if>
             <if test="status!=null ">
                 <![CDATA[
-                    and STATUS=#{status,jdbcType=INTEGER}
+                    and tmo.STATUS=#{status,jdbcType=INTEGER}
                     ]]>
             </if>
             <if test="payOrderNo!=null and  payOrderNo!=''">
                 <![CDATA[
-                    and PAY_ORDER_NO=#{payOrderNo,jdbcType=VARCHAR}
+                    and tmo.PAY_ORDER_NO=#{payOrderNo,jdbcType=VARCHAR}
                     ]]>
             </if>
             <if test="productName!=null and  productName!=''">
                 <![CDATA[
-                    and PRODUCT_NAME=#{productName,jdbcType=VARCHAR}
+                    and tmo.PRODUCT_NAME=#{productName,jdbcType=VARCHAR}
                     ]]>
             </if>
             <if test="created!=null ">
                 <![CDATA[
-                        and CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
-                        and CREATED<= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        and tmo.CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and tmo.CREATED<= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
                         ]]>
             </if>
             <if test="cardType!=null ">
                 <![CDATA[
-                    and CARD_TYPE=#{cardType,jdbcType=INTEGER}
+                    and tmo.CARD_TYPE=#{cardType,jdbcType=INTEGER}
                     ]]>
             </if>
             <if test="updated!=null ">
                 <![CDATA[
-                        and UPDATED>= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
-                        and UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        and tmo.UPDATED>= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and tmo.UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
                         ]]>
             </if>
             <if test="cardNo!=null ">
                 <![CDATA[
-                    and CARD_NO=#{cardNo,jdbcType=DECIMAL}
+                    and tmo.CARD_NO=#{cardNo,jdbcType=DECIMAL}
                     ]]>
             </if>
             <if test="orderType!=null ">
                 <![CDATA[
-                    and ORDER_TYPE=#{orderType,jdbcType=INTEGER}
+                    and tmo.ORDER_TYPE=#{orderType,jdbcType=INTEGER}
                     ]]>
             </if>
             <if test="orderTime!=null ">
                 <![CDATA[
-                        and ORDER_TIME>= str_to_date(CONCAT(date_format(#{orderTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
-                        and ORDER_TIME<= str_to_date(CONCAT(date_format(#{orderTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        and tmo.ORDER_TIME>= str_to_date(CONCAT(date_format(#{orderTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and tmo.ORDER_TIME<= str_to_date(CONCAT(date_format(#{orderTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
                         ]]>
             </if>
             <if test="buyerUserId!=null ">
                 <![CDATA[
-                    and BUYER_USER_ID=#{buyerUserId,jdbcType=DECIMAL}
+                    and tmo.BUYER_USER_ID=#{buyerUserId,jdbcType=DECIMAL}
                     ]]>
             </if>
             <if test="payWay!=null ">
                 <![CDATA[
-                    and PAY_WAY=#{payWay,jdbcType=INTEGER}
+                    and tmo.PAY_WAY=#{payWay,jdbcType=INTEGER}
                     ]]>
             </if>
             <if test="sellerUserId!=null ">
                 <![CDATA[
-                    and SELLER_USER_ID=#{sellerUserId,jdbcType=DECIMAL}
+                    and tmo.SELLER_USER_ID=#{sellerUserId,jdbcType=DECIMAL}
                     ]]>
             </if>
             <if test="payTime!=null ">
                 <![CDATA[
-                        and PAY_TIME>= str_to_date(CONCAT(date_format(#{payTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
-                        and PAY_TIME<= str_to_date(CONCAT(date_format(#{payTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        and tmo.PAY_TIME>= str_to_date(CONCAT(date_format(#{payTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and tmo.PAY_TIME<= str_to_date(CONCAT(date_format(#{payTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
                         ]]>
             </if>
             <if test="productId!=null ">
                 <![CDATA[
-                    and PRODUCT_ID=#{productId,jdbcType=DECIMAL}
+                    and tmo.PRODUCT_ID=#{productId,jdbcType=DECIMAL}
                     ]]>
             </if>
         </where>
@@ -327,7 +332,8 @@
     <select id="query" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.Orders">
         select
         <include refid="selectColumns"></include>
-        from T_MARS_ORDERS
+        from T_MARS_ORDERS tmo
+        LEFT JOIN T_MARS_USER_INFO tmui ON tmo.BUYER_USER_ID=tmui.USER_ID
         <include refid="queryWhere"></include>
         limit #{start},#{limit}
     </select>
@@ -335,7 +341,8 @@
     <!--查询记录数-->
     <select id="queryCount" resultType="int" parameterType="org.xteam.plus.mars.domain.Orders">
         select count(1)
-        from T_MARS_ORDERS
+        from T_MARS_ORDERS tmo
+        LEFT JOIN T_MARS_USER_INFO tmui ON tmo.BUYER_USER_ID=tmui.USER_ID
         <include refid="queryWhere"></include>
     </select>
 </mapper>

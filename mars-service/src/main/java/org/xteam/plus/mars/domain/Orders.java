@@ -115,6 +115,16 @@ public class Orders implements Serializable {
 
 
     /**
+     * 手机号
+     */
+    private String mobileNo;
+
+    /**
+     * 真实姓名
+     */
+    private String realName;
+
+    /**
      * 设置   productNum
      *
      * @param productNum (数量)
@@ -494,5 +504,38 @@ public class Orders implements Serializable {
     public Orders setLimit(Integer limit) {
         this.limit = limit;
         return this;
+    }
+
+    /**
+     * 获取用户手机号
+     * @return
+     */
+    public String getMobileNo() {
+        return mobileNo;
+    }
+
+    /**
+     *  设置用户手机号
+     * @param mobileNo
+     */
+    public void setMobileNo(String mobileNo) {
+        this.mobileNo = mobileNo;
+    }
+
+    /**
+     * 获取用户姓名
+     * @return
+     */
+    public String getRealName() {
+        return realName;
+    }
+
+
+    /**
+     * 设置用户姓名
+     * @param realName
+     */
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 }

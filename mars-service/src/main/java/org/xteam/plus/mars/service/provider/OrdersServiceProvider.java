@@ -182,4 +182,32 @@ public class OrdersServiceProvider extends AbstractServiceProvider {
         }
         return jsonResult;
     }
+
+
+    /**
+     * 查询
+     *
+     * @param orders
+     * @return List<Orders>
+     */
+    @RequestMapping("/income")
+    public JsonResult income(Orders orders) throws Exception {
+        JsonResult jsonResult = new JsonResult();
+        try {
+            //查询已支付
+            orders.setStatus(1);
+            //订单类型：0平台直销
+            orders.setOrderType(0);
+            List<Orders> data = ordersManager.query(orders);
+            // 设置结果集
+            jsonResult.put("list", data);
+            jsonResult.put("rowCount", ordersManager.queryCount(orders));
+            jsonResult.setSuccess(true);
+        } catch (Exception e) {
+            logError("查询异常", e);
+            jsonResult.setMessage("查询异常");
+            jsonResult.setSuccess(false);
+        }
+        return jsonResult;
+    }
 }

@@ -76,7 +76,7 @@
                             <th column="sendPeriodMode"   type="enum" enum-v="{0:'月'}">发货周期类型</th>
                             <th column="sendPeriod">发货周期</th>
                             <th column="sendTotalCount">发货总次数</th>
-                            <th column="status"   type="enum" enum-v="{0:'下架',1:'上架'}">状态</th>
+                            <th column="status"   type="enum" enum-v="{0:'<span class=\'bold badge badge-danger\'>下架</span>',1:'<span class=\'bold badge badge-success\'>上架</span>'}">状态</th>
                             <th column="created">创建时间</th>
                             <th column="updated">更新时间</th>
                             <th type="action">操作</th>
