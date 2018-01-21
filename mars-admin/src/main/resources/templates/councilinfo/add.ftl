@@ -49,22 +49,10 @@
                     <div class="form-body">
                         <div class="form-group">
                             <label class="col-md-3 control-label">
-                                理事会ID<span class="required">* </span>
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10">
-                                    <i class="fa   fa-font "></i>
-                                    <input type="text" name="councilId" class="form-control" placeholder="理事会ID"
-                                           validate='{required: true}'>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
                                 城市编号<span class="required">* </span>
                             </label>
                             <div class="col-md-5">
-                                <select class="area" id="area"
+                                <select class="area" id="cityNo" name="cityNo"
                                         style="width: 100%">
                                 </select>
                             </div>
@@ -77,7 +65,7 @@
                             </label>
                             <div class="col-md-5">
 
-                                <select class="userInfo" id="userInfo" multiple="multiple"
+                                <select class="userInfo" id="userInfo" name="userInfo" multiple="multiple"
                                         style="width: 100%">
                                 </select>
                             </div>
@@ -91,9 +79,9 @@
 
                                 <select class="jobType" id="jobType" name="jobType"
                                         style="width: 100%">
-                                    <option value="0">成员</option>
-                                    <option value="1">副理事长</option>
-                                    <option value="2">行政</option>
+                                    <option value="NOT_JOB">成员</option>
+                                    <option value="DEPUTY_DIRECTOR_GENERAL">副理事长</option>
+                                    <option value="ADMINISTARATION">行政</option>
                                 </select>
                             </div>
                         </div>
@@ -113,7 +101,7 @@
 
 <script>
 
-    $(".jobType").select2("enable", true);
+    $(".jobType").select2({minimumResultsForSearch: Infinity});
     $(".userInfo").select2({
         theme: "bootstrap",
         allowClear: true,
@@ -130,15 +118,13 @@
             cache: true,
             processResults: function (res, params) {
                 var options = [];
-                for (var i = 0;i < res.list.length;i++){
+                for (var i = 0; i < res.list.length; i++) {
                     var option = {"id": res.list[i].userId, "text": res.list[i].realName};
                     options.push(option);
                 }
                 return {
                     results: options,
-                    pagination: {
-
-                    }
+                    pagination: {}
                 };
             },
             escapeMarkup: function (markup) {
@@ -164,15 +150,13 @@
             cache: true,
             processResults: function (res, params) {
                 var options = [];
-                for (var i = 0;i < res.list.length;i++){
+                for (var i = 0; i < res.list.length; i++) {
                     var option = {"id": res.list[i].code, "text": res.list[i].name};
                     options.push(option);
                 }
                 return {
                     results: options,
-                    pagination: {
-
-                    }
+                    pagination: {}
                 };
             },
             escapeMarkup: function (markup) {

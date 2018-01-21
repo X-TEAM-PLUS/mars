@@ -239,4 +239,53 @@ public class UserInfoServiceProvider extends AbstractServiceProvider {
         }
         return jsonResult;
     }
+
+
+    /**
+     * 理事查询
+     *
+     * @param userInfo
+     * @return List<UserInfo>
+     */
+    @RequestMapping("/directorList")
+    public JsonResult directorList(UserInfo userInfo) throws Exception {
+        JsonResult jsonResult = new JsonResult();
+        try {
+            userInfo.setUserLevel(UserLevelEnum.DIRECTOR.getCode());
+            List<UserInfo> data = userinfoManager.queryWorker(userInfo, ApplayTypeEnum.DIRECTOR.getCode());
+            // 设置结果集
+            jsonResult.put("list", data);
+            jsonResult.put("rowCount", userinfoManager.queryWorkerCount(userInfo, ApplayTypeEnum.DIRECTOR.getCode()));
+            jsonResult.setSuccess(true);
+        } catch (Exception e) {
+            logError("查询异常", e);
+            jsonResult.setMessage("查询异常");
+            jsonResult.setSuccess(false);
+        }
+        return jsonResult;
+    }
+
+    /**
+     * 常任理事查询
+     *
+     * @param userInfo
+     * @return List<UserInfo>
+     */
+    @RequestMapping("/standingDirectorList")
+    public JsonResult standingDirectorList(UserInfo userInfo) throws Exception {
+        JsonResult jsonResult = new JsonResult();
+        try {
+            userInfo.setUserLevel(UserLevelEnum.STANDING_DIRECTOR.getCode());
+            List<UserInfo> data = userinfoManager.queryWorker(userInfo, ApplayTypeEnum.STANDING_DIRECTOR.getCode());
+            // 设置结果集
+            jsonResult.put("list", data);
+            jsonResult.put("rowCount", userinfoManager.queryWorkerCount(userInfo, ApplayTypeEnum.STANDING_DIRECTOR.getCode()));
+            jsonResult.setSuccess(true);
+        } catch (Exception e) {
+            logError("查询异常", e);
+            jsonResult.setMessage("查询异常");
+            jsonResult.setSuccess(false);
+        }
+        return jsonResult;
+    }
 }

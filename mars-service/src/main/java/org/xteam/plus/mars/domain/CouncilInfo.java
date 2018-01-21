@@ -1,6 +1,9 @@
 package org.xteam.plus.mars.domain;
 
+import org.xteam.plus.mars.type.JobType;
+
 import java.io.Serializable;
+import java.util.List;
 
 
 /**
@@ -48,6 +51,20 @@ public class CouncilInfo implements Serializable {
      */
     private java.util.Date updated;
 
+    /**
+     * 用户
+     */
+    private String userInfo;
+
+    /**
+     * 职务
+     */
+    private JobType jobType;
+
+    /**
+     * 地方常务理事所有成员
+     */
+    private List<LocalCouncilMember> localCouncilMemberList;
 
     /**
      * 设置   councilId
@@ -182,5 +199,29 @@ public class CouncilInfo implements Serializable {
     public CouncilInfo setLimit(Integer limit) {
         this.limit = limit;
         return this;
+    }
+
+    public String getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(String userInfo) {
+        this.userInfo = userInfo;
+    }
+
+    public JobType getJobType() {
+        return jobType;
+    }
+
+    public void setJobType(JobType jobType) {
+        this.jobType = jobType;
+    }
+
+    public List<LocalCouncilMember> getLocalCouncilMemberList() {
+        return localCouncilMemberList;
+    }
+
+    public void setLocalCouncilMemberList(List<LocalCouncilMember> localCouncilMemberList) {
+        this.localCouncilMemberList = localCouncilMemberList;
     }
 }

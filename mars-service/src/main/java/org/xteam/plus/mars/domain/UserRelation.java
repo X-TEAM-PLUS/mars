@@ -54,6 +54,10 @@ public class UserRelation implements Serializable {
     private UserInfo userInfo;
 
     /**
+     * 查询相关成员职务信息
+     */
+    private LocalCouncilMember localCouncilMember;
+    /**
      * 设置   relationId
      *
      * @param relationId (关系流水号)
@@ -194,5 +198,13 @@ public class UserRelation implements Serializable {
 
     public void setUserInfo(UserInfo userInfo) {
         this.userInfo = userInfo;
+    }
+
+    public LocalCouncilMember getLocalCouncilMember() {
+        return localCouncilMember;
+    }
+
+    public void setLocalCouncilMember(LocalCouncilMember localCouncilMember) {
+        this.localCouncilMember = localCouncilMember;
     }
 }

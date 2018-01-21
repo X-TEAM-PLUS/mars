@@ -27,7 +27,7 @@ public class UserInfo implements Serializable {
     /**
      * 会员卡号
      */
-    private java.math.BigDecimal cardNo;
+    private BigDecimal cardNo;
 
     /**
      * 身份证号
@@ -47,7 +47,7 @@ public class UserInfo implements Serializable {
     /**
      * 会员卡类型
      */
-    private java.math.BigDecimal cardType;
+    private BigDecimal cardType;
 
     /**
      * 联系地址
@@ -92,7 +92,7 @@ public class UserInfo implements Serializable {
     /**
      * 登录次数
      */
-    private java.math.BigDecimal loginCount;
+    private BigDecimal loginCount;
 
     /**
      * 注册来源
@@ -117,7 +117,7 @@ public class UserInfo implements Serializable {
     /**
      * 用户ID
      */
-    private java.math.BigDecimal userId;
+    private BigDecimal userId;
 
     /**
      * 最后登录时间
@@ -154,7 +154,7 @@ public class UserInfo implements Serializable {
      *
      * @param cardNo (会员卡号)
      */
-    public UserInfo setCardNo(java.math.BigDecimal cardNo) {
+    public UserInfo setCardNo(BigDecimal cardNo) {
         this.cardNo = cardNo;
         return this;
     }
@@ -164,7 +164,7 @@ public class UserInfo implements Serializable {
      *
      * @return
      */
-    public java.math.BigDecimal getCardNo() {
+    public BigDecimal getCardNo() {
         return this.cardNo;
     }
 
@@ -230,7 +230,7 @@ public class UserInfo implements Serializable {
      *
      * @param cardType (会员卡类型)
      */
-    public UserInfo setCardType(java.math.BigDecimal cardType) {
+    public UserInfo setCardType(BigDecimal cardType) {
         this.cardType = cardType;
         return this;
     }
@@ -240,7 +240,7 @@ public class UserInfo implements Serializable {
      *
      * @return
      */
-    public java.math.BigDecimal getCardType() {
+    public BigDecimal getCardType() {
         return this.cardType;
     }
 
@@ -401,7 +401,7 @@ public class UserInfo implements Serializable {
      *
      * @param loginCount (登录次数)
      */
-    public UserInfo setLoginCount(java.math.BigDecimal loginCount) {
+    public UserInfo setLoginCount(BigDecimal loginCount) {
         this.loginCount = loginCount;
         return this;
     }
@@ -411,7 +411,7 @@ public class UserInfo implements Serializable {
      *
      * @return
      */
-    public java.math.BigDecimal getLoginCount() {
+    public BigDecimal getLoginCount() {
         return this.loginCount;
     }
 
@@ -496,7 +496,7 @@ public class UserInfo implements Serializable {
      *
      * @param userId (用户ID)
      */
-    public UserInfo setUserId(java.math.BigDecimal userId) {
+    public UserInfo setUserId(BigDecimal userId) {
         this.userId = userId;
         return this;
     }
@@ -506,7 +506,7 @@ public class UserInfo implements Serializable {
      *
      * @return
      */
-    public java.math.BigDecimal getUserId() {
+    public BigDecimal getUserId() {
         return this.userId;
     }
 

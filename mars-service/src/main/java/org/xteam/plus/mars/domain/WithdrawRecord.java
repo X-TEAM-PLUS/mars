@@ -32,7 +32,7 @@ public class WithdrawRecord implements Serializable {
     /**
      * 流水号
      */
-    private java.math.BigDecimal id;
+    private BigDecimal id;
 
     /**
      * 更新时间
@@ -42,12 +42,12 @@ public class WithdrawRecord implements Serializable {
     /**
      * 用户ID
      */
-    private java.math.BigDecimal userId;
+    private BigDecimal userId;
 
     /**
      * 提取金额
      */
-    private java.math.BigDecimal amount;
+    private BigDecimal amount;
 
     /**
      * 申请时间
@@ -88,7 +88,7 @@ public class WithdrawRecord implements Serializable {
     /**
      * 余额
      */
-    private java.math.BigDecimal balanceAmount;
+    private BigDecimal balanceAmount;
 
     /**
      * 手机号
@@ -119,7 +119,7 @@ public class WithdrawRecord implements Serializable {
      *
      * @param id (流水号)
      */
-    public WithdrawRecord setId(java.math.BigDecimal id) {
+    public WithdrawRecord setId(BigDecimal id) {
         this.id = id;
         return this;
     }
@@ -129,7 +129,7 @@ public class WithdrawRecord implements Serializable {
      *
      * @return
      */
-    public java.math.BigDecimal getId() {
+    public BigDecimal getId() {
         return this.id;
     }
 
@@ -157,7 +157,7 @@ public class WithdrawRecord implements Serializable {
      *
      * @param userId (用户ID)
      */
-    public WithdrawRecord setUserId(java.math.BigDecimal userId) {
+    public WithdrawRecord setUserId(BigDecimal userId) {
         this.userId = userId;
         return this;
     }
@@ -167,7 +167,7 @@ public class WithdrawRecord implements Serializable {
      *
      * @return
      */
-    public java.math.BigDecimal getUserId() {
+    public BigDecimal getUserId() {
         return this.userId;
     }
 
@@ -176,7 +176,7 @@ public class WithdrawRecord implements Serializable {
      *
      * @param amount (提取金额)
      */
-    public WithdrawRecord setAmount(java.math.BigDecimal amount) {
+    public WithdrawRecord setAmount(BigDecimal amount) {
         this.amount = amount;
         return this;
     }
@@ -186,7 +186,7 @@ public class WithdrawRecord implements Serializable {
      *
      * @return
      */
-    public java.math.BigDecimal getAmount() {
+    public BigDecimal getAmount() {
         return this.amount;
     }
 

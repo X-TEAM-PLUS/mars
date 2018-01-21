@@ -83,7 +83,7 @@ public interface UserInfoManager {
      * @return
      * @throws Exception
      */
-    public List<UserInfo> queryWorker(UserInfo userInfo,Integer applyType) throws Exception;
+    public List<UserInfo> queryWorker(UserInfo userInfo, Integer applyType) throws Exception;
 
     /**
      * 查询社工，理事，常务理事个数
@@ -91,5 +91,5 @@ public interface UserInfoManager {
      * @return
      * @throws Exception
      */
-    public Integer queryWorkerCount(UserInfo userInfo,Integer applyType) throws Exception;
+    public Integer queryWorkerCount(UserInfo userInfo, Integer applyType) throws Exception;
 }

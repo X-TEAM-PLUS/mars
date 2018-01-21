@@ -87,4 +87,20 @@ public interface CouncilInfoManager {
      * @throws Exception
      */
     public List<CouncilInfoList> queryTotal() throws Exception;
+
+    /**
+     * 添加成员
+     * @param councilInfo
+     * @return
+     * @throws Exception
+     */
+    public int insertUser(CouncilInfo councilInfo) throws Exception;
+
+    /**
+     * 删除用户
+     * @param councilInfo
+     * @return
+     * @throws Exception
+     */
+    public int deleteUser(CouncilInfo councilInfo) throws Exception;
 }

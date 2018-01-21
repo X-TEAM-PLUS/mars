@@ -51,6 +51,12 @@ public interface LocalCouncilMemberDao {
     public int delete(LocalCouncilMember localCouncilMember) throws Exception;
 
     /**
+     * 删除
+     * @param localCouncilMember
+     * @return int
+     */
+    public int deleteUser(LocalCouncilMember localCouncilMember) throws Exception;
+    /**
      * 更新
      * @param localCouncilMember
      * @return int 记录数

@@ -1,5 +1,6 @@
 package org.xteam.plus.mars.service.provider;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.xteam.plus.mars.common.JsonResult;
@@ -235,6 +236,58 @@ public class CouncilInfoServiceProvider extends AbstractServiceProvider {
         return jsonResult;
     }
 
+    /**
+     * 增加成员
+     *
+     * @param councilinfo
+     * @return int 记录数
+     */
+    @RequestMapping("/postUser")
+    public JsonResult postUser(CouncilInfo councilinfo) throws Exception {
+        JsonResult jsonResult = new JsonResult();
+        try {
+            //保存
+            int rowCount = councilinfoManager.insertUser(councilinfo);
+            if (rowCount > 0) {
+                jsonResult.setSuccess(true);
+                jsonResult.setMessage("保存数据成功");
+            } else {
+                jsonResult.setSuccess(false);
+                jsonResult.setMessage("保存数据失败");
+            }
+        } catch (Exception e) {
+            logError("提交数据异常", e);
+            jsonResult.setMessage("提交数据异常 "+e.getMessage());
+            jsonResult.setSuccess(false);
+        }
+        return jsonResult;
+    }
 
 
+    /**
+     * 增加成员
+     *
+     * @param councilinfo
+     * @return int 记录数
+     */
+    @RequestMapping("/deleteUser")
+    public JsonResult deleteUser(CouncilInfo councilinfo) throws Exception {
+        JsonResult jsonResult = new JsonResult();
+        try {
+            //保存
+            int rowCount = councilinfoManager.deleteUser(councilinfo);
+            if (rowCount > 0) {
+                jsonResult.setSuccess(true);
+                jsonResult.setMessage("保存数据成功");
+            } else {
+                jsonResult.setSuccess(false);
+                jsonResult.setMessage("保存数据失败");
+            }
+        } catch (Exception e) {
+            logError("提交数据异常", e);
+            jsonResult.setMessage("提交数据异常 "+e.getMessage());
+            jsonResult.setSuccess(false);
+        }
+        return jsonResult;
+    }
 }

@@ -73,8 +73,13 @@
         where COUNCIL_MEMBER_ID= #{councilMemberId,jdbcType=DECIMAL}
     </delete>
 
+    <delete id="deleteUser" parameterType="org.xteam.plus.mars.domain.LocalCouncilMember">
+        delete from T_MARS_LOCAL_COUNCIL_MEMBER
+        where COUNCIL_ID= #{councilId,jdbcType=DECIMAL} AND USER_ID = #{userId,jdbcType=DECIMAL}
+    </delete>
     <!--插入记录-->
-    <insert id="insert" parameterType="org.xteam.plus.mars.domain.LocalCouncilMember" useGeneratedKeys="true" keyProperty="councilMemberId">
+    <insert id="insert" parameterType="org.xteam.plus.mars.domain.LocalCouncilMember" useGeneratedKeys="true"
+            keyProperty="councilMemberId">
         insert into T_MARS_LOCAL_COUNCIL_MEMBER (
         COUNCIL_ID
         ,CREATED

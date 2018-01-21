@@ -34,6 +34,16 @@
             <result column="ACCUMULATIVE_WITHDRAWALS" property="accumulativeWithdrawals" jdbcType="DECIMAL"/>
             <result column="ACCUMULATIVE_SUBSIDY" property="accumulativeSubsidy" jdbcType="DECIMAL"/>
         </association>
+        <association property="localCouncilMember" column="USER_ID"
+                     javaType="org.xteam.plus.mars.domain.LocalCouncilMember">
+            <id column="COUNCIL_MEMBER_ID" property="councilMemberId" jdbcType="DECIMAL"/>
+            <result column="COUNCIL_ID" property="councilId" jdbcType="DECIMAL"/>
+            <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+            <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
+            <result column="GRANT_TIME" property="grantTime" jdbcType="TIMESTAMP"/>
+            <result column="USER_ID" property="userId" jdbcType="DECIMAL"/>
+            <result column="JOB_TYPE" property="jobType" jdbcType="INTEGER"/>
+        </association>
     </resultMap>
 
     <!--公用选择列-->
@@ -198,6 +208,13 @@
         ,TUI.USER_LEVEL
         ,TUI.LAST_LOGIN_TIME
         ,TUI.NICK_NAME
+        ,TMLCM.COUNCIL_MEMBER_ID
+        ,TMLCM.COUNCIL_ID
+        ,TMLCM.CREATED
+        ,TMLCM.UPDATED
+        ,TMLCM.GRANT_TIME
+        ,TMLCM.USER_ID
+        ,TMLCM.JOB_TYPE
     </sql>
     <!--公用查询条件-->
     <sql id="queryWhereRf">
@@ -254,6 +271,7 @@
         FROM
         T_MARS_USER_RELATION TUR
         LEFT JOIN T_MARS_USER_INFO TUI ON TUR.REFEREE_USER_ID = TUI.USER_ID
+        LEFT JOIN T_MARS_LOCAL_COUNCIL_MEMBER TMLCM ON TUR.USER_ID = TMLCM.USER_ID
         WHERE
         FIND_IN_SET(
         TUR.REFEREE_USER_ID ,
@@ -279,6 +297,7 @@
         FROM
         T_MARS_USER_RELATION TUR
         LEFT JOIN T_MARS_USER_INFO TUI ON TUR.REFEREE_USER_ID = TUI.USER_ID
+        LEFT JOIN T_MARS_LOCAL_COUNCIL_MEMBER TMLCM ON TUR.USER_ID = TMLCM.USER_ID
         WHERE
         FIND_IN_SET(
         TUR.REFEREE_USER_ID ,
