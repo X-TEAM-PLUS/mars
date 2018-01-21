@@ -58,6 +58,11 @@
                                             <i class="icon-magnifier"></i>
                                             <input class="form-control" type="text" name="bankAccountNo" placeholder="打款账号"/>
                                         </div>
+                                        <div class="input-icon date-picker input-daterange col-md-2 " data-date-format="yyyy-mm-dd">
+                                            <i class="fa fa-calendar "></i>
+                                            <input type="text" name="applyTime" class="form-control " readonly="" validate='{required: false}' placeholder="申请时间">
+                                        </div>
+
                                         <span class="input-group-btn">
 												<button class="btn btn-success" type="submit"><i class="fa fa-arrow-left fa-fw"/></i> 搜索</button>
 												</span>
@@ -75,7 +80,10 @@
                             <th column="amount">提取金额（元）</th>
                             <th column="balanceAmount">剩余金额（元）</th>
                             <th column="bankAccountNo">打款账号</th>
-                            <th column="status" type="enum" enum-v="{'-1':'<span class=\'bold badge badge-danger\'>审批未通过</span>',0:'<span class=\'bold badge badge-default\'>未审批</span>',1:'<span class=\'badge badge-success \'>审批通过</span>',2:'<span class=\' bold badge badge-info\'>已打款</span>',3:'<span class=\'bold badge badge-primary \'>已确认</span>'}">状态</th>
+                            <th column="status" type="enum"
+                                enum-v="{'-1':'<span class=\'bold badge badge-danger\'>审批未通过</span>',0:'<span class=\'bold badge badge-default\'>未审批</span>',1:'<span class=\'badge badge-success \'>审批通过</span>',2:'<span class=\' bold badge badge-info\'>已打款</span>',3:'<span class=\'bold badge badge-primary \'>已确认</span>'}">
+                                状态
+                            </th>
                             <th type="action" style="width: 200px">操作</th>
                         </tr>
                         </thead>
@@ -100,7 +108,7 @@
                     , scroll: false
                     , dockedItems: [{
                     name: '同意提现申请'
-                    ,buttonColor:'green'
+                    , buttonColor: 'green'
                     , iconClass: 'glyphicon glyphicon-ok'
                     , action: '/services/mars/withdrawrecord/agreeApply'
                     , confirm: true
@@ -109,9 +117,9 @@
                     , column: 'id'
                     , equalField: 'status'
                     , equalValue: '0'
-                },{
+                }, {
                     name: '不同意提现申请'
-                    ,buttonColor:'red'
+                    , buttonColor: 'red'
                     , iconClass: 'glyphicon glyphicon-remove'
                     , action: '/services/mars/withdrawrecord/refuseApply'
                     , confirm: true

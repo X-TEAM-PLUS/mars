@@ -47,12 +47,31 @@
                                 <form id="ordersTableForm" onsubmit="init();return false;">
                                     <div class="input-group">
                                         <div class="input-icon col-md-2">
+                                            <select id="cardType" name="status" class="form-control selectpicker" data-live-search="false" placeholder="订单状态" >
+                                                <option value="" >全部</option>
+                                                <option value="0"  >已失效</option>
+                                                <option value="0"  >未支付</option>
+                                                <option value="1">已支付</option>
+                                            </select>
+                                        </div>
+                                        <div class="input-icon  col-md-2">
+                                            <select id="cardType" name="cardType" class="form-control selectpicker" data-live-search="false" placeholder="卡类型" >
+                                                <option value="" >全部</option>
+                                                <option value="0"  >虚拟卡</option>
+                                                <option value="1">实体卡</option>
+                                            </select>
+                                        </div>
+                                        <div class="input-icon col-md-2">
                                             <i class="icon-magnifier"></i>
                                             <input class="form-control" type="text" name="buyerUserId" placeholder="购卡用户ID"/>
                                         </div>
                                         <div class="input-icon col-md-2">
                                             <i class="icon-magnifier"></i>
                                             <input class="form-control" type="text" name="orderNo" placeholder="订单号"/>
+                                        </div>
+                                        <div class="input-icon date-picker input-daterange col-md-2 " data-date-format="yyyy-mm-dd">
+                                            <i class="fa fa-calendar "></i>
+                                            <input type="text" name="orderTime" class="form-control " readonly="" placeholder="下单时间">
                                         </div>
                                         <span class="input-group-btn">
 												<button class="btn btn-success" type="submit"><i class="fa fa-arrow-left fa-fw"/></i> 搜索</button>
@@ -74,9 +93,9 @@
                             <th column="productPrice">产品单价(元)</th>
                             <th column="productNum">数量</th>
                             <th column="orderPrice">订单总价(元)</th>
-                            <th column="status"  type="enum"  enum-v="{'-1':'失效',0:'未支付',1:'已支付'}">状态</th>
+                            <th column="status"  type="enum"  enum-v="{'-1':'<span class=\'bold badge badge-default\'>已失效</span>',0:'<span class=\'bold badge badge-info\'>未支付</span>',1:'<span class=\'bold badge badge-success\'>已支付</span>'}">状态</th>
                             <th column="payTime">支付时间</th>
-                            <th column="payWay"  type="enum"  enum-v="{1:'微信支付',1:'支付宝'}">支付方式</th>
+                            <th column="payWay"  type="enum"  enum-v="{1:'微信支付',2:'支付宝'}">支付方式</th>
                             <th column="payOrderNo">支付流水号</th>
                             <th column="updated">更新时间</th>
                             <th type="action" >操作</th>

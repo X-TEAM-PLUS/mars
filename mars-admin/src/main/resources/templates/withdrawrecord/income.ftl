@@ -48,7 +48,23 @@
                                     <div class="input-group">
                                         <div class="input-icon col-md-2">
                                             <i class="icon-magnifier"></i>
-                                            <input class="form-control" type="text" name="id" placeholder="流水号"/>
+                                            <input class="form-control" type="text" name="buyerUserId" placeholder="用户ID"/>
+                                        </div>
+                                        <div class="input-icon col-md-2">
+                                            <i class="icon-magnifier"></i>
+                                            <input class="form-control" type="text" name="realName" placeholder="姓名"/>
+                                        </div>
+                                        <div class="input-icon col-md-2">
+                                            <i class="icon-magnifier"></i>
+                                            <input class="form-control" type="text" name="mobileNo" placeholder="电话"/>
+                                        </div>
+                                        <div class="input-icon col-md-2">
+                                            <i class="icon-magnifier"></i>
+                                            <input class="form-control" type="text" name="orderNo" placeholder="订单号"/>
+                                        </div>
+                                        <div class="input-icon date-picker input-daterange col-md-2 " data-date-format="yyyy-mm-dd">
+                                            <i class="fa fa-calendar "></i>
+                                            <input type="text" name="payTime" class="form-control " readonly="" validate='{required: false}' placeholder="支付时间">
                                         </div>
                                         <span class="input-group-btn">
 												<button class="btn btn-success" type="submit"><i class="fa fa-arrow-left fa-fw"/></i> 搜索</button>

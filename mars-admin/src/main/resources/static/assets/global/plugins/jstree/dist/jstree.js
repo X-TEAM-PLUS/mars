@@ -258,7 +258,7 @@
 	 */
 	$.jstree.defaults.core = {
 		/**
-		 * data configuration
+		 * data config
 		 *
 		 * If left as `false` the HTML inside the jstree container element is used to populate the tree (that should be an unordered list with list items).
 		 *
@@ -364,7 +364,7 @@
 		 */
 		multiple		: true,
 		/**
-		 * theme configuration object
+		 * theme config object
 		 * @name $.jstree.defaults.core.themes
 		 */
 		themes			: {
@@ -7140,7 +7140,7 @@
  */
 
 	/**
-	 * massload configuration
+	 * massload config
 	 *
 	 * It is possible to set this to a standard jQuery-like AJAX config.
 	 * In addition to the standard jQuery ajax options here you can supply functions for `data` and `url`, the functions will be run in the current instance's scope and a param will be passed indicating which node IDs need to be loaded, the return value of those functions will be used.

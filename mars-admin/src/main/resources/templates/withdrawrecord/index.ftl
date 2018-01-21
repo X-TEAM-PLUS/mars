@@ -58,6 +58,14 @@
                                             <i class="icon-magnifier"></i>
                                             <input class="form-control" type="text" name="bankAccountNo" placeholder="打款账号"/>
                                         </div>
+                                        <div class="input-icon col-md-2">
+                                            <i class="icon-magnifier"></i>
+                                            <input class="form-control" type="text" name="mobileNo" placeholder="提现人电话"/>
+                                        </div>
+                                        <div class="input-icon date-picker input-daterange col-md-2 " data-date-format="yyyy-mm-dd">
+                                            <i class="fa fa-calendar "></i>
+                                            <input type="text" name="payTime" class="form-control " readonly="" validate='{required: false}' placeholder="打款时间">
+                                        </div>
                                         <span class="input-group-btn">
 												<button class="btn btn-success" type="submit"><i class="fa fa-arrow-left fa-fw"/></i> 搜索</button>
 												</span>

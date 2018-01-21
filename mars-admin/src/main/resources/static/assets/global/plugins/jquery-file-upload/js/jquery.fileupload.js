@@ -115,7 +115,7 @@
             limitMultiFileUploadSize: undefined,
             // Multipart file uploads add a number of bytes to each uploaded file,
             // therefore the following option adds an overhead for each file used
-            // in the limitMultiFileUploadSize configuration:
+            // in the limitMultiFileUploadSize config:
             limitMultiFileUploadSizeOverhead: 512,
             // Set the following option to true to issue all file upload requests
             // in a sequential order:
