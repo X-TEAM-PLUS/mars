@@ -26,6 +26,15 @@
         <result column="NICK_NAME" property="nickName" jdbcType="VARCHAR"/>
         <result column="ACCUMULATIVE_WITHDRAWALS" property="accumulativeWithdrawals" jdbcType="DECIMAL"/>
         <result column="ACCUMULATIVE_SUBSIDY" property="accumulativeSubsidy" jdbcType="DECIMAL"/>
+
+        <result column="PROVINCE" property="province" jdbcType="DECIMAL"/>
+        <result column="CITY" property="city" jdbcType="DECIMAL"/>
+        <result column="COUNTY" property="county" jdbcType="DECIMAL"/>
+
+        <result column="PROVINCE_NAME" property="provinceName" jdbcType="DECIMAL"/>
+        <result column="CITY_NAME" property="cityName" jdbcType="DECIMAL"/>
+        <result column="COUNTY_NAME" property="countyName" jdbcType="DECIMAL"/>
+
         <association property="userSalesInfo" column="USER_ID"
                      javaType="org.xteam.plus.mars.domain.UserSalesInfo">
             <id column="USER_ID" property="userId" jdbcType="DECIMAL"/>
@@ -72,6 +81,12 @@
         ,USER_LEVEL
         ,LAST_LOGIN_TIME
         ,NICK_NAME
+        ,PROVINCE
+        ,CITY
+        ,COUNTY
+        ,PROVINCE_NAME
+        ,CITY_NAME
+        ,COUNTY_NAME
     </sql>
 
     <!--公用查询条件-->
@@ -221,6 +236,12 @@
         ,USER_LEVEL
         ,LAST_LOGIN_TIME
         ,NICK_NAME
+        ,PROVINCE
+        ,CITY
+        ,COUNTY
+        ,PROVINCE_NAME
+        ,CITY_NAME
+        ,COUNTY_NAME
         )values(
         #{cardNo,jdbcType=DECIMAL}
         ,#{idNumber,jdbcType=VARCHAR}
@@ -242,6 +263,12 @@
         ,#{userLevel,jdbcType=INTEGER}
         ,#{lastLoginTime,jdbcType=TIMESTAMP}
         ,#{nickName,jdbcType=VARCHAR}
+        ,#{province,jdbcType=DECIMAL}
+        ,#{city,jdbcType=DECIMAL}
+        ,#{county,jdbcType=DECIMAL}
+        ,#{provinceName,jdbcType=VARCHAR}
+        ,#{cityName,jdbcType=VARCHAR}
+        ,#{countyName,jdbcType=VARCHAR}
         )
     </insert>
 
@@ -268,6 +295,12 @@
         ,USER_LEVEL
         ,LAST_LOGIN_TIME
         ,NICK_NAME
+        ,PROVINCE
+        ,CITY
+        ,COUNTY
+        ,PROVINCE_NAME
+        ,CITY_NAME
+        ,COUNTY_NAME
         )values
         <foreach collection="list" item="item" index="index" separator=",">
             (
@@ -291,6 +324,12 @@
             ,#{item.userLevel,jdbcType=INTEGER}
             ,#{item.lastLoginTime,jdbcType=TIMESTAMP}
             ,#{item.nickName,jdbcType=VARCHAR}
+            ,#{item.province,jdbcType=DECIMAL}
+            ,#{item.city,jdbcType=DECIMAL}
+            ,#{item.county,jdbcType=DECIMAL}
+            ,#{item.provinceName,jdbcType=VARCHAR}
+            ,#{item.cityName,jdbcType=VARCHAR}
+            ,#{item.countyName,jdbcType=VARCHAR}
             )
         </foreach>
     </insert>
@@ -360,6 +399,24 @@
                 <if test="nickName!=null ">
                     NICK_NAME=#{nickName,jdbcType=VARCHAR},
                 </if>
+                <if test="province!=null ">
+                    PROVINCE=#{province,jdbcType=DECIMAL},
+                </if>
+                <if test="city!=null ">
+                    CITY=#{city,jdbcType=DECIMAL},
+                </if>
+                <if test="county!=null ">
+                    COUNTY=#{county,jdbcType=DECIMAL},
+                </if>
+                <if test="provinceName!=null ">
+                    PROVINCE_NAME=#{provinceName,jdbcType=VARCHAR},
+                </if>
+                <if test="city!=null ">
+                    CITY=#{cityName,jdbcType=VARCHAR},
+                </if>
+                <if test="county!=null ">
+                    COUNTY=#{countyName,jdbcType=VARCHAR},
+                </if>
             </trim>
         </set>
         where USER_ID= #{userId,jdbcType=DECIMAL}
@@ -389,6 +446,12 @@
         ,USER_LEVEL
         ,LAST_LOGIN_TIME
         ,NICK_NAME
+        ,PROVINCE
+        ,CITY
+        ,COUNTY
+        ,PROVINCE_NAME
+        ,CITY_NAME
+        ,COUNTY_NAME
         from T_MARS_USER_INFO
         where USER_ID= #{userId,jdbcType=DECIMAL}
     </select>
@@ -435,6 +498,12 @@
         ,TUI.USER_LEVEL
         ,TUI.LAST_LOGIN_TIME
         ,TUI.NICK_NAME
+        ,TUI.PROVINCE
+        ,TUI.CITY
+        ,TUI.COUNTY
+        ,TUI.PROVINCE_NAME
+        ,TUI.CITY_NAME
+        ,TUI.COUNTY_NAME
         ,TUSI.USER_ID
         ,TUSI.TEAM_PEOPLE_NUMBER
         ,TUSI.TEAM_PROFIT_AMOUNT

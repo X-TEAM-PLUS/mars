@@ -248,15 +248,11 @@
                             <thead>
                             <tr>
                                 <th column="userId">用户ID</th>
-                                <th column="realName">真实姓名</th>
-                                <th column="mobileNo">手机号</th>
-                                <th column="lastLoginTime">最后登录时间</th>
+                                <th column="userInfo.realName">真实姓名</th>
+                                <th column="userInfo.mobileNo">手机号</th>
+                                <th column="userInfo.lastLoginTime">最后登录时间</th>
                                 <th column="applyInfo.created">申请日期</th>
-                                <th column="loginCount">登录次数</th>
-                                <th column="userSalesInfo.teamPeopleNumber">团队人数</th>
-                                <th column="accumulativeSubsidy">累计补贴(元)</th>
-                                <th column="accumulativeWithdrawals">累计体现(元)</th>
-                                <th type="action" >操作</th>
+                                <th column="userInfo.loginCount">登录次数</th>
                             </tr>
                             </thead>
                             <tbody>

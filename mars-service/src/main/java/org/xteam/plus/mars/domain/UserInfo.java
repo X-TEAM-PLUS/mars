@@ -150,6 +150,36 @@ public class UserInfo implements Serializable {
     private BigDecimal accumulativeSubsidy;
 
     /**
+     * 省(编号)
+     */
+    private BigDecimal province;
+
+    /**
+     * 城市(编号)
+     */
+    private BigDecimal city;
+
+    /**
+     * 区县(编号)
+     */
+    private BigDecimal county;
+
+    /**
+     * 省(编号)
+     */
+    private String provinceName;
+
+    /**
+     * 城市(编号)
+     */
+    private String cityName;
+
+    /**
+     * 区县(编号)
+     */
+    private String countyName;
+
+    /**
      * 设置   cardNo
      *
      * @param cardNo (会员卡号)
@@ -618,5 +648,53 @@ public class UserInfo implements Serializable {
 
     public void setApplyInfo(ApplyInfo applyInfo) {
         this.applyInfo = applyInfo;
+    }
+
+    public BigDecimal getProvince() {
+        return province;
+    }
+
+    public void setProvince(BigDecimal province) {
+        this.province = province;
+    }
+
+    public BigDecimal getCity() {
+        return city;
+    }
+
+    public void setCity(BigDecimal city) {
+        this.city = city;
+    }
+
+    public BigDecimal getCounty() {
+        return county;
+    }
+
+    public void setCounty(BigDecimal county) {
+        this.county = county;
+    }
+
+    public String getProvinceName() {
+        return provinceName;
+    }
+
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public String getCountyName() {
+        return countyName;
+    }
+
+    public void setCountyName(String countyName) {
+        this.countyName = countyName;
     }
 }

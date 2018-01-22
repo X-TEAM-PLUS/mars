@@ -68,7 +68,6 @@
                     <table class="table table-striped table-bordered table-hover ">
                         <thead>
                         <tr>
-                            <th column="councilId" type="checkbox" style="width: 50px"><input type="checkbox" id="allCheckBox" class="allCheckBox"></th>
                             <th column="cityNo">地区主键</th>
                             <th column="cityName">地区名称</th>
                             <th column="totalStandingDirector">辖内常任理事</th>

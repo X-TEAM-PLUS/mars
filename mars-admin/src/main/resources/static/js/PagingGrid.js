@@ -326,13 +326,12 @@
          */
         function getEnumTD(tdValue, rowValue) {
             var valueName = tdValue.attr("column");
+            var value = getColumnValue(rowValue,valueName);
             var convertValue = eval("(" + tdValue.attr("enum-v") + ")");
-            if(rowValue[valueName] != 0 && !rowValue[valueName]){
+            if (convertValue[value] != null && convertValue[value] != undefined){
+                return $("<td  style='" + wordBreakStyle + "'>" + convertValue[value] + "</td>");
+            }else{
                 return $("<td  style='" + wordBreakStyle + "'></td>");
-            }else if (convertValue[rowValue[valueName]] != null) {
-                return $("<td  style='" + wordBreakStyle + "'>" + convertValue[rowValue[valueName]] + "</td>");
-            } else {
-                return $("<td  style='" + wordBreakStyle + "'>" + rowValue[valueName] + "</td>");
             }
         }
 

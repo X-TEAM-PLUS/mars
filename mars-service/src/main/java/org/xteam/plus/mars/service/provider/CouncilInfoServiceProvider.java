@@ -1,6 +1,5 @@
 package org.xteam.plus.mars.service.provider;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.xteam.plus.mars.common.JsonResult;
@@ -193,10 +192,13 @@ public class CouncilInfoServiceProvider extends AbstractServiceProvider {
      * @return List<CouncilInfo>
      */
     @RequestMapping("/totalList")
-    public JsonResult totalList() throws Exception {
+    public JsonResult totalList(int start, int limit) throws Exception {
         JsonResult jsonResult = new JsonResult();
         try {
-            List<CouncilInfoList> data = councilinfoManager.queryTotal();
+            if (limit == 0){
+                limit = 10;
+            }
+            List<CouncilInfoList> data = councilinfoManager.queryTotal(start, limit);
             // 设置结果集
             jsonResult.put("list", data);
             jsonResult.put("rowCount", councilinfoManager.queryCount(new CouncilInfo()));
@@ -211,6 +213,7 @@ public class CouncilInfoServiceProvider extends AbstractServiceProvider {
 
     /**
      * 查询详情（后台）
+     *
      * @param councilId 地方常任理事ID
      * @return
      * @throws Exception
@@ -257,7 +260,7 @@ public class CouncilInfoServiceProvider extends AbstractServiceProvider {
             }
         } catch (Exception e) {
             logError("提交数据异常", e);
-            jsonResult.setMessage("提交数据异常 "+e.getMessage());
+            jsonResult.setMessage("提交数据异常 " + e.getMessage());
             jsonResult.setSuccess(false);
         }
         return jsonResult;
@@ -285,7 +288,7 @@ public class CouncilInfoServiceProvider extends AbstractServiceProvider {
             }
         } catch (Exception e) {
             logError("提交数据异常", e);
-            jsonResult.setMessage("提交数据异常 "+e.getMessage());
+            jsonResult.setMessage("提交数据异常 " + e.getMessage());
             jsonResult.setSuccess(false);
         }
         return jsonResult;

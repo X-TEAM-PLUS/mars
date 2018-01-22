@@ -71,7 +71,7 @@ public interface CouncilInfoDao {
      * @return
      * @throws Exception
      */
-    public List<CouncilInfoList> queryTotal() throws Exception;
+    public List<CouncilInfoList> queryTotal(@Param("start") int start,@Param("limit") int limit) throws Exception;
 
     /**
      * 查询

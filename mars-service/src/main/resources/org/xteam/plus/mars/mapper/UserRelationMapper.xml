@@ -33,6 +33,12 @@
             <result column="NICK_NAME" property="nickName" jdbcType="VARCHAR"/>
             <result column="ACCUMULATIVE_WITHDRAWALS" property="accumulativeWithdrawals" jdbcType="DECIMAL"/>
             <result column="ACCUMULATIVE_SUBSIDY" property="accumulativeSubsidy" jdbcType="DECIMAL"/>
+            <result column="PROVINCE" property="province" jdbcType="DECIMAL"/>
+            <result column="CITY" property="city" jdbcType="DECIMAL"/>
+            <result column="COUNTY" property="county" jdbcType="DECIMAL"/>
+            <result column="PROVINCE_NAME" property="provinceName" jdbcType="DECIMAL"/>
+            <result column="CITY_NAME" property="cityName" jdbcType="DECIMAL"/>
+            <result column="COUNTY_NAME" property="countyName" jdbcType="DECIMAL"/>
         </association>
         <association property="localCouncilMember" column="USER_ID"
                      javaType="org.xteam.plus.mars.domain.LocalCouncilMember">
@@ -208,6 +214,15 @@
         ,TUI.USER_LEVEL
         ,TUI.LAST_LOGIN_TIME
         ,TUI.NICK_NAME
+        ,TUI.PROVINCE
+        ,TUI.CITY
+        ,TUI.COUNTY
+        ,TUI.PROVINCE_NAME
+        ,TUI.CITY_NAME
+        ,TUI.COUNTY_NAME
+
+    </sql>
+    <sql id="selectColumnTmlcm">
         ,TMLCM.COUNCIL_MEMBER_ID
         ,TMLCM.COUNCIL_ID
         ,TMLCM.CREATED
@@ -252,7 +267,7 @@
         select
         <include refid="selectColumnsRf"></include>
         from T_MARS_USER_RELATION TUR
-        LEFT JOIN T_MARS_USER_INFO TUI ON TUI.USER_ID = TUR.USER_ID
+        LEFT JOIN T_MARS_USER_INFO TUI ON TUI.USER_ID = TUR.REFEREE_USER_ID
         <include refid="queryWhereRf"></include>
         limit #{start},#{limit}
     </select>
@@ -260,7 +275,7 @@
     <select id="queryForUserCount" resultType="int" parameterType="org.xteam.plus.mars.domain.UserInfo">
         select count(1)
         from T_MARS_USER_RELATION TUR
-        LEFT JOIN T_MARS_USER_INFO TUI ON TUI.USER_ID = TUR.USER_ID
+        LEFT JOIN T_MARS_USER_INFO TUI ON TUI.USER_ID = TUR.REFEREE_USER_ID
         <include refid="queryWhereRf"></include>
     </select>
 
@@ -268,10 +283,11 @@
     <select id="queryForCouncil" resultMap="BaseResultMap" >
         SELECT
         <include refid="selectColumnsRf"></include>
+        <include refid="selectColumnTmlcm"></include>
         FROM
         T_MARS_USER_RELATION TUR
         LEFT JOIN T_MARS_USER_INFO TUI ON TUR.REFEREE_USER_ID = TUI.USER_ID
-        LEFT JOIN T_MARS_LOCAL_COUNCIL_MEMBER TMLCM ON TUR.USER_ID = TMLCM.USER_ID
+        LEFT JOIN T_MARS_LOCAL_COUNCIL_MEMBER TMLCM ON TUI.USER_ID = TMLCM.USER_ID
         WHERE
         FIND_IN_SET(
         TUR.REFEREE_USER_ID ,
@@ -287,6 +303,7 @@
         TMCI.COUNCIL_ID
         )
         )
+        AND TMLCM.COUNCIL_ID = #{councilId,jdbcType=DECIMAL}
         limit #{start},#{limit}
     </select>
 
@@ -297,7 +314,7 @@
         FROM
         T_MARS_USER_RELATION TUR
         LEFT JOIN T_MARS_USER_INFO TUI ON TUR.REFEREE_USER_ID = TUI.USER_ID
-        LEFT JOIN T_MARS_LOCAL_COUNCIL_MEMBER TMLCM ON TUR.USER_ID = TMLCM.USER_ID
+        LEFT JOIN T_MARS_LOCAL_COUNCIL_MEMBER TMLCM ON TUI.USER_ID = TMLCM.USER_ID
         WHERE
         FIND_IN_SET(
         TUR.REFEREE_USER_ID ,
@@ -313,6 +330,7 @@
         TMCI.COUNCIL_ID
         )
         )
+        AND TMLCM.COUNCIL_ID = #{councilId,jdbcType=DECIMAL}
 
     </select>
 </mapper>

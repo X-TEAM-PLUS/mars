@@ -158,7 +158,7 @@
 
 
     <!-- 统计查询 -->
-    <select id="queryTotal" resultMap="TotalBaseResultMap">
+    <select id="queryTotal" resultMap="TotalBaseResultMap" parameterType="Integer">
         SELECT
         (
         SELECT
@@ -230,6 +230,7 @@
         LEFT JOIN T_MARS_CITY_INFO TMCITY ON TMCITY. CODE = TMCI.CITY_NO
         GROUP BY
         TMCI.COUNCIL_ID
+        limit #{start},#{limit}
     </select>
 
     <select id="getTotal" resultMap="TotalBaseResultMap">

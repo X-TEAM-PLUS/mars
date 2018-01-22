@@ -86,7 +86,7 @@ public interface CouncilInfoManager {
      * @return
      * @throws Exception
      */
-    public List<CouncilInfoList> queryTotal() throws Exception;
+    public List<CouncilInfoList> queryTotal(int start,int limit) throws Exception;
 
     /**
      * 添加成员

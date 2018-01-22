@@ -103,7 +103,7 @@
                                 <th column="userInfo.mobileNo">手机号</th>
                                 <th column="userInfo.lastLoginTime">最后登录时间</th>
                                 <th column="userInfo.loginCount">登录次数</th>
-                                <th column="localCouncilMember.JOB_TYPE">职务</th>
+                                <th column="localCouncilMember.jobType" type="enum" enum-v="{'0':'成员','1':'副理事长','2':'行政'}">职务</th>
                                 <th type="action" style="width: 200px">操作</th>
                             </tr>
                             </thead>

@@ -118,8 +118,8 @@ public class CouncilInfoManagerImpl implements CouncilInfoManager {
     }
 
     @Override
-    public List<CouncilInfoList> queryTotal() throws Exception {
-        return councilInfoDao.queryTotal();
+    public List<CouncilInfoList> queryTotal(int start,int limit) throws Exception {
+        return councilInfoDao.queryTotal(start,limit);
     }
 
     /**
