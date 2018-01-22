@@ -15,7 +15,7 @@
         </li>
         <li>
             <i class="fa fa-cube"></i>
-            <a href="index">问题表管理</a>
+            <a href="index">问题管理</a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li class=" active">
@@ -29,7 +29,7 @@
         <div class="portlet box grey-cascade">
             <div class="portlet-title">
                 <div class="caption">
-                    <i class="fa fa-adn"></i>编辑问题表
+                    <i class="fa fa-adn"></i>编辑问题
                 </div>
                 <div class="tools">
                     <a href="javascript:;" class="collapse">
@@ -50,29 +50,6 @@
                     <div class="form-body">
                         <div class="form-group">
                             <label class="col-md-3 control-label">
-                                更新时间
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10 date-picker input-daterange " data-date-format="yyyy-mm-dd">
-                                    <i class="fa fa-calendar "></i>
-                                    <input type="text" name="updated" class="form-control" readonly="" validate='{required: false}'>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                问题ID<span class="required">* </span>
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10">
-                                    <i class="fa   fa-font "></i>
-                                    <input type="text" name="questionId" class="form-control" placeholder="问题ID" validate='{required: true}'
-                                    >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
                                 标题<span class="required">* </span>
                             </label>
                             <div class="col-md-5">
@@ -89,20 +66,7 @@
                             </label>
                             <div class="col-md-5">
                                 <div class="input-icon margin-top-10">
-                                    <i class="fa   fa-font "></i>
-                                    <input type="text" name="questionReply" class="form-control" placeholder="回复" validate='{required: true}'
-                                    >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                创建时间<span class="required">* </span>
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10 date-picker input-daterange " data-date-format="yyyy-mm-dd">
-                                    <i class="fa fa-calendar "></i>
-                                    <input type="text" name="created" class="form-control" readonly="" validate='{required: true}'>
+                                    <textarea name="questionReply"  validate='{required: true}' cols="10" style="width: 100%;height: 300px" ></textarea>
                                 </div>
                             </div>
                         </div>

@@ -35,7 +35,7 @@
             </if>
             <if test="questionTitle!=null and  questionTitle!=''">
                 <![CDATA[
-                    and QUESTION_TITLE=#{questionTitle,jdbcType=VARCHAR}
+                    and QUESTION_TITLE LIKE  CONCAT('%', #{questionTitle,jdbcType=VARCHAR}, '%')
                     ]]>
             </if>
             <if test="questionReply!=null and  questionReply!=''">

@@ -7,6 +7,7 @@ import org.xteam.plus.mars.domain.QuestionInfo;
 import org.xteam.plus.mars.manager.QuestionInfoManager;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 
@@ -61,6 +62,8 @@ public class QuestionInfoServiceProvider extends AbstractServiceProvider {
     public JsonResult post(QuestionInfo questioninfo) throws Exception {
         JsonResult jsonResult = new JsonResult();
         try {
+            questioninfo.setCreated(new Date());
+            questioninfo.setUpdated(new Date());
             //保存
             int rowCount = questioninfoManager.insert(questioninfo);
             if (rowCount > 0) {
@@ -142,6 +145,7 @@ public class QuestionInfoServiceProvider extends AbstractServiceProvider {
     public JsonResult put(QuestionInfo questioninfo) throws Exception {
         JsonResult jsonResult = new JsonResult();
         try {
+            questioninfo.setUpdated(new Date());
             //更新记录
             int rowCount = questioninfoManager.update(questioninfo);
             if (rowCount > 0) {
