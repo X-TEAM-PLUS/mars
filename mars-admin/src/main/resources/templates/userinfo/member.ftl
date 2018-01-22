@@ -101,7 +101,7 @@
     function init() {
         $("#userInfoTable").pagingGrid(
                 {
-                    dataUrl: '/services/mars/userinfo/list'
+                    dataUrl: '/services/mars/userinfo/list?userLevel=1'
                     , pageSize: 10
                     , scroll: false
                     , dockedItems: [{
