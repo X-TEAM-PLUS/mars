@@ -101,13 +101,13 @@
                     , scroll: false
                     , dockedItems: [{
                         name: '查看'
-                        , iconClass: 'fa fa-edit'
+                        , iconClass: 'fa fa-list-ul'
                         , action: '/mars/councilinfo/view'
                         , confirm: false
                         , parmaName: 'councilId'
                         , column: 'councilId'
                     },{
-                        name: '查看'
+                        name: '编辑'
                         , iconClass: 'fa fa-edit'
                         , action: '/mars/councilinfo/edit'
                         , confirm: false

@@ -97,8 +97,8 @@
                     , pageSize: 10
                     , scroll: false
                     , dockedItems: [{
-                        name: '修改'
-                        , iconClass: 'fa fa-view'
+                        name: '查看'
+                        , iconClass: 'fa fa-list-ul'
                         , action: '/mars/userinfo/socialworkerInfo'
                         , confirm: false
                         , parmaName: 'userId'

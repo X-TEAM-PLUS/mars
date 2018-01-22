@@ -98,7 +98,7 @@
                     , scroll: false
                     , dockedItems: [{
                         name: '修改'
-                        , iconClass: 'fa fa-view'
+                        , iconClass: 'fa fa-list-ul'
                         , action: '/mars/userinfo/standingDirectorInfo'
                         , confirm: false
                         , parmaName: 'userId'
