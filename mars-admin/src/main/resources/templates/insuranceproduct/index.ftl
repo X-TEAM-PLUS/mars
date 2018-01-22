@@ -15,7 +15,7 @@
         </li>
         <li>
             <i class="fa fa-cube"></i>
-            <a href="#">保险信息表管理</a>
+            <a href="#">保险信息管理</a>
         </li>
 
     </ul>
@@ -29,7 +29,7 @@
             <div class="portlet box grey-cascade">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="icon-user"></i>保险信息表管理
+                        <i class="icon-user"></i>保险信息管理
                     </div>
                     <div class="tools">
                         <a href="javascript:;" class="collapse">
