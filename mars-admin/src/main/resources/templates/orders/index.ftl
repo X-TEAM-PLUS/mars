@@ -48,22 +48,26 @@
                                     <div class="input-group">
                                         <div class="input-icon col-md-2">
                                             <select id="cardType" name="status" class="form-control selectpicker" data-live-search="false" placeholder="订单状态" >
-                                                <option value="" >全部</option>
-                                                <option value="0"  >已失效</option>
-                                                <option value="0"  >未支付</option>
-                                                <option value="1">已支付</option>
+                                                <option value="" >订单状态---全部</option>
+                                                <option value="0"  >订单状态---已失效</option>
+                                                <option value="0"  >订单状态---未支付</option>
+                                                <option value="1">订单状态---已支付</option>
                                             </select>
                                         </div>
                                         <div class="input-icon  col-md-2">
                                             <select id="cardType" name="cardType" class="form-control selectpicker" data-live-search="false" placeholder="卡类型" >
-                                                <option value="" >全部</option>
-                                                <option value="0"  >虚拟卡</option>
-                                                <option value="1">实体卡</option>
+                                                <option value="" >卡类型---全部</option>
+                                                <option value="0"  >卡类型---虚拟卡</option>
+                                                <option value="1">卡类型---实体卡</option>
                                             </select>
                                         </div>
                                         <div class="input-icon col-md-2">
                                             <i class="icon-magnifier"></i>
                                             <input class="form-control" type="text" name="buyerUserId" placeholder="购卡用户ID"/>
+                                        </div>
+                                        <div class="input-icon col-md-2">
+                                            <i class="icon-magnifier"></i>
+                                            <input class="form-control" type="text" name="mobileNo" placeholder="手机号"/>
                                         </div>
                                         <div class="input-icon col-md-2">
                                             <i class="icon-magnifier"></i>
