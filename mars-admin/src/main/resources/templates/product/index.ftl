@@ -15,7 +15,7 @@
         </li>
         <li>
             <i class="fa fa-cube"></i>
-            <a href="#">健康卡产品表管理</a>
+            <a href="#">健康卡产品管理</a>
         </li>
 
     </ul>
@@ -29,7 +29,7 @@
             <div class="portlet box grey-cascade">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="icon-user"></i>健康卡产品表管理
+                        <i class="icon-user"></i>健康卡产品管理
                     </div>
                     <div class="tools">
                         <a href="javascript:;" class="collapse">
@@ -46,7 +46,7 @@
                             <div class="col-md-10">
                                 <div class="btn-group">
                                     <button id="newProductButton" class="btn green" onclick="location.href = 'add';">
-                                        添加健康卡产品表 <i class="fa fa-plus"></i>
+                                        添加健康卡产品 <i class="fa fa-plus"></i>
                                     </button>
                                 </div>
                             </div>

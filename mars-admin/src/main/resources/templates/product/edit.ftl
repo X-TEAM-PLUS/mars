@@ -15,7 +15,7 @@
         </li>
         <li>
             <i class="fa fa-cube"></i>
-            <a href="index">健康卡产品表管理</a>
+            <a href="index">健康卡产品管理</a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li class=" active">
@@ -29,7 +29,7 @@
         <div class="portlet box grey-cascade">
             <div class="portlet-title">
                 <div class="caption">
-                    <i class="fa fa-adn"></i>编辑健康卡产品表
+                    <i class="fa fa-adn"></i>编辑健康卡产品
                 </div>
                 <div class="tools">
                     <a href="javascript:;" class="collapse">
