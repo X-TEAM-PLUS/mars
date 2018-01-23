@@ -20,7 +20,7 @@
         </li>
         <li>
             <i class="fa fa-cube"></i>
-            <a href="#">保险数据导出</a>
+            <a href="#">保险数据导入</a>
         </li>
 
     </ul>
@@ -34,7 +34,7 @@
             <div class="portlet box grey-cascade">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-cube"></i>保险数据导出
+                        <i class="fa fa-cube"></i>保险数据导入
                     </div>
                     <div class="tools">
                         <a href="javascript:;" class="collapse">
@@ -71,7 +71,7 @@
                                             <button class="btn btn-success" type="submit"><i class="glyphicon glyphicon-search"/></i> 搜索</button>
                                         </div>
                                         <span class="input-group-btn">
-												<button class="btn btn-success" type="submit"><i class="glyphicon glyphicon-save"/></i> 保险导出</button>
+												<button class="btn btn-success" type="submit"><i class="glyphicon glyphicon-open"/></i> 保险导入</button>
 												</span>
                                     </div>
                                 </form>
@@ -81,21 +81,13 @@
                     <table class="table table-striped table-bordered table-hover ">
                         <thead>
                         <tr>
-                            <th column="orderNo">订单号</th>
-                            <th column="orderTime">下单时间</th>
-                            <th column="buyerUserId">用户ID</th>
+                            <th column="cardNo">会员卡号</th>
                             <th column="realName">姓名</th>
-                            <th column="productName">产品名称</th>
-                            <th column="cardType"  type="enum"  enum-v="{0:'虚拟卡',1:'实体卡'}">卡类型</th>
-                            <th column="productPrice">产品单价(元)</th>
-                            <th column="productNum">数量</th>
-                            <th column="orderPrice">订单总价(元)</th>
-                            <th column="status"  type="enum"  enum-v="{'-1':'<span class=\'bold badge badge-default\'>已失效</span>',0:'<span class=\'bold badge badge-info\'>未支付</span>',1:'<span class=\'bold badge badge-success\'>已支付</span>'}">状态</th>
-                            <th column="payTime">支付时间</th>
-                            <th column="payWay"  type="enum"  enum-v="{1:'微信支付',2:'支付宝'}">支付方式</th>
-                            <th column="payOrderNo">支付流水号</th>
-                            <th column="updated">更新时间</th>
-                            <th type="action" >操作</th>
+                            <th column="idNumber">身份证号</th>
+                            <th column="mobileNo">手机号</th>
+                            <th column="linkAddress">地址</th>
+                            <th column="policyNo">保单号</th>
+                            <th column="effectiveDate">生效日期</th>
                         </tr>
                         </thead>
                         <tbody>

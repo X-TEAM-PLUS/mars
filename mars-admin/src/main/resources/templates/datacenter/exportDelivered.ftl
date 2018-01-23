@@ -71,7 +71,7 @@
                                             <button class="btn btn-success" type="submit"><i class="glyphicon glyphicon-search"/></i> 搜索</button>
                                         </div>
                                         <span class="input-group-btn">
-												<button class="btn btn-success" type="submit"><i class="glyphicon glyphicon-save"/></i> 发货信息导出</button>
+												<button class="btn btn-success" type="submit"><i class="glyphicon glyphicon-save"/></i> 导出Excel</button>
 												</span>
                                     </div>
                                 </form>
@@ -81,21 +81,19 @@
                     <table class="table table-striped table-bordered table-hover ">
                         <thead>
                         <tr>
-                            <th column="orderNo">订单号</th>
-                            <th column="orderTime">下单时间</th>
-                            <th column="buyerUserId">用户ID</th>
+                            <th column="cardNo">会员卡号</th>
                             <th column="realName">姓名</th>
-                            <th column="productName">产品名称</th>
-                            <th column="cardType"  type="enum"  enum-v="{0:'虚拟卡',1:'实体卡'}">卡类型</th>
-                            <th column="productPrice">产品单价(元)</th>
-                            <th column="productNum">数量</th>
-                            <th column="orderPrice">订单总价(元)</th>
-                            <th column="status"  type="enum"  enum-v="{'-1':'<span class=\'bold badge badge-default\'>已失效</span>',0:'<span class=\'bold badge badge-info\'>未支付</span>',1:'<span class=\'bold badge badge-success\'>已支付</span>'}">状态</th>
-                            <th column="payTime">支付时间</th>
-                            <th column="payWay"  type="enum"  enum-v="{1:'微信支付',2:'支付宝'}">支付方式</th>
-                            <th column="payOrderNo">支付流水号</th>
-                            <th column="updated">更新时间</th>
-                            <th type="action" >操作</th>
+                            <th column="mobileNo">手机号</th>
+                            <th column="provinceName">省</th>
+                            <th column="cityName">市</th>
+                            <th column="countyName">区县</th>
+                            <th column="linkAddress">联系地址</th>
+                            <th column="cardActivateTime">激活日期</th>
+                            <th column="cardLifeTime">有效期</th>
+                            <th column="deliveredCount">发货次数</th>
+                            <th column="freight">快递费</th>
+                            <th column="previousDate">上一支试剂发货日期</th>
+                            <th column="nextDate">下一支试剂发货日期</th>
                         </tr>
                         </thead>
                         <tbody>

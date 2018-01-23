@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.xteam.plus.mars.dao.InvoiceInfoDao">
+    <!--结果集对应列-->
+    <resultMap id="BaseResultMap" type="org.xteam.plus.mars.domain.InvoiceInfo">
+             <result column="CARD_NO" property="cardNo" jdbcType="DECIMAL"/>
+            <result column="COUNTY_NAME" property="countyName" jdbcType="VARCHAR"/>
+            <result column="LINK_ADDRESS" property="linkAddress" jdbcType="VARCHAR"/>
+            <result column="CARD_ACTIVATE_TIME" property="cardActivateTime" jdbcType="TIMESTAMP"/>
+            <result column="CARD_LIFE_TIME" property="cardLifeTime" jdbcType="TIMESTAMP"/>
+            <result column="DELIVERED_DATE" property="deliveredDate" jdbcType="TIMESTAMP"/>
+            <result column="PROVINCE_NAME" property="provinceName" jdbcType="VARCHAR"/>
+            <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+            <result column="CITY_NAME" property="cityName" jdbcType="VARCHAR"/>
+            <result column="MOBILE_NO" property="mobileNo" jdbcType="VARCHAR"/>
+            <result column="FREIGHT" property="freight" jdbcType="DECIMAL"/>
+            <result column="PREVIOUS_DATE" property="previousDate" jdbcType="TIMESTAMP"/>
+            <result column="NEXT_DATE" property="nextDate" jdbcType="TIMESTAMP"/>
+            <result column="REAL_NAME" property="realName" jdbcType="VARCHAR"/>
+            <result column="WAYBILL_NO" property="waybillNo" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--公用选择列-->
+    <sql id="selectColumns">
+    CARD_NO,
+    COUNTY_NAME
+,LINK_ADDRESS
+,CARD_ACTIVATE_TIME
+,CARD_LIFE_TIME
+,DELIVERED_DATE
+,PROVINCE_NAME
+,REMARK
+,CITY_NAME
+,MOBILE_NO
+,FREIGHT
+,PREVIOUS_DATE
+,NEXT_DATE
+,REAL_NAME
+,WAYBILL_NO
+    </sql>
+
+    <!--公用查询条件-->
+    <sql id="queryWhere">
+        <where>
+                <if test="countyName!=null and  countyName!=''">
+                    <![CDATA[
+                    and COUNTY_NAME=#{countyName,jdbcType=VARCHAR}
+                    ]]>
+                </if>
+                <if test="linkAddress!=null and  linkAddress!=''">
+                    <![CDATA[
+                    and LINK_ADDRESS=#{linkAddress,jdbcType=VARCHAR}
+                    ]]>
+                </if>
+                <if test="cardActivateTime!=null ">
+                        <![CDATA[
+                        and CARD_ACTIVATE_TIME>= str_to_date(CONCAT(date_format(#{cardActivateTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and CARD_ACTIVATE_TIME<= str_to_date(CONCAT(date_format(#{cardActivateTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+                </if>
+                <if test="cardLifeTime!=null ">
+                        <![CDATA[
+                        and CARD_LIFE_TIME>= str_to_date(CONCAT(date_format(#{cardLifeTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and CARD_LIFE_TIME<= str_to_date(CONCAT(date_format(#{cardLifeTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+                </if>
+                <if test="deliveredDate!=null ">
+                        <![CDATA[
+                        and DELIVERED_DATE>= str_to_date(CONCAT(date_format(#{deliveredDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and DELIVERED_DATE<= str_to_date(CONCAT(date_format(#{deliveredDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+                </if>
+                <if test="provinceName!=null and  provinceName!=''">
+                    <![CDATA[
+                    and PROVINCE_NAME=#{provinceName,jdbcType=VARCHAR}
+                    ]]>
+                </if>
+                <if test="remark!=null and  remark!=''">
+                    <![CDATA[
+                    and REMARK=#{remark,jdbcType=VARCHAR}
+                    ]]>
+                </if>
+                <if test="cityName!=null and  cityName!=''">
+                    <![CDATA[
+                    and CITY_NAME=#{cityName,jdbcType=VARCHAR}
+                    ]]>
+                </if>
+                <if test="mobileNo!=null and  mobileNo!=''">
+                    <![CDATA[
+                    and MOBILE_NO=#{mobileNo,jdbcType=VARCHAR}
+                    ]]>
+                </if>
+                <if test="freight!=null ">
+                    <![CDATA[
+                    and FREIGHT=#{freight,jdbcType=DECIMAL}
+                    ]]>
+                </if>
+                <if test="previousDate!=null ">
+                        <![CDATA[
+                        and PREVIOUS_DATE>= str_to_date(CONCAT(date_format(#{previousDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and PREVIOUS_DATE<= str_to_date(CONCAT(date_format(#{previousDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+                </if>
+                <if test="cardNo!=null ">
+                    <![CDATA[
+                    and CARD_NO=#{cardNo,jdbcType=DECIMAL}
+                    ]]>
+                </if>
+                <if test="nextDate!=null ">
+                        <![CDATA[
+                        and NEXT_DATE>= str_to_date(CONCAT(date_format(#{nextDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and NEXT_DATE<= str_to_date(CONCAT(date_format(#{nextDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+                </if>
+                <if test="realName!=null and  realName!=''">
+                    <![CDATA[
+                    and REAL_NAME=#{realName,jdbcType=VARCHAR}
+                    ]]>
+                </if>
+                <if test="waybillNo!=null ">
+                        <![CDATA[
+                        and WAYBILL_NO>= str_to_date(CONCAT(date_format(#{waybillNo,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and WAYBILL_NO<= str_to_date(CONCAT(date_format(#{waybillNo,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+                </if>
+        </where>
+    </sql>
+
+    <!--分页查询记录-->
+    <select id="query" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.InvoiceInfo">
+        select
+        <include refid="selectColumns"></include>
+        from   T_MARS_INVOICE_INFO
+        <include refid="queryWhere"></include>
+        limit #{start},#{limit}
+    </select>
+
+    <!--查询记录数-->
+    <select id="queryCount" resultType="int" parameterType="org.xteam.plus.mars.domain.InvoiceInfo">
+        select count(1)
+        from   T_MARS_INVOICE_INFO
+        <include refid="queryWhere"></include>
+    </select>
+</mapper>

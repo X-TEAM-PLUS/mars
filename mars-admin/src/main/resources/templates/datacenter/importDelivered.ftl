@@ -81,21 +81,15 @@
                     <table class="table table-striped table-bordered table-hover ">
                         <thead>
                         <tr>
-                            <th column="orderNo">订单号</th>
-                            <th column="orderTime">下单时间</th>
-                            <th column="buyerUserId">用户ID</th>
-                            <th column="realName">姓名</th>
-                            <th column="productName">产品名称</th>
-                            <th column="cardType"  type="enum"  enum-v="{0:'虚拟卡',1:'实体卡'}">卡类型</th>
-                            <th column="productPrice">产品单价(元)</th>
-                            <th column="productNum">数量</th>
-                            <th column="orderPrice">订单总价(元)</th>
-                            <th column="status"  type="enum"  enum-v="{'-1':'<span class=\'bold badge badge-default\'>已失效</span>',0:'<span class=\'bold badge badge-info\'>未支付</span>',1:'<span class=\'bold badge badge-success\'>已支付</span>'}">状态</th>
-                            <th column="payTime">支付时间</th>
-                            <th column="payWay"  type="enum"  enum-v="{1:'微信支付',2:'支付宝'}">支付方式</th>
-                            <th column="payOrderNo">支付流水号</th>
-                            <th column="updated">更新时间</th>
-                            <th type="action" >操作</th>
+                            <th column="cardNo">会员卡号</th>
+                            <th column="realName">收件人姓名</th>
+                            <th column="mobileNo">收件电话</th>
+                            <th column="provinceName">收件省份</th>
+                            <th column="cityName">收件城市</th>
+                            <th column="countyName">收件区县</th>
+                            <th column="linkAddress">收件人详细地址</th>
+                            <th column="waybillNo">单号</th>
+                            <th column="deliveredDate">发件日期</th>
                         </tr>
                         </thead>
                         <tbody>

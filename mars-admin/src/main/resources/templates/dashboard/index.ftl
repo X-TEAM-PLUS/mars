@@ -71,7 +71,7 @@
                         </div>
                         <div class="details">
                             <div class="number"> +
-                                <span data-counter="counterup" data-value="89"></span></div>
+                                <span data-counter="counterup" data-value="89">0</span></div>
                             <div class="desc"> 今日新增理事 </div>
                         </div>
                     </a>
@@ -83,7 +83,7 @@
                         </div>
                         <div class="details">
                             <div class="number"> +
-                                <span data-counter="counterup" data-value="89"></span> </div>
+                                <span data-counter="counterup" data-value="89">0</span> </div>
                             <div class="desc"> 今日新增常务理事 </div>
                         </div>
                     </a>
@@ -151,7 +151,7 @@
                         </div>
                         <div class="details">
                             <div class="number">
-                                <span data-counter="counterup" data-value="89"></span> </div>
+                                <span data-counter="counterup" data-value="89">0</span> </div>
                             <div class="desc"> 总理事 </div>
                         </div>
                     </a>
@@ -163,7 +163,7 @@
                         </div>
                         <div class="details">
                             <div class="number">
-                                <span data-counter="counterup" data-value="89"></span></div>
+                                <span data-counter="counterup" data-value="89">0</span></div>
                             <div class="desc"> 总常务理事 </div>
                         </div>
                     </a>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.xteam.plus.mars.dao.PolicyInfoDao">
+    <!--结果集对应列-->
+    <resultMap id="BaseResultMap" type="org.xteam.plus.mars.domain.PolicyInfo">
+            <result column="CARD_NO" property="cardNo" jdbcType="DECIMAL"/>
+            <result column="CARD_LIFE_TIME" property="cardLifeTime" jdbcType="TIMESTAMP"/>
+            <result column="PAY_TIMES" property="payTimes" jdbcType="INTEGER"/>
+            <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+            <result column="REAL_NAME" property="realName" jdbcType="VARCHAR"/>
+            <result column="POLICY_NO" property="policyNo" jdbcType="VARCHAR"/>
+            <result column="PREMIUM" property="premium" jdbcType="DECIMAL"/>
+            <result column="LINK_ADDRESS" property="linkAddress" jdbcType="VARCHAR"/>
+            <result column="CARD_ACTIVATE_TIME" property="cardActivateTime" jdbcType="TIMESTAMP"/>
+            <result column="AGE" property="age" jdbcType="INTEGER"/>
+            <result column="EFFECTIVE_DATE" property="effectiveDate" jdbcType="TIMESTAMP"/>
+            <result column="BIRTH_DATE" property="birthDate" jdbcType="TIMESTAMP"/>
+            <result column="ID_NUMBER" property="idNumber" jdbcType="VARCHAR"/>
+            <result column="MOBILE_NO" property="mobileNo" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--公用选择列-->
+    <sql id="selectColumns">
+    CARD_NO,
+    CARD_LIFE_TIME
+    ,PAY_TIMES
+    ,REMARK
+    ,REAL_NAME
+    ,POLICY_NO
+    ,PREMIUM
+    ,LINK_ADDRESS
+    ,CARD_ACTIVATE_TIME
+    ,AGE
+    ,EFFECTIVE_DATE
+    ,BIRTH_DATE
+    ,ID_NUMBER
+    ,MOBILE_NO
+    </sql>
+
+    <!--公用查询条件-->
+    <sql id="queryWhere">
+        <where>
+                <if test="cardLifeTime!=null ">
+                        <![CDATA[
+                        and CARD_LIFE_TIME>= str_to_date(CONCAT(date_format(#{cardLifeTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and CARD_LIFE_TIME<= str_to_date(CONCAT(date_format(#{cardLifeTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+                </if>
+                <if test="payTimes!=null ">
+                    <![CDATA[
+                    and PAY_TIMES=#{payTimes,jdbcType=INTEGER}
+                    ]]>
+                </if>
+                <if test="cardNo!=null ">
+                    <![CDATA[
+                    and CARD_NO=#{cardNo,jdbcType=DECIMAL}
+                    ]]>
+                </if>
+                <if test="remark!=null and  remark!=''">
+                    <![CDATA[
+                    and REMARK=#{remark,jdbcType=VARCHAR}
+                    ]]>
+                </if>
+                <if test="realName!=null and  realName!=''">
+                    <![CDATA[
+                    and REAL_NAME=#{realName,jdbcType=VARCHAR}
+                    ]]>
+                </if>
+                <if test="policyNo!=null and  policyNo!=''">
+                    <![CDATA[
+                    and POLICY_NO=#{policyNo,jdbcType=VARCHAR}
+                    ]]>
+                </if>
+                <if test="premium!=null ">
+                    <![CDATA[
+                    and PREMIUM=#{premium,jdbcType=DECIMAL}
+                    ]]>
+                </if>
+                <if test="linkAddress!=null and  linkAddress!=''">
+                    <![CDATA[
+                    and LINK_ADDRESS=#{linkAddress,jdbcType=VARCHAR}
+                    ]]>
+                </if>
+                <if test="cardActivateTime!=null ">
+                        <![CDATA[
+                        and CARD_ACTIVATE_TIME>= str_to_date(CONCAT(date_format(#{cardActivateTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and CARD_ACTIVATE_TIME<= str_to_date(CONCAT(date_format(#{cardActivateTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+                </if>
+                <if test="age!=null ">
+                    <![CDATA[
+                    and AGE=#{age,jdbcType=INTEGER}
+                    ]]>
+                </if>
+                <if test="effectiveDate!=null ">
+                        <![CDATA[
+                        and EFFECTIVE_DATE>= str_to_date(CONCAT(date_format(#{effectiveDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and EFFECTIVE_DATE<= str_to_date(CONCAT(date_format(#{effectiveDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+                </if>
+                <if test="birthDate!=null ">
+                        <![CDATA[
+                        and BIRTH_DATE>= str_to_date(CONCAT(date_format(#{birthDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and BIRTH_DATE<= str_to_date(CONCAT(date_format(#{birthDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+                </if>
+                <if test="idNumber!=null and  idNumber!=''">
+                    <![CDATA[
+                    and ID_NUMBER=#{idNumber,jdbcType=VARCHAR}
+                    ]]>
+                </if>
+                <if test="mobileNo!=null and  mobileNo!=''">
+                    <![CDATA[
+                    and MOBILE_NO=#{mobileNo,jdbcType=VARCHAR}
+                    ]]>
+                </if>
+        </where>
+    </sql>
+
+    <!--分页查询记录-->
+    <select id="query" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.PolicyInfo">
+        select
+        <include refid="selectColumns"></include>
+        from   T_MARS_POLICY_INFO
+        <include refid="queryWhere"></include>
+        limit #{start},#{limit}
+    </select>
+
+    <!--查询记录数-->
+    <select id="queryCount" resultType="int" parameterType="org.xteam.plus.mars.domain.PolicyInfo">
+        select count(1)
+        from   T_MARS_POLICY_INFO
+        <include refid="queryWhere"></include>
+    </select>
+</mapper>

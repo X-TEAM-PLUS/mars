@@ -20,8 +20,9 @@
         </li>
         <li>
             <i class="fa fa-cube"></i>
-            <a href="#">激活用户导出</a>
+            <a href="#">保险数据导出</a>
         </li>
+
     </ul>
 </div>
 <div class="page-content">
@@ -33,7 +34,7 @@
             <div class="portlet box grey-cascade">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-cube"></i>激活用户导出
+                        <i class="fa fa-cube"></i>保险数据导出
                     </div>
                     <div class="tools">
                         <a href="javascript:;" class="collapse">
@@ -70,7 +71,7 @@
                                             <button class="btn btn-success" type="submit"><i class="glyphicon glyphicon-search"/></i> 搜索</button>
                                         </div>
                                         <span class="input-group-btn">
-												 <button class="btn btn-success" type="button"><i class="glyphicon glyphicon-save"/></i> 激活用户导出</button>
+												<button class="btn btn-success" type="submit"><i class="glyphicon glyphicon-save"/></i> 导出Excel</button>
 												</span>
                                     </div>
                                 </form>
@@ -80,21 +81,17 @@
                     <table class="table table-striped table-bordered table-hover ">
                         <thead>
                         <tr>
-                            <th column="orderNo">订单号</th>
-                            <th column="orderTime">下单时间</th>
-                            <th column="buyerUserId">用户ID</th>
+                            <th column="cardNo">会员卡号</th>
                             <th column="realName">姓名</th>
-                            <th column="productName">产品名称</th>
-                            <th column="cardType"  type="enum"  enum-v="{0:'虚拟卡',1:'实体卡'}">卡类型</th>
-                            <th column="productPrice">产品单价(元)</th>
-                            <th column="productNum">数量</th>
-                            <th column="orderPrice">订单总价(元)</th>
-                            <th column="status"  type="enum"  enum-v="{'-1':'<span class=\'bold badge badge-default\'>已失效</span>',0:'<span class=\'bold badge badge-info\'>未支付</span>',1:'<span class=\'bold badge badge-success\'>已支付</span>'}">状态</th>
-                            <th column="payTime">支付时间</th>
-                            <th column="payWay"  type="enum"  enum-v="{1:'微信支付',2:'支付宝'}">支付方式</th>
-                            <th column="payOrderNo">支付流水号</th>
-                            <th column="updated">更新时间</th>
-                            <th type="action" >操作</th>
+                            <th column="age">年龄</th>
+                            <th column="birthDate">出生日期</th>
+                            <th column="idNumber">身份证号</th>
+                            <th column="mobileNo">手机号</th>
+                            <th column="linkAddress">联系地址</th>
+                            <th column="cardActivateTime">激活日期</th>
+                            <th column="premium">保费</th>
+                            <th column="cardLifeTime">会员卡有效期</th>
+                            <th column="payTimes">续期缴费次数</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -113,10 +110,28 @@
     function init() {
         $("#ordersTable").pagingGrid(
                 {
-                    dataUrl: '/services/mars/userinfo/list?status=1'
+                    dataUrl: '/services/mars/orders/list'
                     , pageSize: 10
                     , scroll: false
-                    , pagingtoolbar: {
+                    , dockedItems: [{
+                        name: '修改'
+                        , iconClass: 'fa fa-edit'
+                        , action: '/mars/orders/edit'
+                        , confirm: false
+                        , parmaName: 'orderNo'
+                        , column: 'orderNo'
+                    }
+                        , {
+                            name: '删除'
+                            , iconClass: 'glyphicon glyphicon-trash'
+                            , action: '/services/mars/orders/delete'
+                            , ajax: true
+                            , confirm: true
+                            , parmaName: 'orderNo'
+                            , column: 'orderNo'
+                        }
+                    ],
+                    pagingtoolbar: {
                         displayInfo: true
                     }
                 }
