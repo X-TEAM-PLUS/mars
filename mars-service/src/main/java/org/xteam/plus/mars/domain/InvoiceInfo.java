@@ -103,6 +103,11 @@ public class InvoiceInfo implements Serializable {
 
 
     /**
+     * 发货次数
+     */
+    private Integer deliveredCount;
+
+    /**
     *  设置   countyName
     * @param countyName  (区县)
     */
@@ -392,4 +397,24 @@ public class InvoiceInfo implements Serializable {
         this.limit = limit;
         return this;
     }
+
+    /**
+     * 设置   deliveredCount
+     *
+     * @param deliveredCount (发货次数)
+     */
+    public InvoiceInfo setDeliveredCount(Integer deliveredCount) {
+        this.deliveredCount = deliveredCount;
+        return this;
+    }
+
+    /**
+     * 获取   deliveredCount (发货次数)
+     *
+     * @return
+     */
+    public Integer getDeliveredCount() {
+        return this.deliveredCount;
+    }
+
 }

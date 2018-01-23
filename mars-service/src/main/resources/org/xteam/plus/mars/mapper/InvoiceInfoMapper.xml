@@ -17,26 +17,27 @@
             <result column="PREVIOUS_DATE" property="previousDate" jdbcType="TIMESTAMP"/>
             <result column="NEXT_DATE" property="nextDate" jdbcType="TIMESTAMP"/>
             <result column="REAL_NAME" property="realName" jdbcType="VARCHAR"/>
-            <result column="WAYBILL_NO" property="waybillNo" jdbcType="TIMESTAMP"/>
+            <result column="WAYBILL_NO" property="waybillNo" jdbcType="VARCHAR"/>
+        <result column="DELIVERED_COUNT" property="deliveredCount" jdbcType="INTEGER"/>
     </resultMap>
 
     <!--公用选择列-->
     <sql id="selectColumns">
     CARD_NO,
     COUNTY_NAME
-,LINK_ADDRESS
-,CARD_ACTIVATE_TIME
-,CARD_LIFE_TIME
-,DELIVERED_DATE
-,PROVINCE_NAME
-,REMARK
-,CITY_NAME
-,MOBILE_NO
-,FREIGHT
-,PREVIOUS_DATE
-,NEXT_DATE
-,REAL_NAME
-,WAYBILL_NO
+    ,LINK_ADDRESS
+    ,CARD_ACTIVATE_TIME
+    ,CARD_LIFE_TIME
+    ,DELIVERED_DATE
+    ,PROVINCE_NAME
+    ,REMARK
+    ,CITY_NAME
+    ,MOBILE_NO
+    ,FREIGHT
+    ,PREVIOUS_DATE
+    ,NEXT_DATE
+    ,REAL_NAME
+    ,WAYBILL_NO
     </sql>
 
     <!--公用查询条件-->
@@ -117,12 +118,7 @@
                     and REAL_NAME=#{realName,jdbcType=VARCHAR}
                     ]]>
                 </if>
-                <if test="waybillNo!=null ">
-                        <![CDATA[
-                        and WAYBILL_NO>= str_to_date(CONCAT(date_format(#{waybillNo,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
-                        and WAYBILL_NO<= str_to_date(CONCAT(date_format(#{waybillNo,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
-                        ]]>
-                </if>
+
         </where>
     </sql>
 
