@@ -79,7 +79,7 @@ public class PolicyInfo implements Serializable {
     /**
     * 生效日期
     */
-    private Date effectiveDate;
+    private Integer effectiveDate;
 
     /**
     * 出生日期
@@ -96,6 +96,15 @@ public class PolicyInfo implements Serializable {
     */
     private String mobileNo;
 
+    /**
+     * 开始日期
+     */
+    private Date startDate;
+
+    /**
+     * 截止日期
+     */
+    private Date endDate;
 
     /**
     *  设置   cardLifeTime
@@ -271,7 +280,7 @@ public class PolicyInfo implements Serializable {
     *  设置   effectiveDate
     * @param effectiveDate  (生效日期)
     */
-    public  PolicyInfo   setEffectiveDate(Date effectiveDate){
+    public  PolicyInfo   setEffectiveDate(Integer effectiveDate){
         this.effectiveDate = effectiveDate;
         return this;
     }
@@ -280,7 +289,7 @@ public class PolicyInfo implements Serializable {
     *  获取   effectiveDate (生效日期)
     * @return
     */
-    public Date getEffectiveDate(){
+    public Integer getEffectiveDate(){
             return this.effectiveDate;
     }
 
@@ -368,6 +377,42 @@ public class PolicyInfo implements Serializable {
     */
     public PolicyInfo  setLimit(Integer limit) {
         this.limit = limit;
+        return this;
+    }
+
+    /**
+     * 获取开始日期
+     * @return
+     */
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    /**
+     * 设置开始日期
+     * @param startDate
+     * @return
+     */
+    public PolicyInfo setStartDate(Date startDate) {
+        this.startDate = startDate;
+        return this;
+    }
+
+    /**
+     * 获取截止日期
+     * @return
+     */
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    /**
+     *  设置截止日期
+     * @param endDate
+     * @return
+     */
+    public PolicyInfo setEndDate(Date endDate) {
+        this.endDate = endDate;
         return this;
     }
 }

@@ -51,21 +51,13 @@
                             <div class="col-md-12 pull-right">
                                 <form id="ordersTableForm" onsubmit="init();return false;">
                                     <div class="input-group">
-                                        <div class="input-icon col-md-2">
-                                            <select id="cardType" name="status" class="form-control selectpicker" data-live-search="false" placeholder="订单状态" >
-                                                <option value="" >全部</option>
-                                                <option value="0"  >已失效</option>
-                                                <option value="0"  >未支付</option>
-                                                <option value="1">已支付</option>
-                                            </select>
+                                        <div class="input-icon date-picker input-daterange col-md-2 " data-date-format="yyyy-mm-dd">
+                                            <i class="fa fa-calendar "></i>
+                                            <input type="text" name="startDate" class="form-control " readonly="" placeholder="开始日期">
                                         </div>
                                         <div class="input-icon date-picker input-daterange col-md-2 " data-date-format="yyyy-mm-dd">
                                             <i class="fa fa-calendar "></i>
-                                            <input type="text" name="payTime" class="form-control " readonly="" placeholder="支付开始日期">
-                                        </div>
-                                        <div class="input-icon date-picker input-daterange col-md-2 " data-date-format="yyyy-mm-dd">
-                                            <i class="fa fa-calendar "></i>
-                                            <input type="text" name="payTime" class="form-control " readonly="" placeholder="支付截止日期">
+                                            <input type="text" name="endDate" class="form-control " readonly="" placeholder="截止日期">
                                         </div>
                                         <div class="input-icon col-md-1" >
                                             <button class="btn btn-success" type="submit"><i class="glyphicon glyphicon-search"/></i> 搜索</button>
@@ -110,28 +102,10 @@
     function init() {
         $("#ordersTable").pagingGrid(
                 {
-                    dataUrl: '/services/mars/orders/list'
+                    dataUrl: '/services/mars/policyinfo/list'
                     , pageSize: 10
                     , scroll: false
-                    , dockedItems: [{
-                        name: '修改'
-                        , iconClass: 'fa fa-edit'
-                        , action: '/mars/orders/edit'
-                        , confirm: false
-                        , parmaName: 'orderNo'
-                        , column: 'orderNo'
-                    }
-                        , {
-                            name: '删除'
-                            , iconClass: 'glyphicon glyphicon-trash'
-                            , action: '/services/mars/orders/delete'
-                            , ajax: true
-                            , confirm: true
-                            , parmaName: 'orderNo'
-                            , column: 'orderNo'
-                        }
-                    ],
-                    pagingtoolbar: {
+                    , pagingtoolbar: {
                         displayInfo: true
                     }
                 }
@@ -139,10 +113,7 @@
     }
     //初始化
     init();
-
 </script>
-
-
 </body>
 </html>
 

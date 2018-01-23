@@ -13,7 +13,7 @@
             <result column="LINK_ADDRESS" property="linkAddress" jdbcType="VARCHAR"/>
             <result column="CARD_ACTIVATE_TIME" property="cardActivateTime" jdbcType="TIMESTAMP"/>
             <result column="AGE" property="age" jdbcType="INTEGER"/>
-            <result column="EFFECTIVE_DATE" property="effectiveDate" jdbcType="TIMESTAMP"/>
+            <result column="EFFECTIVE_DATE" property="effectiveDate" jdbcType="INTEGER"/>
             <result column="BIRTH_DATE" property="birthDate" jdbcType="TIMESTAMP"/>
             <result column="ID_NUMBER" property="idNumber" jdbcType="VARCHAR"/>
             <result column="MOBILE_NO" property="mobileNo" jdbcType="VARCHAR"/>
@@ -21,99 +21,35 @@
 
     <!--公用选择列-->
     <sql id="selectColumns">
-    CARD_NO,
-    CARD_LIFE_TIME
-    ,PAY_TIMES
-    ,REMARK
-    ,REAL_NAME
-    ,POLICY_NO
-    ,PREMIUM
-    ,LINK_ADDRESS
-    ,CARD_ACTIVATE_TIME
-    ,AGE
-    ,EFFECTIVE_DATE
-    ,BIRTH_DATE
-    ,ID_NUMBER
-    ,MOBILE_NO
+ 	tui.CARD_NO
+    ,tui.CARD_LIFE_TIME
+ 	,tui.PAY_TIMES
+    ,tui.REAL_NAME
+    ,tui.LINK_ADDRESS
+    ,tui.CARD_ACTIVATE_TIME
+    ,year(curdate())-if(length(tui.ID_NUMBER)=18,substring(tui.ID_NUMBER,7,4),if(length(tui.ID_NUMBER)=15,concat('19',substring(tui.ID_NUMBER,7,2)),null)) as AGE
+    ,CAST(SUBSTRING(tui.ID_NUMBER,7,8) AS DATETIME) AS BIRTH_DATE
+    ,tmuhc.SURVIVAL_PERIOD_NUM EFFECTIVE_DATE
+    ,tui.ID_NUMBER
+    ,tui.MOBILE_NO
+    ,45 as PREMIUM
     </sql>
 
     <!--公用查询条件-->
     <sql id="queryWhere">
         <where>
-                <if test="cardLifeTime!=null ">
+              tui.STATUS=1 AND tmuhc.STATUS=1
+                <if test="startDate!=null ">
                         <![CDATA[
-                        and CARD_LIFE_TIME>= str_to_date(CONCAT(date_format(#{cardLifeTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
-                        and CARD_LIFE_TIME<= str_to_date(CONCAT(date_format(#{cardLifeTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        and tui.CARD_ACTIVATE_TIME>= str_to_date(CONCAT(date_format(#{startDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
                         ]]>
                 </if>
-                <if test="payTimes!=null ">
-                    <![CDATA[
-                    and PAY_TIMES=#{payTimes,jdbcType=INTEGER}
-                    ]]>
-                </if>
-                <if test="cardNo!=null ">
-                    <![CDATA[
-                    and CARD_NO=#{cardNo,jdbcType=DECIMAL}
-                    ]]>
-                </if>
-                <if test="remark!=null and  remark!=''">
-                    <![CDATA[
-                    and REMARK=#{remark,jdbcType=VARCHAR}
-                    ]]>
-                </if>
-                <if test="realName!=null and  realName!=''">
-                    <![CDATA[
-                    and REAL_NAME=#{realName,jdbcType=VARCHAR}
-                    ]]>
-                </if>
-                <if test="policyNo!=null and  policyNo!=''">
-                    <![CDATA[
-                    and POLICY_NO=#{policyNo,jdbcType=VARCHAR}
-                    ]]>
-                </if>
-                <if test="premium!=null ">
-                    <![CDATA[
-                    and PREMIUM=#{premium,jdbcType=DECIMAL}
-                    ]]>
-                </if>
-                <if test="linkAddress!=null and  linkAddress!=''">
-                    <![CDATA[
-                    and LINK_ADDRESS=#{linkAddress,jdbcType=VARCHAR}
-                    ]]>
-                </if>
-                <if test="cardActivateTime!=null ">
-                        <![CDATA[
-                        and CARD_ACTIVATE_TIME>= str_to_date(CONCAT(date_format(#{cardActivateTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
-                        and CARD_ACTIVATE_TIME<= str_to_date(CONCAT(date_format(#{cardActivateTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+
+            <if test="endDate!=null ">
+                <![CDATA[
+                        and tui.CARD_ACTIVATE_TIME<= str_to_date(CONCAT(date_format(#{endDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
                         ]]>
-                </if>
-                <if test="age!=null ">
-                    <![CDATA[
-                    and AGE=#{age,jdbcType=INTEGER}
-                    ]]>
-                </if>
-                <if test="effectiveDate!=null ">
-                        <![CDATA[
-                        and EFFECTIVE_DATE>= str_to_date(CONCAT(date_format(#{effectiveDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
-                        and EFFECTIVE_DATE<= str_to_date(CONCAT(date_format(#{effectiveDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
-                        ]]>
-                </if>
-                <if test="birthDate!=null ">
-                        <![CDATA[
-                        and BIRTH_DATE>= str_to_date(CONCAT(date_format(#{birthDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
-                        and BIRTH_DATE<= str_to_date(CONCAT(date_format(#{birthDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
-                        ]]>
-                </if>
-                <if test="idNumber!=null and  idNumber!=''">
-                    <![CDATA[
-                    and ID_NUMBER=#{idNumber,jdbcType=VARCHAR}
-                    ]]>
-                </if>
-                <if test="mobileNo!=null and  mobileNo!=''">
-                    <![CDATA[
-                    and MOBILE_NO=#{mobileNo,jdbcType=VARCHAR}
-                    ]]>
-                </if>
+            </if>
         </where>
     </sql>
 
@@ -121,7 +57,8 @@
     <select id="query" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.PolicyInfo">
         select
         <include refid="selectColumns"></include>
-        from   T_MARS_POLICY_INFO
+        from   T_MARS_USER_INFO tui
+        LEFT JOIN T_MARS_USER_HEALTH_CARD tmuhc ON tmuhc.CARD_NO=tui.CARD_NO
         <include refid="queryWhere"></include>
         limit #{start},#{limit}
     </select>
@@ -129,7 +66,8 @@
     <!--查询记录数-->
     <select id="queryCount" resultType="int" parameterType="org.xteam.plus.mars.domain.PolicyInfo">
         select count(1)
-        from   T_MARS_POLICY_INFO
+        from   T_MARS_USER_INFO tui
+        LEFT JOIN T_MARS_USER_HEALTH_CARD tmuhc ON tmuhc.CARD_NO=tui.CARD_NO
         <include refid="queryWhere"></include>
     </select>
 </mapper>
