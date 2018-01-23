@@ -242,7 +242,7 @@
                             <div class="col-md-5">
                                 <div class="input-icon margin-top-10">
                                     <i class="fa   fa-font "></i>
-                                    <input type="text" name="passwork" class="form-control" placeholder="密码" validate='{required: false}'
+                                    <input type="text" name="password" class="form-control" placeholder="密码" validate='{required: false}'
                                            maxlength="20">
                                 </div>
                             </div>

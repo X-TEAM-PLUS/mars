@@ -20,7 +20,7 @@
         <result column="LOGIN_COUNT" property="loginCount" jdbcType="DECIMAL"/>
         <result column="REGISTER_SOURCE" property="registerSource" jdbcType="VARCHAR"/>
         <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
-        <result column="PASSWORK" property="passwork" jdbcType="VARCHAR"/>
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR"/>
         <result column="USER_LEVEL" property="userLevel" jdbcType="INTEGER"/>
         <result column="LAST_LOGIN_TIME" property="lastLoginTime" jdbcType="TIMESTAMP"/>
         <result column="NICK_NAME" property="nickName" jdbcType="VARCHAR"/>
@@ -34,6 +34,8 @@
         <result column="PROVINCE_NAME" property="provinceName" jdbcType="DECIMAL"/>
         <result column="CITY_NAME" property="cityName" jdbcType="DECIMAL"/>
         <result column="COUNTY_NAME" property="countyName" jdbcType="DECIMAL"/>
+
+        <result column="PAY_TIMES" property="payTimes" jdbcType="INTEGER"/>
 
         <association property="userSalesInfo" column="USER_ID"
                      javaType="org.xteam.plus.mars.domain.UserSalesInfo">
@@ -77,7 +79,7 @@
         ,LOGIN_COUNT
         ,REGISTER_SOURCE
         ,UPDATED
-        ,PASSWORK
+        ,PASSWORD
         ,USER_LEVEL
         ,LAST_LOGIN_TIME
         ,NICK_NAME
@@ -87,6 +89,7 @@
         ,PROVINCE_NAME
         ,CITY_NAME
         ,COUNTY_NAME
+        ,PAY_TIMES
     </sql>
 
     <!--公用查询条件-->
@@ -177,9 +180,9 @@
                         and UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
                         ]]>
             </if>
-            <if test="passwork!=null and  passwork!=''">
+            <if test="password!=null and  password!=''">
                 <![CDATA[
-                    and PASSWORK=#{passwork,jdbcType=VARCHAR}
+                    and PASSWORD=#{password,jdbcType=VARCHAR}
                     ]]>
             </if>
             <if test="userLevel!=null ">
@@ -232,7 +235,7 @@
         ,LOGIN_COUNT
         ,REGISTER_SOURCE
         ,UPDATED
-        ,PASSWORK
+        ,PASSWORD
         ,USER_LEVEL
         ,LAST_LOGIN_TIME
         ,NICK_NAME
@@ -259,7 +262,7 @@
         ,#{loginCount,jdbcType=DECIMAL}
         ,#{registerSource,jdbcType=VARCHAR}
         ,#{updated,jdbcType=TIMESTAMP}
-        ,#{passwork,jdbcType=VARCHAR}
+        ,#{password,jdbcType=VARCHAR}
         ,#{userLevel,jdbcType=INTEGER}
         ,#{lastLoginTime,jdbcType=TIMESTAMP}
         ,#{nickName,jdbcType=VARCHAR}
@@ -291,7 +294,7 @@
         ,LOGIN_COUNT
         ,REGISTER_SOURCE
         ,UPDATED
-        ,PASSWORK
+        ,PASSWORD
         ,USER_LEVEL
         ,LAST_LOGIN_TIME
         ,NICK_NAME
@@ -320,7 +323,7 @@
             ,#{item.loginCount,jdbcType=DECIMAL}
             ,#{item.registerSource,jdbcType=VARCHAR}
             ,#{item.updated,jdbcType=TIMESTAMP}
-            ,#{item.passwork,jdbcType=VARCHAR}
+            ,#{item.password,jdbcType=VARCHAR}
             ,#{item.userLevel,jdbcType=INTEGER}
             ,#{item.lastLoginTime,jdbcType=TIMESTAMP}
             ,#{item.nickName,jdbcType=VARCHAR}
@@ -387,8 +390,8 @@
                 <if test="updated!=null ">
                     UPDATED=#{updated,jdbcType=TIMESTAMP},
                 </if>
-                <if test="passwork!=null ">
-                    PASSWORK=#{passwork,jdbcType=VARCHAR},
+                <if test="password!=null ">
+                    PASSWORD=#{password,jdbcType=VARCHAR},
                 </if>
                 <if test="userLevel!=null ">
                     USER_LEVEL=#{userLevel,jdbcType=INTEGER},
@@ -442,7 +445,7 @@
         ,LOGIN_COUNT
         ,REGISTER_SOURCE
         ,UPDATED
-        ,PASSWORK
+        ,PASSWORD
         ,USER_LEVEL
         ,LAST_LOGIN_TIME
         ,NICK_NAME
@@ -452,6 +455,7 @@
         ,PROVINCE_NAME
         ,CITY_NAME
         ,COUNTY_NAME
+        ,PAY_TIMES
         from T_MARS_USER_INFO
         where USER_ID= #{userId,jdbcType=DECIMAL}
     </select>
@@ -494,7 +498,7 @@
         ,TUI.LOGIN_COUNT
         ,TUI.REGISTER_SOURCE
         ,TUI.UPDATED
-        ,TUI.PASSWORK
+        ,TUI.PASSWORD
         ,TUI.USER_LEVEL
         ,TUI.LAST_LOGIN_TIME
         ,TUI.NICK_NAME

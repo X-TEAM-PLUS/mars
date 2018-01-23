@@ -85,7 +85,7 @@
                             <th column="loginCount">登录次数</th>
                             <th column="registerSource">注册来源</th>
                             <th column="updated">更新时间</th>
-                            <th column="passwork">密码</th>
+                            <th column="password">密码</th>
                             <th column="userLevel">用户级别</th>
                             <th column="userId">用户ID</th>
                             <th column="lastLoginTime">最后登录时间</th>

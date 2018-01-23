@@ -107,7 +107,7 @@ public class UserInfo implements Serializable {
     /**
      * 密码
      */
-    private String passwork;
+    private String password;
 
     /**
      * 用户级别
@@ -484,22 +484,22 @@ public class UserInfo implements Serializable {
     }
 
     /**
-     * 设置   passwork
+     * 设置   password
      *
-     * @param passwork (密码)
+     * @param password (密码)
      */
-    public UserInfo setPasswork(String passwork) {
-        this.passwork = passwork;
+    public UserInfo setPassword(String password) {
+        this.password = password;
         return this;
     }
 
     /**
-     * 获取   passwork (密码)
+     * 获取   password (密码)
      *
      * @return
      */
-    public String getPasswork() {
-        return this.passwork;
+    public String getPassword() {
+        return this.password;
     }
 
     /**
