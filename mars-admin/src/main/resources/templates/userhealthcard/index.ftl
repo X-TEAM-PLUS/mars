@@ -42,16 +42,9 @@
                 </div>
                 <div class="portlet-body" id="userHealthCardTable">
                     <div class="table-toolbar">
+                        <form id="userHealthCardTableForm" onsubmit="init();return false;">
                         <div class="row">
-                            <div class="col-md-10">
-                                <div class="btn-group">
-                                    <button id="newUserHealthCardButton" class="btn green" onclick="location.href = 'add';">
-                                        添加用户健康卡信息表 <i class="fa fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-md-2 pull-right">
-                                <form id="userHealthCardTableForm" onsubmit="init();return false;">
+                            <div class="col-md-3 pull-right">
                                     <div class="input-group">
                                         <div class="input-icon">
                                             <i class="icon-magnifier"></i>
@@ -61,30 +54,50 @@
 												<button class="btn btn-success" type="submit"><i class="fa fa-arrow-left fa-fw"/></i> 搜索</button>
 												</span>
                                     </div>
-                                </form>
+
+                            </div>
+                            <div class="col-md-3 pull-right">
+                                <div class="input-group">
+                                    <div class="input-icon">
+                                        <i class="icon-magnifier"></i>
+                                        <select class="form-control" id="status" name="status"
+                                                style="width: 100%">
+                                            <option value="">请选择状态</option>
+                                            <option value="0">未激活</option>
+                                            <option value="1">已激活</option>
+                                            <option value="2">已过期</option>
+                                            <option value="3">已续费</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 pull-right">
+                                <div class="input-group">
+                                    <div class="input-icon">
+                                        <i class="icon-magnifier"></i>
+                                        <input class="form-control" type="text" name="activateUserInfo.realName" placeholder="用户姓名"/>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
+
+                        </form>
                     </div>
                     <table class="table table-striped table-bordered table-hover ">
                         <thead>
                         <tr>
-                            <th column="cardNo" type="checkbox" style="width: 50px"><input type="checkbox" id="allCheckBox" class="allCheckBox"></th>
-                            <th column="sendPeriodMode">发货周期类型</th>
-                            <th column="sendPeriod">发货周期</th>
-                            <th column="sendTotalCount">发货总次数</th>
+                            <th column="sendTotalCount">总次数</th>
                             <th column="sendCount">已发货次数</th>
-                            <th column="productId">产品ID</th>
-                            <th column="cardDeadline">会员卡有效截止日期</th>
-                            <th column="productType">卡类型</th>
-                            <th column="status">状态</th>
+
+                            <th column="status" type="enum" enum-v="{'0':'未激活','1':'已激活','2':'使用中','3':'已完成'}">状态</th>
                             <th column="survivalPeriodMode">有效期类型</th>
                             <th column="created">创建时间</th>
                             <th column="survivalPeriodNum">有效期期数</th>
                             <th column="updated">更新时间</th>
-                            <th column="buyerUserId">购卡用户ID</th>
-                            <th column="activateUserId">激活用户ID</th>
                             <th column="cardNo">卡号</th>
                             <th column="cardActivateTime">会员卡激活日期</th>
+                            <th column="activateUserInfo.realName">用户姓名</th>
                             <th type="action" style="width: 200px">操作</th>
                         </tr>
                         </thead>
@@ -101,35 +114,27 @@
 </div>
 <@commonMacro.commonScript />
 <script>
+
     function init() {
         $("#userHealthCardTable").pagingGrid(
                 {
-                    dataUrl: '/services/mars/userhealthcard/list'
+                    dataUrl: '/services/mars/userhealthcard/listActiveUser'
                     , pageSize: 10
                     , scroll: false
                     , dockedItems: [{
                         name: '修改'
-                        , iconClass: 'fa fa-edit'
-                        , action: '/mars/userhealthcard/edit'
+                        , iconClass: 'fa fa-list-ul'
+                        , action: '/mars/userhealthcard/activeUser'
                         , confirm: false
                         , parmaName: 'cardNo'
                         , column: 'cardNo'
-                    }
-                        , {
-                            name: '删除'
-                            , iconClass: 'glyphicon glyphicon-trash'
-                            , action: '/services/mars/userhealthcard/delete'
-                            , ajax: true
-                            , confirm: true
-                            , parmaName: 'cardNo'
-                            , column: 'cardNo'
-                        }
-                    ],
+                    }],
                     pagingtoolbar: {
                         displayInfo: true
                     }
                 }
         );
+
     }
 
     //初始化

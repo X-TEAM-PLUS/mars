@@ -70,4 +70,18 @@ public interface DeliveredInfoDao {
      * @return List<DeliveredInfo>
      */
     public Integer queryCount(DeliveredInfo deliveredInfo) throws Exception;
+
+    /**
+     * 关联查询
+     * @param deliveredInfo
+     * @return List<DeliveredInfo>
+     */
+    public List<DeliveredInfo> queryForUser(DeliveredInfo deliveredInfo) throws Exception;
+
+    /**
+     * 关联查询
+     * @param  deliveredInfo
+     * @return List<DeliveredInfo>
+     */
+    public Integer queryForUserCount(DeliveredInfo deliveredInfo) throws Exception;
 }

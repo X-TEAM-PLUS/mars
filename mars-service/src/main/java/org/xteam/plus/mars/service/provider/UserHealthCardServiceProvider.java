@@ -3,10 +3,15 @@ package org.xteam.plus.mars.service.provider;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.xteam.plus.mars.common.JsonResult;
+import org.xteam.plus.mars.domain.HealthCheckRecord;
 import org.xteam.plus.mars.domain.UserHealthCard;
+import org.xteam.plus.mars.domain.UserInfo;
+import org.xteam.plus.mars.manager.HealthCheckRecordManager;
 import org.xteam.plus.mars.manager.UserHealthCardManager;
+import org.xteam.plus.mars.manager.UserInfoManager;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -24,6 +29,12 @@ public class UserHealthCardServiceProvider extends AbstractServiceProvider {
     @Resource
     private UserHealthCardManager userhealthcardManager;
 
+    @Resource
+    private HealthCheckRecordManager healthCheckRecordManager;
+
+    @Resource
+    private UserInfoManager userInfoManager;
+
     /**
      * 获取
      *
@@ -36,6 +47,18 @@ public class UserHealthCardServiceProvider extends AbstractServiceProvider {
         try {
             //获取记录
             UserHealthCard result = userhealthcardManager.get(userhealthcard);
+            if (result == null || result.getActivateUserId() == null) {
+                jsonResult.setMessage("此卡没有进行激活，不能进行查询!");
+                jsonResult.setSuccess(false);
+                return jsonResult;
+            }
+            UserInfo userInfo = userInfoManager.get(new UserInfo().setUserId(result.getActivateUserId()));
+            if (userInfo == null) {
+                jsonResult.setMessage("激活用户不存在，不能进行查询!");
+                jsonResult.setSuccess(false);
+                return jsonResult;
+            }
+            result.setActivateUserInfo(userInfo);
             if (result != null) {
                 jsonResult.setData(result);
                 jsonResult.setSuccess(true);
@@ -178,6 +201,74 @@ public class UserHealthCardServiceProvider extends AbstractServiceProvider {
         } catch (Exception e) {
             logError("查询异常", e);
             jsonResult.setMessage("查询异常");
+            jsonResult.setSuccess(false);
+        }
+        return jsonResult;
+    }
+
+
+    @RequestMapping("/listActiveUser")
+    public JsonResult listActiveUser(UserHealthCard userhealthcard) throws Exception {
+        JsonResult jsonResult = new JsonResult();
+        try {
+            List<UserHealthCard> data = userhealthcardManager.queryForActiveUser(userhealthcard);
+            // 设置结果集
+            jsonResult.put("list", data);
+            jsonResult.put("rowCount", userhealthcardManager.queryForActiveUserCount(userhealthcard));
+            jsonResult.setSuccess(true);
+        } catch (Exception e) {
+            logError("查询异常", e);
+            jsonResult.setMessage("查询异常");
+            jsonResult.setSuccess(false);
+        }
+        return jsonResult;
+    }
+
+    @RequestMapping("/getActiveUser")
+    public JsonResult getActiveUser(BigDecimal cardNo, int start, int limit) {
+        JsonResult jsonResult = new JsonResult();
+        try {
+            UserHealthCard userHealthCard = userhealthcardManager.get(new UserHealthCard().setCardNo(cardNo));
+            HealthCheckRecord healthCheckRecord = new HealthCheckRecord();
+            healthCheckRecord.setStart(start);
+            healthCheckRecord.setLimit(limit);
+            healthCheckRecord.setUserId(userHealthCard.getActivateUserId());
+            List<HealthCheckRecord> data = healthCheckRecordManager.query(healthCheckRecord);
+            // 设置结果集
+            jsonResult.put("list", data);
+            jsonResult.put("rowCount", healthCheckRecordManager.queryCount(healthCheckRecord));
+            jsonResult.setSuccess(true);
+        } catch (Exception e) {
+            logError("查询异常", e);
+            jsonResult.setMessage("查询异常");
+            jsonResult.setSuccess(false);
+        }
+        return jsonResult;
+    }
+
+
+    /**
+     * 获取
+     *
+     * @param userhealthcard
+     * @return int
+     */
+    @RequestMapping("/getForUser")
+    public JsonResult getForUser(UserHealthCard userhealthcard) throws Exception {
+        JsonResult jsonResult = new JsonResult();
+        try {
+            //获取记录
+            UserHealthCard result = userhealthcardManager.getForUser(userhealthcard);
+            if (result != null) {
+                jsonResult.setData(result);
+                jsonResult.setSuccess(true);
+            } else {
+                jsonResult.setMessage("获取数据失败");
+                jsonResult.setSuccess(false);
+            }
+        } catch (Exception e) {
+            logError("获取数据异常", e);
+            jsonResult.setMessage("获取数据异常");
             jsonResult.setSuccess(false);
         }
         return jsonResult;

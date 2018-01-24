@@ -1,6 +1,7 @@
 package org.xteam.plus.mars.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 
 /**
@@ -31,7 +32,7 @@ public class DeliveredInfo implements Serializable {
     /**
      * 运单号
      */
-    private java.util.Date waybillNo;
+    private String waybillNo;
 
     /**
      * 发货流水号
@@ -93,6 +94,17 @@ public class DeliveredInfo implements Serializable {
      */
     private String area;
 
+    /**
+     * 体检状态
+     * 0 未检测 1 检测中 2 已检测
+     */
+    private BigDecimal status;
+
+    /**
+     * 用户信息
+     */
+    private UserInfo userInfo;
+
 
     /**
      * 设置   nextDate
@@ -118,7 +130,7 @@ public class DeliveredInfo implements Serializable {
      *
      * @param waybillNo (运单号)
      */
-    public DeliveredInfo setWaybillNo(java.util.Date waybillNo) {
+    public DeliveredInfo setWaybillNo(String waybillNo) {
         this.waybillNo = waybillNo;
         return this;
     }
@@ -128,7 +140,7 @@ public class DeliveredInfo implements Serializable {
      *
      * @return
      */
-    public java.util.Date getWaybillNo() {
+    public String getWaybillNo() {
         return this.waybillNo;
     }
 
@@ -398,5 +410,21 @@ public class DeliveredInfo implements Serializable {
     public DeliveredInfo setLimit(Integer limit) {
         this.limit = limit;
         return this;
+    }
+
+    public BigDecimal getStatus() {
+        return status;
+    }
+
+    public void setStatus(BigDecimal status) {
+        this.status = status;
+    }
+
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 }
