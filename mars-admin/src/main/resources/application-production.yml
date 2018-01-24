@@ -4,7 +4,7 @@ server:
 eureka:
   client:
     service-url:
-      defaultZone: http://host1:8888/eureka/,http://host2:8888/eureka/,http://host3:8888/eureka/
+      defaultZone: http://localhost:8888/eureka/
 spring:
   application:
     name: mars-admin
@@ -13,6 +13,10 @@ spring:
       preferred-json-mapper: jackson
     encoding:
       charset: UTF-8
+  mvc:
+    static-path-pattern: /static/**
+    locale: zh_CN
+    date-format: yyyy-MM-dd HH:mm:ss
   freemarker:
     template-loader-path: classpath:/templates
     request-context-attribute: request
@@ -39,6 +43,6 @@ ribbon:
     ReadTimeout: 30000
     ConnectTimeout: 30000
 logging:
-  path: /data/log/mars
+  path: /var/log/mars
   level: debug
   config: classpath:admin-logback.xml

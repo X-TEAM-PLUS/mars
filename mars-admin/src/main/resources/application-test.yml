@@ -13,12 +13,10 @@ spring:
       preferred-json-mapper: jackson
     encoding:
       charset: UTF-8
-  freemarker:
-    template-loader-path: classpath:/templates
-    request-context-attribute: request
-    charset: UTF-8
-    settings:
-        number_format: 0.##
+  mvc:
+    static-path-pattern: /static/**
+    locale: zh_CN
+    date-format: yyyy-MM-dd HH:mm:ss
   freemarker:
     template-loader-path: classpath:/templates
     request-context-attribute: request
