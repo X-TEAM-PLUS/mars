@@ -64,4 +64,14 @@ public class DeliveredInfoManagerImpl implements DeliveredInfoManager {
         return deliveredInfoDao.queryCount(deliveredInfo);
     }
 
+    @Override
+    public List<DeliveredInfo> queryForUser(DeliveredInfo deliveredInfo) throws Exception {
+        return deliveredInfoDao.queryForUser(deliveredInfo);
+    }
+
+    @Override
+    public Integer queryForUserCount(DeliveredInfo deliveredInfo) throws Exception {
+        return deliveredInfoDao.queryForUserCount(deliveredInfo);
+    }
+
 }

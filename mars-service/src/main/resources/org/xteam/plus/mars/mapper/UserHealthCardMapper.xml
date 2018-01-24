@@ -19,6 +19,39 @@
         <result column="BUYER_USER_ID" property="buyerUserId" jdbcType="DECIMAL"/>
         <result column="ACTIVATE_USER_ID" property="activateUserId" jdbcType="DECIMAL"/>
         <result column="CARD_ACTIVATE_TIME" property="cardActivateTime" jdbcType="TIMESTAMP"/>
+
+        <association property="activateUserInfo" column="ACTIVATE_USER_ID"
+                     javaType="org.xteam.plus.mars.domain.UserInfo">
+            <id column="USER_ID" property="userId" jdbcType="DECIMAL"/>
+            <result column="CARD_NO" property="cardNo" jdbcType="DECIMAL"/>
+            <result column="ID_NUMBER" property="idNumber" jdbcType="VARCHAR"/>
+            <result column="CARD_ACTIVATE_MODE" property="cardActivateMode" jdbcType="INTEGER"/>
+            <result column="REAL_NAME" property="realName" jdbcType="VARCHAR"/>
+            <result column="CARD_TYPE" property="cardType" jdbcType="DECIMAL"/>
+            <result column="LINK_ADDRESS" property="linkAddress" jdbcType="VARCHAR"/>
+            <result column="CARD_LIFE_TIME" property="cardLifeTime" jdbcType="TIMESTAMP"/>
+            <result column="MOBILE_NO" property="mobileNo" jdbcType="VARCHAR"/>
+            <result column="CARD_ACTIVATE_TIME" property="cardActivateTime" jdbcType="TIMESTAMP"/>
+            <result column="REGISTER_TIME" property="registerTime" jdbcType="TIMESTAMP"/>
+            <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+            <result column="WEIXIN_ACCOUNT" property="weixinAccount" jdbcType="VARCHAR"/>
+            <result column="STATUS" property="status" jdbcType="INTEGER"/>
+            <result column="LOGIN_COUNT" property="loginCount" jdbcType="DECIMAL"/>
+            <result column="REGISTER_SOURCE" property="registerSource" jdbcType="VARCHAR"/>
+            <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
+            <result column="PASSWORK" property="passwork" jdbcType="VARCHAR"/>
+            <result column="USER_LEVEL" property="userLevel" jdbcType="INTEGER"/>
+            <result column="LAST_LOGIN_TIME" property="lastLoginTime" jdbcType="TIMESTAMP"/>
+            <result column="NICK_NAME" property="nickName" jdbcType="VARCHAR"/>
+            <result column="ACCUMULATIVE_WITHDRAWALS" property="accumulativeWithdrawals" jdbcType="DECIMAL"/>
+            <result column="ACCUMULATIVE_SUBSIDY" property="accumulativeSubsidy" jdbcType="DECIMAL"/>
+            <result column="PROVINCE" property="province" jdbcType="DECIMAL"/>
+            <result column="CITY" property="city" jdbcType="DECIMAL"/>
+            <result column="COUNTY" property="county" jdbcType="DECIMAL"/>
+            <result column="PROVINCE_NAME" property="provinceName" jdbcType="DECIMAL"/>
+            <result column="CITY_NAME" property="cityName" jdbcType="DECIMAL"/>
+            <result column="COUNTY_NAME" property="countyName" jdbcType="DECIMAL"/>
+        </association>
     </resultMap>
 
     <!--公用选择列-->
@@ -138,7 +171,8 @@
     </delete>
 
     <!--插入记录-->
-    <insert id="insert" parameterType="org.xteam.plus.mars.domain.UserHealthCard" useGeneratedKeys="true" keyProperty="cardNo">
+    <insert id="insert" parameterType="org.xteam.plus.mars.domain.UserHealthCard" useGeneratedKeys="true"
+            keyProperty="cardNo">
         insert into T_MARS_USER_HEALTH_CARD (
         SEND_PERIOD_MODE
         ,SEND_PERIOD
@@ -307,5 +341,101 @@
         select count(1)
         from T_MARS_USER_HEALTH_CARD
         <include refid="queryWhere"></include>
+    </select>
+
+
+    <!-- 关联查询 -->
+    <!--公用选择列-->
+    <sql id="selectColumnsRf">
+        TMUHC.CARD_NO
+        ,TMUHC.SEND_PERIOD_MODE
+        ,TMUHC.SEND_PERIOD
+        ,TMUHC.SEND_TOTAL_COUNT
+        ,TMUHC.SEND_COUNT
+        ,TMUHC.PRODUCT_ID
+        ,TMUHC.CARD_DEADLINE
+        ,TMUHC.PRODUCT_TYPE
+        ,TMUHC.STATUS
+        ,TMUHC.SURVIVAL_PERIOD_MODE
+        ,TMUHC.CREATED
+        ,TMUHC.SURVIVAL_PERIOD_NUM
+        ,TMUHC.UPDATED
+        ,TMUHC.BUYER_USER_ID
+        ,TMUHC.ACTIVATE_USER_ID
+        ,TMUHC.CARD_ACTIVATE_TIME
+        ,TMUI.USER_ID
+        ,TMUI.CARD_NO
+        ,TMUI.ID_NUMBER
+        ,TMUI.CARD_ACTIVATE_MODE
+        ,TMUI.REAL_NAME
+        ,TMUI.CARD_TYPE
+        ,TMUI.LINK_ADDRESS
+        ,TMUI.CARD_LIFE_TIME
+        ,TMUI.MOBILE_NO
+        ,TMUI.CARD_ACTIVATE_TIME
+        ,TMUI.REGISTER_TIME
+        ,TMUI.CREATED
+        ,TMUI.WEIXIN_ACCOUNT
+        ,TMUI.STATUS
+        ,TMUI.LOGIN_COUNT
+        ,TMUI.REGISTER_SOURCE
+        ,TMUI.UPDATED
+        ,TMUI.PASSWORK
+        ,TMUI.USER_LEVEL
+        ,TMUI.LAST_LOGIN_TIME
+        ,TMUI.NICK_NAME
+        ,TMUI.PROVINCE
+        ,TMUI.CITY
+        ,TMUI.COUNTY
+        ,TMUI.PROVINCE_NAME
+        ,TMUI.CITY_NAME
+        ,TMUI.COUNTY_NAME
+    </sql>
+
+    <sql id="queryWhereRf">
+        <where>
+            <if test="status!=null ">
+                <![CDATA[
+                    and TMUHC.STATUS=#{status,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="cardNo!=null ">
+                <![CDATA[
+                    and TMUHC.CARD_NO=#{cardNo,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="activateUserInfo!=null ">
+                <if test="activateUserInfo.realName!=null ">
+                    <![CDATA[
+                    and TMUI.REAL_NAME LIKE #{activateUserInfo.realName,jdbcType=INTEGER}
+                    ]]>
+                </if>
+            </if>
+        </where>
+    </sql>
+
+    <!--分页查询记录-->
+    <select id="queryForActiveUser" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.UserHealthCard">
+        select
+        <include refid="selectColumnsRf"></include>
+        FROM T_MARS_USER_HEALTH_CARD TMUHC
+        LEFT JOIN T_MARS_USER_INFO TMUI ON TMUHC.ACTIVATE_USER_ID = TMUI.USER_ID
+        <include refid="queryWhereRf"></include>
+        limit #{start},#{limit}
+    </select>
+
+    <!--查询记录数-->
+    <select id="queryForActiveUserCount" resultType="int" parameterType="org.xteam.plus.mars.domain.UserHealthCard">
+        select count(*)
+        FROM T_MARS_USER_HEALTH_CARD TMUHC
+        LEFT JOIN T_MARS_USER_INFO TMUI ON TMUHC.ACTIVATE_USER_ID = TMUI.USER_ID
+    </select>
+
+    <select id="getForUser" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.UserHealthCard">
+        SELECT
+        <include refid="selectColumnsRf"></include>
+        FROM T_MARS_USER_HEALTH_CARD TMUHC
+        LEFT JOIN T_MARS_USER_INFO TMUI ON TMUHC.ACTIVATE_USER_ID = TMUI.USER_ID
+        where TMUHC.CARD_NO= #{cardNo,jdbcType=DECIMAL}
     </select>
 </mapper>

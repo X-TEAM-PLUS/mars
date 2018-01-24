@@ -103,6 +103,10 @@ public class UserHealthCard implements Serializable {
      */
     private java.util.Date cardActivateTime;
 
+    /**
+     * 激活用户信息
+     */
+    private UserInfo activateUserInfo;
 
     /**
      * 设置   sendPeriodMode
@@ -446,5 +450,13 @@ public class UserHealthCard implements Serializable {
     public UserHealthCard setLimit(Integer limit) {
         this.limit = limit;
         return this;
+    }
+
+    public UserInfo getActivateUserInfo() {
+        return activateUserInfo;
+    }
+
+    public void setActivateUserInfo(UserInfo activateUserInfo) {
+        this.activateUserInfo = activateUserInfo;
     }
 }

@@ -182,4 +182,21 @@ public class DeliveredInfoServiceProvider extends AbstractServiceProvider {
         }
         return jsonResult;
     }
+
+    @RequestMapping("/listForUser")
+    public JsonResult listForUser(DeliveredInfo deliveredInfo) throws Exception{
+        JsonResult jsonResult = new JsonResult();
+        try {
+            List<DeliveredInfo> data = deliveredinfoManager.queryForUser(deliveredInfo);
+            // 设置结果集
+            jsonResult.put("list", data);
+            jsonResult.put("rowCount", deliveredinfoManager.queryForUserCount(deliveredInfo));
+            jsonResult.setSuccess(true);
+        } catch (Exception e) {
+            logError("查询异常", e);
+            jsonResult.setMessage("查询异常");
+            jsonResult.setSuccess(false);
+        }
+        return jsonResult;
+    }
 }

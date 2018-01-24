@@ -23,6 +23,14 @@ public interface UserHealthCardManager {
     public UserHealthCard get(UserHealthCard userHealthCard) throws Exception;
 
     /**
+     * 获取详情关联用户
+     * @param userHealthCard
+     * @return
+     * @throws Exception
+     */
+    public UserHealthCard getForUser(UserHealthCard userHealthCard) throws Exception;
+
+    /**
      * 新增
      *
      * @param userHealthCard
@@ -69,4 +77,20 @@ public interface UserHealthCardManager {
      * @return List<UserHealthCard>
      */
     public Integer queryCount(UserHealthCard userHealthCard) throws Exception;
+
+    /**
+     * 查询
+     *
+     * @param userHealthCard
+     * @return List<UserHealthCard>
+     */
+    public List<UserHealthCard> queryForActiveUser(UserHealthCard userHealthCard) throws Exception;
+
+    /**
+     * 查询记录数
+     *
+     * @param userHealthCard
+     * @return List<UserHealthCard>
+     */
+    public Integer queryForActiveUserCount(UserHealthCard userHealthCard) throws Exception;
 }

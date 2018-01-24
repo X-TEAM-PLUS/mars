@@ -31,6 +31,11 @@ public class UserHealthCardManagerImpl implements UserHealthCardManager {
     }
 
     @Override
+    public UserHealthCard getForUser(UserHealthCard userHealthCard) throws Exception {
+        return userHealthCardDao.getForUser(userHealthCard);
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public int insert(UserHealthCard userHealthCard) throws Exception {
         return userHealthCardDao.insert(userHealthCard);
@@ -62,6 +67,20 @@ public class UserHealthCardManagerImpl implements UserHealthCardManager {
     @Override
     public Integer queryCount(UserHealthCard userHealthCard) throws Exception {
         return userHealthCardDao.queryCount(userHealthCard);
+    }
+
+    @Override
+    public List<UserHealthCard> queryForActiveUser(UserHealthCard userHealthCard) throws Exception {
+        if (userHealthCard.getActivateUserInfo() != null && userHealthCard.getActivateUserInfo().getRealName() != null) {
+            String realName = userHealthCard.getActivateUserInfo().getRealName();
+            userHealthCard.getActivateUserInfo().setRealName("%" + realName + "%");
+        }
+        return userHealthCardDao.queryForActiveUser(userHealthCard);
+    }
+
+    @Override
+    public Integer queryForActiveUserCount(UserHealthCard userHealthCard) throws Exception {
+        return userHealthCardDao.queryForActiveUserCount(userHealthCard);
     }
 
 }

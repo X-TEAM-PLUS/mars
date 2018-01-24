@@ -69,4 +69,21 @@ public interface DeliveredInfoManager {
      * @return List<DeliveredInfo>
      */
     public Integer queryCount(DeliveredInfo deliveredInfo) throws Exception;
+
+
+    /**
+     * 关联查询用户数据（检查列表）
+     *
+     * @param deliveredInfo
+     * @return List<DeliveredInfo>
+     */
+    public List<DeliveredInfo> queryForUser(DeliveredInfo deliveredInfo) throws Exception;
+
+    /**
+     * 关联查询用户数据（检查列表）
+     *
+     * @param deliveredInfo
+     * @return List<DeliveredInfo>
+     */
+    public Integer queryForUserCount(DeliveredInfo deliveredInfo) throws Exception;
 }

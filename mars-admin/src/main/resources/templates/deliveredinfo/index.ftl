@@ -43,14 +43,7 @@
                 <div class="portlet-body" id="deliveredInfoTable">
                     <div class="table-toolbar">
                         <div class="row">
-                            <div class="col-md-10">
-                                <div class="btn-group">
-                                    <button id="newDeliveredInfoButton" class="btn green" onclick="location.href = 'add';">
-                                        添加发货信息表 <i class="fa fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-md-2 pull-right">
+                            <div class="col-md-6 pull-right">
                                 <form id="deliveredInfoTableForm" onsubmit="init();return false;">
                                     <div class="input-group">
                                         <div class="input-icon">
@@ -68,21 +61,11 @@
                     <table class="table table-striped table-bordered table-hover ">
                         <thead>
                         <tr>
-                            <th column="deliveredId" type="checkbox" style="width: 50px"><input type="checkbox" id="allCheckBox" class="allCheckBox"></th>
-                            <th column="nextDate">下一支试剂发货日期</th>
-                            <th column="waybillNo">运单号</th>
-                            <th column="deliveredId">发货流水号</th>
-                            <th column="deliveredDate">发件日期</th>
-                            <th column="userId">用户ID</th>
-                            <th column="created">创建时间</th>
-                            <th column="address">邮寄地址</th>
-                            <th column="deliveredCount">发货次数</th>
-                            <th column="deliveredFee">快递费</th>
-                            <th column="previousDate">上一支试剂发货日期</th>
-                            <th column="province">省</th>
-                            <th column="updated">更新时间</th>
-                            <th column="city">市</th>
-                            <th column="area">区</th>
+                            <th column="created">上传时间</th>
+                            <th column="userInfo.userId">用户ID</th>
+                            <th column="userInfo.realName">用户姓名</th>
+                            <th column="deliveredCount">检测历史</th>
+                            <th column="status" type="enum" enum-v="{'0':'未检测','1':'检测中','2':'已检测'}">检测状态</th>
                             <th type="action" style="width: 200px">操作</th>
                         </tr>
                         </thead>
@@ -102,7 +85,7 @@
     function init() {
         $("#deliveredInfoTable").pagingGrid(
                 {
-                    dataUrl: '/services/mars/deliveredinfo/list'
+                    dataUrl: '/services/mars/deliveredinfo/listForUser'
                     , pageSize: 10
                     , scroll: false
                     , dockedItems: [{
