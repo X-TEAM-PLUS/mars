@@ -38,11 +38,9 @@ spring:
     serialization: true
 zuul:
   routes:
-    zuul:
-  routes:
     mars-admin:
       path: /services/**
-      serviceId: mars-service-provider
+      serviceId: mars-service
 ribbon:
     ReadTimeout: 30000
     ConnectTimeout: 30000
