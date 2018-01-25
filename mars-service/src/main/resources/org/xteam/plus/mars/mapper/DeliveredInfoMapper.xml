@@ -37,7 +37,7 @@
             <result column="LOGIN_COUNT" property="loginCount" jdbcType="DECIMAL"/>
             <result column="REGISTER_SOURCE" property="registerSource" jdbcType="VARCHAR"/>
             <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
-            <result column="PASSWORK" property="passwork" jdbcType="VARCHAR"/>
+            <result column="PASSWORD" property="password" jdbcType="VARCHAR"/>
             <result column="USER_LEVEL" property="userLevel" jdbcType="INTEGER"/>
             <result column="LAST_LOGIN_TIME" property="lastLoginTime" jdbcType="TIMESTAMP"/>
             <result column="NICK_NAME" property="nickName" jdbcType="VARCHAR"/>
@@ -348,7 +348,7 @@
         ,TMUI.LOGIN_COUNT
         ,TMUI.REGISTER_SOURCE
         ,TMUI.UPDATED
-        ,TMUI.PASSWORK
+        ,TMUI.PASSWORD
         ,TMUI.USER_LEVEL
         ,TMUI.LAST_LOGIN_TIME
         ,TMUI.NICK_NAME
