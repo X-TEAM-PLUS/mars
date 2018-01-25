@@ -62,10 +62,7 @@
                         }
                     });
                 }
-                else if ($oinput.attr("type") == "textarea") {
-                    $oinput.html(ival);
-                }
-                else {
+                else if ($oinput.attr("type") == "text") {
                     $oinput.val(ival);
                 }
             });
@@ -74,7 +71,13 @@
                 var $oinput = $(iInput);
                 $oinput.html(ival);
             });
-
+            obj.find("select").each(function(index,iInput){
+                var ival = getColumnValue(jsonValue,iInput.name);
+                for(var i=0; i<iInput.options.length; i++){
+                    $(iInput).find("option[value='"+ ival+"']").attr("selected",true);
+                    break;
+                }
+            });
         },
 
         //提交表单
