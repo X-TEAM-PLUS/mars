@@ -125,15 +125,15 @@
                     , pageSize: 10
                     , scroll: false
                     , dockedItems: [{
-                        name: '修改'
-                        , iconClass: 'fa fa-edit'
-                        , action: '/mars/orders/edit'
+                        name: '查看订单'
+                        , iconClass: 'fa fa-eye'
+                        , action: '/mars/orders/view'
                         , confirm: false
                         , parmaName: 'orderNo'
                         , column: 'orderNo'
                     }
                         , {
-                            name: '删除'
+                            name: '删除订单'
                             , iconClass: 'glyphicon glyphicon-trash'
                             , action: '/services/mars/orders/delete'
                             , ajax: true
