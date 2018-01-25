@@ -140,6 +140,7 @@
 <script src="${request.contextPath}/static/js/PagingGrid.js" type="text/javascript"></script>
 <script src="${request.contextPath}/static/js/treeTable/javascripts/src/jquery.treetable.js" type="text/javascript"></script>
 <script src="${request.contextPath}/static/js/TableTree.js" type="text/javascript"></script>
+<script src="${request.contextPath}/static/js/DownloadUtils.js" type="text/javascript"></script>
 <script src="${request.contextPath}/static/assets/global/plugins/bootstrap-fileinput/sortable.js" type="text/javascript"></script>
 <script src="${request.contextPath}/static/assets/global/plugins/bootstrap-fileinput/fileinput.js" type="text/javascript"></script>
 <script src="${request.contextPath}/static/assets/global/plugins/bootstrap-fileinput/locales/fr.js" type="text/javascript"></script>

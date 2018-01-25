@@ -71,7 +71,7 @@
                                             <button class="btn btn-success" type="submit"><i class="glyphicon glyphicon-search"/></i> 搜索</button>
                                         </div>
                                         <span class="input-group-btn">
-												<button class="btn btn-success" type="submit"><i class="glyphicon glyphicon-save"/></i> 导出Excel</button>
+												<button class="btn btn-success" type="button"  id="downloadButton"><i class="glyphicon glyphicon-save"/></i> 导出Excel</button>
 												</span>
                                     </div>
                                 </form>
@@ -115,25 +115,7 @@
                     dataUrl: '/services/mars/orders/list'
                     , pageSize: 10
                     , scroll: false
-                    , dockedItems: [{
-                        name: '修改'
-                        , iconClass: 'fa fa-edit'
-                        , action: '/mars/orders/edit'
-                        , confirm: false
-                        , parmaName: 'orderNo'
-                        , column: 'orderNo'
-                    }
-                        , {
-                            name: '删除'
-                            , iconClass: 'glyphicon glyphicon-trash'
-                            , action: '/services/mars/orders/delete'
-                            , ajax: true
-                            , confirm: true
-                            , parmaName: 'orderNo'
-                            , column: 'orderNo'
-                        }
-                    ],
-                    pagingtoolbar: {
+                 ,  pagingtoolbar: {
                         displayInfo: true
                     }
                 }
@@ -141,6 +123,14 @@
     }
     //初始化
     init();
+    //下载
+    $("#downloadButton").click(function () {
+        var downloadUrl = contextPath+'/bestlease/policyinfo/export';
+        var signBeginDate =$("input[name$='signBeginDate']").val();
+        var signEndDate = $("input[name$='endDate']").val();
+        var params = "signBeginDate="+signBeginDate +"&signEndDate="+signEndDate ;
+        $.download(downloadUrl,params,'post' );
+    });
 
 </script>
 

@@ -41,8 +41,10 @@ public class ExcelUtils {
             Sheet sheet = workbook.getSheetAt(0);
             results = new ArrayList<>();
             for (Row row : sheet) {
-                Map<String, String> rowMap = new HashMap<String, String>();
+                Map<String, Object> rowMap = new HashMap<String, Object>();
                 for (int i = 0; i < dataIndexs.length; i++) {
+                    row.getCell(i).setCellType(Cell.CELL_TYPE_STRING);
+                    Object cellValue = readCellValue(row.getCell(i));
                     rowMap.put(dataIndexs[i], row.getCell(i).getStringCellValue());
                 }
                 results.add(JsonUtils.transform(rowMap, classType));
@@ -57,7 +59,33 @@ public class ExcelUtils {
         return results;
     }
 
+    private static Object readCellValue(Cell cell) {
+        return null;
+    }
 
+    /**
+     * 导出excel
+     * @param heads  标题
+     * @param dataIndexs 数据列
+     * @param data  数据
+     * @param outputStream  输出入
+     * @param sheetName  book名
+     * @throws Exception
+     */
+    public static void export(String[] heads, String[] dataIndexs, List data, OutputStream outputStream, String sheetName) throws Exception {
+        export(heads,dataIndexs,data,outputStream,sheetName,null);
+    }
+
+    /**
+     * 导出excel
+     * @param heads  标题
+     * @param dataIndexs 数据列
+     * @param data  数据
+     * @param outputStream  输出入
+     * @param sheetName  book名
+     * @param cellFormaterMap  格式化
+     * @throws Exception
+     */
     public static void export(String[] heads, String[] dataIndexs, List data, OutputStream outputStream, String sheetName, Map<String, CellFormater> cellFormaterMap) throws Exception {
         XSSFWorkbook workBook = new XSSFWorkbook();
         XSSFSheet sheet = workBook.createSheet(sheetName);

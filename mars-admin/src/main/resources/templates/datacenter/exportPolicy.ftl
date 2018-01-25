@@ -63,7 +63,7 @@
                                             <button class="btn btn-success" type="submit"><i class="glyphicon glyphicon-search"/></i> 搜索</button>
                                         </div>
                                         <span class="input-group-btn">
-												<button class="btn btn-success" type="submit"><i class="glyphicon glyphicon-save"/></i> 导出Excel</button>
+												<button class="btn btn-success" type="button"  id="downloadButton"><i class="glyphicon glyphicon-save"/></i> 导出Excel</button>
 												</span>
                                     </div>
                                 </form>
@@ -113,6 +113,15 @@
     }
     //初始化
     init();
+    //下载
+    $("#downloadButton").click(function () {
+        var downloadUrl = contextPath+'/services/mars/policyinfo/export';
+        var startDate =$("input[name$='startDate']").val();
+        var endDate = $("input[name$='endDate']").val();
+        var params = "startDate="+startDate +"&endDate="+endDate ;
+        $.download(downloadUrl,params,'post' );
+    });
+
 </script>
 </body>
 </html>
