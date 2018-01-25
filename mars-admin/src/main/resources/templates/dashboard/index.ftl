@@ -95,7 +95,7 @@
                         </div>
                         <div class="details">
                             <div class="number"> +
-                                <span data-counter="counterup" data-value="89" id="ORDER">1000</span><i class="fa fa-rmb"></i>
+                                <span data-counter="counterup" data-value="89" id="ORDER">0</span><i class="fa fa-rmb"></i>
                             </div>
                             <div class="desc"> 今日营收</div>
                         </div>
@@ -176,7 +176,7 @@
                         </div>
                         <div class="details">
                             <div class="number">
-                                <span data-counter="counterup" data-value="89" id="ORDER_ALL">200000</span><i class="fa fa-rmb"></i>
+                                <span data-counter="counterup" data-value="89" id="ORDER_ALL">0</span><i class="fa fa-rmb"></i>
                             </div>
                             <div class="desc"> 总营收</div>
                         </div>
