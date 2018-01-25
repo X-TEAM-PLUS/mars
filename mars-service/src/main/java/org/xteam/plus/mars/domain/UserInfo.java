@@ -180,6 +180,11 @@ public class UserInfo implements Serializable {
     private String countyName;
 
     /**
+     * 续费次数
+     */
+    private Integer payTimes;
+
+    /**
      * 设置   cardNo
      *
      * @param cardNo (会员卡号)
@@ -696,5 +701,14 @@ public class UserInfo implements Serializable {
 
     public void setCountyName(String countyName) {
         this.countyName = countyName;
+    }
+
+
+    public Integer getPayTimes() {
+        return payTimes;
+    }
+
+    public void setPayTimes(Integer payTimes) {
+        this.payTimes = payTimes;
     }
 }
