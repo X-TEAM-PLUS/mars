@@ -64,6 +64,8 @@
                 }
                 else if ($oinput.attr("type") == "text") {
                     $oinput.val(ival);
+                }else{
+                    $oinput.val(ival);
                 }
             });
             obj.find("textarea").each(function(index,iInput){
