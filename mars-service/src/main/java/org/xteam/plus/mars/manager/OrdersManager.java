@@ -2,6 +2,7 @@ package org.xteam.plus.mars.manager;
 
 import org.xteam.plus.mars.domain.Orders;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -69,4 +70,12 @@ public interface OrdersManager {
      * @return List<Orders>
      */
     public Integer queryCount(Orders orders) throws Exception;
+
+    /**
+     * 查询订单金额统计
+     * @param nowDate
+     * @return
+     * @throws Exception
+     */
+    public Integer queryOrderTotalCount(Date nowDate) throws Exception ;
 }

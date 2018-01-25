@@ -345,4 +345,14 @@
         LEFT JOIN T_MARS_USER_INFO tmui ON tmo.BUYER_USER_ID=tmui.USER_ID
         <include refid="queryWhere"></include>
     </select>
+
+    <select id="queryOrderTotalCount" resultType="int" parameterType="org.xteam.plus.mars.domain.Orders">
+        SELECT IFNULL(SUM(ORDER_PRICE),0) FROM T_MARS_ORDERS where
+        STATUS = 1
+        <if test="nowDate!=null">
+            <![CDATA[
+              AND DATE_FORMAT(#{nowDate,jdbcType=DATE},'%Y-%m-%d') = DATE_FORMAT(CREATED,'%Y-%m-%d')
+          ]]>
+        </if>
+    </select>
 </mapper>

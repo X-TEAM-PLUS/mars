@@ -3,6 +3,7 @@ package org.xteam.plus.mars.dao;
 import org.apache.ibatis.annotations.Param;
 import org.xteam.plus.mars.domain.UserInfo;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,6 +34,7 @@ public interface UserInfoDao {
 
     /**
      * 获取社工，理事与常任理事详情
+     *
      * @param userInfo
      * @return
      * @throws Exception
@@ -91,8 +93,8 @@ public interface UserInfoDao {
      * 查询社工，理事，常务理事
      *
      * @param userInfo
-     * @parma 申请时的申请类型 	申请类型 1:社工 2理事 3常任理事
      * @return List<UserInfo>
+     * @parma 申请时的申请类型    申请类型 1:社工 2理事 3常任理事
      */
     public List<UserInfo> queryWorker(@Param("userinfo") UserInfo userInfo, @Param("applyType") Integer applyType) throws Exception;
 
@@ -100,8 +102,16 @@ public interface UserInfoDao {
      * 查询社工，理事，常务理事记录数
      *
      * @param userInfo
-     * @parma 申请时的申请类型 	申请类型 1:社工 2理事 3常任理事
      * @return List<UserInfo>
+     * @parma 申请时的申请类型    申请类型 1:社工 2理事 3常任理事
      */
     public Integer queryWorkerCount(@Param("userinfo") UserInfo userInfo, @Param("applyType") Integer applyType) throws Exception;
+
+    /**
+     * 统计用户数据，按照级别跟时间进行统计
+     * @param userLevel
+     * @param nowDate
+     * @return
+     */
+    public Integer queryUserTotalCount(@Param("userLevel") Integer userLevel, @Param("nowDate") Date nowDate);
 }

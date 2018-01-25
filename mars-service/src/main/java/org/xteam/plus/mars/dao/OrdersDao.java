@@ -1,7 +1,9 @@
 package org.xteam.plus.mars.dao;
 
+import org.apache.ibatis.annotations.Param;
 import org.xteam.plus.mars.domain.Orders;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,6 +26,7 @@ public interface OrdersDao {
 
     /**
      * 获取
+     *
      * @param orders
      * @return int
      */
@@ -31,6 +34,7 @@ public interface OrdersDao {
 
     /**
      * 新增
+     *
      * @param orders
      * @return int 记录数
      */
@@ -38,13 +42,15 @@ public interface OrdersDao {
 
     /**
      * 批量新增
-     * @param list   List<Orders>
+     *
+     * @param list List<Orders>
      * @return int  记录数
      */
     public int batchInsert(List<Orders> list) throws Exception;
 
     /**
      * 删除
+     *
      * @param orders
      * @return int
      */
@@ -52,6 +58,7 @@ public interface OrdersDao {
 
     /**
      * 更新
+     *
      * @param orders
      * @return int 记录数
      */
@@ -59,6 +66,7 @@ public interface OrdersDao {
 
     /**
      * 查询
+     *
      * @param orders
      * @return List<Orders>
      */
@@ -66,8 +74,16 @@ public interface OrdersDao {
 
     /**
      * 查询记录数
-     * @param  orders
+     *
+     * @param orders
      * @return List<Orders>
      */
     public Integer queryCount(Orders orders) throws Exception;
+
+    /**
+     * 订单金额统计
+     * @param nowDate
+     * @return
+     */
+    public Integer queryOrderTotalCount(@Param("nowDate") Date nowDate);
 }

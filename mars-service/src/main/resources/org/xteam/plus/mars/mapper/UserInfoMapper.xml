@@ -584,4 +584,14 @@
         LEFT JOIN T_MARS_APPLY_INFO TAI ON TUI.USER_ID = TAI.USER_ID
         WHERE TAI.STATUS = 1 AND TUI.USER_ID = #{userId,jdbcType=DECIMAL}
     </select>
+
+    <select id="queryUserTotalCount" resultType="int" parameterType="org.xteam.plus.mars.domain.UserInfo">
+        SELECT COUNT(*) FROM T_MARS_USER_INFO where
+        USER_LEVEL = ${userLevel}
+        <if test="nowDate!=null">
+            <![CDATA[
+              AND DATE_FORMAT(#{nowDate,jdbcType=DATE},'%Y-%m-%d') = DATE_FORMAT(CREATED,'%Y-%m-%d')
+          ]]>
+        </if>
+    </select>
 </mapper>

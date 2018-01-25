@@ -7,7 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.xteam.plus.mars.dao.UserInfoDao;
 import org.xteam.plus.mars.domain.UserInfo;
 import org.xteam.plus.mars.manager.UserInfoManager;
+import org.xteam.plus.mars.type.UserLevelEnum;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -77,6 +79,11 @@ public class UserInfoManagerImpl implements UserInfoManager {
     @Override
     public Integer queryWorkerCount(UserInfo userInfo, Integer applyType) throws Exception {
         return userInfoDao.queryWorkerCount(userInfo, applyType);
+    }
+
+    @Override
+    public Integer queryUserTotalCount(UserLevelEnum userLevelEnum, Date nowDate) {
+        return userInfoDao.queryUserTotalCount(userLevelEnum.getCode(), nowDate);
     }
 
 }

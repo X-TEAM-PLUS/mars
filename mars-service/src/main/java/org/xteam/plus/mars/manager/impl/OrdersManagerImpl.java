@@ -8,6 +8,7 @@ import org.xteam.plus.mars.dao.OrdersDao;
 import org.xteam.plus.mars.domain.Orders;
 import org.xteam.plus.mars.manager.OrdersManager;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -62,6 +63,10 @@ public class OrdersManagerImpl implements OrdersManager {
     @Override
     public Integer queryCount(Orders orders) throws Exception {
         return ordersDao.queryCount(orders);
+    }
+    @Override
+    public Integer queryOrderTotalCount(Date nowDate) throws Exception {
+        return ordersDao.queryOrderTotalCount(nowDate);
     }
 
 }

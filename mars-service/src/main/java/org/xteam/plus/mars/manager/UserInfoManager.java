@@ -1,7 +1,9 @@
 package org.xteam.plus.mars.manager;
 
 import org.xteam.plus.mars.domain.UserInfo;
+import org.xteam.plus.mars.type.UserLevelEnum;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -92,4 +94,12 @@ public interface UserInfoManager {
      * @throws Exception
      */
     public Integer queryWorkerCount(UserInfo userInfo, Integer applyType) throws Exception;
+
+    /**
+     * 统计查询
+     * @param userLevelEnum
+     * @param nowDate
+     * @return
+     */
+    public Integer queryUserTotalCount(UserLevelEnum userLevelEnum,Date nowDate);
 }
