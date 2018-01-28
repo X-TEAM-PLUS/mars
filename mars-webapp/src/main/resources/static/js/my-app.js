@@ -1,36 +1,22 @@
-var isAndroid = Framework7.prototype.device.android === true;
-var isIos = Framework7.prototype.device.ios === true;
-Template7.global = {
-    android: true
-    //android: isAndroid,
-    //ios: isIos
+var theme = 'ios';
+if (location.href.indexOf('theme=md') >= 0) theme = 'md';
+var plugin = {
+    params: {
+        theme: theme,
+        root: '#app',
+    }
 };
-// If we need to use custom DOM library, let's save it to $$ variable:
+if (Framework7.use) Framework7.use(plugin);
+else if (Framework7.Class && Framework7.Class.use) Framework7.Class.use(plugin);
 var $$ = Dom7;
+$$('.view').removeClass('color-theme-pink color-theme-blue color-theme-red color-theme-black color-theme-gray color-theme-orange color-theme-yellow color-theme-green color-theme-white');
+$$('.view').addClass('color-theme-red');
+$$('.view').removeClass('layout-dark layout-white');
+$$('.view').addClass("layout-white");
 
-if (isAndroid) {
-    $$('head').append(
-        '<link rel="stylesheet" href="/assets/plugins/framework7-2.0.6/css/framework7.material.css">' +
-        '<link rel="stylesheet" href="/assets/plugins/framework7-2.0.6/css/framework7.material.colors.css">' +
-        '<link rel="stylesheet" href="/assets/plugins/framework7-2.0.6/css/kitchen-sink.css">'+
-        '<link rel="stylesheet" href="/css/my-app.css">'
-    );
-}
-else {
-    $$('head').append(
-        '<link rel="stylesheet" href="/assets/plugins/framework7-2.0.6/css/framework7.ios.min.css">' +
-        '<link rel="stylesheet" href="/assets/plugins/framework7-2.0.6/css/framework7.ios.colors.min.css">' +
-        '<link rel="stylesheet" href="/assets/plugins/framework7-2.0.6/css/kitchen-sink.css">'+
-        '<link rel="stylesheet" href="/css/my-app.css">'
-    );
-}
 // Init App
 var app = new Framework7({
-    id: 'io.framework7.testapp',
-    root: '#app',
-  //  theme: theme,
-    routes: routes,
-    vi: {
-        placementId: 'pltd4o7ibb9rc653x14',
-    },
+    id: 'member.center.mars.com',
+    root: '#app'
+    ,routes: routes
 });
