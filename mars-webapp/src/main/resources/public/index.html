@@ -7,33 +7,46 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="theme-color" content="#FF0000">
     <link rel="stylesheet" href="/assets/plugins/framework7-2.0.6/css/framework7.min.css">
-    <link rel="stylesheet" href="/css/my-app.css">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <!--<link rel="stylesheet" href="/css/my-app.css">-->
     <!-- Your app title -->
-    <title>My App</title>
+    <title>早安工程</title>
 </head>
 <body>
 <div id="app">
-    <div class="statusbar"></div>
-    <div class="view view-main view-init ios-edges" data-url="/">
-        <div class="page">
-            <div class="navbar color-red">
-                <div class="navbar-inner center ">
-                    <div class="title sliding "><b>会员中心入口</b></div>
-                </div>
-            </div>
-            <div class="page-content">
-                <div class="content-block center"> <br> <br> <br> <br> <br> <br>
-                   <div class="center"> <a href="#">了解会员权益 > </a></div>
-                    <br>
-                    <a href="#" class="button button-big button-fill color-red  active"><b>持卡会员激活</b> </a>
-                    <br>
-                    <a href="#" class="button button-big  button-fill color-red  active"><b>注册会员入会</b> </a>
+    <div class="views">
+        <div class="view view-main">
+            <div class="view view-main view-init " data-url="/">
+                <div class="page">
+                    <div class="navbar">
+                        <div class="navbar-inner center ">
+                            <div class="title sliding  center"><h1>会员中心入口</h1></div>
+                        </div>
+                    </div>
+                    <div class="page-content">
+                        <div class="content-block center">
+                            <section class="contentbox tc">
+                                <img src="images/hyrknonehy.png" class="hyrknonehyimg" alt="">
+                            </section>
+                            <section class="bottomfixed prl">
+                                <p class="tc ce35142 mb25">了解会员权益&gt;</p>
+                                <br>
+                                <a href="/visitor/" class="button button-big  button-round button-fill color-red  active"><b>持卡会员激活</b> </a>
+                                <br>
+                                <a href="#" class="button button-big   button-round button-fill color-red  active"><b>注册会员入会</b> </a>
+                                <br>
+                            </section>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 <!-- Path to Framework7 Library JS-->
 <script type="text/javascript" src="/assets/plugins/framework7-2.0.6/js/framework7.min.js"></script>
 <script type="text/javascript" src="/js/routes.js"></script>

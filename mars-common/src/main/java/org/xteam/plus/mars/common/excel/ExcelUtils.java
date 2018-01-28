@@ -109,10 +109,10 @@ public class ExcelUtils {
                 for (int columNum = 0; columNum < dataIndexs.length; columNum++) {
                     cell = bodyRow.createCell(columNum);
                     cell.setCellStyle(bodyStyle);
-                    if(cellFormaterMap!=null){
+                    if(cellFormaterMap!=null && cellFormaterMap.containsKey(dataIndexs[columNum]) ){
                         cell.setCellValue(getCellValue(data.get(rowNum), dataIndexs[columNum], cellFormaterMap.get(dataIndexs[columNum])));
                     }else{
-                        cell.setCellValue(getCellValue(data.get(rowNum), dataIndexs[columNum],null));
+                        cell.setCellValue(getCellValue(data.get(rowNum), dataIndexs[columNum]));
                     }
 
                 }
@@ -121,15 +121,15 @@ public class ExcelUtils {
         workBook.write(outputStream);
         outputStream.flush();
     }
-
+    private static String getCellValue(Object row, String fieldName) throws Exception {
+       return  getCellValue(row,fieldName,null);
+    }
 
     private static String getCellValue(Object row, String fieldName, CellFormater cellFormater) throws Exception {
         Map<String, Object> objectMap = JsonUtils.transform(row, HashMap.class);
         if (cellFormater != null) {
-            System.out.println(fieldName);
             return cellFormater.format(objectMap.get(fieldName).toString());
         } else {
-            System.out.println(fieldName);
             return objectMap.get(fieldName).toString();
         }
     }

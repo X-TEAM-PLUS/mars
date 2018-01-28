@@ -28078,8 +28078,6 @@ var Vi = {
           app.emit('viSdkReady');
           app.vi.skdReady = true;
         };
-        script.src = 'http://c.vi-serve.com/viadshtml/vi.min.js';
-        $$1$1('head').append(script);
       },
     };
   },

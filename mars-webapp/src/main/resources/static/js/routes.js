@@ -7,9 +7,9 @@ var routes = [
   },
   // About page
   {
-    path: '/about/',
-    url: './pages/about.html',
-    name: 'about',
+    path: '/visitor/',
+    url: './visitor.html',
+    name: 'visitor',
   },
   // Default route (404 page). MUST BE THE LAST
   {
