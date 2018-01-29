@@ -17,10 +17,15 @@ var routes = [
     },
   // About page
   {
-    path: '/visitor/',
-    url: './index.html',
-    name: 'visitor',
+    path: '/member_gy/',
+    url: './member_gy.html',
+    name: 'member_gy',
   },
+    {
+        path: '/pay_way/',
+        url: './pay_way.html',
+        name: 'pay_way',
+    },
   // Default route (404 page). MUST BE THE LAST
   {
     path: '(.*)',

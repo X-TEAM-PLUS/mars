@@ -8,13 +8,14 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" href="/assets/plugins/framework7-2.0.7/css/framework7.min.css">
     <link rel="stylesheet" href="/assets/plugins/framework7-2.0.7/css/framework7-icons.css">
+    <link rel="stylesheet" href="/assets/plugins/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/my-app.css">
     <title>早安工程</title>
 </head>
 <body>
 <div id="app">
     <div class="view view-main view-init">
-        <div class="page ">
+        <div class="page">
             <div class="navbar">
                 <div class="navbar-inner">
                     <div class="left sliding">
@@ -25,7 +26,7 @@
                     <div class="title ">开通会员</div>
                 </div>
             </div>
-            <div class="page-content" style="padding-top: 8px;">
+            <div class="page-content  navbar-through toolbar-through " style="padding-top: 8px;">
                 <div class="list media-list">
                     <ul>
                         <li>
@@ -44,23 +45,57 @@
                 </div>
                 <div class="block-title" style="top: -20px">开通:会员</div>
                 <div class="block">
-
+                        <div class="center">
+                                <img src="images/card.png" width="75%" height="75%">
+                        </div>
+                </div>
+                <div class="list">
+                    <ul>
+                        <li>
+                            <a href="/pay_way/" class="item-link item-content">
+                                <div class="item-inner">
+                                    <div class="item-title-row">
+                                        <div class="item-title">选择支付方式</div>
+                                        <div class="item-after">&nbsp;</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title"><i class="fa fa-weixin"></i>微信支付</div>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title">包含</div>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title-row">
+                                    <div class="item-title">三年公益会员</div>
+                                    <div class="item-after"></div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
-            <div class="toolbar tabbar tabbar-labels">
+            <div class="toolbar">
                 <div class="toolbar-inner">
-                    <a href="/" class="tab-link ">
-                        <i class="f7-icons size-29">graph_round_fill</i>
-                        <span class="tabbar-label">健康检查</span>
-                    </a>
-                    <a href="/member_rk/" class="tab-link">
-                        <i class="icon f7-icons size-29">persons_fill</i>
-                        <span class="tabbar-label">好医生</span>
-                    </a>
-                    <a href="/" class="tab-link tab-link-active">
-                        <i class="f7-icons ">person_fill</i>
-                        <span class="tabbar-label">我</span>
-                    </a>
+                    <div class="row">
+                            <label>总计：<i class="fa fa-rmb"></i> 365</label>
+                    </div>
+                    <div class="row">
+                            <a href="#" class="button button-big  button-fill button-raised active">确认支付</a>
+                    </div>
                 </div>
             </div>
         </div>

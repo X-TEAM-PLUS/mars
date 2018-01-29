@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Required meta tags-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="/assets/plugins/framework7-2.0.7/css/framework7.min.css">
+    <link rel="stylesheet" href="/assets/plugins/framework7-2.0.7/css/framework7-icons.css">
+    <link rel="stylesheet" href="/assets/plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/my-app.css">
+    <title>早安工程</title>
+</head>
+<body>
+<div id="app">
+    <div class="view view-main view-init">
+        <div class="page ">
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="left sliding">
+                        <a href="index" class="link back color-theme-white">
+                            <i class="icon icon-back"></i>
+                        </a>
+                    </div>
+                    <div class="title ">请选择支付方式</div>
+                </div>
+            </div>
+            <div class="page-content   " style="padding-top: 8px;">
+                <div class="list">
+                    <ul>
+                        <li>
+                            <label class="label-radio item-content">
+                                <!-- Checked by default -->
+                                <input type="radio" name="my-radio" value="1" checked="checked">
+                                <div class="item-inner">
+                                    <div class="item-title">微信支付</div>
+                                </div>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="label-radio item-content">
+                                <!-- Checked by default -->
+                                <input type="radio" name="my-radio" value="2" >
+                                <div class="item-inner">
+                                    <div class="item-title">支付宝</div>
+                                </div>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="label-radio item-content">
+                                <!-- Checked by default -->
+                                <input type="radio" name="my-radio" value="3" >
+                                <div class="item-inner">
+                                    <div class="item-title">银联支付</div>
+                                </div>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Path to Framework7 Library JS-->
+<script type="text/javascript" src="/assets/plugins/framework7-2.0.7/js/framework7.min.js"></script>
+<script type="text/javascript" src="/js/routes.js"></script>
+<!--my-app-->
+<script type="text/javascript" src="/js/my-app.js"></script>
+</body>
+</html>
