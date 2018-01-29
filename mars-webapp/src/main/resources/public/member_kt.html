@@ -3,22 +3,18 @@
 <head>
     <!-- Required meta tags-->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
-    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" href="/assets/plugins/framework7-2.0.7/css/framework7.min.css">
     <link rel="stylesheet" href="/assets/plugins/framework7-2.0.7/css/framework7-icons.css">
-    <link rel="stylesheet" href="/css/base.css">
-    <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/my-app.css">
-    <!-- Your app title -->
     <title>早安工程</title>
 </head>
 <body>
 <div id="app">
-    <div class="view view-main">
-        <div class="page">
+    <div class="view view-main view-init">
+        <div class="page ">
             <div class="navbar">
                 <div class="navbar-inner">
                     <div class="left sliding">
@@ -26,37 +22,42 @@
                             <i class="icon icon-back"></i>
                         </a>
                     </div>
-                    <div class="title">会员中心入口</div>
+                    <div class="title ">开通会员</div>
                 </div>
             </div>
-            <div class="page-content center">
-                <div class="content-block center">
-                    <div class="center">
-                        <p>
-                        <img src="images/hyrknonehy.png" class="hyrknonehyimg" alt="">
-                        </p>
-                        <br>
-                        <p class="tc ce35142 mb25  ">了解会员权益&gt;</p>
-                        <p>
-                        <a href="/member_kt/" class="button button-big button-round button-fill active"><b>持卡会员激活</b> </a>
-                        </p>
-                        <p>
-                        <a href="#" class="button button-big button-round button-fill  active"><b>注册会员入会</b> </a>
-                        </p>
-                    </div>
+            <div class="page-content" style="padding-top: 8px;">
+                <div class="list media-list">
+                    <ul>
+                        <li>
+                            <a href="#" class="item-link item-content">
+                                <div class="item-media"><img src="images/portrait_img2.png" width="80"></div>
+                                <div class="item-inner">
+                                    <div class="item-title-row">
+                                        <div class="item-title">小张</div>
+                                    </div>
+                                    <div class="item-subtitle">NO.1234567489</div>
+                                    <div class="item-text">卖后会员有效期至：2018-10-10</div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="block-title" style="top: -20px">开通:会员</div>
+                <div class="block">
+
                 </div>
             </div>
             <div class="toolbar tabbar tabbar-labels">
                 <div class="toolbar-inner">
                     <a href="/" class="tab-link ">
-                        <i class="f7-icons">graph_round_fill</i>
+                        <i class="f7-icons size-29">graph_round_fill</i>
                         <span class="tabbar-label">健康检查</span>
                     </a>
                     <a href="/member_rk/" class="tab-link">
-                        <i class="icon f7-icons ios-only">persons_fill</i>
+                        <i class="icon f7-icons size-29">persons_fill</i>
                         <span class="tabbar-label">好医生</span>
                     </a>
-                    <a href="/" class="tab-link">
+                    <a href="/" class="tab-link tab-link-active">
                         <i class="f7-icons ">person_fill</i>
                         <span class="tabbar-label">我</span>
                     </a>

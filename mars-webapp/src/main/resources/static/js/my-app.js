@@ -3,7 +3,7 @@ if (location.href.indexOf('theme=md') >= 0) theme = 'md';
 var plugin = {
     params: {
         theme: theme,
-        root: '#app',
+        root: '#app'
     }
 };
 if (Framework7.use) Framework7.use(plugin);

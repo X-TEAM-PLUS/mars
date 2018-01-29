@@ -3,79 +3,89 @@
 <head>
     <!-- Required meta tags-->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
-    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" href="/assets/plugins/framework7-2.0.7/css/framework7.min.css">
     <link rel="stylesheet" href="/assets/plugins/framework7-2.0.7/css/framework7-icons.css">
-    <link rel="stylesheet" href="/css/base.css">
-    <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/my-app.css">
-    <!-- Your app title -->
     <title>早安工程</title>
 </head>
 <body>
 <div id="app">
     <div class="view view-main view-init">
-        <div class="page">
+        <div class="page ">
             <div class="navbar">
                 <div class="navbar-inner">
                     <div class="left sliding">
                         <a href="index" class="link back color-theme-white">
-                            <i class="icon icon-back "></i>
+                            <i class="icon icon-back"></i>
                         </a>
                     </div>
-                    <div class="title">会员中心</div>
+                    <div class="title ">用户中心</div>
                 </div>
             </div>
-            <div class="page-content">
-                <!-- Content block -->
-                <div class="content-block">
-                    <!--内容 开始-->
-                    <section class="memberbox-info">
-                        <dl>
-                            <dt><img src="images/portrait_img2.png" alt=""></dt>
-                            <dd><p>小张</p>
-                                <p>NO.1234567489</p>
-                                <p>有效期至：2018-10-10</p></dd>
-                        </dl>
-                        <div class="memberbox-infodiv">
-                            <span ><i class="f7-icons">star_fill</i>游客</span>
-                            <span>申请成为会员&gt;</span>
+            <div class="page-content" style="padding-top: 8px;">
+                <div class="list media-list">
+                    <ul>
+                        <li>
+                            <a href="#" class="item-link item-content">
+                                <div class="item-media"><img src="images/portrait_img2.png" width="80"></div>
+                                <div class="item-inner">
+                                    <div class="item-title-row">
+                                        <div class="item-title">小张</div>
+                                    </div>
+                                    <div class="item-subtitle">NO.1234567489</div>
+                                    <div class="item-text">有效期至：2018-10-10</div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/member_kt/" class="item-link item-content">
+                                <div class="item-media"><i class="f7-icons color-yellow size-17 ">star_fill</i>游客</div>
+                                <div class="item-inner">
+                                    <div class="item-title-row">
+                                        <div class="item-after">申请成为会员</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="block-title" style="text-align: center;top: -20px">公益会员权益</div>
+                <div class="block">
+                    <div class="tabbar-labels">
+                    <div class="row">
+                        <div class="col-33">
+                            <a href="/" class="tab-link  ">
+                                <i class="f7-icons color-black">bell</i>
+                                <span class="tabbar-label color-black">消息通知</span>
+                            </a>
                         </div>
-                    </section>
+                        <div class="col-33">
+                            <a href="/" class="tab-link ">
+                                <i class="f7-icons color-black">help</i>
+                                <span class="tabbar-label color-black">常见问题</span>
+                            </a>
+                        </div>
+                        <div class="col-33">
+                            <a href="/member_rk/" class="tab-link ">
+                                <i class="f7-icons color-black">heart</i>
+                                <span class="tabbar-label color-black">爱补贴</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <div class="content-block-title tc">公益会员权益</div>
-                <!-- Content block -->
-                <div class="content-block">
-                    <section class="memberbox-nav">
-                        <h1></h1>
-                        <dl>
-                            <dt><i class="f7-icons size-29">bell</i></dt>
-                            <dd>消息通知</dd>
-                        </dl>
-                        <dl>
-                            <dt><i class="f7-icons size-29">help</i></dt>
-                            <dd>常见问题</dd>
-                        </dl>
-                        <dl>
-                            <dt><i class="f7-icons size-29">heart</i></dt>
-                            <dd>爱补贴</dd>
-                        </dl>
-                    </section>
                 </div>
-                <div class="content-block-title tc">客服电话：400-123123</div>
-
             </div>
             <div class="toolbar tabbar tabbar-labels">
                 <div class="toolbar-inner">
                     <a href="/" class="tab-link ">
-                        <i class="f7-icons">graph_round_fill</i>
+                        <i class="f7-icons size-29">graph_round_fill</i>
                         <span class="tabbar-label">健康检查</span>
                     </a>
                     <a href="/member_rk/" class="tab-link">
-                        <i class="icon f7-icons ios-only">persons_fill</i>
+                        <i class="icon f7-icons size-29">persons_fill</i>
                         <span class="tabbar-label">好医生</span>
                     </a>
                     <a href="/" class="tab-link tab-link-active">

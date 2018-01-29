@@ -11,9 +11,31 @@
     background: #ff0000;
     color: #ffffff;
 }
-
-
+.size-16 { font-size: 16px }
 .size-22 { font-size: 22px }
 .size-25 { font-size: 25px }
 .size-29 { font-size: 29px }
 .size-50 { font-size: 50px }
+.color-red { color: #ff0000
+}
+.color-yellow { color: #ffc019
+}
+.color-blue { color: #3e13ff
+}
+.color-white { color: #ffffff
+}
+
+.color-black { color: #000000
+}
+.center{text-align: center;}
+/*div[class*="col-"] {*/
+    /*text-align: center;*/
+    /*vertical-align: middle;*/
+    /*border: 0px solid #ddd;*/
+    /*padding: 3px;*/
+/*}*/
+/*.row {*/
+    /*vertical-align: middle;*/
+    /*margin-bottom: 3px;*/
+/*}*/
+

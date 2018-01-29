@@ -10,6 +10,11 @@ var routes = [
         url: './member_rk.html',
         name: 'member_rk',
     },
+    {
+        path: '/member_kt/',
+        url: './member_kt.html',
+        name: 'member_kt',
+    },
   // About page
   {
     path: '/visitor/',
