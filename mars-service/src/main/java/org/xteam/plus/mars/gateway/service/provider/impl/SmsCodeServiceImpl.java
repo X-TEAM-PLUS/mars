@@ -15,7 +15,7 @@ public class SmsCodeServiceImpl extends Logging implements GateWayService {
 
     @Override
     public String getMethodName() {
-        return null;
+        return METHOD_NAME;
     }
 
     @Override
