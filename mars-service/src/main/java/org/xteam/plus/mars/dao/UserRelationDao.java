@@ -115,4 +115,24 @@ public interface UserRelationDao {
      * @throws Exception
      */
     public Integer queryForCouncilCount(@Param("councilId") BigDecimal councilId) throws Exception;
+
+    /**
+     * 查询当天用户下以及团队下级人员所有推荐用户（不支持地方常任理事会用户）
+     *
+     * @param userId
+     * @param start
+     * @param limit
+     * @return
+     * @throws Exception
+     */
+    public List<UserRelation> queryThisAndNextLevelUser(@Param("userId") BigDecimal userId, @Param("start") BigDecimal start, @Param("limit") BigDecimal limit) throws Exception;
+
+    /**
+     * 查询当天用户下以及团队下级人员所有推荐用户（不支持地方常任理事会用户）
+     *
+     * @param userId
+     * @return
+     * @throws Exception
+     */
+    public List<UserRelation> queryThisAndNextLevelUserCount(@Param("userId") BigDecimal userId) throws Exception;
 }

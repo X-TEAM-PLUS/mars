@@ -104,4 +104,22 @@ public interface UserRelationManager {
      * @return
      */
     public Integer queryForCouncilCount(BigDecimal councilId) throws Exception;
+
+    /**
+     * 查询当天用户下以及团队下级人员所有推荐用户（不支持地方常任理事会用户）
+     *
+     * @param userId
+     * @return
+     * @throws Exception
+     */
+    public List<UserRelation> queryThisAndNextLevelUser(BigDecimal userId, Integer start, Integer limit) throws Exception;
+
+    /**
+     * 查询当天用户下以及团队下级人员所有推荐用户（不支持地方常任理事会用户）
+     *
+     * @param userId
+     * @return
+     * @throws Exception
+     */
+    public List<UserRelation> queryThisAndNextLevelUserCount(BigDecimal userId) throws Exception;
 }

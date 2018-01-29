@@ -20,10 +20,15 @@ public class GateWayServiceProxy extends Logging implements ApplicationContextAw
     private ApplicationContext applicationContext;
 
     protected void init() {
-        String[] beanNames = applicationContext.getBeanNamesForType(GateWayService.class);
-        for (String beanName : beanNames) {
-            GateWayService gateWayService = (GateWayService) applicationContext.getBean(beanName);
-            gateWayServiceHashMap.put(gateWayService.getMethodName().toLowerCase(), gateWayService);
+        try {
+            String[] beanNames = applicationContext.getBeanNamesForType(GateWayService.class);
+            for (String beanName : beanNames) {
+                GateWayService gateWayService = (GateWayService) applicationContext.getBean(beanName);
+                System.out.println(getGateWayService(gateWayService.getMethodName().toLowerCase()));
+                gateWayServiceHashMap.put(gateWayService.getMethodName().toLowerCase(), gateWayService);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -53,9 +58,9 @@ public class GateWayServiceProxy extends Logging implements ApplicationContextAw
         try {
             //根据方法名 获取服务接口
             GateWayService gateWayService = getGateWayService(httpRequestBody.getMethod().toLowerCase());
-            if(gateWayService==null){
+            if (gateWayService == null) {
                 httpResponseBody = new HttpResponseBody(GlobalErrorMessage.UNKNOW);
-            }else {
+            } else {
                 //调用接口
                 httpResponseBody = gateWayService.gateWay(httpRequestBody);
             }

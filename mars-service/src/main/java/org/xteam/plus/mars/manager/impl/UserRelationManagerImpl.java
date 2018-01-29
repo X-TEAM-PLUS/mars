@@ -85,4 +85,14 @@ public class UserRelationManagerImpl implements UserRelationManager {
         return userRelationDao.queryForCouncilCount(councilId);
     }
 
+    @Override
+    public List<UserRelation> queryThisAndNextLevelUser(BigDecimal userId, Integer start, Integer limit) throws Exception {
+        return userRelationDao.queryThisAndNextLevelUser(userId, new BigDecimal(start.intValue()), new BigDecimal(limit));
+    }
+
+    @Override
+    public List<UserRelation> queryThisAndNextLevelUserCount(BigDecimal userId) throws Exception {
+        return userRelationDao.queryThisAndNextLevelUserCount(userId);
+    }
+
 }

@@ -333,4 +333,53 @@
         AND TMLCM.COUNCIL_ID = #{councilId,jdbcType=DECIMAL}
 
     </select>
+
+    <select id="queryThisAndNextLevelUser" resultMap="BaseResultMap" parameterType="DECIMAL">
+        SELECT
+        <include refid="selectColumnsRf"></include>
+        FROM
+        t_mars_user_relation TUR
+        LEFT JOIN t_mars_user_info TUI ON TUR.USER_ID = TUI.USER_ID
+        WHERE
+        FIND_IN_SET(
+        TUR.REFEREE_USER_ID ,
+        (
+        SELECT
+        GROUP_CONCAT(TMUR.USER_ID)
+        FROM
+        t_mars_user_info TMUI
+        LEFT JOIN t_mars_user_relation TMUR ON TMUI.USER_ID = TMUR.USER_ID
+        WHERE
+        TMUR.REFEREE_USER_ID = #{userId,jdbcType=DECIMAL}
+        GROUP BY
+        TMUR.REFEREE_USER_ID
+        )
+        )
+        OR TUR.REFEREE_USER_ID = #{userId,jdbcType=DECIMAL}
+        limit #{start},#{limit}
+    </select>
+
+    <select id="queryThisAndNextLevelUserCount" resultMap="BaseResultMap" parameterType="DECIMAL">
+        SELECT
+        <include refid="selectColumnsRf"></include>
+        FROM
+        t_mars_user_relation TUR
+        LEFT JOIN t_mars_user_info TUI ON TUR.USER_ID = TUI.USER_ID
+        WHERE
+        FIND_IN_SET(
+        TUR.REFEREE_USER_ID ,
+        (
+        SELECT
+        GROUP_CONCAT(TMUR.USER_ID)
+        FROM
+        t_mars_user_info TMUI
+        LEFT JOIN t_mars_user_relation TMUR ON TMUI.USER_ID = TMUR.USER_ID
+        WHERE
+        TMUR.REFEREE_USER_ID = #{userId,jdbcType=DECIMAL}
+        GROUP BY
+        TMUR.REFEREE_USER_ID
+        )
+        )
+        OR TUR.REFEREE_USER_ID = #{userId,jdbcType=DECIMAL}
+    </select>
 </mapper>
