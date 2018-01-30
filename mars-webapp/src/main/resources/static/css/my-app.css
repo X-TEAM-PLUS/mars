@@ -4,13 +4,54 @@
 }
 
 .md .navbar {
+    height: 44px;
     background: #ff0000;
     color: #ffffff;
 }
-.navbar .navbar-inner .toolbar-inner {
+/*.toolbar-inner{*/
+    /*background: #ff0000;*/
+    /*color: #ffffff;*/
+/*}*/
+.ios .button.button-fill, .ios .button.button-fill-ios {
+    color: #fff;
     background: #ff0000;
-    color: #ffffff;
+    border-color: transparent;
 }
+
+.md .button.button-fill, .ios .button.button-fill-ios {
+    color: #fff;
+    background: #ff0000;
+    border-color: transparent;
+}
+.md .tabbar a.tab-link-active, .ios .tabbar-labels a.tab-link-active{
+    color: #ff0000;
+}
+
+.md .button.button-active, .md .button.button-fill, .md .button.button-fill-md, .md .button.tab-link-active {
+    background-color: #ff0000;
+    color: #fff;
+}
+
+.ios .button.button-active, .md .button.button-fill, .md .button.button-fill-md, .md .button.tab-link-active {
+    background-color: #ff0000;
+    color: #fff;
+}
+
+
+/*.ios .toolbar {*/
+    /*height: 44px;*/
+    /*font-size: 17px;*/
+    /*background: #f7f7f8;*/
+    /*bottom: 0;*/
+/*}*/
+.md .toolbar {
+    height: 44px;
+    font-size: 17px;
+    color: #1b1b1b;
+    background: #f7f7f8;
+    bottom: 0;
+}
+
 .size-16 { font-size: 16px }
 .size-22 { font-size: 22px }
 .size-25 { font-size: 25px }
@@ -28,16 +69,7 @@
 .color-black { color: #000000
 }
 .center{text-align: center;}
-/*div[class*="col-"] {*/
-    /*text-align: center;*/
-    /*vertical-align: middle;*/
-    /*border: 0px solid #ddd;*/
-    /*padding: 3px;*/
-/*}*/
-/*.row {*/
-    /*vertical-align: middle;*/
-    /*margin-bottom: 3px;*/
-/*}*/
+
 
 .page-content{
     background:#FFFFFF

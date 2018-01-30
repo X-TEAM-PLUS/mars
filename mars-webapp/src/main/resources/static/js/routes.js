@@ -7,18 +7,18 @@ var routes = [
   },
     {
         path: '/member_rk/',
-        url: './member_rk.html',
+        url: './pages/member_rk.html',
         name: 'member_rk',
     },
     {
         path: '/member_kt/',
-        url: './member_kt.html',
+        url: './pages/member_kt.html',
         name: 'member_kt',
     },
   // About page
   {
     path: '/member_gy/',
-    url: './member_gy.html',
+    url: './pages/member_gy.html',
     name: 'member_gy',
   },
     {

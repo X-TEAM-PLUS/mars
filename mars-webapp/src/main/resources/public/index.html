@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="theme-color" content="#FF0000">
     <link rel="stylesheet" href="/assets/plugins/framework7-2.0.7/css/framework7.min.css">
     <link rel="stylesheet" href="/assets/plugins/framework7-2.0.7/css/framework7-icons.css">
     <link rel="stylesheet" href="/assets/plugins/font-awesome/css/font-awesome.min.css">
@@ -14,89 +15,101 @@
 </head>
 <body>
 <div id="app">
-    <div class="view view-main view-init">
-        <div class="page ">
-            <div class="navbar">
-                <div class="navbar-inner">
-                    <div class="left sliding">
-                        <a href="index" class="link back color-theme-white">
-                            <i class="icon icon-back"></i>
-                        </a>
-                    </div>
-                    <div class="title ">用户中心</div>
-                </div>
+    <!-- Views/Tabs container -->
+    <div class="views tabs ">
+        <!-- Tabbar for switching views-tabs -->
+        <div class="toolbar tabbar tabbar-labels">
+            <div class="toolbar-inner">
+                <a href="#view-heart_check" class="tab-link ">
+                    <i class="fa fa-heartbeat fa-2x"></i>
+                    <span class="tabbar-label">健康检查</span>
+                </a>
+                <a href="#view-member_rk" class="tab-link">
+                    <i class="fa fa-user-md fa-2x"></i>
+                    <span class="tabbar-label">好医生</span>
+                </a>
+                <a href="#view-member" class="tab-link tab-link-active">
+                    <i class="fa fa-user fa-2x "></i>
+                    <span class="tabbar-label">我</span>
+                </a>
             </div>
-            <div class="page-content   navbar-through toolbar-through " style="padding-top: 8px;">
-                <div class="list media-list">
-                    <ul>
-                        <li>
-                            <a href="#" class="item-link item-content">
-                                <div class="item-media"><img src="images/portrait_img2.png" width="80"></div>
-                                <div class="item-inner">
-                                    <div class="item-title-row">
-                                        <div class="item-title">小张</div>
-                                    </div>
-                                    <div class="item-subtitle">NO.1234567489</div>
-                                    <div class="item-text">有效期至：2018-10-10</div>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>
-                            <a href="/member_kt/" class="item-link item-content">
-                                <div class="item-media"><i class="fa fa-star color-yellow  "></i>游客</div>
-                                <div class="item-inner">
-                                    <div class="item-title-row">
-                                        <div class="item-after">申请成为会员</div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="block-title" style="text-align: center;top: -20px">公益会员权益</div>
-                <div class="block">
-                    <div class="tabbar-labels">
-                    <div class="row">
-                        <div class="col-33">
-                            <a href="/" class="tab-link  ">
-                                <i class="fa fa-bell-o fa-2x "></i>
-                                <span class="tabbar-label ">消息通知</span>
-                            </a>
-                        </div>
-                        <div class="col-33">
-                            <a href="/" class="tab-link ">
-                                <i class="fa fa-question-circle fa-2x "></i>
-                                <span class="tabbar-label ">常见问题</span>
-                            </a>
-                        </div>
-                        <div class="col-33">
-                            <a href="/member_rk/" class="tab-link ">
-                                <i class="fa fa-heart-o fa-2x "></i>
-                                <span class="tabbar-label ">爱补贴</span>
-                            </a>
-                        </div>
+        </div>
+        <!-- Your main view/tab, should have "view-main" class. It also has "tab-active" class -->
+        <div id="view-member" class="view view-main tab tab-active">
+            <!-- Page, data-name contains page name which can be used in page callbacks -->
+            <div class="page" data-name="home">
+                <!-- Top Navbar -->
+                <div class="navbar">
+                    <div class="navbar-inner">
+                        <div class="title ">用户中心</div>
                     </div>
                 </div>
+                <!-- Scrollable page content-->
+                <div class="page-content"  style="padding-top: 8px;">
+                    <div class="list media-list">
+                        <ul>
+                            <li>
+                                <a href="#" class="item-link item-content">
+                                    <div class="item-media"><img src="images/portrait_img2.png" width="80"></div>
+                                    <div class="item-inner">
+                                        <div class="item-title-row">
+                                            <div class="item-title">小张</div>
+                                        </div>
+                                        <div class="item-subtitle">NO.1234567489</div>
+                                        <div class="item-text">有效期至：2018-10-10</div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li>
+                                <a href="/member_kt/" class="item-link item-content" >
+                                    <div class="item-media"><i class="fa fa-star color-yellow  "></i>游客</div>
+                                    <div class="item-inner">
+                                        <div class="item-title-row">
+                                            <div class="item-after">申请成为会员</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="block-title" style="text-align: center;top: -20px">公益会员权益</div>
+                    <div class="block">
+                        <div class="tabbar-labels">
+                            <div class="row">
+                                <div class="col-33">
+                                    <a href="#" class="tab-link  ">
+                                        <i class="fa fa-bell-o fa-3x "></i>
+                                        <span class="tabbar-label ">消息通知</span>
+                                    </a>
+                                </div>
+                                <div class="col-33">
+                                    <a href="#" class="tab-link ">
+                                        <i class="fa fa-question-circle fa-3x "></i>
+                                        <span class="tabbar-label ">常见问题</span>
+                                    </a>
+                                </div>
+                                <div class="col-33">
+                                    <a href="/member_rk/" class="tab-link ">
+                                        <i class="fa fa-heart-o fa-3x "></i>
+                                        <span class="tabbar-label ">爱补贴</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="toolbar tabbar tabbar-labels">
-                <div class="toolbar-inner">
-                    <a href="/heart_check/" class="tab-link ">
-                        <i class="fa fa-heartbeat fa-2x"></i>
-                        <span class="tabbar-label">健康检查</span>
-                    </a>
-                    <a href="/member_rk/" class="tab-link">
-                        <i class="fa fa-user-md fa-2x"></i>
-                        <span class="tabbar-label">好医生</span>
-                    </a>
-                    <a href="/member_gy/" class="tab-link tab-link-active">
-                        <i class="fa fa-user fa-2x "></i>
-                        <span class="tabbar-label">我</span>
-                    </a>
-                </div>
-            </div>
+        </div>
+    </div>
+
+        <!-- Catalog View -->
+        <div id="view-member_rk" class="view tab">
+            <!-- Catalog page will be loaded here dynamically from /catalog/ route -->
+        </div>
+        <!-- Settings View -->
+        <div id="view-heart_check" class="view tab">
+            <!-- Settings page will be loaded here dynamically from /settings/ route -->
         </div>
     </div>
 </div>
@@ -105,5 +118,6 @@
 <script type="text/javascript" src="/js/routes.js"></script>
 <!--my-app-->
 <script type="text/javascript" src="/js/my-app.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
 </body>
 </html>
