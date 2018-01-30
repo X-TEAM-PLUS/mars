@@ -52,6 +52,21 @@
             <result column="CITY_NAME" property="cityName" jdbcType="DECIMAL"/>
             <result column="COUNTY_NAME" property="countyName" jdbcType="DECIMAL"/>
         </association>
+
+        <association property="product" column="PRODUCT_ID"
+                     javaType="org.xteam.plus.mars.domain.Product">
+            <id column="PRODUCT_ID" property="productId" jdbcType="DECIMAL"/>
+            <result column="CARD_TYPE" property="cardType" jdbcType="INTEGER"/>
+            <result column="SURVIVAL_PERIOD_MODE" property="survivalPeriodMode" jdbcType="INTEGER"/>
+            <result column="SURVIVAL_PERIOD_NUM" property="survivalPeriodNum" jdbcType="INTEGER"/>
+            <result column="SEND_PERIOD_MODE" property="sendPeriodMode" jdbcType="INTEGER"/>
+            <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
+            <result column="PRODUCT_NAME" property="productName" jdbcType="VARCHAR"/>
+            <result column="SEND_PERIOD" property="sendPeriod" jdbcType="INTEGER"/>
+            <result column="SEND_TOTAL_COUNT" property="sendTotalCount" jdbcType="INTEGER"/>
+            <result column="STATUS" property="status" jdbcType="INTEGER"/>
+            <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        </association>
     </resultMap>
 
     <!--公用选择列-->
@@ -437,5 +452,43 @@
         FROM T_MARS_USER_HEALTH_CARD TMUHC
         LEFT JOIN T_MARS_USER_INFO TMUI ON TMUHC.ACTIVATE_USER_ID = TMUI.USER_ID
         where TMUHC.CARD_NO= #{cardNo,jdbcType=DECIMAL}
+    </select>
+
+
+    <sql id="selectColumnsRfProduct">
+        TMUHC.CARD_NO
+        ,TMUHC.SEND_PERIOD_MODE
+        ,TMUHC.SEND_PERIOD
+        ,TMUHC.SEND_TOTAL_COUNT
+        ,TMUHC.SEND_COUNT
+        ,TMUHC.PRODUCT_ID
+        ,TMUHC.CARD_DEADLINE
+        ,TMUHC.PRODUCT_TYPE
+        ,TMUHC.STATUS
+        ,TMUHC.SURVIVAL_PERIOD_MODE
+        ,TMUHC.CREATED
+        ,TMUHC.SURVIVAL_PERIOD_NUM
+        ,TMUHC.UPDATED
+        ,TMUHC.BUYER_USER_ID
+        ,TMUHC.ACTIVATE_USER_ID
+        ,TMUHC.CARD_ACTIVATE_TIME
+        ,TMP.PRODUCT_ID
+        ,TMP.CARD_TYPE
+        ,TMP.SURVIVAL_PERIOD_MODE
+        ,TMP.SURVIVAL_PERIOD_NUM
+        ,TMP.SEND_PERIOD_MODE
+        ,TMP.UPDATED
+        ,TMP.PRODUCT_NAME
+        ,TMP.SEND_PERIOD
+        ,TMP.SEND_TOTAL_COUNT
+        ,TMP.STATUS
+        ,TMP.CREATED
+    </sql>
+    <select id="queryForProductByActive" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.UserHealthCard">
+        SELECT
+        <include refid="selectColumnsRfProduct"/>
+        FROM T_MARS_USER_HEALTH_CARD TMUHC
+        LEFT JOIN T_MARS_PRODUCT TMP ON TMUHC.PRODUCT_ID = TMP.PRODUCT_ID
+        WHERE TMUHC.ACTIVATE_USER_ID = #{activateUserId,jdbcType=DECIMAL} AND TMUHC.STATUS = 1
     </select>
 </mapper>

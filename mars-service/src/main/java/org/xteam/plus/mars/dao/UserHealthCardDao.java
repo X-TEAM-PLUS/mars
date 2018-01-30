@@ -1,5 +1,6 @@
 package org.xteam.plus.mars.dao;
 
+import org.apache.ibatis.annotations.Param;
 import org.xteam.plus.mars.domain.UserHealthCard;
 
 import java.util.List;
@@ -92,4 +93,11 @@ public interface UserHealthCardDao {
      */
     public Integer queryForActiveUserCount(UserHealthCard userHealthCard) throws Exception;
 
+    /**
+     * 查询用户激活的健康卡并且关联产品
+     * @param userHealthCard
+     * @return
+     * @throws Exception
+     */
+    public UserHealthCard queryForProductByActive(UserHealthCard userHealthCard) throws Exception;
 }

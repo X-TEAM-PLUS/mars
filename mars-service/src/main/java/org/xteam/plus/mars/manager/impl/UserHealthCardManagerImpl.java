@@ -83,4 +83,9 @@ public class UserHealthCardManagerImpl implements UserHealthCardManager {
         return userHealthCardDao.queryForActiveUserCount(userHealthCard);
     }
 
+    @Override
+    public UserHealthCard queryForProductByActive(UserHealthCard userHealthCard) throws Exception {
+        return userHealthCardDao.queryForProductByActive(userHealthCard);
+    }
+
 }

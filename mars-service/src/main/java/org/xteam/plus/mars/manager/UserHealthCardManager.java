@@ -93,4 +93,12 @@ public interface UserHealthCardManager {
      * @return List<UserHealthCard>
      */
     public Integer queryForActiveUserCount(UserHealthCard userHealthCard) throws Exception;
+
+    /**
+     * 查询某用户已经激活的健康卡
+     * @param userHealthCard
+     * @return
+     * @throws Exception
+     */
+    public UserHealthCard queryForProductByActive(UserHealthCard userHealthCard) throws Exception;
 }

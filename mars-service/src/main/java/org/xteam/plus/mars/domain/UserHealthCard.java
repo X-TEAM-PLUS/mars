@@ -109,6 +109,10 @@ public class UserHealthCard implements Serializable {
     private UserInfo activateUserInfo;
 
     /**
+     * 产品信息
+     */
+    private Product product;
+    /**
      * 设置   sendPeriodMode
      *
      * @param sendPeriodMode (发货周期类型)
@@ -458,5 +462,13 @@ public class UserHealthCard implements Serializable {
 
     public void setActivateUserInfo(UserInfo activateUserInfo) {
         this.activateUserInfo = activateUserInfo;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }
