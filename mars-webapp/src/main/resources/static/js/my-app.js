@@ -17,8 +17,9 @@ var $$ = Dom7;
 
 // Init App
 var app = new Framework7({
-    id: 'member.center.mars.com',
-    root: '#app'
+    id: 'www.mars.com'
+    ,root: '#app'
     ,routes: routes
+    ,dynamicNavbar: true
 });
 

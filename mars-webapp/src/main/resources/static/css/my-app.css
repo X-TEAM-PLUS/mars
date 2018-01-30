@@ -27,15 +27,15 @@
     color: #ff0000;
 }
 
-.md .button.button-active, .md .button.button-fill, .md .button.button-fill-md, .md .button.tab-link-active {
-    background-color: #ff0000;
-    color: #fff;
-}
+/*.md .button.button-active, .md .button.button-fill, .md .button.button-fill-md, .md .button.tab-link-active {*/
+    /*background-color: #ff0000;*/
+    /*color: #fff;*/
+/*}*/
 
-.ios .button.button-active, .md .button.button-fill, .md .button.button-fill-md, .md .button.tab-link-active {
-    background-color: #ff0000;
-    color: #fff;
-}
+/*.ios .button.button-active, .md .button.button-fill, .md .button.button-fill-md, .md .button.tab-link-active {*/
+    /*background-color: #ff0000;*/
+    /*color: #fff;*/
+/*}*/
 
 
 /*.ios .toolbar {*/
