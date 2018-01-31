@@ -19,7 +19,11 @@
         <maven.druid.version>1.0.14</maven.druid.version>
     </properties>
     <dependencies>
-
+        <dependency>
+            <groupId>org.xteam.plus</groupId>
+            <artifactId>mars-external</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>org.xteam.plus</groupId>
             <artifactId>mars-common</artifactId>

@@ -1,4 +1,4 @@
-package org.xteam.plus.mars.webapp.controller;
+package org.xteam.plus.mars.service.provider;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +23,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/weixin")
-public class WeixinNotifyWebService extends Logging {
+public class WeixinNotifyWebServiceProvider extends Logging {
 
     private WxService iService = new WxService();
 
