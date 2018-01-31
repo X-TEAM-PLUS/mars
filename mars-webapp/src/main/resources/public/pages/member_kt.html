@@ -1,4 +1,4 @@
-<div class="page no-tabbar">
+<div class="page no-toolbar">
     <div class="navbar">
         <div class="navbar-inner">
             <div class="left sliding">
@@ -26,30 +26,26 @@
                 </li>
             </ul>
         </div>
-        <div class="block-title" style="top: -20px">开通:会员</div>
+
         <div class="block">
+            <div class="block-title" style="top: -20px">开通:会员</div>
             <div class="center">
-                <img src="images/card.png" width="75%" height="75%">
+                <img src="images/card.jpg" width="75%" height="75%">
             </div>
         </div>
         <div class="list">
             <ul>
                 <li>
-                    <a href="/pay_way/" class="item-link item-content">
-                        <div class="item-inner">
-                            <div class="item-title-row">
-                                <div class="item-title">选择支付方式</div>
-                                <div class="item-after">&nbsp;</div>
+                    <a class="item-link smart-select smart-select-init" data-open-in="sheet">
+                        <select name="pay_way">
+                            <option value="weixin" selected><i class="fa fa-weixin color-green"></i>     微信支付</option>
+                        </select>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title">支付方式</div>
                             </div>
                         </div>
                     </a>
-                </li>
-            </ul>
-            <ul>
-                <li class="item-content">
-                    <div class="item-inner">
-                        <div class="item-title"><i class="fa fa-weixin"></i>微信支付</div>
-                    </div>
                 </li>
             </ul>
             <ul>
