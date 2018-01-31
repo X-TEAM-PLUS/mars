@@ -26,24 +26,6 @@
 .md .tabbar a.tab-link-active, .ios .tabbar-labels a.tab-link-active{
     color: #ff0000;
 }
-
-/*.md .button.button-active, .md .button.button-fill, .md .button.button-fill-md, .md .button.tab-link-active {*/
-    /*background-color: #ff0000;*/
-    /*color: #fff;*/
-/*}*/
-
-/*.ios .button.button-active, .md .button.button-fill, .md .button.button-fill-md, .md .button.tab-link-active {*/
-    /*background-color: #ff0000;*/
-    /*color: #fff;*/
-/*}*/
-
-
-/*.ios .toolbar {*/
-    /*height: 44px;*/
-    /*font-size: 17px;*/
-    /*background: #f7f7f8;*/
-    /*bottom: 0;*/
-/*}*/
 .md .toolbar {
     height: 44px;
     font-size: 17px;
@@ -67,7 +49,8 @@
 }
 .color-white { color: #ffffff
 }
-
+.color-gray { color: #9e9e9e)
+}
 .color-black { color: #000000
 }
 .center{text-align: center;}
