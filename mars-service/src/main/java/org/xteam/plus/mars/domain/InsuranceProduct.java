@@ -78,6 +78,11 @@ public class InsuranceProduct implements Serializable {
      */
     private Integer periodsMode;
 
+    /**
+     * 保险公司
+     */
+    private InsuranceCompany insuranceCompany;
+
 
     /**
      * 设置   remark
@@ -326,5 +331,13 @@ public class InsuranceProduct implements Serializable {
     public InsuranceProduct setLimit(Integer limit) {
         this.limit = limit;
         return this;
+    }
+
+    public InsuranceCompany getInsuranceCompany() {
+        return insuranceCompany;
+    }
+
+    public void setInsuranceCompany(InsuranceCompany insuranceCompany) {
+        this.insuranceCompany = insuranceCompany;
     }
 }

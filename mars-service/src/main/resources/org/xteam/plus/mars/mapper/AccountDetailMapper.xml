@@ -80,7 +80,8 @@
     </delete>
 
     <!--插入记录-->
-    <insert id="insert" parameterType="org.xteam.plus.mars.domain.AccountDetail" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="org.xteam.plus.mars.domain.AccountDetail" useGeneratedKeys="true"
+            keyProperty="id">
         insert into T_MARS_ACCOUNT_DETAIL (
         CREATED
         ,UPDATED
@@ -185,5 +186,18 @@
         select count(1)
         from T_MARS_ACCOUNT_DETAIL
         <include refid="queryWhere"></include>
+    </select>
+
+    <!-- 按照交易类型与用户Id进行查询 -->
+    <select id="queryBusinessTypes" resultMap="BaseResultMap">
+        SELECT
+        <include refid="selectColumns"></include>
+        FROM t_mars_account_detail WHERE USER_ID = #{userId,jdbcType=DECIMAL}
+        <if test="types!=null">
+            AND BUSINESSE_TYPE IN
+            <foreach collection="types" index="index" item="a" open="(" separator="," close=")">
+                #{a}
+            </foreach>
+        </if>
     </select>
 </mapper>

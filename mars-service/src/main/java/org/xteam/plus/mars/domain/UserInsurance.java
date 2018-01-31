@@ -78,6 +78,16 @@ public class UserInsurance implements Serializable {
      */
     private java.math.BigDecimal userId;
 
+    /**
+     * 保险信息
+     */
+    private InsuranceProduct insuranceProduct;
+
+    /**
+     * 保险公司信息
+     */
+    private InsuranceCompany insuranceCompany;
+
 
     /**
      * 设置   expirationDate
@@ -326,5 +336,21 @@ public class UserInsurance implements Serializable {
     public UserInsurance setLimit(Integer limit) {
         this.limit = limit;
         return this;
+    }
+
+    public InsuranceProduct getInsuranceProduct() {
+        return insuranceProduct;
+    }
+
+    public void setInsuranceProduct(InsuranceProduct insuranceProduct) {
+        this.insuranceProduct = insuranceProduct;
+    }
+
+    public InsuranceCompany getInsuranceCompany() {
+        return insuranceCompany;
+    }
+
+    public void setInsuranceCompany(InsuranceCompany insuranceCompany) {
+        this.insuranceCompany = insuranceCompany;
     }
 }

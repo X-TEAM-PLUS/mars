@@ -14,6 +14,17 @@
         <result column="IMG_INFO" property="imgInfo" jdbcType="VARCHAR"/>
         <result column="PERIODS_NUM" property="periodsNum" jdbcType="INTEGER"/>
         <result column="PERIODS_MODE" property="periodsMode" jdbcType="INTEGER"/>
+        <association property="insuranceCompany" column="INSURANCE_COMPANY_ID"
+                     javaType="org.xteam.plus.mars.domain.InsuranceCompany">
+            <id column="INSURANCE_COMPANY_ID" property="insuranceCompanyId" jdbcType="DECIMAL"/>
+            <result column="INSURANCE_COMPANY_NAME" property="insuranceCompanyName" jdbcType="VARCHAR"/>
+            <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
+            <result column="LINK_MAN" property="linkMan" jdbcType="VARCHAR"/>
+            <result column="MOBILE_NO" property="mobileNo" jdbcType="VARCHAR"/>
+            <result column="LINK_ADDRESS" property="linkAddress" jdbcType="VARCHAR"/>
+            <result column="STATUS" property="status" jdbcType="INTEGER"/>
+            <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        </association>
     </resultMap>
 
     <!--公用选择列-->
@@ -101,7 +112,8 @@
     </delete>
 
     <!--插入记录-->
-    <insert id="insert" parameterType="org.xteam.plus.mars.domain.InsuranceProduct" useGeneratedKeys="true" keyProperty="insuranceProductNo">
+    <insert id="insert" parameterType="org.xteam.plus.mars.domain.InsuranceProduct" useGeneratedKeys="true"
+            keyProperty="insuranceProductNo">
         insert into T_MARS_INSURANCE_PRODUCT (
         REMARK
         ,CREATED
@@ -231,4 +243,53 @@
         from T_MARS_INSURANCE_PRODUCT
         <include refid="queryWhere"></include>
     </select>
+
+    <!-- 关联保险公司查询 -->
+    <!--公用选择列-->
+    <sql id="selectColumnsRf">
+        TMIP.INSURANCE_PRODUCT_NO
+        ,TMIP.REMARK
+        ,TMIP.CREATED
+        ,TMIP.STATUS
+        ,TMIP.UPDATED
+        ,TMIP.INSURANCE_NAME
+        ,TMIP.INSURANCE_COMPANY_ID
+        ,TMIP.PRICE
+        ,TMIP.IMG_INFO
+        ,TMIP.PERIODS_NUM
+        ,TMIP.PERIODS_MODE
+        ,TMIC.INSURANCE_COMPANY_ID
+        ,TMIC.INSURANCE_COMPANY_NAME
+        ,TMIC.UPDATED
+        ,TMIC.LINK_MAN
+        ,TMIC.MOBILE_NO
+        ,TMIC.LINK_ADDRESS
+        ,TMIC.STATUS
+        ,TMIC.CREATED
+    </sql>
+    <!-- 关联保险公司查询 -->
+    <select id="queryForCompany" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.InsuranceProduct">
+        SELECT
+        <include refid="selectColumnsRf"/>
+        FROM T_MARS_INSURANCE_PRODUCT TMIP
+        LEFT JOIN T_MARS_INSURANCE_COMPANY TMIC ON TMIP.INSURANCE_COMPANY_ID = TMIC.INSURANCE_COMPANY_ID
+        limit #{start},#{limit}
+    </select>
+    <!-- 关联保险公司个数 -->
+    <select id="queryForCompanyCount" resultType="int" parameterType="org.xteam.plus.mars.domain.InsuranceProduct">
+        SELECT COUNT(*)
+        FROM T_MARS_INSURANCE_PRODUCT TMIP
+        LEFT JOIN T_MARS_INSURANCE_COMPANY TMIC ON TMIP.INSURANCE_COMPANY_ID = TMIC.INSURANCE_COMPANY_ID
+    </select>
+
+
+    <!-- 关联保险公司查询 -->
+    <select id="getForCompany" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.InsuranceProduct">
+        SELECT
+        <include refid="selectColumnsRf"/>
+        FROM T_MARS_INSURANCE_PRODUCT TMIP
+        LEFT JOIN T_MARS_INSURANCE_COMPANY TMIC ON TMIP.INSURANCE_COMPANY_ID = TMIC.INSURANCE_COMPANY_ID
+        WHERE TMIP.INSURANCE_PRODUCT_NO = #{insuranceProductNo,jdbcType=DECIMAL}
+    </select>
+
 </mapper>
