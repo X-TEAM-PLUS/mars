@@ -9,6 +9,9 @@ public enum GlobalErrorMessage {
     ,BUSINESS_FAILED(40004,"业务处理失败")
     ,OBJECT_ISNULL(40005,"对象为空!")
     ,CARD_ALREAD_BIND(40006,"银行卡已经被绑定")
+    ,APPLY_AMOUNT_ZER(40007,"申请金额不能小与等于0")
+    ,USER_ID_NOT_HIVE(40008,"用户ID不存在")
+    ,AMOUNT_NOT_ENOUGH(40009,"金额不足，不能进行转账")
     ;
     private Integer code;
     private String message;
