@@ -185,6 +185,15 @@ public class UserInfo implements Serializable {
     private Integer payTimes;
 
     /**
+     * 微信头像地址
+     */
+    private String wxHeadPortrait;
+
+    /**
+     * 微信openid，唯一标示
+     */
+    private String wxOpenid;
+    /**
      * 设置   cardNo
      *
      * @param cardNo (会员卡号)
@@ -710,5 +719,21 @@ public class UserInfo implements Serializable {
 
     public void setPayTimes(Integer payTimes) {
         this.payTimes = payTimes;
+    }
+
+    public String getWxHeadPortrait() {
+        return wxHeadPortrait;
+    }
+
+    public void setWxHeadPortrait(String wxHeadPortrait) {
+        this.wxHeadPortrait = wxHeadPortrait;
+    }
+
+    public String getWxOpenid() {
+        return wxOpenid;
+    }
+
+    public void setWxOpenid(String wxOpenid) {
+        this.wxOpenid = wxOpenid;
     }
 }

@@ -36,7 +36,8 @@
         <result column="COUNTY_NAME" property="countyName" jdbcType="DECIMAL"/>
 
         <result column="PAY_TIMES" property="payTimes" jdbcType="INTEGER"/>
-
+        <result column="WX_HEAD_PORTRAIT" property="wxHeadPortrait" jdbcType="VARCHAR"/>
+        <result column="WX_OPENID" property="wxOpenid" jdbcType="VARCHAR"/>
         <association property="userSalesInfo" column="USER_ID"
                      javaType="org.xteam.plus.mars.domain.UserSalesInfo">
             <id column="USER_ID" property="userId" jdbcType="DECIMAL"/>
@@ -90,6 +91,8 @@
         ,CITY_NAME
         ,COUNTY_NAME
         ,PAY_TIMES
+        ,WX_HEAD_PORTRAIT
+        ,WX_OPENID
     </sql>
 
     <!--公用查询条件-->
@@ -206,6 +209,16 @@
                     and NICK_NAME=#{nickName,jdbcType=VARCHAR}
                     ]]>
             </if>
+            <if test="wxHeadPortrait!=null">
+                <![CDATA[
+                    and WX_HEAD_PORTRAIT=#{wxHeadPortrait,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="wxOpenid!=null">
+                <![CDATA[
+                    and WX_OPENID=#{wxOpenid,jdbcType=VARCHAR}
+                    ]]>
+            </if>
         </where>
     </sql>
 
@@ -245,6 +258,8 @@
         ,PROVINCE_NAME
         ,CITY_NAME
         ,COUNTY_NAME
+        ,WX_HEAD_PORTRAIT
+        ,WX_OPENID
         )values(
         #{cardNo,jdbcType=DECIMAL}
         ,#{idNumber,jdbcType=VARCHAR}
@@ -272,6 +287,8 @@
         ,#{provinceName,jdbcType=VARCHAR}
         ,#{cityName,jdbcType=VARCHAR}
         ,#{countyName,jdbcType=VARCHAR}
+        ,#{wxHeadPortrait,jdbcType=VARCHAR}
+        ,#{wxOpenid,jdbcType=VARCHAR}
         )
     </insert>
 
@@ -304,6 +321,8 @@
         ,PROVINCE_NAME
         ,CITY_NAME
         ,COUNTY_NAME
+        ,WX_HEAD_PORTRAIT
+        ,WX_OPENID
         )values
         <foreach collection="list" item="item" index="index" separator=",">
             (
@@ -333,6 +352,8 @@
             ,#{item.provinceName,jdbcType=VARCHAR}
             ,#{item.cityName,jdbcType=VARCHAR}
             ,#{item.countyName,jdbcType=VARCHAR}
+            ,#{item.wxHeadPortrait,jdbcType=VARCHAR}
+            ,#{item.wxOpenid,jdbcType=VARCHAR}
             )
         </foreach>
     </insert>
@@ -420,6 +441,12 @@
                 <if test="county!=null ">
                     COUNTY=#{countyName,jdbcType=VARCHAR},
                 </if>
+                <if test="wxHeadPortrait!=null">
+                    WX_HEAD_PORTRAIT=#{wxHeadPortrait,jdbcType=VARCHAR},
+                </if>
+                <if test="wxOpenid!=null">
+                    WX_OPENID=#{wxOpenid,jdbcType=VARCHAR},
+                </if>
             </trim>
         </set>
         where USER_ID= #{userId,jdbcType=DECIMAL}
@@ -456,6 +483,8 @@
         ,CITY_NAME
         ,COUNTY_NAME
         ,PAY_TIMES
+        ,WX_HEAD_PORTRAIT
+        ,WX_OPENID
         from T_MARS_USER_INFO
         where USER_ID= #{userId,jdbcType=DECIMAL}
     </select>
@@ -508,6 +537,8 @@
         ,TUI.PROVINCE_NAME
         ,TUI.CITY_NAME
         ,TUI.COUNTY_NAME
+        ,TUI.WX_HEAD_PORTRAIT
+        ,TUI.WX_OPENID
         ,TUSI.USER_ID
         ,TUSI.TEAM_PEOPLE_NUMBER
         ,TUSI.TEAM_PROFIT_AMOUNT
