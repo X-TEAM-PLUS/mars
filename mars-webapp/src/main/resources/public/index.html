@@ -14,6 +14,18 @@
     <title>早安工程</title>
 </head>
 <body>
+<script type="text/template" id="show-useriInfo">
+    <a href="#" class="item-link item-content">
+        <div class="item-media"><img src="images/portrait_img2.png" width="80"></div>
+        <div class="item-inner">
+            <div class="item-title-row">
+                <div class="item-title">{{realName}}</div>
+            </div>
+            <div class="item-subtitle">NO.{{cardNo}}</div>
+            <div class="item-text">有效期至：{{cardLifeTime}}</div>
+        </div>
+    </a>
+</script>
 <div id="app">
     <!-- Views/Tabs container -->
     <div class="views tabs ">
@@ -49,16 +61,18 @@
                     <div class="list media-list">
                         <ul>
                             <li>
-                                <a href="#" class="item-link item-content">
-                                    <div class="item-media"><img src="images/portrait_img2.png" width="80"></div>
-                                    <div class="item-inner">
-                                        <div class="item-title-row">
-                                            <div class="item-title">小张</div>
+                                <div id="userInfo">
+                                    <a href="#" class="item-link item-content">
+                                        <div class="item-media"><img src="images/portrait_img2.png" width="80"></div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div class="item-title">游客</div>
+                                            </div>
+                                            <div class="item-subtitle">NO.000000000</div>
+                                            <div class="item-text">有效期至：今天</div>
                                         </div>
-                                        <div class="item-subtitle">NO.1234567489</div>
-                                        <div class="item-text">有效期至：2018-10-10</div>
-                                    </div>
-                                </a>
+                                    </a>
+                                </div>
                             </li>
                         </ul>
                         <ul>
@@ -115,6 +129,7 @@
 </div>
 <!-- Path to Framework7 Library JS-->
 <script type="text/javascript" src="/assets/plugins/framework7-2.0.7/js/framework7.min.js"></script>
+<script type="text/javascript" src="/assets/plugins/template7/template7.min.js"></script>
 <script type="text/javascript" src="/js/routes.js"></script>
 <!--my-app-->
 <script type="text/javascript" src="/js/my-app.js"></script>

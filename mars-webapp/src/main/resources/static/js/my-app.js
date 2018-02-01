@@ -23,3 +23,21 @@ var app = new Framework7({
     ,dynamicNavbar: true
 });
 
+/**
+ * 获取 bizContent
+ * @param url  请求地址
+ * @param domId
+ * @param templateId
+ */
+var INTEFACE_URL="http://localhost:8000/api/gateway";
+function loadBizContent(url,params,domId,templateId) {
+// Template
+    var template = document.getElementById(templateId).innerHTML;
+    var compiled = Template7(template).compile();
+//获取用户信
+    app.request.json(url, params, function (data) {
+        var bizContent = JSON.parse(data.bizContent);
+        var compiledRendered = compiled(bizContent);
+        document.getElementById(domId).innerHTML = compiledRendered;
+    });
+}
