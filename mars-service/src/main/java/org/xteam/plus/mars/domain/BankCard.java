@@ -31,7 +31,7 @@ public class BankCard implements Serializable {
     /**
      * 银行卡账户名称
      */
-    private java.util.Date bankAccountName;
+    private String bankAccountName;
 
     /**
      * 更新时间
@@ -78,7 +78,7 @@ public class BankCard implements Serializable {
      *
      * @param bankAccountName (银行卡账户名称)
      */
-    public BankCard setBankAccountName(java.util.Date bankAccountName) {
+    public BankCard setBankAccountName(String bankAccountName) {
         this.bankAccountName = bankAccountName;
         return this;
     }
@@ -88,7 +88,7 @@ public class BankCard implements Serializable {
      *
      * @return
      */
-    public java.util.Date getBankAccountName() {
+    public String getBankAccountName() {
         return this.bankAccountName;
     }
 

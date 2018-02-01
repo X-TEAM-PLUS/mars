@@ -24,6 +24,7 @@ public interface InsuranceProductDao {
 
     /**
      * 获取
+     *
      * @param insuranceProduct
      * @return int
      */
@@ -31,6 +32,7 @@ public interface InsuranceProductDao {
 
     /**
      * 新增
+     *
      * @param insuranceProduct
      * @return int 记录数
      */
@@ -38,13 +40,15 @@ public interface InsuranceProductDao {
 
     /**
      * 批量新增
-     * @param list   List<InsuranceProduct>
+     *
+     * @param list List<InsuranceProduct>
      * @return int  记录数
      */
     public int batchInsert(List<InsuranceProduct> list) throws Exception;
 
     /**
      * 删除
+     *
      * @param insuranceProduct
      * @return int
      */
@@ -52,6 +56,7 @@ public interface InsuranceProductDao {
 
     /**
      * 更新
+     *
      * @param insuranceProduct
      * @return int 记录数
      */
@@ -59,6 +64,7 @@ public interface InsuranceProductDao {
 
     /**
      * 查询
+     *
      * @param insuranceProduct
      * @return List<InsuranceProduct>
      */
@@ -66,8 +72,35 @@ public interface InsuranceProductDao {
 
     /**
      * 查询记录数
-     * @param  insuranceProduct
+     *
+     * @param insuranceProduct
      * @return List<InsuranceProduct>
      */
     public Integer queryCount(InsuranceProduct insuranceProduct) throws Exception;
+
+    /**
+     * 关联查询保险产品，与保险公司信息
+     *
+     * @param insuranceProduct
+     * @return
+     * @throws Exception
+     */
+    public List<InsuranceProduct> queryForCompany(InsuranceProduct insuranceProduct) throws Exception;
+
+    /**
+     * 关联查询保险产品，与保险公司信息
+     *
+     * @param insuranceProduct
+     * @return
+     * @throws Exception
+     */
+    public int queryForCompanyCount(InsuranceProduct insuranceProduct) throws Exception;
+
+    /**
+     * 查询保险详情，包含保险公司
+     * @param insuranceProduct
+     * @return
+     * @throws Exception
+     */
+    public InsuranceProduct getForCompany(InsuranceProduct insuranceProduct) throws Exception;
 }

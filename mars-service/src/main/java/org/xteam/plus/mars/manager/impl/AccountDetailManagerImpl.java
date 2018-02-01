@@ -7,7 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.xteam.plus.mars.dao.AccountDetailDao;
 import org.xteam.plus.mars.domain.AccountDetail;
 import org.xteam.plus.mars.manager.AccountDetailManager;
+import org.xteam.plus.mars.type.AccountDetailTypeEnum;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -62,6 +64,17 @@ public class AccountDetailManagerImpl implements AccountDetailManager {
     @Override
     public Integer queryCount(AccountDetail accountDetail) throws Exception {
         return accountDetailDao.queryCount(accountDetail);
+    }
+
+    @Override
+    public List<AccountDetail> queryBusinessTypes(List<AccountDetailTypeEnum> accountDetailTypeEnums, BigDecimal userId) throws Exception {
+        Integer[] types = new Integer[accountDetailTypeEnums.size()];
+        int i = 0;
+        for (AccountDetailTypeEnum accountDetailTypeEnum : accountDetailTypeEnums) {
+            types[i] = accountDetailTypeEnum.getCode();
+            i++;
+        }
+        return accountDetailDao.queryBusinessTypes(types, userId);
     }
 
 }

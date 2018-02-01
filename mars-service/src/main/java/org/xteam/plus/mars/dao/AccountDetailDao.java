@@ -1,7 +1,9 @@
 package org.xteam.plus.mars.dao;
 
+import org.apache.ibatis.annotations.Param;
 import org.xteam.plus.mars.domain.AccountDetail;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -70,4 +72,12 @@ public interface AccountDetailDao {
      * @return List<AccountDetail>
      */
     public Integer queryCount(AccountDetail accountDetail) throws Exception;
+
+    /**
+     * 查询包含参数存在的类型交易流水
+     * @param typs      交易类型集合
+     * @param userId    用户ID
+     * @return
+     */
+    public List<AccountDetail> queryBusinessTypes(@Param("types") Integer[] typs, @Param("userId")BigDecimal userId);
 }

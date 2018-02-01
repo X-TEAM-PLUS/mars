@@ -5,10 +5,13 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.xteam.plus.mars.common.JsonUtils;
+import org.xteam.plus.mars.domain.InsuranceProduct;
 import org.xteam.plus.mars.gateway.service.provider.HttpRequestBody;
 import org.xteam.plus.mars.gateway.service.provider.HttpResponseBody;
 import org.xteam.plus.mars.gateway.service.provider.impl.*;
+import org.xteam.plus.mars.gateway.service.provider.impl.body.req.InsuranceProductReqVO;
 import org.xteam.plus.mars.gateway.service.provider.impl.body.req.UserApplyInfoReqVO;
+import org.xteam.plus.mars.gateway.service.provider.impl.body.req.UserCardBindReqVO;
 import org.xteam.plus.mars.gateway.service.provider.impl.body.req.UserInfoReqVO;
 import org.xteam.plus.mars.service.Service;
 import org.xteam.plus.mars.type.ApplayTypeEnum;
@@ -38,6 +41,114 @@ public class UserInfoTest {
     @Resource
     private GetUserDetectionListServiceImpl getUserDetectionListService;
 
+    @Resource
+    private BindBankServiceImpl bindBankService;
+
+    @Resource
+    private GetAccountInfoServiceImpl getAccountInfoService;
+
+    @Resource
+    private GetUserInsuranceListServiceImpl getUserInsuranceListService;
+
+    @Resource
+    private GetInsuranceAllListServiceImpl getInsuranceAllListService;
+
+    @Resource
+    private GetInsuranceInfoServiceImpl getInsuranceInfoService;
+
+    /**
+     * 查询保险详情
+     */
+    @Test
+    public void getInsuranceInfoService(){
+        InsuranceProductReqVO insuranceProductReqVO = new InsuranceProductReqVO();
+        insuranceProductReqVO.setInsuranceProductNo(new BigDecimal(200001));
+        HttpRequestBody httpRequestBody = new HttpRequestBody();
+        httpRequestBody.setBizContent(JsonUtils.toJSON(insuranceProductReqVO));
+        try {
+            HttpResponseBody httpResponseBody = getInsuranceInfoService.gateWay(httpRequestBody);
+            System.out.println("getInsuranceInfoService :" + httpResponseBody.getMsg());
+            System.out.println("getInsuranceInfoService :" + httpResponseBody.getBizContent());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 获取保险产品列表
+     */
+    @Test
+    public void getInsuranceAllListService(){
+        UserInfoReqVO userInfoReqVO = new UserInfoReqVO();
+        userInfoReqVO.setStart(new Integer(0));
+        userInfoReqVO.setLimit(new Integer(10));
+        HttpRequestBody httpRequestBody = new HttpRequestBody();
+        httpRequestBody.setBizContent(JsonUtils.toJSON(userInfoReqVO));
+        try {
+            HttpResponseBody httpResponseBody = getInsuranceAllListService.gateWay(httpRequestBody);
+            System.out.println("getInsuranceAllListService :" + httpResponseBody.getBizContent());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 查询用户保险信息
+     */
+    @Test
+    public void getUserInsuranceListService(){
+        UserInfoReqVO userInfoReqVO = new UserInfoReqVO();
+        userInfoReqVO.setUserId(new BigDecimal(2000000));
+        userInfoReqVO.setStart(0);
+        userInfoReqVO.setLimit(10);
+
+        HttpRequestBody httpRequestBody = new HttpRequestBody();
+        httpRequestBody.setBizContent(JsonUtils.toJSON(userInfoReqVO));
+        try {
+            HttpResponseBody httpResponseBody = getUserInsuranceListService.gateWay(httpRequestBody);
+            System.out.println("getUserInsuranceListService :" + httpResponseBody.getBizContent());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 获取用户账户余额
+      */
+    @Test
+    public void getAccountInfoService(){
+        UserInfoReqVO userInfoReqVO = new UserInfoReqVO();
+        userInfoReqVO.setUserId(new BigDecimal(2000000));
+
+        HttpRequestBody httpRequestBody = new HttpRequestBody();
+        httpRequestBody.setBizContent(JsonUtils.toJSON(userInfoReqVO));
+        try {
+            HttpResponseBody httpResponseBody = getAccountInfoService.gateWay(httpRequestBody);
+            System.out.println("getAccountInfoService :" + httpResponseBody.getBizContent());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 用户绑定银行卡
+     */
+    @Test
+    public void bindBank(){
+        UserCardBindReqVO userCardBindReqVO = new UserCardBindReqVO();
+        userCardBindReqVO.setUserId(new BigDecimal(2000000));
+        userCardBindReqVO.setCardNo(new BigDecimal(1211));
+        userCardBindReqVO.setCardUserName("宋鑫咧");
+
+        HttpRequestBody httpRequestBody = new HttpRequestBody();
+        httpRequestBody.setBizContent(JsonUtils.toJSON(userCardBindReqVO));
+        try {
+            HttpResponseBody httpResponseBody = bindBankService.gateWay(httpRequestBody);
+            System.out.println("getUserInfoService :" + httpResponseBody.getBizContent());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * 获取用户信息
      */
@@ -76,7 +187,7 @@ public class UserInfoTest {
     }
 
     /**
-     * 获取账户余额
+     * 获取某用户的补贴数据
      */
     @Test
     public void subsidyList(){

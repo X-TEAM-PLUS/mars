@@ -69,4 +69,20 @@ public interface UserInsuranceManager {
      * @return List<UserInsurance>
      */
     public Integer queryCount(UserInsurance userInsurance) throws Exception;
+
+    /**
+     * 关联查询，获取产品信息跟保险公司
+     *
+     * @param userInsurance
+     * @return
+     */
+    public List<UserInsurance> queryForProduct(UserInsurance userInsurance) throws Exception;
+
+    /**
+     * 关联查询，获取产品信息跟保险公司（个数）
+     *
+     * @param userInsurance
+     * @return
+     */
+    public int queryForProductCount(UserInsurance userInsurance) throws Exception;
 }

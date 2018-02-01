@@ -64,4 +64,19 @@ public class InsuranceProductManagerImpl implements InsuranceProductManager {
         return insuranceProductDao.queryCount(insuranceProduct);
     }
 
+    @Override
+    public List<InsuranceProduct> queryForCompany(InsuranceProduct insuranceProduct) throws Exception {
+        return insuranceProductDao.queryForCompany(insuranceProduct);
+    }
+
+    @Override
+    public int queryForCompanyCount(InsuranceProduct insuranceProduct) throws Exception {
+        return insuranceProductDao.queryForCompanyCount(insuranceProduct);
+    }
+
+    @Override
+    public InsuranceProduct getForCompany(InsuranceProduct insuranceProduct) throws Exception {
+        return insuranceProductDao.getForCompany(insuranceProduct);
+    }
+
 }

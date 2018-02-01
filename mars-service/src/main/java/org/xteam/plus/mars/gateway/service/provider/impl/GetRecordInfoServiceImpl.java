@@ -3,24 +3,25 @@ package org.xteam.plus.mars.gateway.service.provider.impl;
 import org.springframework.stereotype.Component;
 import org.xteam.plus.mars.common.JsonUtils;
 import org.xteam.plus.mars.common.Logging;
-import org.xteam.plus.mars.domain.AccountBalance;
+import org.xteam.plus.mars.domain.WithdrawRecord;
 import org.xteam.plus.mars.gateway.service.provider.GateWayService;
 import org.xteam.plus.mars.gateway.service.provider.GlobalErrorMessage;
 import org.xteam.plus.mars.gateway.service.provider.HttpRequestBody;
 import org.xteam.plus.mars.gateway.service.provider.HttpResponseBody;
+import org.xteam.plus.mars.gateway.service.provider.impl.body.req.RecordReqVO;
 import org.xteam.plus.mars.gateway.service.provider.impl.body.req.UserInfoReqVO;
-import org.xteam.plus.mars.manager.AccountBalanceManager;
+import org.xteam.plus.mars.manager.WithdrawRecordManager;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
+import java.util.List;
 
 @Component
-public class GetAccountInfoServiceImpl extends Logging implements GateWayService {
+public class GetRecordInfoServiceImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.mars.gateway.user.getAccountInfo";
+    private final String METHOD_NAME = "com.mars.gateway.user.getRecordInfo";
 
     @Resource
-    private AccountBalanceManager accountBalanceManager;
+    private WithdrawRecordManager withdrawRecordManager;
 
     @Override
     public String getMethodName() {
@@ -33,22 +34,17 @@ public class GetAccountInfoServiceImpl extends Logging implements GateWayService
         this.logInfo(METHOD_NAME + " request  [" + httpRequestBody.toString() + "]");
         HttpResponseBody httpResponseBody = new HttpResponseBody(GlobalErrorMessage.SUCCESS);
         try {
-            UserInfoReqVO userInfoReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), UserInfoReqVO.class);
-            if (userInfoReqVO.getUserId() == null) {
+            RecordReqVO recordReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), RecordReqVO.class);
+            if (recordReqVO == null || recordReqVO.getRecordId() == null) {
                 httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
                 return httpResponseBody;
             }
-            AccountBalance queryWhere = new AccountBalance();
-            queryWhere.setUserId(userInfoReqVO.getUserId());
-            queryWhere.setStatus(0);
-            AccountBalance accountBalance = accountBalanceManager.get(queryWhere);
-            if (accountBalance == null) {
-                accountBalance = new AccountBalance();
-                accountBalance.setBalanceAmount(new BigDecimal(0));
-                accountBalance.setStatus(0);
-                accountBalance.setUserId(userInfoReqVO.getUserId());
+            WithdrawRecord withdrawRecord = withdrawRecordManager.get(new WithdrawRecord().setUserId(recordReqVO.getRecordId()));
+            if (withdrawRecord == null) {
+                httpResponseBody = new HttpResponseBody(GlobalErrorMessage.OBJECT_ISNULL);
+                return httpResponseBody;
             }
-            httpResponseBody.setBizContent(JsonUtils.toJSON(accountBalance));
+            httpResponseBody.setBizContent(JsonUtils.toJSON(withdrawRecord));
         } catch (Exception e) {
             logInfo(METHOD_NAME + " error system_error ", e);
             httpResponseBody = new HttpResponseBody(GlobalErrorMessage.BUSINESS_FAILED);

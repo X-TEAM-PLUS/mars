@@ -69,4 +69,31 @@ public interface InsuranceProductManager {
      * @return List<InsuranceProduct>
      */
     public Integer queryCount(InsuranceProduct insuranceProduct) throws Exception;
+
+    /**
+     * 关联查询保险产品，与保险公司信息
+     *
+     * @param insuranceProduct
+     * @return
+     * @throws Exception
+     */
+    public List<InsuranceProduct> queryForCompany(InsuranceProduct insuranceProduct) throws Exception;
+
+    /**
+     * 关联查询保险产品，与保险公司信息
+     *
+     * @param insuranceProduct
+     * @return
+     * @throws Exception
+     */
+    public int queryForCompanyCount(InsuranceProduct insuranceProduct) throws Exception;
+
+    /**
+     * 查询保险详情，包含保险公司
+     *
+     * @param insuranceProduct
+     * @return
+     * @throws Exception
+     */
+    public InsuranceProduct getForCompany(InsuranceProduct insuranceProduct) throws Exception;
 }

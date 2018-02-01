@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import org.xteam.plus.mars.common.JsonUtils;
 import org.xteam.plus.mars.common.Logging;
 import org.xteam.plus.mars.domain.BankCard;
-import org.xteam.plus.mars.domain.UserInfo;
 import org.xteam.plus.mars.gateway.service.provider.GateWayService;
 import org.xteam.plus.mars.gateway.service.provider.GlobalErrorMessage;
 import org.xteam.plus.mars.gateway.service.provider.HttpRequestBody;
@@ -14,6 +13,7 @@ import org.xteam.plus.mars.gateway.service.provider.impl.body.req.UserCardBindRe
 import org.xteam.plus.mars.manager.BankCardManager;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,15 +47,21 @@ public class BindBankServiceImpl extends Logging implements GateWayService {
                 return httpResponseBody;
             }
             List<BankCard> list = bankCardManager.query(new BankCard().setBankCardId(userCardBindReqVO.getCardNo()));
-            if (list != null || !list.isEmpty()){
-
+            if (!list.isEmpty()) {
+                httpResponseBody = new HttpResponseBody(GlobalErrorMessage.CARD_ALREAD_BIND);
+                return httpResponseBody;
             }
-//            UserInfo userInfo = userInfoManager.get(new UserInfo().setUserId(userInfoReqVO.getUserId()));
-//            if (userInfo == null) {
-//                httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
-//                return httpResponseBody;
-//            }
-//            httpResponseBody.setBizContent(JsonUtils.toJSON(userInfo));
+            BankCard bankCard = new BankCard();
+            bankCard.setBankAccountNo(userCardBindReqVO.getCardNo().toString());
+            bankCard.setBankAccountName(userCardBindReqVO.getCardUserName());
+            bankCard.setCreated(new Date());
+            bankCard.setUserId(userCardBindReqVO.getUserId());
+            int count = bankCardManager.insert(bankCard);
+            if (count <= 0) {
+                logInfo("用户绑定银行卡失败,插入数据为0");
+                httpResponseBody = new HttpResponseBody(GlobalErrorMessage.BUSINESS_FAILED);
+                return httpResponseBody;
+            }
         } catch (Exception e) {
             logInfo(METHOD_NAME + " error system_error ", e);
             httpResponseBody = new HttpResponseBody(GlobalErrorMessage.BUSINESS_FAILED);

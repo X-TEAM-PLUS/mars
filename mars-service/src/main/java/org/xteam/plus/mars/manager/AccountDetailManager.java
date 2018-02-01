@@ -1,7 +1,9 @@
 package org.xteam.plus.mars.manager;
 
 import org.xteam.plus.mars.domain.AccountDetail;
+import org.xteam.plus.mars.type.AccountDetailTypeEnum;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -69,4 +71,11 @@ public interface AccountDetailManager {
      * @return List<AccountDetail>
      */
     public Integer queryCount(AccountDetail accountDetail) throws Exception;
+
+    /**
+     * 查询包含参数存在的类型交易流水
+     * @param accountDetailTypeEnums    交易类型集合
+     * @return
+     */
+    public List<AccountDetail> queryBusinessTypes(List<AccountDetailTypeEnum> accountDetailTypeEnums, BigDecimal userId) throws Exception;
 }

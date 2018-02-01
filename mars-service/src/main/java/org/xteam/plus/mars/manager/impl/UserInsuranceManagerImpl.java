@@ -64,4 +64,14 @@ public class UserInsuranceManagerImpl implements UserInsuranceManager {
         return userInsuranceDao.queryCount(userInsurance);
     }
 
+    @Override
+    public List<UserInsurance> queryForProduct(UserInsurance userInsurance) throws Exception {
+        return userInsuranceDao.queryForProduct(userInsurance);
+    }
+
+    @Override
+    public int queryForProductCount(UserInsurance userInsurance) throws Exception {
+        return userInsuranceDao.queryForProductCount(userInsurance);
+    }
+
 }
