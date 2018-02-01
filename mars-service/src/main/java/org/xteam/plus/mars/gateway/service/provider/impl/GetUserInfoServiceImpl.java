@@ -13,6 +13,9 @@ import org.xteam.plus.mars.manager.UserInfoManager;
 
 import javax.annotation.Resource;
 
+/**
+ * 获取用户信息
+ */
 @Component
 public class GetUserInfoServiceImpl extends Logging implements GateWayService {
 

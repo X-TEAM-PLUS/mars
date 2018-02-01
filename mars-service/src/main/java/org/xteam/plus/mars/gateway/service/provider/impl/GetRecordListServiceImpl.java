@@ -15,6 +15,9 @@ import org.xteam.plus.mars.manager.WithdrawRecordManager;
 import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * 获取提现记录列表
+ */
 @Component
 public class GetRecordListServiceImpl extends Logging implements GateWayService {
 

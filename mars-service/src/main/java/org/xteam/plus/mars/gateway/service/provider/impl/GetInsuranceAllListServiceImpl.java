@@ -14,6 +14,9 @@ import org.xteam.plus.mars.manager.InsuranceProductManager;
 import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * 获取所有保险产品列表
+ */
 @Component
 public class GetInsuranceAllListServiceImpl extends Logging implements GateWayService {
 

@@ -19,7 +19,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * 用户账户余额查询接口
+ * 获取某用户的补贴列表
  */
 @Component
 public class GetSubsidyListServiceImpl extends Logging implements GateWayService {

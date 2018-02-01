@@ -13,6 +13,9 @@ import org.xteam.plus.mars.manager.InsuranceProductManager;
 
 import javax.annotation.Resource;
 
+/**
+ * 获取保险产品详情
+ */
 @Component
 public class GetInsuranceInfoServiceImpl extends Logging implements GateWayService {
 

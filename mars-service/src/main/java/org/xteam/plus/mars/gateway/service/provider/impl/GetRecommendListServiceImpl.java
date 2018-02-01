@@ -17,6 +17,9 @@ import org.xteam.plus.mars.manager.UserRelationManager;
 import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * 获取用户下所有的关系用户
+ */
 @Component
 public class GetRecommendListServiceImpl extends Logging implements GateWayService {
 
