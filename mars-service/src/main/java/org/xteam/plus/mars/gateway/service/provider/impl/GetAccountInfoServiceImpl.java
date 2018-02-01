@@ -14,6 +14,9 @@ import org.xteam.plus.mars.manager.AccountBalanceManager;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 
+/**
+ * 获取用户账户信息
+ */
 @Component
 public class GetAccountInfoServiceImpl extends Logging implements GateWayService {
 

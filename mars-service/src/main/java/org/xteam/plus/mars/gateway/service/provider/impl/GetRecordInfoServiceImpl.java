@@ -15,6 +15,9 @@ import org.xteam.plus.mars.manager.WithdrawRecordManager;
 import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * 获取提现记录详情
+ */
 @Component
 public class GetRecordInfoServiceImpl extends Logging implements GateWayService {
 
@@ -39,7 +42,7 @@ public class GetRecordInfoServiceImpl extends Logging implements GateWayService 
                 httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
                 return httpResponseBody;
             }
-            WithdrawRecord withdrawRecord = withdrawRecordManager.get(new WithdrawRecord().setUserId(recordReqVO.getRecordId()));
+            WithdrawRecord withdrawRecord = withdrawRecordManager.get(new WithdrawRecord().setId(recordReqVO.getRecordId()));
             if (withdrawRecord == null) {
                 httpResponseBody = new HttpResponseBody(GlobalErrorMessage.OBJECT_ISNULL);
                 return httpResponseBody;

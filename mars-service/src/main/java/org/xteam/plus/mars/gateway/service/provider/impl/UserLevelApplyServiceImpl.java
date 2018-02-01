@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 import java.util.Date;
 
 /**
- * 用户账户余额查询接口
+ * 用户申请升级接口
  */
 @Component
 public class UserLevelApplyServiceImpl extends Logging implements GateWayService {

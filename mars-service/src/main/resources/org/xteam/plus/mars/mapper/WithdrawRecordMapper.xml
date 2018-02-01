@@ -225,7 +225,7 @@
         from T_MARS_WITHDRAW_RECORD tmwr
         LEFT JOIN T_MARS_ACCOUNT_BALANCE tmab ON tmwr.USER_ID=tmab.USER_ID
         LEFT JOIN  T_MARS_USER_INFO tmui ON  tmwr.USER_ID=tmui.USER_ID
-        where ID= #{id,jdbcType=DECIMAL}
+        where tmwr.ID= #{id,jdbcType=DECIMAL}
     </select>
 
 

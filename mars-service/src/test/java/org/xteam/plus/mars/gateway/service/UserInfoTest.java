@@ -9,10 +9,7 @@ import org.xteam.plus.mars.domain.InsuranceProduct;
 import org.xteam.plus.mars.gateway.service.provider.HttpRequestBody;
 import org.xteam.plus.mars.gateway.service.provider.HttpResponseBody;
 import org.xteam.plus.mars.gateway.service.provider.impl.*;
-import org.xteam.plus.mars.gateway.service.provider.impl.body.req.InsuranceProductReqVO;
-import org.xteam.plus.mars.gateway.service.provider.impl.body.req.UserApplyInfoReqVO;
-import org.xteam.plus.mars.gateway.service.provider.impl.body.req.UserCardBindReqVO;
-import org.xteam.plus.mars.gateway.service.provider.impl.body.req.UserInfoReqVO;
+import org.xteam.plus.mars.gateway.service.provider.impl.body.req.*;
 import org.xteam.plus.mars.service.Service;
 import org.xteam.plus.mars.type.ApplayTypeEnum;
 
@@ -55,6 +52,76 @@ public class UserInfoTest {
 
     @Resource
     private GetInsuranceInfoServiceImpl getInsuranceInfoService;
+
+    @Resource
+    private GetRecordListServiceImpl getRecordListService;
+
+    @Resource
+    private ApplyRecordServiceImpl applyRecordService;
+
+    @Resource
+    private GetRecordInfoServiceImpl getRecordInfoService;
+
+    /**
+     * 获取提现记录详情
+     */
+    @Test
+    public void getRecordInfoService(){
+        RecordReqVO recordReqVO = new RecordReqVO();
+        recordReqVO.setRecordId(new BigDecimal(1));
+        HttpRequestBody httpRequestBody = new HttpRequestBody();
+        httpRequestBody.setBizContent(JsonUtils.toJSON(recordReqVO));
+        try {
+            HttpResponseBody httpResponseBody = getRecordInfoService.gateWay(httpRequestBody);
+            System.out.println("getRecordInfoService :" + httpResponseBody.getMsg());
+            System.out.println("getRecordInfoService :" + httpResponseBody.getBizContent());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 发起提现申请
+     */
+    @Test
+    public void applyRecord(){
+        ApplyRecordReqVO applyRecordReqVO = new ApplyRecordReqVO();
+        applyRecordReqVO.setAmount(new BigDecimal(50));
+        applyRecordReqVO.setBankAccountName("宋鑫磊");
+        applyRecordReqVO.setBankAccountNo("12312313");
+        applyRecordReqVO.setPayWay(0);
+        applyRecordReqVO.setUserId(new BigDecimal(2000000));
+
+        HttpRequestBody httpRequestBody = new HttpRequestBody();
+        httpRequestBody.setBizContent(JsonUtils.toJSON(applyRecordReqVO));
+        try {
+            HttpResponseBody httpResponseBody = applyRecordService.gateWay(httpRequestBody);
+            System.out.println("applyRecord :" + httpResponseBody.getMsg());
+            System.out.println("applyRecord :" + httpResponseBody.getBizContent());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 查询用户提现记录
+     */
+    @Test
+    public void getRecordListService(){
+        UserInfoReqVO userInfoReqVO = new UserInfoReqVO();
+        userInfoReqVO.setUserId(new BigDecimal(2000000));
+        userInfoReqVO.setStart(0);
+        userInfoReqVO.setLimit(10);
+        HttpRequestBody httpRequestBody = new HttpRequestBody();
+        httpRequestBody.setBizContent(JsonUtils.toJSON(userInfoReqVO));
+        try {
+            HttpResponseBody httpResponseBody = getRecordListService.gateWay(httpRequestBody);
+            System.out.println("getRecordListService :" + httpResponseBody.getMsg());
+            System.out.println("getRecordListService :" + httpResponseBody.getBizContent());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * 查询保险详情

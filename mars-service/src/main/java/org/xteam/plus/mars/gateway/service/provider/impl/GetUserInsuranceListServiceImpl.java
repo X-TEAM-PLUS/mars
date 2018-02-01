@@ -17,6 +17,9 @@ import org.xteam.plus.mars.manager.UserInsuranceManager;
 import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * 获取用户健康卡接口
+ */
 @Component
 public class GetUserInsuranceListServiceImpl extends Logging implements GateWayService {
 

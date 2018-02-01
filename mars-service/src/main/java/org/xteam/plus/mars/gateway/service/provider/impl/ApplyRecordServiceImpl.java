@@ -21,6 +21,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 申请提现接口
+ */
 @Component
 public class ApplyRecordServiceImpl extends Logging implements GateWayService {
 
@@ -82,6 +85,7 @@ public class ApplyRecordServiceImpl extends Logging implements GateWayService {
             withdrawRecord.setBankAccountNo(applyRecordReqVO.getBankAccountNo());
             withdrawRecord.setPayWay(applyRecordReqVO.getPayWay());
             withdrawRecord.setStatus(0);
+            withdrawRecord.setApplyTime(new Date());
 
             int count = withdrawRecordManager.insert(withdrawRecord);
             if (count <= 0) {
