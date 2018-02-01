@@ -31,7 +31,7 @@ public class GateWayServiceProvider extends AbstractServiceProvider {
      * @return int
      */
     @RequestMapping("/gateway")
-    public HttpResponseBody gateway(@RequestBody HttpRequestBody httpRequestBody) throws Exception{
+    public HttpResponseBody gateway( HttpRequestBody httpRequestBody) throws Exception{
         return gateWayServiceProxy.gateWay(httpRequestBody);
     }
 
@@ -43,7 +43,7 @@ public class GateWayServiceProvider extends AbstractServiceProvider {
      * @return int
      */
     @RequestMapping("/token/get")
-    public Token getToken(@RequestBody String  tokenString) throws Exception{
+    public Token getToken( String  tokenString) throws Exception{
         Token token = null;
         //先取缓存
         try{
