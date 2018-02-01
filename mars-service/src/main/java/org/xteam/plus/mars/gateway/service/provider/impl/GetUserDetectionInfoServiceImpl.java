@@ -8,10 +8,11 @@ import org.xteam.plus.mars.gateway.service.provider.GateWayService;
 import org.xteam.plus.mars.gateway.service.provider.GlobalErrorMessage;
 import org.xteam.plus.mars.gateway.service.provider.HttpRequestBody;
 import org.xteam.plus.mars.gateway.service.provider.HttpResponseBody;
-import org.xteam.plus.mars.gateway.service.provider.impl.body.req.UserInfoReqVO;
 import org.xteam.plus.mars.manager.UserHealthCardManager;
+import org.xteam.plus.mars.wx.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 
 /**
  * 获取用户已激活的健康卡
@@ -35,12 +36,11 @@ public class GetUserDetectionInfoServiceImpl extends Logging implements GateWayS
         this.logInfo(METHOD_NAME + " request  [" + httpRequestBody.toString() + "]");
         HttpResponseBody httpResponseBody = new HttpResponseBody(GlobalErrorMessage.SUCCESS);
         try {
-            UserInfoReqVO userInfoReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), UserInfoReqVO.class);
-            if (userInfoReqVO.getUserId() == null) {
+            if (StringUtils.isEmpty(httpRequestBody.getUserId())) {
                 httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
                 return httpResponseBody;
             }
-            UserHealthCard userHealthCard = userHealthCardManager.queryForProductByActive(new UserHealthCard().setActivateUserId(userInfoReqVO.getUserId()));
+            UserHealthCard userHealthCard = userHealthCardManager.queryForProductByActive(new UserHealthCard().setActivateUserId(new BigDecimal(httpRequestBody.getUserId())));
             if (userHealthCard == null) {
                 httpResponseBody = new HttpResponseBody(GlobalErrorMessage.OBJECT_ISNULL);
                 return httpResponseBody;

@@ -8,11 +8,12 @@ import org.xteam.plus.mars.gateway.service.provider.GateWayService;
 import org.xteam.plus.mars.gateway.service.provider.GlobalErrorMessage;
 import org.xteam.plus.mars.gateway.service.provider.HttpRequestBody;
 import org.xteam.plus.mars.gateway.service.provider.HttpResponseBody;
-import org.xteam.plus.mars.gateway.service.provider.impl.body.req.UserInfoReqVO;
-
+import org.xteam.plus.mars.gateway.service.provider.impl.body.req.PageInfoReqVO;
 import org.xteam.plus.mars.manager.WithdrawRecordManager;
+import org.xteam.plus.mars.wx.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -37,12 +38,14 @@ public class GetRecordListServiceImpl extends Logging implements GateWayService 
         this.logInfo(METHOD_NAME + " request  [" + httpRequestBody.toString() + "]");
         HttpResponseBody httpResponseBody = new HttpResponseBody(GlobalErrorMessage.SUCCESS);
         try {
-            UserInfoReqVO userInfoReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), UserInfoReqVO.class);
-            if (userInfoReqVO == null || userInfoReqVO.getUserId() == null || userInfoReqVO.getLimit() == null || userInfoReqVO.getStart() == null) {
+            PageInfoReqVO pageInfoReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), PageInfoReqVO.class);
+            if (pageInfoReqVO == null || StringUtils.isEmpty(httpRequestBody.getUserId())
+                    || pageInfoReqVO.getLimit() == null || pageInfoReqVO.getStart() == null) {
                 httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
                 return httpResponseBody;
             }
-            List<WithdrawRecord> withdrawRecordList = withdrawRecordManager.query(new WithdrawRecord().setUserId(userInfoReqVO.getUserId()));
+            List<WithdrawRecord> withdrawRecordList = withdrawRecordManager.query(new WithdrawRecord().setUserId(new BigDecimal(httpRequestBody.getUserId())));
+
             httpResponseBody.setBizContent(JsonUtils.toJSON(withdrawRecordList));
         } catch (Exception e) {
             logInfo(METHOD_NAME + " error system_error ", e);

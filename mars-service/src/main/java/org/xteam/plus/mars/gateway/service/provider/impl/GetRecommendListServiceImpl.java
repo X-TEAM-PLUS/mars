@@ -10,11 +10,13 @@ import org.xteam.plus.mars.gateway.service.provider.GlobalErrorMessage;
 import org.xteam.plus.mars.gateway.service.provider.HttpRequestBody;
 import org.xteam.plus.mars.gateway.service.provider.HttpResponseBody;
 import org.xteam.plus.mars.gateway.service.provider.impl.body.convert.UserRelationConvertService;
-import org.xteam.plus.mars.gateway.service.provider.impl.body.req.UserInfoReqVO;
+import org.xteam.plus.mars.gateway.service.provider.impl.body.req.PageInfoReqVO;
 import org.xteam.plus.mars.gateway.service.provider.impl.body.rsp.UserRelationRspVO;
 import org.xteam.plus.mars.manager.UserRelationManager;
+import org.xteam.plus.mars.wx.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -44,12 +46,13 @@ public class GetRecommendListServiceImpl extends Logging implements GateWayServi
         try {
 
             List<UserRelationRspVO> returnValue = Lists.newArrayList();
-            UserInfoReqVO userInfoReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), UserInfoReqVO.class);
-            if (userInfoReqVO == null || userInfoReqVO.getUserId() == null || userInfoReqVO.getLimit() == null || userInfoReqVO.getStart() == null) {
+            PageInfoReqVO pageInfoReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), PageInfoReqVO.class);
+            if (pageInfoReqVO == null  || pageInfoReqVO.getLimit() == null || pageInfoReqVO.getStart() == null
+                    || StringUtils.isEmpty(httpRequestBody.getUserId())) {
                 httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
                 return httpResponseBody;
             }
-            List<UserRelation> list = userRelationManager.queryThisAndNextLevelUser(userInfoReqVO.getUserId(), userInfoReqVO.getStart(), userInfoReqVO.getLimit());
+            List<UserRelation> list = userRelationManager.queryThisAndNextLevelUser(new BigDecimal(httpRequestBody.getUserId()), pageInfoReqVO.getStart(), pageInfoReqVO.getLimit());
             for (UserRelation userRelation : list) {
                 returnValue.add(userRelationConvertService.toVO(userRelation));
             }

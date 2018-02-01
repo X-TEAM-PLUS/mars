@@ -14,6 +14,7 @@ import org.xteam.plus.mars.gateway.service.provider.impl.body.req.UserApplyInfoR
 import org.xteam.plus.mars.manager.ApplyInfoManager;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -42,14 +43,14 @@ public class UserLevelApplyServiceImpl extends Logging implements GateWayService
         HttpResponseBody httpResponseBody = new HttpResponseBody(GlobalErrorMessage.SUCCESS);
         try {
             UserApplyInfoReqVO userApplyInfoReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), UserApplyInfoReqVO.class);
-            userLevelApplyCheckService.checkCalibration(userApplyInfoReqVO);
+            userLevelApplyCheckService.checkCalibration(userApplyInfoReqVO,new BigDecimal(httpRequestBody.getUserId()));
             ApplyInfo applyInfo = new ApplyInfo();
             applyInfo.setApplyReason(userApplyInfoReqVO.getReason());
             applyInfo.setApplyType(userApplyInfoReqVO.getApplayTypeEnum().getCode());
             applyInfo.setApplyWay(0);
             applyInfo.setStatus(0);
             applyInfo.setCreated(new Date());
-            applyInfo.setUserId(userApplyInfoReqVO.getUserId());
+            applyInfo.setUserId(new BigDecimal(httpRequestBody.getUserId()));
             int count = applyInfoManager.insert(applyInfo);
             if (count > 0) {
                 return httpResponseBody;

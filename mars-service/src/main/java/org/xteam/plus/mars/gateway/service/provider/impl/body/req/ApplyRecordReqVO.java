@@ -5,8 +5,6 @@ import java.math.BigDecimal;
 
 public class ApplyRecordReqVO implements Serializable {
 
-    private BigDecimal userId;
-
     private BigDecimal amount;
 
     private String bankAccountNo;
@@ -45,13 +43,5 @@ public class ApplyRecordReqVO implements Serializable {
 
     public void setPayWay(Integer payWay) {
         this.payWay = payWay;
-    }
-
-    public BigDecimal getUserId() {
-        return userId;
-    }
-
-    public void setUserId(BigDecimal userId) {
-        this.userId = userId;
     }
 }

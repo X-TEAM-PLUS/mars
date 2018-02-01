@@ -13,6 +13,7 @@ import org.xteam.plus.mars.gateway.service.provider.impl.body.req.UserCardBindRe
 import org.xteam.plus.mars.manager.BankCardManager;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class BindBankServiceImpl extends Logging implements GateWayService {
         HttpResponseBody httpResponseBody = new HttpResponseBody(GlobalErrorMessage.SUCCESS);
         try {
             UserCardBindReqVO userCardBindReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), UserCardBindReqVO.class);
-            if (userCardBindReqVO.getUserId() == null
+            if (httpRequestBody.getUserId() == null
                     || StringUtils.isEmpty(userCardBindReqVO.getCardUserName())
                     || userCardBindReqVO.getCardNo() == null) {
                 httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
@@ -55,7 +56,7 @@ public class BindBankServiceImpl extends Logging implements GateWayService {
             bankCard.setBankAccountNo(userCardBindReqVO.getCardNo().toString());
             bankCard.setBankAccountName(userCardBindReqVO.getCardUserName());
             bankCard.setCreated(new Date());
-            bankCard.setUserId(userCardBindReqVO.getUserId());
+            bankCard.setUserId(new BigDecimal(httpRequestBody.getUserId()));
             int count = bankCardManager.insert(bankCard);
             if (count <= 0) {
                 logInfo("用户绑定银行卡失败,插入数据为0");

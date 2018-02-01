@@ -10,11 +10,13 @@ import org.xteam.plus.mars.gateway.service.provider.GlobalErrorMessage;
 import org.xteam.plus.mars.gateway.service.provider.HttpRequestBody;
 import org.xteam.plus.mars.gateway.service.provider.HttpResponseBody;
 import org.xteam.plus.mars.gateway.service.provider.impl.body.convert.UserInsuranceConvertService;
-import org.xteam.plus.mars.gateway.service.provider.impl.body.req.UserInfoReqVO;
+import org.xteam.plus.mars.gateway.service.provider.impl.body.req.PageInfoReqVO;
 import org.xteam.plus.mars.gateway.service.provider.impl.body.rsp.UserInsuranceRspVO;
 import org.xteam.plus.mars.manager.UserInsuranceManager;
+import org.xteam.plus.mars.wx.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -42,15 +44,15 @@ public class GetUserInsuranceListServiceImpl extends Logging implements GateWayS
         this.logInfo(METHOD_NAME + " request  [" + httpRequestBody.toString() + "]");
         HttpResponseBody httpResponseBody = new HttpResponseBody(GlobalErrorMessage.SUCCESS);
         try {
-            UserInfoReqVO userInfoReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), UserInfoReqVO.class);
-            if (userInfoReqVO.getUserId() == null) {
+            PageInfoReqVO pageInfoReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), PageInfoReqVO.class);
+            if (StringUtils.isEmpty(httpRequestBody.getUserId())) {
                 httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
                 return httpResponseBody;
             }
             List<UserInsuranceRspVO> userInsuranceRspVOList = Lists.newArrayList();
-            UserInsurance queryWhere = new UserInsurance().setUserId(userInfoReqVO.getUserId());
-            queryWhere.setStart(userInfoReqVO.getStart());
-            queryWhere.setLimit(userInfoReqVO.getLimit());
+            UserInsurance queryWhere = new UserInsurance().setUserId(new BigDecimal(httpRequestBody.getUserId()));
+            queryWhere.setStart(pageInfoReqVO.getStart());
+            queryWhere.setLimit(pageInfoReqVO.getLimit());
             List<UserInsurance> userInsurances = userInsuranceManager.queryForProduct(queryWhere);
             for (UserInsurance userInsurance : userInsurances) {
                 userInsuranceRspVOList.add(userInsuranceConvertService.toVO(userInsurance));

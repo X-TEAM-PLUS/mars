@@ -5,19 +5,11 @@ import java.math.BigDecimal;
 
 public class UserCardBindReqVO implements Serializable {
 
-    private BigDecimal userId;
 
     private BigDecimal cardNo;
 
     private String cardUserName;
 
-    public BigDecimal getUserId() {
-        return userId;
-    }
-
-    public void setUserId(BigDecimal userId) {
-        this.userId = userId;
-    }
 
     public BigDecimal getCardNo() {
         return cardNo;

@@ -50,7 +50,7 @@ public class ApplyRecordServiceImpl extends Logging implements GateWayService {
         HttpResponseBody httpResponseBody = new HttpResponseBody(GlobalErrorMessage.SUCCESS);
         try {
             ApplyRecordReqVO applyRecordReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), ApplyRecordReqVO.class);
-            if (applyRecordReqVO == null || applyRecordReqVO.getUserId() == null
+            if (applyRecordReqVO == null || httpRequestBody.getUserId() == null
                     || StringUtils.isEmpty(applyRecordReqVO.getBankAccountNo())
                     || StringUtils.isEmpty(applyRecordReqVO.getBankAccountName())
                     || applyRecordReqVO.getPayWay() == null
@@ -62,7 +62,7 @@ public class ApplyRecordServiceImpl extends Logging implements GateWayService {
                 httpResponseBody = new HttpResponseBody(GlobalErrorMessage.CARD_ALREAD_BIND);
                 return httpResponseBody;
             }
-            UserInfo userInfo = userInfoManager.get(new UserInfo().setUserId(applyRecordReqVO.getUserId()));
+            UserInfo userInfo = userInfoManager.get(new UserInfo().setUserId(new BigDecimal(httpRequestBody.getUserId())));
             if (userInfo == null) {
                 httpResponseBody = new HttpResponseBody(GlobalErrorMessage.USER_ID_NOT_HIVE);
                 return httpResponseBody;

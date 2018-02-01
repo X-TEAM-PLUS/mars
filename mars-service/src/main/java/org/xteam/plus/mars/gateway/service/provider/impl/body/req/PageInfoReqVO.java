@@ -1,28 +1,10 @@
 package org.xteam.plus.mars.gateway.service.provider.impl.body.req;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.net.Inet4Address;
-
-/**
- * 用户信息请求对象
- */
-public class UserInfoReqVO implements Serializable {
-
-    private BigDecimal userId;
+public class PageInfoReqVO {
 
     private Integer start;
 
     private Integer limit;
-
-    public BigDecimal getUserId() {
-        return userId;
-    }
-
-    public void setUserId(BigDecimal userId) {
-        this.userId = userId;
-    }
-
 
     public Integer getStart() {
         return start;

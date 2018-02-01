@@ -10,11 +10,13 @@ import org.xteam.plus.mars.gateway.service.provider.GlobalErrorMessage;
 import org.xteam.plus.mars.gateway.service.provider.HttpRequestBody;
 import org.xteam.plus.mars.gateway.service.provider.HttpResponseBody;
 import org.xteam.plus.mars.gateway.service.provider.impl.body.convert.UserDetectionInfoConvertService;
-import org.xteam.plus.mars.gateway.service.provider.impl.body.req.UserInfoReqVO;
+import org.xteam.plus.mars.gateway.service.provider.impl.body.req.PageInfoReqVO;
 import org.xteam.plus.mars.gateway.service.provider.impl.body.rsp.UserDetectionInfoRspVO;
 import org.xteam.plus.mars.manager.HealthCheckRecordManager;
+import org.xteam.plus.mars.wx.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Component
@@ -39,12 +41,17 @@ public class GetUserDetectionListServiceImpl extends Logging implements GateWayS
         this.logInfo(METHOD_NAME + " request  [" + httpRequestBody.toString() + "]");
         HttpResponseBody httpResponseBody = new HttpResponseBody(GlobalErrorMessage.SUCCESS);
         try {
-            UserInfoReqVO userInfoReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), UserInfoReqVO.class);
-            if (userInfoReqVO.getUserId() == null) {
+            PageInfoReqVO pageInfoReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), PageInfoReqVO.class);
+            if (StringUtils.isEmpty(httpRequestBody.getUserId())) {
                 httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
                 return httpResponseBody;
             }
-            List<HealthCheckRecord> healthCheckRecordList = healthCheckRecordManager.query(new HealthCheckRecord().setUserId(userInfoReqVO.getUserId()));
+
+            HealthCheckRecord queryWhere  = new HealthCheckRecord().setUserId(new BigDecimal(httpRequestBody.getUserId()));
+            queryWhere.setStart(pageInfoReqVO.getStart());
+            queryWhere.setLimit(pageInfoReqVO.getLimit());
+
+            List<HealthCheckRecord> healthCheckRecordList = healthCheckRecordManager.query(queryWhere);
             if (healthCheckRecordList == null) {
                 httpResponseBody = new HttpResponseBody(GlobalErrorMessage.OBJECT_ISNULL);
                 return httpResponseBody;

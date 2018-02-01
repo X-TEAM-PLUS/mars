@@ -9,6 +9,7 @@ import org.xteam.plus.mars.type.ApplayTypeEnum;
 import org.xteam.plus.mars.type.UserLevelEnum;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 
 @Component
 public class UserLevelApplyCheckService {
@@ -16,12 +17,12 @@ public class UserLevelApplyCheckService {
     @Resource
     private UserInfoManager userInfoManager;
 
-    public void checkCalibration(UserApplyInfoReqVO userApplyInfoReqVO) throws Exception {
+    public void checkCalibration(UserApplyInfoReqVO userApplyInfoReqVO, BigDecimal userId) throws Exception {
 
-        if (userApplyInfoReqVO == null || userApplyInfoReqVO.getUserId() == null || userApplyInfoReqVO.getApplayTypeEnum() == null) {
+        if (userApplyInfoReqVO == null || userId == null || userApplyInfoReqVO.getApplayTypeEnum() == null) {
             throw new Exception(GlobalErrorMessage.MISSING_PARAMETERS.getMessage());
         }
-        UserInfo userInfo = userInfoManager.get(new UserInfo().setUserId(userApplyInfoReqVO.getUserId()));
+        UserInfo userInfo = userInfoManager.get(new UserInfo().setUserId(userId));
         if (userInfo == null) {
             throw new Exception(GlobalErrorMessage.OBJECT_ISNULL.getMessage());
         }

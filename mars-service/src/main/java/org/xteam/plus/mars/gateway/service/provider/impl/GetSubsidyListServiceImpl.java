@@ -10,12 +10,13 @@ import org.xteam.plus.mars.gateway.service.provider.GlobalErrorMessage;
 import org.xteam.plus.mars.gateway.service.provider.HttpRequestBody;
 import org.xteam.plus.mars.gateway.service.provider.HttpResponseBody;
 import org.xteam.plus.mars.gateway.service.provider.impl.body.convert.UserAccountDetailConvertService;
-import org.xteam.plus.mars.gateway.service.provider.impl.body.req.UserInfoReqVO;
 import org.xteam.plus.mars.gateway.service.provider.impl.body.rsp.UserAccountDetailRspVO;
 import org.xteam.plus.mars.manager.AccountDetailManager;
 import org.xteam.plus.mars.type.AccountDetailTypeEnum;
+import org.xteam.plus.mars.wx.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -53,13 +54,12 @@ public class GetSubsidyListServiceImpl extends Logging implements GateWayService
         this.logInfo(METHOD_NAME + " request  [" + httpRequestBody.toString() + "]");
         HttpResponseBody httpResponseBody = new HttpResponseBody(GlobalErrorMessage.SUCCESS);
         try {
-            UserInfoReqVO userInfoReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), UserInfoReqVO.class);
-            if (userInfoReqVO.getUserId() == null) {
+            if (StringUtils.isEmpty(httpRequestBody.getUserId())) {
                 httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
                 return httpResponseBody;
             }
             List<UserAccountDetailRspVO> userAccountDetailRspVOS = Lists.newArrayList();
-            List<AccountDetail> accountDetailList = accountDetailManager.queryBusinessTypes(accountDetailTypeEnumList, userInfoReqVO.getUserId());
+            List<AccountDetail> accountDetailList = accountDetailManager.queryBusinessTypes(accountDetailTypeEnumList, new BigDecimal(httpRequestBody.getUserId()));
             for (AccountDetail accountDetail : accountDetailList) {
                 userAccountDetailRspVOS.add(userAccountDetailConvertService.toVO(accountDetail));
             }

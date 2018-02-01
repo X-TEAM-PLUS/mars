@@ -8,7 +8,6 @@ import org.xteam.plus.mars.gateway.service.provider.GateWayService;
 import org.xteam.plus.mars.gateway.service.provider.GlobalErrorMessage;
 import org.xteam.plus.mars.gateway.service.provider.HttpRequestBody;
 import org.xteam.plus.mars.gateway.service.provider.HttpResponseBody;
-import org.xteam.plus.mars.gateway.service.provider.impl.body.req.UserInfoReqVO;
 import org.xteam.plus.mars.manager.UserInfoManager;
 
 import javax.annotation.Resource;

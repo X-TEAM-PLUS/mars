@@ -8,8 +8,8 @@ import org.xteam.plus.mars.gateway.service.provider.GateWayService;
 import org.xteam.plus.mars.gateway.service.provider.GlobalErrorMessage;
 import org.xteam.plus.mars.gateway.service.provider.HttpRequestBody;
 import org.xteam.plus.mars.gateway.service.provider.HttpResponseBody;
-import org.xteam.plus.mars.gateway.service.provider.impl.body.req.UserInfoReqVO;
 import org.xteam.plus.mars.manager.AccountBalanceManager;
+import org.xteam.plus.mars.wx.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -36,20 +36,20 @@ public class GetAccountInfoServiceImpl extends Logging implements GateWayService
         this.logInfo(METHOD_NAME + " request  [" + httpRequestBody.toString() + "]");
         HttpResponseBody httpResponseBody = new HttpResponseBody(GlobalErrorMessage.SUCCESS);
         try {
-            UserInfoReqVO userInfoReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), UserInfoReqVO.class);
-            if (userInfoReqVO.getUserId() == null) {
+            if (StringUtils.isEmpty(httpRequestBody.getUserId())) {
                 httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
                 return httpResponseBody;
             }
+            BigDecimal userId = new BigDecimal(httpRequestBody.getUserId());
             AccountBalance queryWhere = new AccountBalance();
-            queryWhere.setUserId(userInfoReqVO.getUserId());
+            queryWhere.setUserId(userId);
             queryWhere.setStatus(0);
             AccountBalance accountBalance = accountBalanceManager.get(queryWhere);
             if (accountBalance == null) {
                 accountBalance = new AccountBalance();
                 accountBalance.setBalanceAmount(new BigDecimal(0));
                 accountBalance.setStatus(0);
-                accountBalance.setUserId(userInfoReqVO.getUserId());
+                accountBalance.setUserId(userId);
             }
             httpResponseBody.setBizContent(JsonUtils.toJSON(accountBalance));
         } catch (Exception e) {

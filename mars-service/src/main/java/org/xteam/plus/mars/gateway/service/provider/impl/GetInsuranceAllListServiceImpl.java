@@ -8,8 +8,9 @@ import org.xteam.plus.mars.gateway.service.provider.GateWayService;
 import org.xteam.plus.mars.gateway.service.provider.GlobalErrorMessage;
 import org.xteam.plus.mars.gateway.service.provider.HttpRequestBody;
 import org.xteam.plus.mars.gateway.service.provider.HttpResponseBody;
-import org.xteam.plus.mars.gateway.service.provider.impl.body.req.UserInfoReqVO;
+import org.xteam.plus.mars.gateway.service.provider.impl.body.req.PageInfoReqVO;
 import org.xteam.plus.mars.manager.InsuranceProductManager;
+import org.xteam.plus.mars.wx.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -36,13 +37,18 @@ public class GetInsuranceAllListServiceImpl extends Logging implements GateWaySe
         this.logInfo(METHOD_NAME + " request  [" + httpRequestBody.toString() + "]");
         HttpResponseBody httpResponseBody = new HttpResponseBody(GlobalErrorMessage.SUCCESS);
         try {
-            UserInfoReqVO userInfoReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), UserInfoReqVO.class);
-            if (userInfoReqVO.getStart() == null || userInfoReqVO.getLimit() == null) {
+            PageInfoReqVO pageInfoReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), PageInfoReqVO.class);
+            if (pageInfoReqVO.getStart() == null || pageInfoReqVO.getLimit() == null
+                    || StringUtils.isEmpty(httpRequestBody.getUserId())) {
                 httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
                 return httpResponseBody;
             }
-            List<InsuranceProduct> insuranceProductList = insuranceProductManager.queryForCompany(new InsuranceProduct());
-            if (insuranceProductList == null || insuranceProductList.isEmpty()){
+            InsuranceProduct insuranceProduct = new InsuranceProduct();
+            insuranceProduct.setStart(pageInfoReqVO.getStart());
+            insuranceProduct.setLimit(pageInfoReqVO.getLimit());
+
+            List<InsuranceProduct> insuranceProductList = insuranceProductManager.queryForCompany(insuranceProduct);
+            if (insuranceProductList == null || insuranceProductList.isEmpty()) {
                 httpResponseBody = new HttpResponseBody(GlobalErrorMessage.OBJECT_ISNULL);
                 return httpResponseBody;
             }

@@ -10,19 +10,11 @@ import java.math.BigDecimal;
  */
 public class UserApplyInfoReqVO implements Serializable {
 
-    private BigDecimal userId;
 
     private ApplayTypeEnum applayTypeEnum;
 
     private String reason;
 
-    public BigDecimal getUserId() {
-        return userId;
-    }
-
-    public void setUserId(BigDecimal userId) {
-        this.userId = userId;
-    }
 
     public ApplayTypeEnum getApplayTypeEnum() {
         return applayTypeEnum;
