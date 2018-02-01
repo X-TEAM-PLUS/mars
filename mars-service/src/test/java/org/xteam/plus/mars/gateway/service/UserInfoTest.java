@@ -62,6 +62,29 @@ public class UserInfoTest {
     @Resource
     private GetRecordInfoServiceImpl getRecordInfoService;
 
+    @Resource
+    private SubmitUserDetectionServiceImpl submitUserDetectionService;
+
+    /**
+     * 无法模拟提交
+     */
+    @Test
+    public void submitUserDetectionService(){
+        SubmitUserDetectionReqVO submitUserDetectionReqVO = new SubmitUserDetectionReqVO();
+        submitUserDetectionReqVO.setCheckReport("测试测试测试");
+        HttpRequestBody httpRequestBody = new HttpRequestBody();
+        httpRequestBody.setUserId("2000000");
+        httpRequestBody.setBizContent(JsonUtils.toJSON(submitUserDetectionReqVO));
+        System.out.println(JsonUtils.toJSON(httpRequestBody));
+//        try {
+//            HttpResponseBody httpResponseBody = submitUserDetectionService.gateWay(httpRequestBody);
+//            System.out.println("submitUserDetectionService :" + httpResponseBody.getMsg());
+//            System.out.println("submitUserDetectionService :" + httpResponseBody.getBizContent());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+    }
+
     /**
      * 获取提现记录详情
      */
@@ -90,10 +113,10 @@ public class UserInfoTest {
         applyRecordReqVO.setBankAccountName("宋鑫磊");
         applyRecordReqVO.setBankAccountNo("12312313");
         applyRecordReqVO.setPayWay(0);
-        applyRecordReqVO.setUserId(new BigDecimal(2000000));
 
         HttpRequestBody httpRequestBody = new HttpRequestBody();
         httpRequestBody.setBizContent(JsonUtils.toJSON(applyRecordReqVO));
+        httpRequestBody.setUserId("2000000");
         try {
             HttpResponseBody httpResponseBody = applyRecordService.gateWay(httpRequestBody);
             System.out.println("applyRecord :" + httpResponseBody.getMsg());
@@ -108,12 +131,13 @@ public class UserInfoTest {
      */
     @Test
     public void getRecordListService(){
-        UserInfoReqVO userInfoReqVO = new UserInfoReqVO();
-        userInfoReqVO.setUserId(new BigDecimal(2000000));
-        userInfoReqVO.setStart(0);
-        userInfoReqVO.setLimit(10);
+        PageInfoReqVO pageInfoReqVO = new PageInfoReqVO();
+
+        pageInfoReqVO.setStart(0);
+        pageInfoReqVO.setLimit(10);
         HttpRequestBody httpRequestBody = new HttpRequestBody();
-        httpRequestBody.setBizContent(JsonUtils.toJSON(userInfoReqVO));
+        httpRequestBody.setUserId("2000000");
+        httpRequestBody.setBizContent(JsonUtils.toJSON(pageInfoReqVO));
         try {
             HttpResponseBody httpResponseBody = getRecordListService.gateWay(httpRequestBody);
             System.out.println("getRecordListService :" + httpResponseBody.getMsg());
@@ -146,11 +170,11 @@ public class UserInfoTest {
      */
     @Test
     public void getInsuranceAllListService(){
-        UserInfoReqVO userInfoReqVO = new UserInfoReqVO();
-        userInfoReqVO.setStart(new Integer(0));
-        userInfoReqVO.setLimit(new Integer(10));
+        PageInfoReqVO pageInfoReqVO = new PageInfoReqVO();
+        pageInfoReqVO.setStart(new Integer(0));
+        pageInfoReqVO.setLimit(new Integer(10));
         HttpRequestBody httpRequestBody = new HttpRequestBody();
-        httpRequestBody.setBizContent(JsonUtils.toJSON(userInfoReqVO));
+        httpRequestBody.setBizContent(JsonUtils.toJSON(pageInfoReqVO));
         try {
             HttpResponseBody httpResponseBody = getInsuranceAllListService.gateWay(httpRequestBody);
             System.out.println("getInsuranceAllListService :" + httpResponseBody.getBizContent());
@@ -164,13 +188,13 @@ public class UserInfoTest {
      */
     @Test
     public void getUserInsuranceListService(){
-        UserInfoReqVO userInfoReqVO = new UserInfoReqVO();
-        userInfoReqVO.setUserId(new BigDecimal(2000000));
-        userInfoReqVO.setStart(0);
-        userInfoReqVO.setLimit(10);
+        PageInfoReqVO pageInfoReqVO = new PageInfoReqVO();
+        pageInfoReqVO.setStart(0);
+        pageInfoReqVO.setLimit(10);
 
         HttpRequestBody httpRequestBody = new HttpRequestBody();
-        httpRequestBody.setBizContent(JsonUtils.toJSON(userInfoReqVO));
+        httpRequestBody.setUserId("2000000");
+        httpRequestBody.setBizContent(JsonUtils.toJSON(pageInfoReqVO));
         try {
             HttpResponseBody httpResponseBody = getUserInsuranceListService.gateWay(httpRequestBody);
             System.out.println("getUserInsuranceListService :" + httpResponseBody.getBizContent());
@@ -184,11 +208,9 @@ public class UserInfoTest {
       */
     @Test
     public void getAccountInfoService(){
-        UserInfoReqVO userInfoReqVO = new UserInfoReqVO();
-        userInfoReqVO.setUserId(new BigDecimal(2000000));
 
         HttpRequestBody httpRequestBody = new HttpRequestBody();
-        httpRequestBody.setBizContent(JsonUtils.toJSON(userInfoReqVO));
+        httpRequestBody.setUserId("2000000");
         try {
             HttpResponseBody httpResponseBody = getAccountInfoService.gateWay(httpRequestBody);
             System.out.println("getAccountInfoService :" + httpResponseBody.getBizContent());
@@ -203,11 +225,11 @@ public class UserInfoTest {
     @Test
     public void bindBank(){
         UserCardBindReqVO userCardBindReqVO = new UserCardBindReqVO();
-        userCardBindReqVO.setUserId(new BigDecimal(2000000));
         userCardBindReqVO.setCardNo(new BigDecimal(1211));
         userCardBindReqVO.setCardUserName("宋鑫咧");
 
         HttpRequestBody httpRequestBody = new HttpRequestBody();
+        httpRequestBody.setUserId("2000000");
         httpRequestBody.setBizContent(JsonUtils.toJSON(userCardBindReqVO));
         try {
             HttpResponseBody httpResponseBody = bindBankService.gateWay(httpRequestBody);
@@ -221,11 +243,11 @@ public class UserInfoTest {
      */
     @Test
     public void getUserInfoService() {
-        UserInfoReqVO userInfoReqVO = new UserInfoReqVO();
-        userInfoReqVO.setUserId(new BigDecimal(2000000));
+
 
         HttpRequestBody httpRequestBody = new HttpRequestBody();
-        httpRequestBody.setBizContent(JsonUtils.toJSON(userInfoReqVO));
+        httpRequestBody.setUserId("2000000");
+        httpRequestBody.setBizContent("");
         try {
             HttpResponseBody httpResponseBody = getUserInfoService.gateWay(httpRequestBody);
             System.out.println("getUserInfoService :" + httpResponseBody.getBizContent());
@@ -239,12 +261,12 @@ public class UserInfoTest {
      */
     @Test
     public void getRecommendListService() {
-        UserInfoReqVO userInfoReqVO = new UserInfoReqVO();
-        userInfoReqVO.setUserId(new BigDecimal(2000000));
-        userInfoReqVO.setStart(0);
-        userInfoReqVO.setLimit(10);
+        PageInfoReqVO pageInfoReqVO = new PageInfoReqVO();
+        pageInfoReqVO.setStart(0);
+        pageInfoReqVO.setLimit(10);
         HttpRequestBody httpRequestBody = new HttpRequestBody();
-        httpRequestBody.setBizContent(JsonUtils.toJSON(userInfoReqVO));
+        httpRequestBody.setUserId("2000000");
+        httpRequestBody.setBizContent(JsonUtils.toJSON(pageInfoReqVO));
         try {
             HttpResponseBody httpResponseBody = getRecommendListService.gateWay(httpRequestBody);
             System.out.println("getRecommendListService :" + httpResponseBody.getBizContent());
@@ -258,12 +280,13 @@ public class UserInfoTest {
      */
     @Test
     public void subsidyList(){
-        UserInfoReqVO userInfoReqVO = new UserInfoReqVO();
-        userInfoReqVO.setUserId(new BigDecimal(2000000));
-        userInfoReqVO.setStart(0);
-        userInfoReqVO.setLimit(10);
+        PageInfoReqVO pageInfoReqVO = new PageInfoReqVO();
+        pageInfoReqVO.setStart(0);
+        pageInfoReqVO.setLimit(10);
+
         HttpRequestBody httpRequestBody = new HttpRequestBody();
-        httpRequestBody.setBizContent(JsonUtils.toJSON(userInfoReqVO));
+        httpRequestBody.setUserId("2000000");
+        httpRequestBody.setBizContent(JsonUtils.toJSON(pageInfoReqVO));
         try {
             HttpResponseBody httpResponseBody = getSubsidyListService.gateWay(httpRequestBody);
             System.out.println("getSubsidyListService :" + httpResponseBody.getBizContent());
@@ -281,10 +304,10 @@ public class UserInfoTest {
     @Test
     public void userLevelApply(){
         UserApplyInfoReqVO userApplyInfoReqVO = new UserApplyInfoReqVO();
-        userApplyInfoReqVO.setUserId(new BigDecimal(2000000));
         userApplyInfoReqVO.setApplayTypeEnum(ApplayTypeEnum.DIRECTOR);
         userApplyInfoReqVO.setReason("测试申请");
         HttpRequestBody httpRequestBody = new HttpRequestBody();
+        httpRequestBody.setUserId("2000000");
         httpRequestBody.setBizContent(JsonUtils.toJSON(userApplyInfoReqVO));
         try {
             HttpResponseBody httpResponseBody = userLevelApplyService.gateWay(httpRequestBody);
@@ -299,11 +322,10 @@ public class UserInfoTest {
      */
     @Test
     public void getUserDetectionInfo(){
-        UserInfoReqVO userInfoReqVO = new UserInfoReqVO();
-        userInfoReqVO.setUserId(new BigDecimal(2000001));
 
         HttpRequestBody httpRequestBody = new HttpRequestBody();
-        httpRequestBody.setBizContent(JsonUtils.toJSON(userInfoReqVO));
+        httpRequestBody.setUserId("2000001");
+
         try {
             HttpResponseBody httpResponseBody = this.getUserDetectionInfoService.gateWay(httpRequestBody);
             System.out.println("getUserDetectionInfoService :" + httpResponseBody.getBizContent());
@@ -317,12 +339,12 @@ public class UserInfoTest {
      */
     @Test
     public void getUserDetectionList(){
-        UserInfoReqVO userInfoReqVO = new UserInfoReqVO();
-        userInfoReqVO.setUserId(new BigDecimal(2000001));
-        userInfoReqVO.setStart(0);
-        userInfoReqVO.setLimit(10);
+        PageInfoReqVO pageInfoReqVO = new PageInfoReqVO();
+        pageInfoReqVO.setStart(0);
+        pageInfoReqVO.setLimit(10);
         HttpRequestBody httpRequestBody = new HttpRequestBody();
-        httpRequestBody.setBizContent(JsonUtils.toJSON(userInfoReqVO));
+        httpRequestBody.setUserId("2000001");
+        httpRequestBody.setBizContent(JsonUtils.toJSON(pageInfoReqVO));
         try {
             HttpResponseBody httpResponseBody = this.getUserDetectionListService.gateWay(httpRequestBody);
             System.out.println("getUserDetectionInfoService :" + httpResponseBody.getBizContent());

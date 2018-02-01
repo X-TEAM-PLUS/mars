@@ -1,6 +1,14 @@
 package org.xteam.plus.mars.gateway.service.provider;
 
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.HashMap;
+
 public class HttpRequestBody {
+
+    private LinkedMultiValueMap<String, MultipartFile> multipartFileHashMap = new LinkedMultiValueMap<String, MultipartFile>();
+
     /**
      * 系统分配的渠道代码
      */
@@ -17,7 +25,7 @@ public class HttpRequestBody {
     private String format;
 
     /**
-     *  请求使用的编码格式，如utf-8,gbk,gb2312等
+     * 请求使用的编码格式，如utf-8,gbk,gb2312等
      */
     private String charset;
 
@@ -37,7 +45,7 @@ public class HttpRequestBody {
     private String token;
 
     /**
-     *  请求参数的集合，最大长度不限，除公共参数外所有请求参数都必须放在这个参数中传递，
+     * 请求参数的集合，最大长度不限，除公共参数外所有请求参数都必须放在这个参数中传递，
      */
     private String bizContent;
 
@@ -142,5 +150,13 @@ public class HttpRequestBody {
 
     public void setDeviceInfo(String deviceInfo) {
         this.deviceInfo = deviceInfo;
+    }
+
+    public LinkedMultiValueMap<String, MultipartFile> getMultipartFileHashMap() {
+        return multipartFileHashMap;
+    }
+
+    public void setMultipartFileHashMap(LinkedMultiValueMap<String, MultipartFile> multipartFileHashMap) {
+        this.multipartFileHashMap = multipartFileHashMap;
     }
 }

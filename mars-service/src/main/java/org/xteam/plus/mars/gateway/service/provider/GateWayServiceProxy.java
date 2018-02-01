@@ -24,7 +24,6 @@ public class GateWayServiceProxy extends Logging implements ApplicationContextAw
             String[] beanNames = applicationContext.getBeanNamesForType(GateWayService.class);
             for (String beanName : beanNames) {
                 GateWayService gateWayService = (GateWayService) applicationContext.getBean(beanName);
-                System.out.println(getGateWayService(gateWayService.getMethodName().toLowerCase()));
                 gateWayServiceHashMap.put(gateWayService.getMethodName().toLowerCase(), gateWayService);
             }
         } catch (Exception e) {

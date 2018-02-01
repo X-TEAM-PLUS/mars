@@ -33,11 +33,11 @@ public class GetMeTeamCountServiceImpl extends Logging implements GateWayService
         try {
 
             List<UserRelationRspVO> returnValue = Lists.newArrayList();
-            UserInfoReqVO userInfoReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), UserInfoReqVO.class);
-            if (userInfoReqVO == null || userInfoReqVO.getUserId() == null || userInfoReqVO.getLimit() == null || userInfoReqVO.getStart() == null) {
-                httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
-                return httpResponseBody;
-            }
+//            UserInfoReqVO userInfoReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), UserInfoReqVO.class);
+//            if (userInfoReqVO == null || userInfoReqVO.getUserId() == null || userInfoReqVO.getLimit() == null || userInfoReqVO.getStart() == null) {
+//                httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
+//                return httpResponseBody;
+//            }
 //            List<UserRelation> list = userRelationManager.queryThisAndNextLevelUser(userInfoReqVO.getUserId(), userInfoReqVO.getStart(), userInfoReqVO.getLimit());
 //            for (UserRelation userRelation : list) {
 //                returnValue.add(userRelationConvertService.toVO(userRelation));
