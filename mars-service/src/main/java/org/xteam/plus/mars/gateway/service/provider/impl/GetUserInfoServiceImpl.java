@@ -12,6 +12,7 @@ import org.xteam.plus.mars.gateway.service.provider.impl.body.req.UserInfoReqVO;
 import org.xteam.plus.mars.manager.UserInfoManager;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 
 @Component
 public class GetUserInfoServiceImpl extends Logging implements GateWayService {
@@ -32,12 +33,11 @@ public class GetUserInfoServiceImpl extends Logging implements GateWayService {
         this.logInfo(METHOD_NAME + " request  [" + httpRequestBody.toString() + "]");
         HttpResponseBody httpResponseBody = new HttpResponseBody(GlobalErrorMessage.SUCCESS);
         try {
-            UserInfoReqVO userInfoReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), UserInfoReqVO.class);
-            if (userInfoReqVO.getUserId() == null) {
+            if (httpRequestBody.getUserId() == null) {
                 httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
                 return httpResponseBody;
             }
-            UserInfo userInfo = userInfoManager.get(new UserInfo().setUserId(userInfoReqVO.getUserId()));
+            UserInfo userInfo = userInfoManager.get(new UserInfo().setUserId(BigDecimal.valueOf(Long.valueOf(httpRequestBody.getUserId()))));
             if (userInfo == null) {
                 httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
                 return httpResponseBody;
