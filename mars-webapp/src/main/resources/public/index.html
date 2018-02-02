@@ -11,21 +11,9 @@
     <link rel="stylesheet" href="/assets/plugins/framework7-2.0.7/css/framework7-icons.css">
     <link rel="stylesheet" href="/assets/plugins/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/my-app.css">
-    <title>早安工程</title>
+    <title>早安云</title>
 </head>
 <body>
-<script type="text/template" id="show-useriInfo">
-    <a href="#" class="item-link item-content">
-        <div class="item-media"><img src="images/portrait_img2.png" width="80"></div>
-        <div class="item-inner">
-            <div class="item-title-row">
-                <div class="item-title">{{realName}}</div>
-            </div>
-            <div class="item-subtitle">NO.{{cardNo}}</div>
-            <div class="item-text">有效期至：{{cardLifeTime}}</div>
-        </div>
-    </a>
-</script>
 <div id="app">
     <!-- Views/Tabs container -->
     <div class="views tabs ">
@@ -57,13 +45,13 @@
                     </div>
                 </div>
                 <!-- Scrollable page content-->
-                <div class="page-content"  style="padding-top: 8px;">
-                    <div class="list media-list">
-                        <ul>
-                            <li>
-                                <div id="userInfo">
+                <div class="page-content" style="padding-top: 8px;">
+                    <div id="user-view">
+                        <div class="list media-list">
+                            <ul>
+                                <li>
                                     <a href="#" class="item-link item-content">
-                                        <div class="item-media"><img src="images/portrait_img2.png" width="80"></div>
+                                        <div class="item-media"><img src="images/visitor.jpg" width="80px" height="80px"></div>
                                         <div class="item-inner">
                                             <div class="item-title-row">
                                                 <div class="item-title">游客</div>
@@ -72,50 +60,50 @@
                                             <div class="item-text">有效期至：今天</div>
                                         </div>
                                     </a>
-                                </div>
-                            </li>
-                        </ul>
-                        <ul>
-                            <li>
-                                <a href="/member_kt/" class="item-link item-content"  >
-                                    <div class="item-media"><i class="fa fa-star color-yellow  "></i>游客</div>
-                                    <div class="item-inner">
-                                        <div class="item-title-row">
-                                            <div class="item-after">申请成为会员</div>
+                                </li>
+                            </ul>
+                            <ul>
+                                <li>
+                                    <a href="/member_kt/" class="item-link item-content">
+                                        <div class="item-media"><i class="fa fa-star color-yellow  "></i>游客</div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div class="item-after">申请成为会员</div>
+                                            </div>
                                         </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="block-title" style="text-align: center;top: -20px">公益会员权益</div>
+                        <div class="block">
+                            <div class="tabbar-labels">
+                                <div class="row">
+                                    <div class="col-33">
+                                        <a href="#" class="tab-link  ">
+                                            <i class="fa fa-bell-o fa-3x "></i>
+                                            <span class="tabbar-label ">消息通知</span>
+                                        </a>
                                     </div>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="block-title" style="text-align: center;top: -20px">公益会员权益</div>
-                    <div class="block">
-                        <div class="tabbar-labels">
-                            <div class="row">
-                                <div class="col-33">
-                                    <a href="#" class="tab-link  ">
-                                        <i class="fa fa-bell-o fa-3x "></i>
-                                        <span class="tabbar-label ">消息通知</span>
-                                    </a>
-                                </div>
-                                <div class="col-33">
-                                    <a href="#" class="tab-link ">
-                                        <i class="fa fa-question-circle fa-3x "></i>
-                                        <span class="tabbar-label ">常见问题</span>
-                                    </a>
-                                </div>
-                                <div class="col-33">
-                                    <a href="/member_rk/" class="tab-link ">
-                                        <i class="fa fa-heart-o fa-3x "></i>
-                                        <span class="tabbar-label ">爱补贴</span>
-                                    </a>
+                                    <div class="col-33">
+                                        <a href="/question/" class="tab-link ">
+                                            <i class="fa fa-question-circle fa-3x "></i>
+                                            <span class="tabbar-label ">常见问题</span>
+                                        </a>
+                                    </div>
+                                    <div class="col-33">
+                                        <a href="/member_rk/" class="tab-link ">
+                                            <i class="fa fa-heart-o fa-3x "></i>
+                                            <span class="tabbar-label ">爱补贴</span>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
         </div>
-    </div>
 
         <!-- 健康检查-->
         <div id="view-heart_check" class="view tab">
@@ -127,6 +115,441 @@
         </div>
     </div>
 </div>
+
+<script type="text/template" id="show-member-view">
+    <div class="list media-list">
+        <ul>
+            <li>
+                <a href="#" class="item-link item-content">
+                    <div class="item-media"><img src="{{wxHeadPortrait}}" width="80" height="80px"></div>
+                    <div class="item-inner">
+                        <div class="item-title-row">
+                            <div class="item-title">{{realName}}</div>
+                        </div>
+                        <div class="item-subtitle">NO.{{cardNo}}</div>
+                        <div class="item-text">有效期至：{{cardLifeTime}}</div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <a href="/member_kt/" class="item-link item-content">
+                    <div class="item-media"><i class="fa fa-star color-yellow  "></i>游客</div>
+                    <div class="item-inner">
+                        <div class="item-title-row">
+                            <div class="item-after">申请成为会员</div>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="block-title" style="text-align: center;top: -20px">公益会员权益</div>
+    <div class="block">
+        <div class="tabbar-labels">
+            <div class="row">
+                <div class="col-33">
+                    <a href="#" class="tab-link  ">
+                        <i class="fa fa-bell-o fa-3x "></i>
+                        <span class="tabbar-label ">消息通知</span>
+                    </a>
+                </div>
+                <div class="col-33">
+                    <a href="/question/" class="tab-link ">
+                        <i class="fa fa-question-circle fa-3x "></i>
+                        <span class="tabbar-label ">常见问题</span>
+                    </a>
+                </div>
+                <div class="col-33">
+                    <a href="/member_rk/" class="tab-link ">
+                        <i class="fa fa-heart-o fa-3x "></i>
+                        <span class="tabbar-label ">爱补贴</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/template" id="show-gongyi-view">
+    <div class="list media-list">
+        <ul>
+            <li>
+                <a href="#" class="item-link item-content">
+                    <div class="item-media"><img src="{{wxHeadPortrait}}" width="80" height="80px"></div>
+                    <div class="item-inner">
+                        <div class="item-title-row">
+                            <div class="item-title">{{realName}}</div>
+                        </div>
+                        <div class="item-subtitle">NO.{{cardNo}}</div>
+                        <div class="item-text">有效期至：{{cardLifeTime}}</div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <a href="/member_kt/" class="item-link item-content">
+                    <div class="item-media"><i class="fa fa-star color-yellow  "></i>公益会员</div>
+                    <div class="item-inner">
+                        <div class="item-title-row">
+                            <div class="item-after">免费申请成为社工</div>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="block-title" style="text-align: center;top: -20px">公益会员权益</div>
+    <div class="block">
+        <div class="tabbar-labels">
+            <div class="row">
+                <div class="col-33">
+                    <a href="/" class="tab-link  ">
+                        <i class="fa fa-bell-o fa-3x "></i>
+                        <span class="tabbar-label ">消息通知</span>
+                    </a>
+                </div>
+                <div class="col-33">
+                    <a href="/question/" class="tab-link ">
+                        <i class="fa fa-question-circle fa-3x "></i>
+                        <span class="tabbar-label ">常见问题</span>
+                    </a>
+                </div>
+                <div class="col-33">
+                    <a href="/member_rk/" class="tab-link ">
+                        <i class="fa fa-heart-o fa-3x "></i>
+                        <span class="tabbar-label ">爱补贴</span>
+                    </a>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-33">
+                    <a href="/" class="tab-link  ">
+                        <i class="fa fa-credit-card fa-3x"></i>
+                        <span class="tabbar-label ">健康卡</span>
+                    </a>
+                </div>
+                <div class="col-33">
+                    <a href="/" class="tab-link ">
+                        <i class="fa fa-shirtsinbulk fa-3x"></i>
+                        <span class="tabbar-label ">保险单</span>
+                    </a>
+                </div>
+                <div class="col-33">
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/template" id="show-shegong-view">
+    <div class="list media-list">
+        <ul>
+            <li>
+                <a href="#" class="item-link item-content">
+                    <div class="item-media"><img src="{{wxHeadPortrait}}" width="80" height="80px"></div>
+                    <div class="item-inner">
+                        <div class="item-title-row">
+                            <div class="item-title">{{realName}}</div>
+                        </div>
+                        <div class="item-subtitle">NO.{{cardNo}}</div>
+                        <div class="item-text">有效期至：{{cardLifeTime}}</div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <a href="/member_kt/" class="item-link item-content">
+                    <div class="item-media"><i class="fa fa-star color-yellow  "></i>社工</div>
+                    <div class="item-inner">
+                        <div class="item-title-row">
+                            <div class="item-after">升级</div>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="block-title" style="text-align: center;top: -20px">公益会员权益</div>
+    <div class="block">
+        <div class="tabbar-labels">
+            <div class="row">
+                <div class="col-33">
+                    <a href="/" class="tab-link  ">
+                        <i class="fa fa-bell-o fa-2x "></i>
+                        <span class="tabbar-label ">消息通知</span>
+                    </a>
+                </div>
+                <div class="col-33">
+                    <a href="/question/" class="tab-link ">
+                        <i class="fa fa-question-circle fa-2x "></i>
+                        <span class="tabbar-label ">常见问题</span>
+                    </a>
+                </div>
+                <div class="col-33">
+                    <a href="/member_rk/" class="tab-link ">
+                        <i class="fa fa-heart-o fa-2x "></i>
+                        <span class="tabbar-label ">爱补贴</span>
+                    </a>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-33">
+                    <a href="/" class="tab-link  ">
+                        <i class="fa fa-paper-plane-o fa-2x "></i>
+                        <span class="tabbar-label ">推广码</span>
+                    </a>
+                </div>
+                <div class="col-33">
+                    <a href="/" class="tab-link ">
+                        <i class="fa fa-users fa-2x "></i>
+                        <span class="tabbar-label ">我和TM</span>
+                    </a>
+                </div>
+                <div class="col-33">
+                    <a href="/member_rk/" class="tab-link ">
+                        <i class="fa fa-suitcase fa-2x "></i>
+                        <span class="tabbar-label ">小卡包</span>
+                    </a>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-33">
+                    <a href="/" class="tab-link  ">
+                        <i class="fa fa-credit-card fa-2x"></i>
+                        <span class="tabbar-label ">健康卡</span>
+                    </a>
+                </div>
+                <div class="col-33">
+                    <a href="/" class="tab-link ">
+                        <i class="fa fa-shield fa-2x"></i>
+                        <span class="tabbar-label ">保险单</span>
+                    </a>
+                </div>
+                <div class="col-33">
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/template" id="show-lishi-view">
+    <div class="list media-list">
+        <ul>
+            <li>
+                <a href="#" class="item-link item-content">
+                    <div class="item-media"><img src="{{wxHeadPortrait}}" width="80" height="80px"></div>
+                    <div class="item-inner">
+                        <div class="item-title-row">
+                            <div class="item-title">{{realName}}</div>
+                        </div>
+                        <div class="item-subtitle">NO.{{cardNo}}</div>
+                        <div class="item-text">有效期至：{{cardLifeTime}}</div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <a href="/member_kt/" class="item-link item-content">
+                    <div class="item-media"><i class="fa fa-star color-yellow  "></i>理事</div>
+                    <div class="item-inner">
+                        <div class="item-title-row">
+                            <div class="item-after">升级</div>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="block-title" style="text-align: center;top: -20px">理事权益与义务</div>
+    <div class="block">
+        <div class="tabbar-labels">
+            <div class="row">
+                <div class="col-33">
+                    <a href="/" class="tab-link  ">
+                        <i class="fa fa-bell-o fa-3x "></i>
+                        <span class="tabbar-label ">消息通知</span>
+                    </a>
+                </div>
+                <div class="col-33">
+                    <a href="/question/" class="tab-link ">
+                        <i class="fa fa-question-circle fa-3x "></i>
+                        <span class="tabbar-label ">常见问题</span>
+                    </a>
+                </div>
+                <div class="col-33">
+                    <a href="/member_rk/" class="tab-link ">
+                        <i class="fa fa-heart-o fa-3x "></i>
+                        <span class="tabbar-label ">爱补贴</span>
+                    </a>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-33">
+                    <a href="/" class="tab-link  ">
+                        <i class="fa fa-paper-plane-o fa-3x "></i>
+                        <span class="tabbar-label ">推广码</span>
+                    </a>
+                </div>
+                <div class="col-33">
+                    <a href="/" class="tab-link ">
+                        <i class="fa fa-users fa-3x "></i>
+                        <span class="tabbar-label ">我和TM</span>
+                    </a>
+                </div>
+                <div class="col-33">
+                    <a href="/member_rk/" class="tab-link ">
+                        <i class="fa fa-suitcase fa-3x "></i>
+                        <span class="tabbar-label ">小卡包</span>
+                    </a>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-33">
+                    <a href="/" class="tab-link  ">
+                        <i class="fa fa-credit-card fa-3x"></i>
+                        <span class="tabbar-label ">健康卡</span>
+                    </a>
+                </div>
+                <div class="col-33">
+                    <a href="/" class="tab-link ">
+                        <i class="fa fa-shield fa-3x"></i>
+                        <span class="tabbar-label ">保险单</span>
+                    </a>
+                </div>
+                <div class="col-33">
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/template" id="show-changwulishi-view">
+    <div class="list media-list">
+        <ul>
+            <li>
+                <a href="#" class="item-link item-content">
+                    <div class="item-media"><img src="{{wxHeadPortrait}}" width="80" height="80px"></div>
+                    <div class="item-inner">
+                        <div class="item-title-row">
+                            <div class="item-title">{{realName}}</div>
+                        </div>
+                        <div class="item-subtitle">NO.{{cardNo}}</div>
+                        <div class="item-text">有效期至：{{cardLifeTime}}</div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <a href="/member_kt/" class="item-link item-content">
+                    <div class="item-media"><i class="fa fa-star color-yellow  "></i>常务理事</div>
+                    <div class="item-inner">
+                        <div class="item-title-row">
+                            <div class="item-after">申请开馆</div>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="block-title" style="text-align: center;top: -20px">常务理事权益与义务</div>
+    <div class="block">
+        <div class="tabbar-labels">
+            <div class="row">
+                <div class="col-33">
+                    <a href="/" class="tab-link  ">
+                        <i class="fa fa-bell-o fa-3x "></i>
+                        <span class="tabbar-label ">消息通知</span>
+                    </a>
+                </div>
+                <div class="col-33">
+                    <a href="/question/" class="tab-link ">
+                        <i class="fa fa-question-circle fa-3x "></i>
+                        <span class="tabbar-label ">常见问题</span>
+                    </a>
+                </div>
+                <div class="col-33">
+                    <a href="/member_rk/" class="tab-link ">
+                        <i class="fa fa-heart-o fa-3x "></i>
+                        <span class="tabbar-label ">爱补贴</span>
+                    </a>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-33">
+                    <a href="/" class="tab-link  ">
+                        <i class="fa fa-paper-plane-o fa-3x "></i>
+                        <span class="tabbar-label ">推广码</span>
+                    </a>
+                </div>
+                <div class="col-33">
+                    <a href="/" class="tab-link ">
+                        <i class="fa fa-users fa-3x "></i>
+                        <span class="tabbar-label ">我和TM</span>
+                    </a>
+                </div>
+                <div class="col-33">
+                    <a href="/member_rk/" class="tab-link ">
+                        <i class="fa fa-suitcase fa-3x "></i>
+                        <span class="tabbar-label ">小卡包</span>
+                    </a>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-33">
+                    <a href="/" class="tab-link  ">
+                        <i class="fa fa-credit-card fa-3x"></i>
+                        <span class="tabbar-label ">健康卡</span>
+                    </a>
+                </div>
+                <div class="col-33">
+                    <a href="/" class="tab-link ">
+                        <i class="fa fa-shield fa-3x"></i>
+                        <span class="tabbar-label ">保险单</span>
+                    </a>
+                </div>
+                <div class="col-33">
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/template" id="show-kaitong-userinfo">
+    <a href="#" class="item-link item-content">
+        <div class="item-media"><img src="{{wxHeadPortrait}}" width="80" height="80px"></div>
+        <div class="item-inner">
+            <div class="item-title-row">
+                <div class="item-title">{{realName}}</div>
+            </div>
+            <div class="item-subtitle">NO.{{cardNo}}</div>
+            <div class="item-text">有效期至：{{cardLifeTime}}</div>
+        </div>
+    </a>
+</script>
+<script type="text/template" id="show-question-list">
+    <div class="list media-list">
+        <ul>
+            <li>
+                <a href="#" class="item-link item-content">
+                    <div class="item-media"><i class="fa fa-question-circle fa-2x color-gray"></i></div>
+                    <div class="item-inner">
+                        <div class="item-title-row">
+                            <div class="item-subtitle">常见问题常见问题常见问题常见问题常见问题常见问题</div>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</script>
 <!-- Path to Framework7 Library JS-->
 <script type="text/javascript" src="/assets/plugins/framework7-2.0.7/js/framework7.min.js"></script>
 <script type="text/javascript" src="/assets/plugins/template7/template7.min.js"></script>

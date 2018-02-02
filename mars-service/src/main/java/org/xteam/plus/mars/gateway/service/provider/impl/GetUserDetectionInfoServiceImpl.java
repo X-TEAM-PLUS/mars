@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 @Component
 public class GetUserDetectionInfoServiceImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.mars.gateway.user.getUserDetectionInfo";
+    private final String METHOD_NAME = "com.zhaoanyun.gateway.user.getUserDetectionInfo";
 
     @Resource
     private UserHealthCardManager userHealthCardManager;

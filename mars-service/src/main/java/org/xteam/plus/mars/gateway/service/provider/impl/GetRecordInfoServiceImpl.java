@@ -19,7 +19,7 @@ import javax.annotation.Resource;
 @Component
 public class GetRecordInfoServiceImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.mars.gateway.user.getRecordInfo";
+    private final String METHOD_NAME = "com.zhaoanyun.gateway.user.getRecordInfo";
 
     @Resource
     private WithdrawRecordManager withdrawRecordManager;

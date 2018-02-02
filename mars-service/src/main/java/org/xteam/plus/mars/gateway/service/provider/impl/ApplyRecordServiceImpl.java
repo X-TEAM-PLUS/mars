@@ -27,7 +27,7 @@ import java.util.List;
 @Component
 public class ApplyRecordServiceImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.mars.gateway.user.applyRecord";
+    private final String METHOD_NAME = "com.zhaoanyun.gateway.user.applyRecord";
 
     @Resource
     private UserInfoManager userInfoManager;

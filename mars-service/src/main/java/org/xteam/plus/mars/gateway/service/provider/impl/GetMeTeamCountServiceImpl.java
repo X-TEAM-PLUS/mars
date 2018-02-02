@@ -18,7 +18,7 @@ import java.util.List;
 @Component
 public class GetMeTeamCountServiceImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.mars.gateway.user.getMeTeamCount";
+    private final String METHOD_NAME = "com.zhaoanyun.gateway.user.getMeTeamCount";
 
     @Override
     public String getMethodName() {

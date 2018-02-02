@@ -22,7 +22,7 @@ import java.util.List;
 @Component
 public class GetRecordListServiceImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.mars.gateway.user.getRecordList";
+    private final String METHOD_NAME = "com.zhaoanyun.gateway.user.getRecordList";
 
     @Resource
     private WithdrawRecordManager withdrawRecordManager;

@@ -30,7 +30,7 @@ import java.util.List;
 @Component
 public class SubmitUserDetectionServiceImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.mars.gateway.user.submitUserDetection";
+    private final String METHOD_NAME = "com.zhaoanyun.gateway.user.submitUserDetection";
 
     private DfsClient dfsClient = new DfsClientImpl();
 

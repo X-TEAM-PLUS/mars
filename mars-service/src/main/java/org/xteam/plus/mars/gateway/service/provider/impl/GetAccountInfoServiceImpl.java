@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 @Component
 public class GetAccountInfoServiceImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.mars.gateway.user.getAccountInfo";
+    private final String METHOD_NAME = "com.zhaoanyun.gateway.user.getAccountInfo";
 
     @Resource
     private AccountBalanceManager accountBalanceManager;

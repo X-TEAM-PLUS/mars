@@ -22,7 +22,7 @@ import java.util.List;
 @Component
 public class GetUserDetectionListServiceImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.mars.gateway.user.getUserDetectionList";
+    private final String METHOD_NAME = "com.zhaoanyun.gateway.user.getUserDetectionList";
 
     @Resource
     private HealthCheckRecordManager healthCheckRecordManager;

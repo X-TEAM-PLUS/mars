@@ -23,7 +23,7 @@ import java.util.Date;
 @Component
 public class UserLevelApplyServiceImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.mars.gateway.user.userLevelApply";
+    private final String METHOD_NAME = "com.zhaoanyun.gateway.user.userLevelApply";
 
     @Resource
     private ApplyInfoManager applyInfoManager;

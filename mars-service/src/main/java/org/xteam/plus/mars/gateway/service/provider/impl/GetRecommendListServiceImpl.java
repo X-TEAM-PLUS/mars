@@ -25,7 +25,7 @@ import java.util.List;
 @Component
 public class GetRecommendListServiceImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.mars.gateway.user.getRecommendList";
+    private final String METHOD_NAME = "com.zhaoanyun.gateway.user.getRecommendList";
 
     @Resource
     private UserRelationManager userRelationManager;

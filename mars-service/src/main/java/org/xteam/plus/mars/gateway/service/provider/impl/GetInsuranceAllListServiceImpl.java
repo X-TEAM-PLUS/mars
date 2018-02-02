@@ -21,7 +21,7 @@ import java.util.List;
 @Component
 public class GetInsuranceAllListServiceImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.mars.gateway.insurance.getAllList";
+    private final String METHOD_NAME = "com.zhaoanyun.gateway.insurance.getAllList";
 
     @Resource
     private InsuranceProductManager insuranceProductManager;

@@ -28,32 +28,36 @@ public class HttpResponseBody {
         return code;
     }
 
-    public void setCode(String code) {
+    public HttpResponseBody setCode(String code) {
         this.code = code;
+        return this;
     }
 
     public String getMsg() {
         return msg;
     }
 
-    public void setMsg(String msg) {
+    public HttpResponseBody setMsg(String msg) {
         this.msg = msg;
+        return this;
     }
 
     public String getBizContent() {
         return bizContent;
     }
 
-    public void setBizContent(String bizContent) {
+    public HttpResponseBody setBizContent(String bizContent) {
         this.bizContent = bizContent;
+        return this;
     }
 
     public String getSign() {
         return sign;
     }
 
-    public void setSign(String sign) {
+    public HttpResponseBody setSign(String sign) {
         this.sign = sign;
+        return this;
     }
 
     public HttpResponseBody() {
