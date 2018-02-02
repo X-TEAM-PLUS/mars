@@ -3,6 +3,7 @@ package org.xteam.plus.mars.wx.util.xml;
 
 import com.thoughtworks.xstream.XStream;
 import org.xteam.plus.mars.wx.bean.*;
+import org.xteam.plus.mars.wx.bean.result.UnifiedOrderResult;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -49,6 +50,8 @@ public class XStreamTransformer {
 
 	private static Map<Class, XStream> configXStreamInstance() {
 		Map<Class, XStream> map = new HashMap<Class, XStream>();
+		map.put(UnifiedOrderResult.class,config_UnifiedOrderResult());
+		map.put(WxUnifiedOrder.class,config_WxUnifiedOrder());
 		map.put(WxXmlMessage.class, config_WxXmlMessage());
 		map.put(WxXmlOutNewsMessage.class, config_WxXmlOutNewsMessage());
 		map.put(WxXmlOutTextMessage.class, config_WxXmlOutTextMessage());
@@ -56,6 +59,16 @@ public class XStreamTransformer {
 		map.put(WxXmlOutVideoMessage.class, config_WxXmlOutVideoMessage());
 		map.put(WxXmlOutVoiceMessage.class, config_WxXmlOutVoiceMessage());
 		return map;
+	}
+	private static XStream config_UnifiedOrderResult(){
+		XStream xstream = XStreamInitializer.getInstance();
+		xstream.processAnnotations(UnifiedOrderResult.class);
+		return xstream;
+	}
+	private static XStream config_WxUnifiedOrder(){
+		XStream xstream = XStreamInitializer.getInstance();
+		xstream.processAnnotations(WxUnifiedOrder.class);
+		return xstream;
 	}
 
 	private static XStream config_WxXmlMessage() {
