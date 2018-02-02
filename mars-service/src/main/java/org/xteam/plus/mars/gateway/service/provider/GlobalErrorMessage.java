@@ -12,6 +12,7 @@ public enum GlobalErrorMessage {
     ,APPLY_AMOUNT_ZER(40007,"申请金额不能小与等于0")
     ,USER_ID_NOT_HIVE(40008,"用户ID不存在")
     ,AMOUNT_NOT_ENOUGH(40009,"金额不足，不能进行转账")
+    ,BANK_ID_ERROR(40010,"银行编码错误，不能进行绑定")
     ;
     private Integer code;
     private String message;

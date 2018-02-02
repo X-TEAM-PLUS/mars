@@ -65,6 +65,20 @@ public class UserInfoTest {
     @Resource
     private SubmitUserDetectionServiceImpl submitUserDetectionService;
 
+    @Resource
+    private BankConfigListServiceImpl bankConfigListService;
+
+    @Test
+    public void bankConfigListService(){
+        HttpRequestBody httpRequestBody = new HttpRequestBody();
+        try {
+            HttpResponseBody httpResponseBody =  bankConfigListService.gateWay(httpRequestBody);
+            System.out.println(httpResponseBody.getBizContent());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * 无法模拟提交
      */
@@ -225,9 +239,9 @@ public class UserInfoTest {
     @Test
     public void bindBank(){
         UserCardBindReqVO userCardBindReqVO = new UserCardBindReqVO();
-        userCardBindReqVO.setCardNo(new BigDecimal(1211));
+        userCardBindReqVO.setCardNo(new BigDecimal(121112221));
         userCardBindReqVO.setCardUserName("宋鑫咧");
-
+        userCardBindReqVO.setBankId(new BigDecimal(1002));
         HttpRequestBody httpRequestBody = new HttpRequestBody();
         httpRequestBody.setUserId("2000000");
         httpRequestBody.setBizContent(JsonUtils.toJSON(userCardBindReqVO));

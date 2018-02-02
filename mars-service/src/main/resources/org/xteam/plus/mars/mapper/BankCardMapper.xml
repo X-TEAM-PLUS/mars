@@ -9,6 +9,7 @@
         <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
         <result column="BANK_ACCOUNT_NO" property="bankAccountNo" jdbcType="VARCHAR"/>
         <result column="USER_ID" property="userId" jdbcType="DECIMAL"/>
+        <result column="BANK_ID" property="bankId" jdbcType="DECIMAL"/>
     </resultMap>
 
     <!--公用选择列-->
@@ -19,6 +20,7 @@
         ,UPDATED
         ,BANK_ACCOUNT_NO
         ,USER_ID
+        ,BANK_ID
     </sql>
 
     <!--公用查询条件-->
@@ -52,6 +54,11 @@
                     and USER_ID=#{userId,jdbcType=DECIMAL}
                     ]]>
             </if>
+            <if test="bankId!=null ">
+                <![CDATA[
+                    and BANK_ID=#{bankId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
         </where>
     </sql>
 
@@ -69,12 +76,14 @@
         ,UPDATED
         ,BANK_ACCOUNT_NO
         ,USER_ID
+        ,BANK_ID
         )values(
         #{created,jdbcType=TIMESTAMP}
         ,#{bankAccountName,jdbcType=VARCHAR}
         ,#{updated,jdbcType=TIMESTAMP}
         ,#{bankAccountNo,jdbcType=VARCHAR}
         ,#{userId,jdbcType=DECIMAL}
+        ,#{bankId,jdbcType=DECIMAL}
         )
     </insert>
 
@@ -86,6 +95,7 @@
         ,UPDATED
         ,BANK_ACCOUNT_NO
         ,USER_ID
+        ,BANK_ID
         )values
         <foreach collection="list" item="item" index="index" separator=",">
             (
@@ -94,6 +104,7 @@
             ,#{item.updated,jdbcType=TIMESTAMP}
             ,#{item.bankAccountNo,jdbcType=VARCHAR}
             ,#{item.userId,jdbcType=DECIMAL}
+            ,#{item.bankId,jdbcType=DECIMAL}
             )
         </foreach>
     </insert>
@@ -132,6 +143,7 @@
         ,UPDATED
         ,BANK_ACCOUNT_NO
         ,USER_ID
+        ,BANK_ID
         from T_MARS_BANK_CARD
         where BANK_CARD_ID= #{bankCardId,jdbcType=DECIMAL}
     </select>

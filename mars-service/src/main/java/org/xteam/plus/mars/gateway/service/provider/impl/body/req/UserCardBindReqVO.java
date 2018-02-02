@@ -10,6 +10,8 @@ public class UserCardBindReqVO implements Serializable {
 
     private String cardUserName;
 
+    private BigDecimal bankId;
+
 
     public BigDecimal getCardNo() {
         return cardNo;
@@ -25,5 +27,13 @@ public class UserCardBindReqVO implements Serializable {
 
     public void setCardUserName(String cardUserName) {
         this.cardUserName = cardUserName;
+    }
+
+    public BigDecimal getBankId() {
+        return bankId;
+    }
+
+    public void setBankId(BigDecimal bankId) {
+        this.bankId = bankId;
     }
 }

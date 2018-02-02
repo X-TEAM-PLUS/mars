@@ -1,6 +1,7 @@
 package org.xteam.plus.mars.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 
 /**
@@ -47,6 +48,11 @@ public class GlobalConf implements Serializable {
      * 更新时间
      */
     private java.util.Date updated;
+
+    /**
+     * 参数类型
+     */
+    private BigDecimal parameterType;
 
 
     /**
@@ -181,6 +187,15 @@ public class GlobalConf implements Serializable {
      */
     public GlobalConf setLimit(Integer limit) {
         this.limit = limit;
+        return this;
+    }
+
+    public BigDecimal getParameterType() {
+        return parameterType;
+    }
+
+    public GlobalConf setParameterType(BigDecimal parameterType) {
+        this.parameterType = parameterType;
         return this;
     }
 }

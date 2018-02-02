@@ -5,12 +5,14 @@ import org.springframework.stereotype.Component;
 import org.xteam.plus.mars.common.JsonUtils;
 import org.xteam.plus.mars.common.Logging;
 import org.xteam.plus.mars.domain.BankCard;
+import org.xteam.plus.mars.domain.GlobalConf;
 import org.xteam.plus.mars.gateway.service.provider.GateWayService;
 import org.xteam.plus.mars.gateway.service.provider.GlobalErrorMessage;
 import org.xteam.plus.mars.gateway.service.provider.HttpRequestBody;
 import org.xteam.plus.mars.gateway.service.provider.HttpResponseBody;
 import org.xteam.plus.mars.gateway.service.provider.impl.body.req.UserCardBindReqVO;
 import org.xteam.plus.mars.manager.BankCardManager;
+import org.xteam.plus.mars.manager.GlobalConfManager;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -28,6 +30,9 @@ public class BindBankServiceImpl extends Logging implements GateWayService {
     @Resource
     private BankCardManager bankCardManager;
 
+    @Resource
+    private GlobalConfManager globalConfManager;
+
     @Override
     public String getMethodName() {
         return METHOD_NAME;
@@ -43,19 +48,29 @@ public class BindBankServiceImpl extends Logging implements GateWayService {
             UserCardBindReqVO userCardBindReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), UserCardBindReqVO.class);
             if (httpRequestBody.getUserId() == null
                     || StringUtils.isEmpty(userCardBindReqVO.getCardUserName())
-                    || userCardBindReqVO.getCardNo() == null) {
+                    || userCardBindReqVO.getCardNo() == null
+                    || userCardBindReqVO.getBankId() == null) {
                 httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
                 return httpResponseBody;
             }
-            List<BankCard> list = bankCardManager.query(new BankCard().setBankCardId(userCardBindReqVO.getCardNo()));
+            List<BankCard> list = bankCardManager.query(new BankCard().setBankAccountNo(userCardBindReqVO.getCardNo().toString()));
             if (!list.isEmpty()) {
                 httpResponseBody = new HttpResponseBody(GlobalErrorMessage.CARD_ALREAD_BIND);
+                return httpResponseBody;
+            }
+            GlobalConf queryWhereGlobal = new GlobalConf().setParameterType(new BigDecimal(1));
+            queryWhereGlobal.setParameterKey(userCardBindReqVO.getBankId().toString());
+            List globalList =  globalConfManager.query(queryWhereGlobal);
+            // 校验银行编码合法性
+            if (globalList == null || globalList.isEmpty()){
+                httpResponseBody = new HttpResponseBody(GlobalErrorMessage.BANK_ID_ERROR);
                 return httpResponseBody;
             }
             BankCard bankCard = new BankCard();
             bankCard.setBankAccountNo(userCardBindReqVO.getCardNo().toString());
             bankCard.setBankAccountName(userCardBindReqVO.getCardUserName());
             bankCard.setCreated(new Date());
+            bankCard.setBankId(userCardBindReqVO.getBankId());
             bankCard.setUserId(new BigDecimal(httpRequestBody.getUserId()));
             int count = bankCardManager.insert(bankCard);
             if (count <= 0) {

@@ -1,6 +1,7 @@
 package org.xteam.plus.mars.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 
 /**
@@ -52,6 +53,11 @@ public class BankCard implements Serializable {
      * 用户ID
      */
     private java.math.BigDecimal userId;
+
+    /**
+     * 银行编码
+     */
+    private BigDecimal bankId;
 
 
     /**
@@ -206,5 +212,14 @@ public class BankCard implements Serializable {
     public BankCard setLimit(Integer limit) {
         this.limit = limit;
         return this;
+    }
+
+
+    public BigDecimal getBankId() {
+        return bankId;
+    }
+
+    public void setBankId(BigDecimal bankId) {
+        this.bankId = bankId;
     }
 }
