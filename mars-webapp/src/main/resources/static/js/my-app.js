@@ -13,6 +13,12 @@ var $$ = Dom7;
 //定义接口地址
 var INTERFACE_URL = "http://192.168.20.123:8000/api/gateway";
 var userInfo = {};
+var InterFace = {
+    USER_INFO:'com.zhaoanyun.api.gateway.user.getUserInfo'
+    ,QUESTION_LIST:'com.zhaoanyun.api.gateway.global.question.list'
+    ,QUESTION_DETAIL:'com.zhaoanyun.api.gateway.global.question.detail'
+    ,MESSAGE_LIST:'com.zhaoanyun.api.gateway.security.message.list'
+}
 /**
  * 定义返回状态码
  * @type {{SUCCESS: number, UNKNOW: number, UNAUTHORIZED: number, MISSING_PARAMETERS: number, ILLEGAL_PARAMETERS: number, USER_ID_NOT_HIVE: number}}
@@ -44,7 +50,7 @@ var UserLeve = {
  * @param params
  */
 function loadUserView(userId) {
-    var params = {method: 'com.mars.gateway.user.getUserInfo', userId: userId};
+    var params = {method:InterFace.USER_INFO, userId: userId};
     //获取用户信息
     app.request.json(INTERFACE_URL, params, function (data) {
         if (data.code == ResponseCode.SUCCESS) {

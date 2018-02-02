@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.xteam.plus.mars.dao.MessageDao">
+    <!--结果集对应列-->
+    <resultMap id="BaseResultMap" type="org.xteam.plus.mars.domain.Message">
+        <id column="MESSAGE_ID" property="messageId" jdbcType="DECIMAL"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
+        <result column="USER_ID" property="userId" jdbcType="DECIMAL"/>
+        <result column="MESSAGE_TITLE" property="messageTitle" jdbcType="VARCHAR"/>
+        <result column="MESSAGE_CONTENT" property="messageContent" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--公用选择列-->
+    <sql id="selectColumns">
+    MESSAGE_ID,
+    STATUS
+,CREATED
+,UPDATED
+,USER_ID
+,MESSAGE_TITLE
+,MESSAGE_CONTENT
+    </sql>
+
+    <!--公用查询条件-->
+    <sql id="queryWhere">
+        <where>
+            STATUS >-1
+            <if test="status!=null ">
+                <![CDATA[
+                    and STATUS=#{status,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="created!=null ">
+                <![CDATA[
+                        and CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and CREATED<= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="updated!=null ">
+                <![CDATA[
+                        and UPDATED>= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="messageId!=null ">
+                <![CDATA[
+                    and MESSAGE_ID=#{messageId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="userId!=null ">
+                <![CDATA[
+                    and USER_ID=#{userId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="messageTitle!=null and  messageTitle!=''">
+                <![CDATA[
+                    and MESSAGE_TITLE=#{messageTitle,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="messageContent!=null and  messageContent!=''">
+                <![CDATA[
+                    and MESSAGE_CONTENT=#{messageContent,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+        </where>
+    </sql>
+
+    <!--删除记录-->
+    <delete id="delete" parameterType="org.xteam.plus.mars.domain.Message">
+        delete from  T_MARS_MESSAGE
+        where  MESSAGE_ID= #{messageId,jdbcType=DECIMAL}
+    </delete>
+
+    <!--插入记录-->
+    <insert id="insert" parameterType="org.xteam.plus.mars.domain.Message" useGeneratedKeys="true" keyProperty="messageId">
+                insert into  T_MARS_MESSAGE (
+            STATUS
+,CREATED
+,UPDATED
+,USER_ID
+,MESSAGE_TITLE
+,MESSAGE_CONTENT
+                )values(
+            #{status,jdbcType=INTEGER}
+,#{created,jdbcType=TIMESTAMP}
+,#{updated,jdbcType=TIMESTAMP}
+,#{userId,jdbcType=DECIMAL}
+,#{messageTitle,jdbcType=VARCHAR}
+,#{messageContent,jdbcType=VARCHAR}
+                )
+            </insert>
+
+    <!--批量插入记录-->
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="messageId">
+        insert into T_MARS_MESSAGE (
+        STATUS
+        ,CREATED
+        ,UPDATED
+        ,USER_ID
+        ,MESSAGE_TITLE
+        ,MESSAGE_CONTENT
+        )values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.status,jdbcType=INTEGER}
+            ,#{item.created,jdbcType=TIMESTAMP}
+            ,#{item.updated,jdbcType=TIMESTAMP}
+            ,#{item.userId,jdbcType=DECIMAL}
+            ,#{item.messageTitle,jdbcType=VARCHAR}
+            ,#{item.messageContent,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <!--更新记录-->
+    <update id="update" parameterType="org.xteam.plus.mars.domain.Message">
+        update T_MARS_MESSAGE
+        <set>
+            <trim prefix="" suffix="" suffixOverrides=",">
+                <if test="status!=null ">
+                    STATUS=#{status,jdbcType=INTEGER},
+                </if>
+                <if test="created!=null ">
+                    CREATED=#{created,jdbcType=TIMESTAMP},
+                </if>
+                <if test="updated!=null ">
+                    UPDATED=#{updated,jdbcType=TIMESTAMP},
+                </if>
+                <if test="userId!=null ">
+                    USER_ID=#{userId,jdbcType=DECIMAL},
+                </if>
+                <if test="messageTitle!=null ">
+                    MESSAGE_TITLE=#{messageTitle,jdbcType=VARCHAR},
+                </if>
+                <if test="messageContent!=null ">
+                    MESSAGE_CONTENT=#{messageContent,jdbcType=VARCHAR},
+                </if>
+            </trim>
+        </set>
+        where MESSAGE_ID= #{messageId,jdbcType=DECIMAL}
+    </update>
+
+    <!--查询单条记录-->
+    <select id="get" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.Message">
+        select
+    MESSAGE_ID
+        ,STATUS
+,CREATED
+,UPDATED
+,USER_ID
+,MESSAGE_TITLE
+,MESSAGE_CONTENT
+        from    T_MARS_MESSAGE
+        where  MESSAGE_ID= #{messageId,jdbcType=DECIMAL}
+    </select>
+
+
+    <!--分页查询记录-->
+    <select id="query" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.Message">
+        select
+        <include refid="selectColumns"></include>
+        from T_MARS_MESSAGE
+        <include refid="queryWhere"></include>
+        ORDER MESSAGE_ID DESC
+        limit #{start},#{limit}
+    </select>
+
+    <!--查询记录数-->
+    <select id="queryCount" resultType="int" parameterType="org.xteam.plus.mars.domain.Message">
+        select count(1)
+        from T_MARS_MESSAGE
+        <include refid="queryWhere"></include>
+    </select>
+</mapper>

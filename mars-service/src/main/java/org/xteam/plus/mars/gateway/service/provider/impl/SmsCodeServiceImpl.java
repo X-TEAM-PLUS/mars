@@ -11,7 +11,7 @@ import org.xteam.plus.mars.gateway.service.provider.HttpResponseBody;
  */
 @Component
 public class SmsCodeServiceImpl extends Logging implements GateWayService {
-    private final String METHOD_NAME = "com.zhaoanyun.api.verification.code";
+    private final String METHOD_NAME = "com.zhaoanyun.api.gateway.verification.code";
 
     @Override
     public String getMethodName() {

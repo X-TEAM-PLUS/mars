@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @Component
 public class QuestionDetailServiceImpl implements GateWayService {
-    private final String METHOD_NAME = "com.zhaoanyun.api.global.question.detail";
+    private final String METHOD_NAME = "com.zhaoanyun.api.gateway.global.question.detail";
 
     @Resource
     private  QuestionInfoManager questionInfoManager;
@@ -35,8 +35,8 @@ public class QuestionDetailServiceImpl implements GateWayService {
     public HttpResponseBody gateWay(HttpRequestBody httpRequestBody) throws Exception {
         if (StringUtils.isNotEmpty(httpRequestBody.getBizContent())){
                 Map<String,Object> params = JsonUtils.fromJSON(httpRequestBody.getBizContent(), HashMap.class);
-                if(params !=null && params.containsKey("question_id")){
-                    String bizContent = JsonUtils.toJSON(questionInfoManager.get(new QuestionInfo().setQuestionId(BigDecimal.valueOf(Long.valueOf(params.get("question_id").toString())))));
+                if(params !=null && params.containsKey("questionId")){
+                    String bizContent = JsonUtils.toJSON(questionInfoManager.get(new QuestionInfo().setQuestionId(BigDecimal.valueOf(Long.valueOf(params.get("questionId").toString())))));
                     return new HttpResponseBody(GlobalErrorMessage.SUCCESS).setBizContent(bizContent);
                 }else{
                     return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);

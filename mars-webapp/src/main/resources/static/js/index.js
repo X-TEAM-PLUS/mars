@@ -16,9 +16,11 @@ $$(document).on('page:init', '.page[data-name="kaitong"]', function (e) {
     loadData(userInfo, "kaitong-userinfo", "show-kaitong-userinfo");
 });
 $$(document).on('page:init', '.page[data-name="question-page"]', function (e) {
-    loadData(INTERFACE_URL,{limit:9999999}, "question-list", "show-question-list");
+    loadBizContent(INTERFACE_URL,{method:InterFace.QUESTION_LIST}, "question-list", "show-question-list");
 });
-
+$$(document).on('page:init', '.page[data-name="message-page"]', function (e) {
+    loadBizContent(INTERFACE_URL,{method:InterFace.MESSAGE_LIST}, "message-list", "show-message-list");
+});
 var viewHeartCheck = app.views.create('#view-heart_check', {
     url: '/heart_check/'
 });
