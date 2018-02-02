@@ -41,7 +41,9 @@ public class PayUtil {
 		payinfo.put("trade_type", order.getTradeType());
 		payinfo.put("openid", openid);
 		payinfo.put("sign", createSign(payinfo, WxConfig.getInstance().getApiKey()));
-		
+		payinfo.put("spbill_create_ip",order.getUserIp());
+		payinfo.put("time_start",order.getTimeStart());
+		payinfo.put("time_expire",order.getTimeExpire());
 		//赋值对象
 		WxUnifiedOrder pay = new WxUnifiedOrder();
 		pay.setAppid(payinfo.get("appid"));
@@ -58,6 +60,13 @@ public class PayUtil {
 		pay.setProductId(payinfo.get("product_id"));
 		pay.setOpenid(payinfo.get("openid"));
 		pay.setSign(payinfo.get("sign"));
+		pay.setFeeType("CNY");
+		pay.setGoodsTag("WXG");
+		pay.setLimitPay("no_credit");
+		pay.setSpbillCreateIp(payinfo.get("spbill_create_ip"));
+		pay.setTimeStart(payinfo.get("time_start"));
+		pay.setTimeExpire(payinfo.get("time_expire"));
+
 		return pay;
 	}
 	

@@ -28,6 +28,10 @@ public class XStreamInitializer {
 					protected String SUFFIX_MEDIA_ID = "</MediaId>";
 
 					@Override
+					public String encodeNode(String name) {
+						return name;
+					}
+					@Override
 					protected void writeText(QuickWriter writer, String text) {
 						if (text.startsWith(PREFIX_CDATA) && text.endsWith(SUFFIX_CDATA)) {
 							writer.write(text);
