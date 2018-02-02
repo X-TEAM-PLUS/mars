@@ -24,6 +24,9 @@
 
         <result column="MOBILE_NO" property="mobileNo" jdbcType="VARCHAR"/>
         <result column="REAL_NAME" property="realName" jdbcType="VARCHAR"/>
+
+        <result column="ADDRESS" property="address" jdbcType="VARCHAR"/>
+        <result column="CONTACTS_MOBILE" property="contactsMobile" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--公用选择列-->
@@ -46,6 +49,8 @@
         ,tmo.SELLER_USER_ID
         ,tmo.PAY_TIME
         ,tmo.PRODUCT_ID
+        ,tmo.ADDRESS
+        ,tmo.CONTACTS_MOBILE
         ,tmui.MOBILE_NO
         ,tmui.REAL_NAME
     </sql>
@@ -176,6 +181,8 @@
         ,SELLER_USER_ID
         ,PAY_TIME
         ,PRODUCT_ID
+        ,ADDRESS
+        ,CONTACTS_MOBILE
         )values(
         #{productNum,jdbcType=INTEGER}
         ,#{productPrice,jdbcType=DECIMAL}
@@ -194,6 +201,8 @@
         ,#{sellerUserId,jdbcType=DECIMAL}
         ,#{payTime,jdbcType=TIMESTAMP}
         ,#{productId,jdbcType=DECIMAL}
+        ,#{address,jdbcType=VARCHAR}
+        ,#{contactsMobile,jdbcType=VARCHAR}
         )
     </insert>
 
@@ -217,6 +226,8 @@
         ,SELLER_USER_ID
         ,PAY_TIME
         ,PRODUCT_ID
+        ,ADDRESS
+        ,CONTACTS_MOBILE
         )values
         <foreach collection="list" item="item" index="index" separator=",">
             (
@@ -237,6 +248,8 @@
             ,#{item.sellerUserId,jdbcType=DECIMAL}
             ,#{item.payTime,jdbcType=TIMESTAMP}
             ,#{item.productId,jdbcType=DECIMAL}
+            ,#{item.address,jdbcType=VARCHAR}
+            ,#{item.contactsMobile,jdbcType=VARCHAR}
             )
         </foreach>
     </insert>
@@ -323,6 +336,8 @@
         ,SELLER_USER_ID
         ,PAY_TIME
         ,PRODUCT_ID
+        ,ADDRESS
+        ,CONTACTS_MOBILE
         from T_MARS_ORDERS
         where ORDER_NO= #{orderNo,jdbcType=DECIMAL}
     </select>

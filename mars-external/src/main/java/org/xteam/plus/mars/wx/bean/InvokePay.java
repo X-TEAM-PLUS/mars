@@ -18,6 +18,7 @@ public class InvokePay {
 	private String prepayId;
 	private String signType;
 	private String paySign;
+	private String codeUrl;
 	public String getAppId() {
 		return appId;
 	}
@@ -59,5 +60,12 @@ public class InvokePay {
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.writeValueAsString(this);
 	}
-	
+
+    public String getCodeUrl() {
+        return codeUrl;
+    }
+
+    public void setCodeUrl(String codeUrl) {
+        this.codeUrl = codeUrl;
+    }
 }

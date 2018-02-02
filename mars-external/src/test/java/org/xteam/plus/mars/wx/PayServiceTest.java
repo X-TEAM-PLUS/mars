@@ -12,7 +12,7 @@ import java.util.Date;
 
 public class PayServiceTest {
 
-    private static String NOTIFY_URL = "http://6a6uy6.natappfree.cc/notify.php";
+    private static String NOTIFY_URL = "http://6a6uy6.natappfree.cc:8000/weixin/payNotify";
 
     IService wxService = new WxService();
 
@@ -26,7 +26,7 @@ public class PayServiceTest {
         order.setOrderId("100000000");
         order.setOrderName("测试body");
         order.setTotalFee("1");
-        order.setTradeType("MWEB");
+        order.setTradeType("NATIVE");
         order.setProductId("123123");
         order.setUserIp("124.193.184.90");
         order.setTimeExpire(getWaitDate());

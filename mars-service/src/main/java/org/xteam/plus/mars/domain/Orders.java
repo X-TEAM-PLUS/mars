@@ -125,6 +125,16 @@ public class Orders implements Serializable {
     private String realName;
 
     /**
+     * 收获地址
+     */
+    private String address;
+
+    /**
+     * 联系人
+     */
+    private String contactsMobile;
+
+    /**
      * 设置   productNum
      *
      * @param productNum (数量)
@@ -537,5 +547,21 @@ public class Orders implements Serializable {
      */
     public void setRealName(String realName) {
         this.realName = realName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getContactsMobile() {
+        return contactsMobile;
+    }
+
+    public void setContactsMobile(String contactsMobile) {
+        this.contactsMobile = contactsMobile;
     }
 }

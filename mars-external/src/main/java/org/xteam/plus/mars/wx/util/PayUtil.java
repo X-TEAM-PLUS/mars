@@ -29,44 +29,30 @@ public class PayUtil {
 		Map<String, String> payinfo = new HashMap<>();	
 		payinfo.put("appid", WxConfig.getInstance().getAppId());
 		payinfo.put("mch_id", WxConfig.getInstance().getMchId());
-		payinfo.put("device_info", "WEB");
 		payinfo.put("nonce_str", StringUtils.randomStr(32));
 		payinfo.put("body", order.getOrderName());
-		payinfo.put("detail", order.getDetail());
 		payinfo.put("out_trade_no", order.getOrderId());//商品订单号
 		payinfo.put("total_fee", ""+order.getTotalFee());
-		payinfo.put("attach", order.getAttach());
-		payinfo.put("product_id", order.getProductId());	
+		payinfo.put("spbill_create_ip",order.getUserIp());
 		payinfo.put("notify_url", notifyUrl);
 		payinfo.put("trade_type", order.getTradeType());
-		payinfo.put("openid", openid);
-		payinfo.put("sign", createSign(payinfo, WxConfig.getInstance().getApiKey()));
-		payinfo.put("spbill_create_ip",order.getUserIp());
 		payinfo.put("time_start",order.getTimeStart());
 		payinfo.put("time_expire",order.getTimeExpire());
+		payinfo.put("sign", createSign(payinfo, WxConfig.getInstance().getApiKey()));
 		//赋值对象
 		WxUnifiedOrder pay = new WxUnifiedOrder();
 		pay.setAppid(payinfo.get("appid"));
 		pay.setMchId(payinfo.get("mch_id"));
-		pay.setDeviceInfo(payinfo.get("device_info"));
 		pay.setNonceStr(payinfo.get("nonce_str"));
 		pay.setBody(payinfo.get("body"));
-		pay.setDetail(payinfo.get("detail"));
-		pay.setAttach(payinfo.get("attach"));
 		pay.setOutTradeNo(payinfo.get("out_trade_no"));
 		pay.setTotalFee(payinfo.get("total_fee"));
+		pay.setSpbillCreateIp(payinfo.get("spbill_create_ip"));
 		pay.setNotifyUrl(payinfo.get("notify_url"));
 		pay.setTradeType(payinfo.get("trade_type"));
-		pay.setProductId(payinfo.get("product_id"));
-		pay.setOpenid(payinfo.get("openid"));
-		pay.setSign(payinfo.get("sign"));
-		pay.setFeeType("CNY");
-		pay.setGoodsTag("WXG");
-		pay.setLimitPay("no_credit");
-		pay.setSpbillCreateIp(payinfo.get("spbill_create_ip"));
 		pay.setTimeStart(payinfo.get("time_start"));
 		pay.setTimeExpire(payinfo.get("time_expire"));
-
+		pay.setSign(payinfo.get("sign"));
 		return pay;
 	}
 	

@@ -1,9 +1,12 @@
 package org.xteam.plus.mars.manager;
 
 import org.xteam.plus.mars.domain.Orders;
+import org.xteam.plus.mars.wx.bean.PayOrderInfo;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -73,9 +76,34 @@ public interface OrdersManager {
 
     /**
      * 查询订单金额统计
+     *
      * @param nowDate
      * @return
      * @throws Exception
      */
-    public Integer queryOrderTotalCount(Date nowDate) throws Exception ;
+    public Integer queryOrderTotalCount(Date nowDate) throws Exception;
+
+
+    /**
+     * 平台直销生成订单
+     *
+     * @param userId         用户Id
+     * @param productId      产品Id
+     * @param number         购买个数
+     * @param address        收获地址
+     * @param contactsMobile 联系方式
+     * @param fee            单价
+     * @return
+     * @throws Exception
+     */
+    public PayOrderInfo createStraightPinOrder(BigDecimal userId, BigDecimal productId, BigDecimal number, String address, String contactsMobile, BigDecimal fee) throws Exception;
+
+    /**
+     * 支付回调后进行更新订单
+     * @param orders
+     * @param reqMap
+     * @return
+     * @throws Exception
+     */
+    public boolean updateStraightPinOrder(BigDecimal orders, Map<Object, Object> reqMap) throws Exception;
 }

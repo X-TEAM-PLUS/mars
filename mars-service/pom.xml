@@ -79,7 +79,12 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>${maven.mysql.driver.version}</version>
         </dependency>
-
+        <!-- GOOGLE zxing -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.3.0</version>
+        </dependency>
 
     </dependencies>
 
