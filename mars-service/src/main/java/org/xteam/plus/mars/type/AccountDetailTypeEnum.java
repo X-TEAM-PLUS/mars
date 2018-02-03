@@ -10,7 +10,8 @@ public enum AccountDetailTypeEnum {
     VIP_SUBSIDY(4, "会员提成"),
     DIRECTOR_WORK_SUBSIDY(5, "理事管理补贴"),
     STANDING_DIRECTOR_SUBSIDY(6, "常务理事管理补贴"),
-    WITHDRAWALS(7, "提现");
+    USER_BUY(7, "用户买卡"),
+    WITHDRAWALS(99, "提现");
 
     private int code;
 

@@ -1,6 +1,7 @@
 package org.xteam.plus.mars.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 
 /**
@@ -78,6 +79,10 @@ public class Product implements Serializable {
      */
     private java.util.Date created;
 
+    /**
+     * 产品金额
+     */
+    private BigDecimal amount;
 
     /**
      * 设置   cardType
@@ -326,5 +331,13 @@ public class Product implements Serializable {
     public Product setLimit(Integer limit) {
         this.limit = limit;
         return this;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
     }
 }

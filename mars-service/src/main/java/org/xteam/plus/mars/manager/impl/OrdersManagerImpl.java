@@ -4,13 +4,16 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.xteam.plus.mars.dao.AccountDetailDao;
 import org.xteam.plus.mars.dao.OrdersDao;
 import org.xteam.plus.mars.dao.ProductDao;
 import org.xteam.plus.mars.dao.UserInfoDao;
+import org.xteam.plus.mars.domain.AccountDetail;
 import org.xteam.plus.mars.domain.Orders;
 import org.xteam.plus.mars.domain.Product;
 import org.xteam.plus.mars.domain.UserInfo;
 import org.xteam.plus.mars.manager.OrdersManager;
+import org.xteam.plus.mars.type.AccountDetailTypeEnum;
 import org.xteam.plus.mars.wx.bean.PayOrderInfo;
 
 import javax.annotation.Resource;
@@ -39,6 +42,9 @@ public class OrdersManagerImpl implements OrdersManager {
 
     @Resource
     private UserInfoDao userInfoDao;
+
+    @Resource
+    private AccountDetailDao accountDetailDao;
 
     @Override
     public Orders get(Orders orders) throws Exception {
@@ -85,7 +91,8 @@ public class OrdersManagerImpl implements OrdersManager {
     }
 
     @Override
-    public PayOrderInfo createStraightPinOrder(BigDecimal userId, BigDecimal productId, BigDecimal number, String address, String contactsMobile, BigDecimal fee) throws Exception {
+    @Transactional(rollbackFor = Exception.class)
+    public PayOrderInfo createStraightPinOrder(BigDecimal userId, BigDecimal productId, BigDecimal number, String address, String contactsMobile) throws Exception {
         UserInfo userInfo = userInfoDao.get(new UserInfo().setUserId(userId));
         if (userId == null) {
             throw new Exception("用户id不存在，不能生成订单!");
@@ -99,7 +106,7 @@ public class OrdersManagerImpl implements OrdersManager {
         orders.setBuyerUserId(userId);
         orders.setProductName(product.getProductName());
         orders.setCardType(0);
-        orders.setProductPrice(fee);
+        orders.setProductPrice(product.getAmount());
         orders.setProductNum(number.intValue());
         orders.setCreated(new Date());
         orders.setProductId(productId);
@@ -115,7 +122,7 @@ public class OrdersManagerImpl implements OrdersManager {
         PayOrderInfo payOrderInfo = new PayOrderInfo();
         payOrderInfo.setOrderId(String.valueOf(orders.getOrderNo()));
         payOrderInfo.setOrderName(product.getProductName());
-        payOrderInfo.setTotalFee(String.valueOf(fee.intValue()));
+        payOrderInfo.setTotalFee(String.valueOf(product.getAmount().intValue()));
         payOrderInfo.setTradeType("NATIVE");
         payOrderInfo.setProductId(productId.toString());
         payOrderInfo.setUserIp("124.193.184.90");
@@ -125,7 +132,9 @@ public class OrdersManagerImpl implements OrdersManager {
     }
 
     @Override
-    public boolean updateStraightPinOrder(BigDecimal orderNo, Map<Object, Object> reqMap) throws Exception {
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updateStraightPinOrder(Map<Object, Object> reqMap) throws Exception {
+        BigDecimal orderNo = new BigDecimal((String) reqMap.get("out_trade_no"));
         Orders orders = ordersDao.get(new Orders().setOrderNo(orderNo));
         if (orders == null) {
             throw new Exception("不存在的订单，请检查本次请求来源!");
@@ -133,18 +142,29 @@ public class OrdersManagerImpl implements OrdersManager {
         try {
             orders.setPayOrderNo((String) reqMap.get("transaction_id"));
             orders.setUpdated(new Date());
-            orders.setPayTime(new SimpleDateFormat("yyyyMMddHHmiss").parse(reqMap.get("time_end").toString()));
+            orders.setPayTime(new SimpleDateFormat("yyyyMMddHHmmss").parse(reqMap.get("time_end").toString()));
             orders.setOrderPrice(new BigDecimal(reqMap.get("total_fee").toString()));
             orders.setStatus(1);
         } catch (Exception e) {
             throw new Exception("更新订单数据失败，系统错误，导致用户无法更新订单，问题严重!");
         }
         int count = ordersDao.update(orders);
-        if (count <= 0){
+        if (count <= 0) {
             throw new Exception("更新订单数据失败");
         }
-
-        return false;
+        // 插入账户明细表
+        AccountDetail accountDetail = new AccountDetail();
+        accountDetail.setAmount(orders.getOrderPrice());
+        accountDetail.setServiceNo(orders.getOrderNo());
+        accountDetail.setCreated(new Date());
+        accountDetail.setUserId(orders.getBuyerUserId());
+        accountDetail.setBusinesseType(AccountDetailTypeEnum.USER_BUY.getCode());
+        accountDetail.setOperationDirection(1);
+        count = accountDetailDao.insert(accountDetail);
+        if (count <= 0) {
+            throw new Exception("更新订单数据失败");
+        }
+        return true;
     }
 
     private String getDate() {

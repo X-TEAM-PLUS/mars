@@ -92,18 +92,16 @@ public interface OrdersManager {
      * @param number         购买个数
      * @param address        收获地址
      * @param contactsMobile 联系方式
-     * @param fee            单价
      * @return
      * @throws Exception
      */
-    public PayOrderInfo createStraightPinOrder(BigDecimal userId, BigDecimal productId, BigDecimal number, String address, String contactsMobile, BigDecimal fee) throws Exception;
+    public PayOrderInfo createStraightPinOrder(BigDecimal userId, BigDecimal productId, BigDecimal number, String address, String contactsMobile) throws Exception;
 
     /**
      * 支付回调后进行更新订单
-     * @param orders
      * @param reqMap
      * @return
      * @throws Exception
      */
-    public boolean updateStraightPinOrder(BigDecimal orders, Map<Object, Object> reqMap) throws Exception;
+    public boolean updateStraightPinOrder(Map<Object, Object> reqMap) throws Exception;
 }

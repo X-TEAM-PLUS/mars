@@ -14,6 +14,7 @@
         <result column="SEND_TOTAL_COUNT" property="sendTotalCount" jdbcType="INTEGER"/>
         <result column="STATUS" property="status" jdbcType="INTEGER"/>
         <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="AMOUNT" property="amount" jdbcType="DECIMAL"/>
     </resultMap>
 
     <!--公用选择列-->
@@ -29,6 +30,7 @@
         ,SEND_TOTAL_COUNT
         ,STATUS
         ,CREATED
+        ,AMOUNT
     </sql>
 
     <!--公用查询条件-->
@@ -113,6 +115,7 @@
         ,SEND_TOTAL_COUNT
         ,STATUS
         ,CREATED
+        ,AMOUNT
         )values(
         #{cardType,jdbcType=INTEGER}
         ,#{survivalPeriodMode,jdbcType=INTEGER}
@@ -124,6 +127,7 @@
         ,#{sendTotalCount,jdbcType=INTEGER}
         ,#{status,jdbcType=INTEGER}
         ,#{created,jdbcType=TIMESTAMP}
+        ,#{amount,jdbcType=DECIMAL}
         )
     </insert>
 
@@ -140,6 +144,7 @@
         ,SEND_TOTAL_COUNT
         ,STATUS
         ,CREATED
+        ,AMOUNT
         )values
         <foreach collection="list" item="item" index="index" separator=",">
             (
@@ -153,6 +158,7 @@
             ,#{item.sendTotalCount,jdbcType=INTEGER}
             ,#{item.status,jdbcType=INTEGER}
             ,#{item.created,jdbcType=TIMESTAMP}
+            ,#{item.amount,jdbcType=DECIMAL}
             )
         </foreach>
     </insert>
@@ -192,6 +198,9 @@
                 <if test="created!=null ">
                     CREATED=#{created,jdbcType=TIMESTAMP},
                 </if>
+                <if test="amount!=null ">
+                    AMOUNT=#{amount,jdbcType=DECIMAL}
+                </if>
             </trim>
         </set>
         where PRODUCT_ID= #{productId,jdbcType=DECIMAL}
@@ -211,6 +220,7 @@
         ,SEND_TOTAL_COUNT
         ,STATUS
         ,CREATED
+        ,AMOUNT
         from T_MARS_PRODUCT
         where PRODUCT_ID= #{productId,jdbcType=DECIMAL}
     </select>

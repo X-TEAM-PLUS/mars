@@ -29,20 +29,21 @@ import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/weixin")
 public class WeixinNotifyWebServiceProvider extends Logging {
 
-    Random random = new Random(999990);
     @Resource
     private OrdersManager ordersManager;
 
     private WxService iService = new WxService();
 
     @RequestMapping(value = "/payNotify")
-    public String payNotify(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public String payNotify(HttpServletRequest request) throws Exception {
         String returnValue = "FAIL";
         try {
             //读取参数
@@ -67,7 +68,7 @@ public class WeixinNotifyWebServiceProvider extends Logging {
                 return returnValue;
             }
             if (reqMap.get("result_code").toString().equalsIgnoreCase("SUCCESS")) {
-
+                ordersManager.updateStraightPinOrder(reqMap);
                 returnValue = "SUCCESS";
             } else {
                 logInfo("微信支付通知接口返回失败 reqMap[" + reqMap + "]");
@@ -81,8 +82,8 @@ public class WeixinNotifyWebServiceProvider extends Logging {
     }
 
     @RequestMapping("/getImage")
-    public void getImage(BigDecimal userId, BigDecimal productId, BigDecimal number, String address, BigDecimal fee, String contactsMobile, HttpServletResponse response, HttpSession session) throws Exception {
-        PayOrderInfo payOrderInfo = ordersManager.createStraightPinOrder(userId, productId, number, address, contactsMobile, fee);
+    public void getImage(BigDecimal userId, BigDecimal productId, BigDecimal number, String address, String contactsMobile, HttpServletResponse response, HttpSession session) throws Exception {
+        PayOrderInfo payOrderInfo = ordersManager.createStraightPinOrder(userId, productId, number, address, contactsMobile);
         InvokePay invokePay = iService.unifiedOrder(payOrderInfo, WxConfig.getInstance().getPayNotifyPath(), "");
         String code_url = invokePay.getCodeUrl();
         if (code_url == null || "".equals(code_url))

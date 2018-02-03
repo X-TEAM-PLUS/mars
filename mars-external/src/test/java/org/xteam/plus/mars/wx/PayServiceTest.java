@@ -23,7 +23,7 @@ public class PayServiceTest {
         // 商品详情
         order.setDetail("测试商品");
         // 我方订单号
-        order.setOrderId("100000000");
+        order.setOrderId("100000010");
         order.setOrderName("测试body");
         order.setTotalFee("1");
         order.setTradeType("NATIVE");

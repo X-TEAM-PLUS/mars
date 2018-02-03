@@ -89,9 +89,10 @@
                 <mvn.wx.appSecret>47ca3d8b85d492a406bb10fa2cb5b77f</mvn.wx.appSecret>
                 <mvn.wx.token>mars_test</mvn.wx.token>
                 <mvn.wx.aesKey>f82PVzQsKG5d8en3DwnZ8VVEoGInkmsWz3X3HsreEqe</mvn.wx.aesKey>
-                <mvn.wx.oauth2RedirectUrl>http://www.6a6uy6.natappfree.cc/weixin/oauth</mvn.wx.oauth2RedirectUrl>
+                <mvn.wx.oauth2RedirectUrl>http://www.rvqkei.natappfree.cc/weixin/oauth</mvn.wx.oauth2RedirectUrl>
                 <mvn.wx.mchId>1248848201</mvn.wx.mchId>
                 <mvn.wx.apiKey>DWLRaBRo4zbrTeMDy7zqns4O5Up0SY3v</mvn.wx.apiKey>
+                <mvn.wx.payNotifyPath>http://rvqkei.natappfree.cc/weixin/payNotify</mvn.wx.payNotifyPath>
             </properties>
         </profile>
         <profile>
@@ -103,9 +104,10 @@
                 <mvn.wx.appSecret>47ca3d8b85d492a406bb10fa2cb5b77f</mvn.wx.appSecret>
                 <mvn.wx.token>mars_test</mvn.wx.token>
                 <mvn.wx.aesKey>f82PVzQsKG5d8en3DwnZ8VVEoGInkmsWz3X3HsreEqe</mvn.wx.aesKey>
-                <mvn.wx.oauth2RedirectUrl>http://www.6a6uy6.natappfree.cc/weixin/oauth</mvn.wx.oauth2RedirectUrl>
+                <mvn.wx.oauth2RedirectUrl>http://www.rvqkei.natappfree.cc/weixin/oauth</mvn.wx.oauth2RedirectUrl>
                 <mvn.wx.mchId>1248848201</mvn.wx.mchId>
                 <mvn.wx.apiKey>DWLRaBRo4zbrTeMDy7zqns4O5Up0SY3v</mvn.wx.apiKey>
+                <mvn.wx.payNotifyPath>http://rvqkei.natappfree.cc/weixin/payNotify</mvn.wx.payNotifyPath>
             </properties>
         </profile>
         <profile>
@@ -117,9 +119,10 @@
                 <mvn.wx.appSecret>47ca3d8b85d492a406bb10fa2cb5b77f</mvn.wx.appSecret>
                 <mvn.wx.token>mars_test</mvn.wx.token>
                 <mvn.wx.aesKey>f82PVzQsKG5d8en3DwnZ8VVEoGInkmsWz3X3HsreEqe</mvn.wx.aesKey>
-                <mvn.wx.oauth2RedirectUrl>http://www.6a6uy6.natappfree.cc/weixin/oauth</mvn.wx.oauth2RedirectUrl>
+                <mvn.wx.oauth2RedirectUrl>http://www.rvqkei.natappfree.cc/weixin/oauth</mvn.wx.oauth2RedirectUrl>
                 <mvn.wx.mchId>1248848201</mvn.wx.mchId>
                 <mvn.wx.apiKey>DWLRaBRo4zbrTeMDy7zqns4O5Up0SY3v</mvn.wx.apiKey>
+                <mvn.wx.payNotifyPath>http://rvqkei.natappfree.cc/weixin/payNotify</mvn.wx.payNotifyPath>
             </properties>
         </profile>
     </profiles>
