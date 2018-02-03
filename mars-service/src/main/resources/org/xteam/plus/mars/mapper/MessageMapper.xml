@@ -71,24 +71,25 @@
     <delete id="delete" parameterType="org.xteam.plus.mars.domain.Message">
         delete from  T_MARS_MESSAGE
         where  MESSAGE_ID= #{messageId,jdbcType=DECIMAL}
+         and USER_ID=#{userId,jdbcType=DECIMAL}
     </delete>
 
     <!--插入记录-->
     <insert id="insert" parameterType="org.xteam.plus.mars.domain.Message" useGeneratedKeys="true" keyProperty="messageId">
                 insert into  T_MARS_MESSAGE (
             STATUS
-,CREATED
-,UPDATED
-,USER_ID
-,MESSAGE_TITLE
-,MESSAGE_CONTENT
+            ,CREATED
+            ,UPDATED
+            ,USER_ID
+            ,MESSAGE_TITLE
+            ,MESSAGE_CONTENT
                 )values(
             #{status,jdbcType=INTEGER}
-,#{created,jdbcType=TIMESTAMP}
-,#{updated,jdbcType=TIMESTAMP}
-,#{userId,jdbcType=DECIMAL}
-,#{messageTitle,jdbcType=VARCHAR}
-,#{messageContent,jdbcType=VARCHAR}
+            ,#{created,jdbcType=TIMESTAMP}
+            ,#{updated,jdbcType=TIMESTAMP}
+            ,#{userId,jdbcType=DECIMAL}
+            ,#{messageTitle,jdbcType=VARCHAR}
+            ,#{messageContent,jdbcType=VARCHAR}
                 )
             </insert>
 
@@ -122,36 +123,25 @@
                 <if test="status!=null ">
                     STATUS=#{status,jdbcType=INTEGER},
                 </if>
-                <if test="created!=null ">
-                    CREATED=#{created,jdbcType=TIMESTAMP},
-                </if>
                 <if test="updated!=null ">
                     UPDATED=#{updated,jdbcType=TIMESTAMP},
-                </if>
-                <if test="userId!=null ">
-                    USER_ID=#{userId,jdbcType=DECIMAL},
-                </if>
-                <if test="messageTitle!=null ">
-                    MESSAGE_TITLE=#{messageTitle,jdbcType=VARCHAR},
-                </if>
-                <if test="messageContent!=null ">
-                    MESSAGE_CONTENT=#{messageContent,jdbcType=VARCHAR},
                 </if>
             </trim>
         </set>
         where MESSAGE_ID= #{messageId,jdbcType=DECIMAL}
+        and USER_ID=#{userId,jdbcType=DECIMAL}
     </update>
 
     <!--查询单条记录-->
     <select id="get" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.Message">
         select
-    MESSAGE_ID
+        MESSAGE_ID
         ,STATUS
-,CREATED
-,UPDATED
-,USER_ID
-,MESSAGE_TITLE
-,MESSAGE_CONTENT
+        ,CREATED
+        ,UPDATED
+        ,USER_ID
+        ,MESSAGE_TITLE
+        ,MESSAGE_CONTENT
         from    T_MARS_MESSAGE
         where  MESSAGE_ID= #{messageId,jdbcType=DECIMAL}
     </select>
@@ -163,7 +153,7 @@
         <include refid="selectColumns"></include>
         from T_MARS_MESSAGE
         <include refid="queryWhere"></include>
-        ORDER MESSAGE_ID DESC
+        ORDER  BY  CREATED DESC
         limit #{start},#{limit}
     </select>
 

@@ -23,11 +23,11 @@ var routes = [
         url: './pages/heart_check.html',
         name: 'heart_check',
     },
-    //好医生
+    //社工学院
     {
-        path: '/good_doctor/',
-        url: './pages/good_doctor.html',
-        name: 'good_doctor',
+        path: '/college/',
+        url: './pages/college.html',
+        name: 'college',
     },
 
     //常见问题
@@ -35,6 +35,13 @@ var routes = [
         path: '/question/',
         url: './pages/question.html',
         name: 'question',
+    },
+
+    //常见问题
+    {
+        path: '/message/',
+        url: './pages/message.html',
+        name: 'message',
     },
   // Default route (404 page). MUST BE THE LAST
   {

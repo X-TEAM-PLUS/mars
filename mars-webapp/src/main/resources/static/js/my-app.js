@@ -11,13 +11,15 @@ else if (Framework7.Class && Framework7.Class.use) Framework7.Class.use(plugin);
 var $$ = Dom7;
 
 //定义接口地址
-var INTERFACE_URL = "http://192.168.20.123:8000/api/gateway";
+var INTERFACE_URL = "http://www.mars.com:8000/api/gateway";
 var userInfo = {};
 var InterFace = {
     USER_INFO:'com.zhaoanyun.api.gateway.user.getUserInfo'
     ,QUESTION_LIST:'com.zhaoanyun.api.gateway.global.question.list'
     ,QUESTION_DETAIL:'com.zhaoanyun.api.gateway.global.question.detail'
     ,MESSAGE_LIST:'com.zhaoanyun.api.gateway.security.message.list'
+    ,MESSAGE_MARK:'com.zhaoanyun.api.gateway.security.message.mark'
+    ,MESSAGE_REMOVE:'com.zhaoanyun.api.gateway.security.message.remove'
 }
 /**
  * 定义返回状态码
@@ -53,7 +55,8 @@ function loadUserView(userId) {
     var params = {method:InterFace.USER_INFO, userId: userId};
     //获取用户信息
     app.request.json(INTERFACE_URL, params, function (data) {
-        if (data.code == ResponseCode.SUCCESS) {
+        if (ResponseCode.SUCCESS==data.code  ) {
+            console.info("获取用户信息成功.")
             var bizContent = JSON.parse(data.bizContent);
             setUserInfo(bizContent);
             var userViewDomId = "user-view";
@@ -115,10 +118,48 @@ function setUserInfo(json) {
     userInfo = json;
 }
 
+
 /**
- * 获取用户信息
- * @returns {{}}
+ * 删除系统消息
+ * @param messageId
  */
-function getuserInfo() {
-    return userInfo;
+function removeSystemMessage(messageId) {
+    var bizContent = {messageId:messageId};
+    var params = {
+        method:InterFace.MESSAGE_REMOVE,
+        userId: userInfo.userId,
+        bizContent:JSON.stringify(bizContent)
+    };
+    //删除消息
+    app.request.json(INTERFACE_URL, params, function (data) {
+        if (ResponseCode.SUCCESS==data.code  ) {
+                console.info("删除消息成功.")
+        }
+    });
+}
+
+
+/**
+ * 标记已读消息
+ * @param messageId
+ */
+function markSystemMessage(messageId) {
+    var bizContent = {messageId:messageId};
+    var params = {
+        method:InterFace.MESSAGE_MARK,
+        userId: userInfo.userId,
+        bizContent:JSON.stringify(bizContent)
+    };
+    //标记消息已读
+    app.request.json(INTERFACE_URL, params, function (data) {
+        if (ResponseCode.SUCCESS==data.code  ) {
+            document.getElementById("messageId-"+messageId).className=" item-title color-gray ";
+            console.info("标记已读消息成功.")
+        }
+    });
+}
+
+
+function loveBuTie() {
+    alert("爱补贴");
 }

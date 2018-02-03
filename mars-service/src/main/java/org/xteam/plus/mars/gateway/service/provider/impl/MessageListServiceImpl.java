@@ -18,7 +18,7 @@ import java.util.Map;
 
 
 /**
- * 常见问题列表
+ * 消息列表
  */
 @Component
 public class MessageListServiceImpl implements GateWayService {
