@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.xteam.plus.mars.common.Logging;
 import org.xteam.plus.mars.manager.OrdersManager;
+import org.xteam.plus.mars.manager.UserInfoManager;
 import org.xteam.plus.mars.wx.api.WxConfig;
 import org.xteam.plus.mars.wx.api.WxConsts;
 import org.xteam.plus.mars.wx.api.WxService;
@@ -39,6 +40,9 @@ public class WeixinNotifyWebServiceProvider extends Logging {
 
     @Resource
     private OrdersManager ordersManager;
+
+    @Resource
+    private UserInfoManager userInfoManager;
 
     private WxService iService = new WxService();
 
@@ -140,10 +144,10 @@ public class WeixinNotifyWebServiceProvider extends Logging {
         if (iService.checkSignature(signature, timestamp, nonce, echostr)) {
             String result = iService.oauth2buildAuthorizationUrl(WxConfig.getInstance().getOauth2RedirectUri(), "snsapi_userinfo", "123");
             logInfo("调用微信获取用户信息，返回结果[" + result + "]");
-            return new ModelAndView("redirect:" + result);
+//            return new ModelAndView("redirect:" + result);
 
-//            iService.post(result,"");
-//            out.print(echostr);
+            iService.post(result, "");
+            out.print(echostr);
         }
         return null;
     }
@@ -165,8 +169,11 @@ public class WeixinNotifyWebServiceProvider extends Logging {
             result = iService.oauth2ToGetAccessToken(code);
             WxUserList.WxUser user = iService.oauth2ToGetUserInfo(result.getAccess_token(), new WxUserList.WxUser.WxUserGet(result.getOpenid(), WxConsts.LANG_CHINA));
             System.out.println(user.toString());
+            userInfoManager.registerWxUserInfo(user, new BigDecimal(state));
             out.print(user.toString());
         } catch (WxErrorException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

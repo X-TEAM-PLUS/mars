@@ -5,7 +5,6 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.xteam.plus.mars.common.JsonUtils;
-import org.xteam.plus.mars.domain.InsuranceProduct;
 import org.xteam.plus.mars.gateway.service.provider.HttpRequestBody;
 import org.xteam.plus.mars.gateway.service.provider.HttpResponseBody;
 import org.xteam.plus.mars.gateway.service.provider.impl.*;
@@ -68,11 +67,33 @@ public class UserInfoTest {
     @Resource
     private BankConfigListServiceImpl bankConfigListService;
 
+    @Resource
+    private WxPayServiceAppInfoServiceImpl wxPayServiceAppInfoService;
+
     @Test
-    public void bankConfigListService(){
+    public void wxPayServiceAppInfoService() {
+        WxPayJsApiReqVO wxPayJsApiReqVO = new WxPayJsApiReqVO();
+        wxPayJsApiReqVO.setUserId(new BigDecimal(2000004));
+        wxPayJsApiReqVO.setProductId(new BigDecimal(1));
+        wxPayJsApiReqVO.setNumber(new BigDecimal(1));
+        wxPayJsApiReqVO.setAddress("北京市丰台区");
+        wxPayJsApiReqVO.setContactsMobile("139912313");
+        HttpRequestBody httpRequestBody = new HttpRequestBody();
+        httpRequestBody.setBizContent(JsonUtils.toJSON(wxPayJsApiReqVO));
+        try {
+            HttpResponseBody httpResponseBody = wxPayServiceAppInfoService.gateWay(httpRequestBody);
+            System.out.println("wxPayServiceAppInfoService :" + httpResponseBody.getMsg());
+            System.out.println("wxPayServiceAppInfoService :" + httpResponseBody.getBizContent());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void bankConfigListService() {
         HttpRequestBody httpRequestBody = new HttpRequestBody();
         try {
-            HttpResponseBody httpResponseBody =  bankConfigListService.gateWay(httpRequestBody);
+            HttpResponseBody httpResponseBody = bankConfigListService.gateWay(httpRequestBody);
             System.out.println(httpResponseBody.getBizContent());
         } catch (Exception e) {
             e.printStackTrace();
@@ -83,7 +104,7 @@ public class UserInfoTest {
      * 无法模拟提交
      */
     @Test
-    public void submitUserDetectionService(){
+    public void submitUserDetectionService() {
         SubmitUserDetectionReqVO submitUserDetectionReqVO = new SubmitUserDetectionReqVO();
         submitUserDetectionReqVO.setCheckReport("测试测试测试");
         HttpRequestBody httpRequestBody = new HttpRequestBody();
@@ -103,7 +124,7 @@ public class UserInfoTest {
      * 获取提现记录详情
      */
     @Test
-    public void getRecordInfoService(){
+    public void getRecordInfoService() {
         RecordReqVO recordReqVO = new RecordReqVO();
         recordReqVO.setRecordId(new BigDecimal(1));
         HttpRequestBody httpRequestBody = new HttpRequestBody();
@@ -121,7 +142,7 @@ public class UserInfoTest {
      * 发起提现申请
      */
     @Test
-    public void applyRecord(){
+    public void applyRecord() {
         ApplyRecordReqVO applyRecordReqVO = new ApplyRecordReqVO();
         applyRecordReqVO.setAmount(new BigDecimal(50));
         applyRecordReqVO.setBankAccountName("宋鑫磊");
@@ -144,7 +165,7 @@ public class UserInfoTest {
      * 查询用户提现记录
      */
     @Test
-    public void getRecordListService(){
+    public void getRecordListService() {
         PageInfoReqVO pageInfoReqVO = new PageInfoReqVO();
 
         pageInfoReqVO.setStart(0);
@@ -165,7 +186,7 @@ public class UserInfoTest {
      * 查询保险详情
      */
     @Test
-    public void getInsuranceInfoService(){
+    public void getInsuranceInfoService() {
         InsuranceProductReqVO insuranceProductReqVO = new InsuranceProductReqVO();
         insuranceProductReqVO.setInsuranceProductNo(new BigDecimal(200001));
         HttpRequestBody httpRequestBody = new HttpRequestBody();
@@ -183,7 +204,7 @@ public class UserInfoTest {
      * 获取保险产品列表
      */
     @Test
-    public void getInsuranceAllListService(){
+    public void getInsuranceAllListService() {
         PageInfoReqVO pageInfoReqVO = new PageInfoReqVO();
         pageInfoReqVO.setStart(new Integer(0));
         pageInfoReqVO.setLimit(new Integer(10));
@@ -201,7 +222,7 @@ public class UserInfoTest {
      * 查询用户保险信息
      */
     @Test
-    public void getUserInsuranceListService(){
+    public void getUserInsuranceListService() {
         PageInfoReqVO pageInfoReqVO = new PageInfoReqVO();
         pageInfoReqVO.setStart(0);
         pageInfoReqVO.setLimit(10);
@@ -219,9 +240,9 @@ public class UserInfoTest {
 
     /**
      * 获取用户账户余额
-      */
+     */
     @Test
-    public void getAccountInfoService(){
+    public void getAccountInfoService() {
 
         HttpRequestBody httpRequestBody = new HttpRequestBody();
         httpRequestBody.setUserId("2000000");
@@ -237,7 +258,7 @@ public class UserInfoTest {
      * 用户绑定银行卡
      */
     @Test
-    public void bindBank(){
+    public void bindBank() {
         UserCardBindReqVO userCardBindReqVO = new UserCardBindReqVO();
         userCardBindReqVO.setCardNo(new BigDecimal(121112221));
         userCardBindReqVO.setCardUserName("宋鑫咧");
@@ -252,6 +273,7 @@ public class UserInfoTest {
             e.printStackTrace();
         }
     }
+
     /**
      * 获取用户信息
      */
@@ -293,7 +315,7 @@ public class UserInfoTest {
      * 获取某用户的补贴数据
      */
     @Test
-    public void subsidyList(){
+    public void subsidyList() {
         PageInfoReqVO pageInfoReqVO = new PageInfoReqVO();
         pageInfoReqVO.setStart(0);
         pageInfoReqVO.setLimit(10);
@@ -316,7 +338,7 @@ public class UserInfoTest {
      * reason 申请理由
      */
     @Test
-    public void userLevelApply(){
+    public void userLevelApply() {
         UserApplyInfoReqVO userApplyInfoReqVO = new UserApplyInfoReqVO();
         userApplyInfoReqVO.setApplayTypeEnum(ApplayTypeEnum.DIRECTOR);
         userApplyInfoReqVO.setReason("测试申请");
@@ -326,7 +348,7 @@ public class UserInfoTest {
         try {
             HttpResponseBody httpResponseBody = userLevelApplyService.gateWay(httpRequestBody);
             System.out.println(JsonUtils.toJSON(httpResponseBody));
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -335,7 +357,7 @@ public class UserInfoTest {
      * 获取用户已激活的健康卡，包含产品信息
      */
     @Test
-    public void getUserDetectionInfo(){
+    public void getUserDetectionInfo() {
 
         HttpRequestBody httpRequestBody = new HttpRequestBody();
         httpRequestBody.setUserId("2000001");
@@ -352,7 +374,7 @@ public class UserInfoTest {
      * 查询体检记录
      */
     @Test
-    public void getUserDetectionList(){
+    public void getUserDetectionList() {
         PageInfoReqVO pageInfoReqVO = new PageInfoReqVO();
         pageInfoReqVO.setStart(0);
         pageInfoReqVO.setLimit(10);

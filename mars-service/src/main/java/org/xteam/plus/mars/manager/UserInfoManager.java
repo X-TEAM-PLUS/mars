@@ -2,7 +2,9 @@ package org.xteam.plus.mars.manager;
 
 import org.xteam.plus.mars.domain.UserInfo;
 import org.xteam.plus.mars.type.UserLevelEnum;
+import org.xteam.plus.mars.wx.bean.WxUserList;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -26,11 +28,13 @@ public interface UserInfoManager {
 
     /**
      * 获取社工，理事，常任理事详细信息
+     *
      * @param userInfo
      * @return
      * @throws Exception
      */
     public UserInfo getWorker(UserInfo userInfo) throws Exception;
+
     /**
      * 新增
      *
@@ -89,6 +93,7 @@ public interface UserInfoManager {
 
     /**
      * 查询社工，理事，常务理事个数
+     *
      * @param userInfo
      * @return
      * @throws Exception
@@ -97,9 +102,19 @@ public interface UserInfoManager {
 
     /**
      * 统计查询
+     *
      * @param userLevelEnum
      * @param nowDate
      * @return
      */
-    public Integer queryUserTotalCount(UserLevelEnum userLevelEnum,Date nowDate);
+    public Integer queryUserTotalCount(UserLevelEnum userLevelEnum, Date nowDate);
+
+    /**
+     * 微信用户注册
+     *
+     * @param wxUser
+     * @return
+     * @throws Exception
+     */
+    public UserInfo registerWxUserInfo(WxUserList.WxUser wxUser, BigDecimal userId) throws Exception;
 }

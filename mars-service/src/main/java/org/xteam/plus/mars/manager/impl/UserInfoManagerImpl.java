@@ -8,7 +8,9 @@ import org.xteam.plus.mars.dao.UserInfoDao;
 import org.xteam.plus.mars.domain.UserInfo;
 import org.xteam.plus.mars.manager.UserInfoManager;
 import org.xteam.plus.mars.type.UserLevelEnum;
+import org.xteam.plus.mars.wx.bean.WxUserList;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -84,6 +86,62 @@ public class UserInfoManagerImpl implements UserInfoManager {
     @Override
     public Integer queryUserTotalCount(UserLevelEnum userLevelEnum, Date nowDate) {
         return userInfoDao.queryUserTotalCount(userLevelEnum.getCode(), nowDate);
+    }
+
+    @Override
+    public UserInfo registerWxUserInfo(WxUserList.WxUser wxUser, BigDecimal userId) throws Exception {
+        UserInfo userInfo = null;
+        if (userId != null) {
+            // 更新用户信息
+            userInfo = userInfoDao.get(new UserInfo().setUserId(userId));
+            if (userInfo == null) {
+                List<UserInfo> userInfos = userInfoDao.query(new UserInfo().setWxOpenid(wxUser.getOpenid()));
+                if (userInfos != null && userInfos.size() > 0) {
+                    userInfo = userInfos.get(0);
+                }
+            }
+        } else {
+            List<UserInfo> userInfos = userInfoDao.query(new UserInfo().setWxOpenid(wxUser.getOpenid()));
+            if (userInfos != null && userInfos.size() > 0) {
+                userInfo = userInfos.get(0);
+            }
+        }
+        if (userInfo == null) {
+            userInfo = new UserInfo();
+            // 开始注册用户
+            if (!insertWxUser(wxUser, userInfo)) {
+                throw new Exception("注册新用户成功!");
+            }
+        } else {
+            if (!updateWxUser(wxUser, userInfo)) {
+                throw new Exception("更新用户数据失败!");
+            }
+        }
+        return userInfo;
+    }
+
+    private boolean updateWxUser(WxUserList.WxUser wxUser, UserInfo userInfo) throws Exception {
+        userInfo.setRealName(wxUser.getNickname());
+        userInfo.setWxHeadPortrait(wxUser.getHeadimgurl());
+        userInfo.setWxOpenid(wxUser.getOpenid());
+        if (userInfoDao.update(userInfo) > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean insertWxUser(WxUserList.WxUser wxUser, UserInfo userInfo) throws Exception {
+        userInfo.setRealName(wxUser.getNickname());
+        userInfo.setWxHeadPortrait(wxUser.getHeadimgurl());
+        userInfo.setWxOpenid(wxUser.getOpenid());
+        userInfo.setRegisterTime(new Date());
+        userInfo.setUserLevel(UserLevelEnum.TOURIST.getCode());
+        userInfo.setStatus(1);
+        userInfo.setCreated(new Date());
+        if (userInfoDao.insert(userInfo) > 0) {
+            return true;
+        }
+        return false;
     }
 
 }

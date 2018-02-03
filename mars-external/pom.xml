@@ -85,7 +85,7 @@
             <properties>
                 <!-- tracker地址-->
                 <mvn.tracker.server>192.168.31.69:22122</mvn.tracker.server>
-                <mvn.wx.appId>wxc95f0fd3337bd769</mvn.wx.appId>
+                <mvn.wx.appId>wxf957baa19f363948</mvn.wx.appId>
                 <mvn.wx.appSecret>47ca3d8b85d492a406bb10fa2cb5b77f</mvn.wx.appSecret>
                 <mvn.wx.token>mars_test</mvn.wx.token>
                 <mvn.wx.aesKey>f82PVzQsKG5d8en3DwnZ8VVEoGInkmsWz3X3HsreEqe</mvn.wx.aesKey>

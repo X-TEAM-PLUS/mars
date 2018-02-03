@@ -193,6 +193,7 @@ public class UserInfo implements Serializable {
      * 微信openid，唯一标示
      */
     private String wxOpenid;
+
     /**
      * 设置   cardNo
      *
@@ -733,7 +734,8 @@ public class UserInfo implements Serializable {
         return wxOpenid;
     }
 
-    public void setWxOpenid(String wxOpenid) {
+    public UserInfo setWxOpenid(String wxOpenid) {
         this.wxOpenid = wxOpenid;
+        return this;
     }
 }

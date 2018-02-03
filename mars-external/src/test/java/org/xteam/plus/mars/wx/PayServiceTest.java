@@ -26,12 +26,13 @@ public class PayServiceTest {
         order.setOrderId("100000010");
         order.setOrderName("测试body");
         order.setTotalFee("1");
-        order.setTradeType("NATIVE");
+        order.setTradeType("JSAPI");
         order.setProductId("123123");
         order.setUserIp("124.193.184.90");
         order.setTimeExpire(getWaitDate());
         order.setTimeStart(getDate());
-        String openid = "";
+
+        String openid = "oJUP70npOEyWlHd5QN69pbat29iY";
         try {
             InvokePay invokePay = wxService.unifiedOrder(order, NOTIFY_URL, openid);
             System.out.println(JsonUtils.toJSON(invokePay));
