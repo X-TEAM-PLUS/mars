@@ -11,16 +11,17 @@ else if (Framework7.Class && Framework7.Class.use) Framework7.Class.use(plugin);
 var $$ = Dom7;
 
 //定义接口地址
-var INTERFACE_URL = "http://www.mars.com:8000/api/gateway";
+var INTERFACE_URL = "http://192.168.31.139:8080/webservice/api/gateway";
 var userInfo = {};
 var InterFace = {
-    USER_INFO:'com.zhaoanyun.api.gateway.user.getUserInfo'
-    ,QUESTION_LIST:'com.zhaoanyun.api.gateway.global.question.list'
-    ,QUESTION_DETAIL:'com.zhaoanyun.api.gateway.global.question.detail'
-    ,MESSAGE_LIST:'com.zhaoanyun.api.gateway.security.message.list'
-    ,MESSAGE_MARK:'com.zhaoanyun.api.gateway.security.message.mark'
-    ,MESSAGE_REMOVE:'com.zhaoanyun.api.gateway.security.message.remove'
+    USER_INFO: 'cn.zaoangongcheng.api.gateway.user.getUserInfo'
+    , QUESTION_LIST: 'cn.zaoangongcheng.api.gateway.global.question.list'
+    , QUESTION_DETAIL: 'cn.zaoangongcheng.api.gateway.global.question.detail'
+    , MESSAGE_LIST: 'cn.zaoangongcheng.api.gateway.security.message.list'
+    , MESSAGE_MARK: 'cn.zaoangongcheng.api.gateway.security.message.mark'
+    , MESSAGE_REMOVE: 'cn.zaoangongcheng.api.gateway.security.message.remove'
 }
+
 /**
  * 定义返回状态码
  * @type {{SUCCESS: number, UNKNOW: number, UNAUTHORIZED: number, MISSING_PARAMETERS: number, ILLEGAL_PARAMETERS: number, USER_ID_NOT_HIVE: number}}
@@ -52,10 +53,10 @@ var UserLeve = {
  * @param params
  */
 function loadUserView(userId) {
-    var params = {method:InterFace.USER_INFO, userId: userId};
+    var params = {method: InterFace.USER_INFO, userId: userId};
     //获取用户信息
     app.request.json(INTERFACE_URL, params, function (data) {
-        if (ResponseCode.SUCCESS==data.code  ) {
+        if (ResponseCode.SUCCESS == data.code) {
             console.info("获取用户信息成功.")
             var bizContent = JSON.parse(data.bizContent);
             setUserInfo(bizContent);
@@ -124,16 +125,16 @@ function setUserInfo(json) {
  * @param messageId
  */
 function removeSystemMessage(messageId) {
-    var bizContent = {messageId:messageId};
+    var bizContent = {messageId: messageId};
     var params = {
-        method:InterFace.MESSAGE_REMOVE,
+        method: InterFace.MESSAGE_REMOVE,
         userId: userInfo.userId,
-        bizContent:JSON.stringify(bizContent)
+        bizContent: JSON.stringify(bizContent)
     };
     //删除消息
     app.request.json(INTERFACE_URL, params, function (data) {
-        if (ResponseCode.SUCCESS==data.code  ) {
-                console.info("删除消息成功.")
+        if (ResponseCode.SUCCESS == data.code) {
+            console.info("删除消息成功.")
         }
     });
 }
@@ -144,22 +145,62 @@ function removeSystemMessage(messageId) {
  * @param messageId
  */
 function markSystemMessage(messageId) {
-    var bizContent = {messageId:messageId};
+    var bizContent = {messageId: messageId};
     var params = {
-        method:InterFace.MESSAGE_MARK,
+        method: InterFace.MESSAGE_MARK,
         userId: userInfo.userId,
-        bizContent:JSON.stringify(bizContent)
+        bizContent: JSON.stringify(bizContent)
     };
     //标记消息已读
     app.request.json(INTERFACE_URL, params, function (data) {
-        if (ResponseCode.SUCCESS==data.code  ) {
-            document.getElementById("messageId-"+messageId).className=" item-title color-gray ";
+        if (ResponseCode.SUCCESS == data.code) {
+            document.getElementById("messageId-" + messageId).className = " item-title color-gray ";
             console.info("标记已读消息成功.")
         }
     });
 }
 
+/**
+ * 爱补贴
+ */
+function loveBuTieClick() {
+    if (userInfo.userId && userInfo.userLevel >= 2) {
+        memberView.router.navigate('/lovebutie/', {
+            history: true
+        });
+    } else {
+        memberView.router.navigate('/member_rk/', {
+            history: true
+        });
+    }
+}
 
-function loveBuTie() {
-    alert("爱补贴");
+/**
+ * 小卡包
+ */
+function xiaoKaBaoClick() {
+    if (userInfo.userId && userInfo.userLevel >= 1) {
+        memberView.router.navigate('/xiaokabao/', {
+            history: true
+        });
+    } else {
+        memberView.router.navigate('/member_rk/', {
+            history: true
+        });
+    }
+}
+
+/**
+ * 健康卡
+ */
+function jianKangKaClick() {
+    if (userInfo.userId && userInfo.userLevel >= 1) {
+        memberView.router.navigate('/jiankangka/', {
+            history: true
+        });
+    } else {
+        memberView.router.navigate('/member_rk/', {
+            history: true
+        });
+    }
 }

@@ -29,7 +29,7 @@ public class GetUserInfoServiceImpl extends Logging implements GateWayService {
     @Resource
     private MessageManager messageManager;
 
-    private final String METHOD_NAME = "com.zhaoanyun.api.gateway.user.getUserInfo";
+    private final String METHOD_NAME = "cn.zaoangongcheng.api.gateway.user.getUserInfo";
 
     @Override
     public String getMethodName() {

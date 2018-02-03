@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @Component
 public class MessageListServiceImpl implements GateWayService {
-    private final String METHOD_NAME = "com.zhaoanyun.api.gateway.security.message.list";
+    private final String METHOD_NAME = "cn.zaoangongcheng.api.gateway.security.message.list";
 
     @Resource
     private MessageManager messageManager;

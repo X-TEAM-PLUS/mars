@@ -30,5 +30,8 @@ $$(document).on('page:init', '.page[data-name="message-page"]', function (e) {
 });
 app.views.create('#view-heart_check', {url: '/heart_check/'});
 app.views.create('#view-college', {url: '/college/'});
-app.views.create('#view-member', {url: '/member_gy/'});
+var memberView = app.views.create('#view-member', {url: '/'});
+
+
+
 

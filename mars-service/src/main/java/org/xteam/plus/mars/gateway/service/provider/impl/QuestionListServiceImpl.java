@@ -19,7 +19,7 @@ import java.util.Map;
  */
 @Component
 public class QuestionListServiceImpl implements GateWayService {
-    private final String METHOD_NAME = "com.zhaoanyun.api.gateway.global.question.list";
+    private final String METHOD_NAME = "cn.zaoangongcheng.api.gateway.global.question.list";
 
     @Resource
     private  QuestionInfoManager questionInfoManager;

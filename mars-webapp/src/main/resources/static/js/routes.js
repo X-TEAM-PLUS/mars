@@ -5,6 +5,12 @@ var routes = [
     url: './index.html',
     name: 'home',
   },
+    //登录
+    {
+        path: '/login/',
+        url: './pages/login.html',
+        name: 'login',
+    },
     //入口
     {
         path: '/member_rk/',
@@ -37,11 +43,32 @@ var routes = [
         name: 'question',
     },
 
-    //常见问题
+    //消息
     {
         path: '/message/',
         url: './pages/message.html',
         name: 'message',
+    },
+
+    //爱补贴
+    {
+        path: '/lovebutie/',
+        url: './pages/lovebutie.html',
+        name: 'lovebutie',
+    },
+
+    //小卡包
+    {
+        path: '/xiaokabao/',
+        url: './pages/xiaokabao.html',
+        name: 'xiaokabao',
+    },
+
+    //健康卡
+    {
+        path: '/jiankangka/',
+        url: './pages/jiankangka.html',
+        name: 'jiankangka',
     },
   // Default route (404 page). MUST BE THE LAST
   {

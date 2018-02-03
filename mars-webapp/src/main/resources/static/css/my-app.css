@@ -70,7 +70,6 @@
 .page-content{
     background:#FFFFFF
 }
-
 .bottomfixed {
     position: fixed;
     bottom: 0;
@@ -79,4 +78,25 @@
     background-color: #f7f7f8;
     z-index:1;
     box-shadow:0 0 2px #8f8f94 inset;
+}
+
+.bg-color-lightred{
+    background-color: #ffe3df;
+}
+.bg-color-light-blue{
+    background-color: #d9f8ff;
+}
+.top-16{
+    padding-top: 16px;
+}
+.left-16{
+    text-align: left;
+    padding-left:  16px
+}
+.right-16{
+    text-align: right;
+    padding-right:  16px
+}
+.height-27{
+    height: 27px;
 }

@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @Component
 public class QuestionDetailServiceImpl implements GateWayService {
-    private final String METHOD_NAME = "com.zhaoanyun.api.gateway.global.question.detail";
+    private final String METHOD_NAME = "cn.zaoangongcheng.api.gateway.global.question.detail";
 
     @Resource
     private  QuestionInfoManager questionInfoManager;

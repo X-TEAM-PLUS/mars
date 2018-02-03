@@ -17,16 +17,4 @@ public class AppConfiguration {
         return new DateTimeConverter();
     }
 
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurerAdapter() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedHeaders("*")
-                        .allowedMethods("*")
-                        .allowedOrigins("*");
-            }
-        };
-    }
 }
