@@ -18,12 +18,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 获取用户保险列表接口
+ * 获取用户保险详情接口
  */
 @Component
-public class GetUserInsuranceListServiceImpl extends Logging implements GateWayService {
+public class GetUserInsuranceDetailServiceImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.zhaoanyun.gateway.user.insurance.list";
+    private final String METHOD_NAME = "com.zhaoanyun.gateway.user.insurance.detail";
 
     @Resource
     private UserInsuranceManager userInsuranceManager;
@@ -35,19 +35,18 @@ public class GetUserInsuranceListServiceImpl extends Logging implements GateWayS
 
     @Override
     public HttpResponseBody gateWay(HttpRequestBody httpRequestBody) throws Exception {
-        if (StringUtils.isEmpty(httpRequestBody.getUserId())) {
+        if (StringUtils.isEmpty(httpRequestBody.getUserId())
+                || StringUtils.isEmpty(httpRequestBody.getBizContent())
+                ) {
             return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
         }
+        Map<String,Object> params = JsonUtils.fromJSON(httpRequestBody.getBizContent(),HashMap.class);
 
-        List<UserInsurance> userInsurances = userInsuranceManager.queryForProduct(
+        UserInsurance userInsurance = userInsuranceManager.get(
                 new UserInsurance().setUserId(new BigDecimal(httpRequestBody.getUserId()))
-                                                    .setStart(0)
-                                                    .setLimit(Integer.MAX_VALUE)
+                                                    .setInsuranceOrderId(new BigDecimal(params.get("insuranceOrderId").toString()))
         );
-
-        Map<String, Object> bizContentMap = new HashMap<>();
-        bizContentMap.put("list", userInsurances);
-        return new HttpResponseBody(GlobalErrorMessage.SUCCESS).setBizContent(JsonUtils.toJSON(bizContentMap));
+        return new HttpResponseBody(GlobalErrorMessage.SUCCESS).setBizContent(JsonUtils.toJSON(userInsurance));
 
     }
 }

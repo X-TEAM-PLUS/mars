@@ -21,7 +21,7 @@ import java.util.Map;
  * 获取用户信息
  */
 @Component
-public class GetUserInfoServiceImpl extends Logging implements GateWayService {
+public class GetUserInfoServiceImpl  implements GateWayService {
 
     @Resource
     private UserInfoManager userInfoManager;
@@ -38,36 +38,26 @@ public class GetUserInfoServiceImpl extends Logging implements GateWayService {
 
     @Override
     public HttpResponseBody gateWay(HttpRequestBody httpRequestBody) throws Exception {
-        long beginDate = System.currentTimeMillis();
-        this.logInfo(METHOD_NAME + " request  [" + httpRequestBody.toString() + "]");
-        HttpResponseBody httpResponseBody = new HttpResponseBody(GlobalErrorMessage.SUCCESS);
-        try {
-            if (httpRequestBody.getUserId() == null) {
-                httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
-                return httpResponseBody;
-            }
-            UserInfo userInfo = userInfoManager.get(new UserInfo().setUserId(BigDecimal.valueOf(Long.valueOf(httpRequestBody.getUserId()))));
-            if (userInfo == null) {
-                httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
-                return httpResponseBody;
-            }
-
-            Map<String,Object> bizContentMap = JsonUtils.transform(userInfo,HashMap.class);
-
-            //查询用户未读消息数
-            bizContentMap.put("newMessageCount",messageManager.queryCount(
-                    new Message()
-                            .setStatus(0)
-                            .setUserId(BigDecimal.valueOf(Long.valueOf(httpRequestBody.getUserId())))
-                    )
-            );
-            httpResponseBody.setBizContent(JsonUtils.toJSON(bizContentMap));
-        } catch (Exception e) {
-            logInfo(METHOD_NAME + " error system_error ", e);
-            httpResponseBody = new HttpResponseBody(GlobalErrorMessage.BUSINESS_FAILED);
-        } finally {
-            logInfo(METHOD_NAME + " finish result[" + JsonUtils.toJSON(httpResponseBody.getBizContent()) + "] longtime[" + (beginDate - System.currentTimeMillis()) + "]");
+        if (httpRequestBody.getUserId() == null) {
+            return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
         }
-        return httpResponseBody;
+        UserInfo userInfo = userInfoManager.get(new UserInfo().setUserId(BigDecimal.valueOf(Long.valueOf(httpRequestBody.getUserId()))));
+        if (userInfo == null) {
+            return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
+        }
+
+        Map<String, Object> bizContentMap = JsonUtils.transform(userInfo, HashMap.class);
+        //加密身份证号
+        bizContentMap.put("idNumber",userInfo.getIdNumber().replaceAll("(\\d{4})\\d{10}(\\w{4})","$1*****$2"));
+
+        //查询用户未读消息数
+        bizContentMap.put("newMessageCount", messageManager.queryCount(
+                new Message()
+                        .setStatus(0)
+                        .setUserId(BigDecimal.valueOf(Long.valueOf(httpRequestBody.getUserId())))
+                )
+        );
+        return new HttpResponseBody(GlobalErrorMessage.SUCCESS).setBizContent(JsonUtils.toJSON(bizContentMap));
+
     }
 }

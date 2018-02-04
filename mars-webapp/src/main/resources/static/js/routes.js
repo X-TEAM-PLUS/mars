@@ -19,9 +19,9 @@ var routes = [
     },
     //开通
     {
-        path: '/member_kt/',
-        url: './pages/member_kt.html',
-        name: 'member_kt',
+        path: '/buyCard/',
+        url: './pages/buyCard.html',
+        name: 'buyCard',
     },
     //健康检查
     {
@@ -70,6 +70,56 @@ var routes = [
         url: './pages/jiankangka.html',
         name: 'jiankangka',
     },
+    //保险服务
+    {
+        path: '/baoxianfuwu/',
+        url: './pages/baoxianfuwu.html',
+        name: 'baoxianfuwu',
+    },
+    //我的保单
+    {
+        path: '/wodebaodan/',
+        url: './pages/wodebaodan.html',
+        name: 'wodebaodan',
+    },
+    //保单详单
+    {
+        path: '/baoxianxiangdan/',
+        url: './pages/baoxianxiangdan.html',
+        name: 'baoxianxiangdan',
+    },
+    //添加银行卡
+    {
+        path: '/bankcard/',
+        url: './pages/bankcard.html',
+        name: 'bankcard',
+    },
+
+    //转帐
+    {
+        path: '/zhuanzhang/',
+        url: './pages/zhuanzhang.html',
+        name: 'zhuanzhang',
+    },
+    //转帐记录
+    {
+        path: '/zhuanzhangjilu/',
+        url: './pages/zhuanzhangjilu.html',
+        name: 'zhuanzhangjilu',
+    },
+    //转帐详情
+    {
+        path: '/zhuanzhangxiangqing/',
+        url: './pages/zhuanzhangxiangqing.html',
+        name: 'zhuanzhangxiangqing',
+    },
+    //补贴明细
+    {
+        path: '/butiemingxi/',
+        url: './pages/butiemingxi.html',
+        name: 'butiemingxi',
+    },
+
   // Default route (404 page). MUST BE THE LAST
   {
     path: '(.*)',

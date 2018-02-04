@@ -13,15 +13,17 @@ import org.xteam.plus.mars.manager.InsuranceProductManager;
 import org.xteam.plus.mars.wx.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 获取所有保险产品列表
  */
 @Component
-public class GetInsuranceAllListServiceImpl extends Logging implements GateWayService {
+public class GetInsuranceAllListServiceImpl implements GateWayService {
 
-    private final String METHOD_NAME = "com.zhaoanyun.gateway.insurance.getAllList";
+    private final String METHOD_NAME = "cn.zaoangongcheng.api.gateway.insurance.product.list";
 
     @Resource
     private InsuranceProductManager insuranceProductManager;
@@ -33,32 +35,15 @@ public class GetInsuranceAllListServiceImpl extends Logging implements GateWaySe
 
     @Override
     public HttpResponseBody gateWay(HttpRequestBody httpRequestBody) throws Exception {
-        long beginDate = System.currentTimeMillis();
-        this.logInfo(METHOD_NAME + " request  [" + httpRequestBody.toString() + "]");
-        HttpResponseBody httpResponseBody = new HttpResponseBody(GlobalErrorMessage.SUCCESS);
-        try {
-            PageInfoReqVO pageInfoReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), PageInfoReqVO.class);
-            if (pageInfoReqVO.getStart() == null || pageInfoReqVO.getLimit() == null
-                    || StringUtils.isEmpty(httpRequestBody.getUserId())) {
-                httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
-                return httpResponseBody;
-            }
-            InsuranceProduct insuranceProduct = new InsuranceProduct();
-            insuranceProduct.setStart(pageInfoReqVO.getStart());
-            insuranceProduct.setLimit(pageInfoReqVO.getLimit());
+        List<InsuranceProduct> insuranceProductList = insuranceProductManager.queryForCompany(
+                new InsuranceProduct()
+                        .setStatus(1)
+                        .setStart(0)
+                        .setLimit(Integer.MAX_VALUE)
+        );
+        Map<String,Object> bizContentMap = new HashMap<>();
+        bizContentMap.put("list",insuranceProductList);
+        return new HttpResponseBody(GlobalErrorMessage.SUCCESS).setBizContent(JsonUtils.toJSON(bizContentMap));
 
-            List<InsuranceProduct> insuranceProductList = insuranceProductManager.queryForCompany(insuranceProduct);
-            if (insuranceProductList == null || insuranceProductList.isEmpty()) {
-                httpResponseBody = new HttpResponseBody(GlobalErrorMessage.OBJECT_ISNULL);
-                return httpResponseBody;
-            }
-            httpResponseBody.setBizContent(JsonUtils.toJSON(insuranceProductList));
-        } catch (Exception e) {
-            logInfo(METHOD_NAME + " error system_error ", e);
-            httpResponseBody = new HttpResponseBody(GlobalErrorMessage.BUSINESS_FAILED);
-        } finally {
-            logInfo(METHOD_NAME + " finish result[" + JsonUtils.toJSON(httpResponseBody.getBizContent()) + "] longtime[" + (beginDate - System.currentTimeMillis()) + "]");
-        }
-        return httpResponseBody;
     }
 }

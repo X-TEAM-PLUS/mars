@@ -10,43 +10,6 @@ if (Framework7.use) Framework7.use(plugin);
 else if (Framework7.Class && Framework7.Class.use) Framework7.Class.use(plugin);
 var $$ = Dom7;
 
-//定义接口地址
-var INTERFACE_URL = "http://192.168.31.139:8080/webservice/api/gateway";
-var userInfo = {};
-var InterFace = {
-    USER_INFO: 'cn.zaoangongcheng.api.gateway.user.getUserInfo'
-    , QUESTION_LIST: 'cn.zaoangongcheng.api.gateway.global.question.list'
-    , QUESTION_DETAIL: 'cn.zaoangongcheng.api.gateway.global.question.detail'
-    , MESSAGE_LIST: 'cn.zaoangongcheng.api.gateway.security.message.list'
-    , MESSAGE_MARK: 'cn.zaoangongcheng.api.gateway.security.message.mark'
-    , MESSAGE_REMOVE: 'cn.zaoangongcheng.api.gateway.security.message.remove'
-}
-
-/**
- * 定义返回状态码
- * @type {{SUCCESS: number, UNKNOW: number, UNAUTHORIZED: number, MISSING_PARAMETERS: number, ILLEGAL_PARAMETERS: number, USER_ID_NOT_HIVE: number}}
- */
-var ResponseCode = {
-    SUCCESS: 10000
-    , UNKNOW: 20000
-    , UNAUTHORIZED: 20001
-    , MISSING_PARAMETERS: 40001
-    , ILLEGAL_PARAMETERS: 40002
-    , USER_ID_NOT_HIVE: 40008
-};
-
-/**
- * 用户级别
- * @type {{VISITOR: number, MEMBER: number, WORKER: number, DIRECTOR: number, STANDING_DIRECTOR: number}}
- */
-var UserLeve = {
-    VISITOR: 0
-    , MEMBER: 1
-    , WORKER: 2
-    , DIRECTOR: 3
-    , STANDING_DIRECTOR: 4
-}
-
 /**
  * 加载用户视图
  * @param url
@@ -204,3 +167,33 @@ function jianKangKaClick() {
         });
     }
 }
+
+
+/**
+ * 转账
+ */
+function zhuanzhangClick() {
+    if (userInfo.userId && userInfo.userLevel >= 1) {
+        memberView.router.navigate('/zhuanzhang/', {
+            history: true
+        });
+    } else {
+        memberView.router.navigate('/member_rk/', {
+            history: true
+        });
+    }
+}
+
+/**
+ * 保险详单
+ */
+function baoxianxiangdanClick(insuranceOrderId) {
+    if (userInfo.userId && userInfo.userLevel >= 1) {
+        memberView.router.navigate('/baoxianxiangdan/?insuranceOrderId='+insuranceOrderId, {
+            history: true
+        });
+    } else {
+
+    }
+}
+

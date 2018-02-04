@@ -32,10 +32,10 @@ public class UserInfoTest {
     private UserLevelApplyServiceImpl userLevelApplyService;
 
     @Resource
-    private GetUserDetectionInfoServiceImpl getUserDetectionInfoService;
+    private UserActivatedHeartCardInfoServiceImpl  userActivatedHeartCardInfoService;
 
     @Resource
-    private GetUserDetectionListServiceImpl getUserDetectionListService;
+    private UserHealthCheckRecordListServiceImpl userHealthCheckRecordListService;
 
     @Resource
     private BindBankServiceImpl bindBankService;
@@ -363,7 +363,7 @@ public class UserInfoTest {
         httpRequestBody.setUserId("2000001");
 
         try {
-            HttpResponseBody httpResponseBody = this.getUserDetectionInfoService.gateWay(httpRequestBody);
+            HttpResponseBody httpResponseBody = this.userActivatedHeartCardInfoService.gateWay(httpRequestBody);
             System.out.println("getUserDetectionInfoService :" + httpResponseBody.getBizContent());
         } catch (Exception e) {
             e.printStackTrace();
@@ -382,7 +382,7 @@ public class UserInfoTest {
         httpRequestBody.setUserId("2000001");
         httpRequestBody.setBizContent(JsonUtils.toJSON(pageInfoReqVO));
         try {
-            HttpResponseBody httpResponseBody = this.getUserDetectionListService.gateWay(httpRequestBody);
+            HttpResponseBody httpResponseBody = this.userHealthCheckRecordListService.gateWay(httpRequestBody);
             System.out.println("getUserDetectionInfoService :" + httpResponseBody.getBizContent());
         } catch (Exception e) {
             e.printStackTrace();

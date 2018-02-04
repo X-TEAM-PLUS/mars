@@ -27,7 +27,7 @@ public class GateWayServiceProxy extends Logging implements ApplicationContextAw
                 gateWayServiceHashMap.put(gateWayService.getMethodName().toLowerCase(), gateWayService);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+           logError("加载网关接口异常",e);
         }
     }
 
@@ -52,23 +52,26 @@ public class GateWayServiceProxy extends Logging implements ApplicationContextAw
     }
 
     public HttpResponseBody gateWay(HttpRequestBody httpRequestBody) throws Exception {
-        logDebug("请求参数:" + JsonUtils.toJSON(httpRequestBody));
+        long beginTime = System.currentTimeMillis();
+        logInfo("请求参数:" + JsonUtils.toJSON(httpRequestBody));
         HttpResponseBody httpResponseBody = null;
         try {
             //根据方法名 获取服务接口
             GateWayService gateWayService = getGateWayService(httpRequestBody.getMethod().toLowerCase());
             if (gateWayService == null) {
+                logWarning("未获取相应的接口.");
                 httpResponseBody = new HttpResponseBody(GlobalErrorMessage.UNKNOW);
             } else {
                 //调用接口
                 httpResponseBody = gateWayService.gateWay(httpRequestBody);
             }
         } catch (Exception e) {
-            logError("调用接口异常", e);
+            logError("调用接口["+ httpRequestBody.getMethod()  +  "]异常", e);
             httpResponseBody = new HttpResponseBody(GlobalErrorMessage.BUSINESS_FAILED);
+        }finally {
+            logInfo("返回参数:" + JsonUtils.toJSON(httpResponseBody));
+            logInfo("调用接口["+httpRequestBody.getMethod() +"] 耗时 " + (System.currentTimeMillis()-beginTime) + "ms");
         }
-
-        logDebug("返回参数:" + JsonUtils.toJSON(httpResponseBody));
         //返回
         return httpResponseBody;
     }

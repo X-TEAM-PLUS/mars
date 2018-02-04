@@ -18,9 +18,9 @@ import java.math.BigDecimal;
  * 获取用户账户信息
  */
 @Component
-public class GetAccountInfoServiceImpl extends Logging implements GateWayService {
+public class GetAccountInfoServiceImpl implements GateWayService {
 
-    private final String METHOD_NAME = "com.zhaoanyun.gateway.user.getAccountInfo";
+    private final String METHOD_NAME = "cn.zaoangongcheng.api.gateway.security.user.getAccountInfo";
 
     @Resource
     private AccountBalanceManager accountBalanceManager;
@@ -32,32 +32,21 @@ public class GetAccountInfoServiceImpl extends Logging implements GateWayService
 
     @Override
     public HttpResponseBody gateWay(HttpRequestBody httpRequestBody) throws Exception {
-        long beginDate = System.currentTimeMillis();
-        this.logInfo(METHOD_NAME + " request  [" + httpRequestBody.toString() + "]");
-        HttpResponseBody httpResponseBody = new HttpResponseBody(GlobalErrorMessage.SUCCESS);
-        try {
             if (StringUtils.isEmpty(httpRequestBody.getUserId())) {
-                httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
-                return httpResponseBody;
+                return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
             }
-            BigDecimal userId = new BigDecimal(httpRequestBody.getUserId());
-            AccountBalance queryWhere = new AccountBalance();
-            queryWhere.setUserId(userId);
-            queryWhere.setStatus(0);
-            AccountBalance accountBalance = accountBalanceManager.get(queryWhere);
+            AccountBalance accountBalance = accountBalanceManager.get(
+                    new AccountBalance()
+                    .setUserId(new BigDecimal(httpRequestBody.getUserId()))
+                    .setStatus(0)
+            );
             if (accountBalance == null) {
                 accountBalance = new AccountBalance();
                 accountBalance.setBalanceAmount(new BigDecimal(0));
                 accountBalance.setStatus(0);
-                accountBalance.setUserId(userId);
+                accountBalance.setUserId(new BigDecimal(httpRequestBody.getUserId()));
             }
-            httpResponseBody.setBizContent(JsonUtils.toJSON(accountBalance));
-        } catch (Exception e) {
-            logInfo(METHOD_NAME + " error system_error ", e);
-            httpResponseBody = new HttpResponseBody(GlobalErrorMessage.BUSINESS_FAILED);
-        } finally {
-            logInfo(METHOD_NAME + " finish result[" + JsonUtils.toJSON(httpResponseBody.getBizContent()) + "] longtime[" + (beginDate - System.currentTimeMillis()) + "]");
-        }
-        return httpResponseBody;
+            return   new HttpResponseBody(GlobalErrorMessage.SUCCESS).setBizContent(JsonUtils.toJSON(accountBalance));
+
     }
 }
