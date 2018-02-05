@@ -1,6 +1,7 @@
 package org.xteam.plus.mars.gateway.service.provider.impl;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.springframework.stereotype.Component;
 import org.xteam.plus.mars.common.JsonUtils;
 import org.xteam.plus.mars.common.Logging;
@@ -17,6 +18,7 @@ import org.xteam.plus.mars.wx.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -40,29 +42,21 @@ public class GetRecommendListServiceImpl extends Logging implements GateWayServi
 
     @Override
     public HttpResponseBody gateWay(HttpRequestBody httpRequestBody) throws Exception {
-        long beginDate = System.currentTimeMillis();
-        this.logInfo(METHOD_NAME + " request  [" + httpRequestBody.toString() + "]");
-        HttpResponseBody httpResponseBody = new HttpResponseBody(GlobalErrorMessage.SUCCESS);
-        try {
 
             List<UserRelationRspVO> returnValue = Lists.newArrayList();
             PageInfoReqVO pageInfoReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), PageInfoReqVO.class);
             if (pageInfoReqVO == null  || pageInfoReqVO.getLimit() == null || pageInfoReqVO.getStart() == null
                     || StringUtils.isEmpty(httpRequestBody.getUserId())) {
-                httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
-                return httpResponseBody;
+                return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
+
             }
+            HashMap bizContentMap = Maps.newHashMap();
             List<UserRelation> list = userRelationManager.queryThisAndNextLevelUser(new BigDecimal(httpRequestBody.getUserId()), pageInfoReqVO.getStart(), pageInfoReqVO.getLimit());
             for (UserRelation userRelation : list) {
                 returnValue.add(userRelationConvertService.toVO(userRelation));
             }
-            httpResponseBody.setBizContent(JsonUtils.toJSON(returnValue));
-        } catch (Exception e) {
-            logInfo(METHOD_NAME + " error system_error ", e);
-            httpResponseBody = new HttpResponseBody(GlobalErrorMessage.BUSINESS_FAILED);
-        } finally {
-            logInfo(METHOD_NAME + " finish result[" + JsonUtils.toJSON(httpResponseBody.getBizContent()) + "] longtime[" + (beginDate - System.currentTimeMillis()) + "]");
-        }
-        return httpResponseBody;
+            bizContentMap.put("list",returnValue);
+
+        return null;
     }
 }

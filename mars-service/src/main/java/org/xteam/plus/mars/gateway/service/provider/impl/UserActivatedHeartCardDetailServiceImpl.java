@@ -20,7 +20,7 @@ import java.util.Map;
  * 获取用户已激活的健康卡
  */
 @Component
-public class UserActivatedHeartCardInfoServiceImpl implements GateWayService {
+public class UserActivatedHeartCardDetailServiceImpl implements GateWayService {
 
     private final String METHOD_NAME = "cn.zaoangongcheng.api.gateway.security.user.heartcard.activated.get";
 

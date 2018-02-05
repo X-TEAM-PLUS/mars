@@ -38,10 +38,6 @@ public class UserLevelApplyServiceImpl extends Logging implements GateWayService
 
     @Override
     public HttpResponseBody gateWay(HttpRequestBody httpRequestBody) throws Exception {
-        long beginDate = System.currentTimeMillis();
-        this.logInfo(METHOD_NAME + " request  [" + httpRequestBody.toString() + "]");
-        HttpResponseBody httpResponseBody = new HttpResponseBody(GlobalErrorMessage.SUCCESS);
-        try {
             UserApplyInfoReqVO userApplyInfoReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), UserApplyInfoReqVO.class);
             userLevelApplyCheckService.checkCalibration(userApplyInfoReqVO,new BigDecimal(httpRequestBody.getUserId()));
             ApplyInfo applyInfo = new ApplyInfo();
@@ -53,19 +49,9 @@ public class UserLevelApplyServiceImpl extends Logging implements GateWayService
             applyInfo.setUserId(new BigDecimal(httpRequestBody.getUserId()));
             int count = applyInfoManager.insert(applyInfo);
             if (count > 0) {
-                return httpResponseBody;
+                return new HttpResponseBody(GlobalErrorMessage.SUCCESS);
             } else {
-                logInfo("用户申请" + userApplyInfoReqVO.getApplayTypeEnum().getInfo() + "失败,插入数据为0");
-                httpResponseBody = new HttpResponseBody(GlobalErrorMessage.BUSINESS_FAILED);
-                return httpResponseBody;
+                return new HttpResponseBody(GlobalErrorMessage.BUSINESS_FAILED);
             }
-
-        } catch (Exception e) {
-            logInfo(METHOD_NAME + " error system_error ", e);
-            httpResponseBody = new HttpResponseBody(GlobalErrorMessage.BUSINESS_FAILED);
-        } finally {
-            logInfo(METHOD_NAME + " finish result[" + JsonUtils.toJSON(httpResponseBody.getBizContent()) + "] longtime[" + (beginDate - System.currentTimeMillis()) + "]");
-        }
-        return httpResponseBody;
     }
 }

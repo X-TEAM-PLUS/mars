@@ -23,7 +23,7 @@ import java.util.Map;
  * 获取用户信息
  */
 @Component
-public class GetUserInfoServiceImpl implements GateWayService {
+public class GetUserDetailServiceImpl implements GateWayService {
 
     @Resource
     private UserInfoManager userInfoManager;
@@ -34,7 +34,7 @@ public class GetUserInfoServiceImpl implements GateWayService {
     @Resource
     private BankCardManager bankCardManager;
 
-    private final String METHOD_NAME = "cn.zaoangongcheng.api.gateway.user.getUserInfo";
+    private final String METHOD_NAME = "cn.zaoangongcheng.api.gateway.user.getUserDetail";
 
     @Override
     public String getMethodName() {

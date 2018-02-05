@@ -8,6 +8,7 @@ import org.xteam.plus.mars.dao.UserInsuranceDao;
 import org.xteam.plus.mars.domain.UserInsurance;
 import org.xteam.plus.mars.manager.UserInsuranceManager;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -72,6 +73,11 @@ public class UserInsuranceManagerImpl implements UserInsuranceManager {
     @Override
     public int queryForProductCount(UserInsurance userInsurance) throws Exception {
         return userInsuranceDao.queryForProductCount(userInsurance);
+    }
+
+    @Override
+    public UserInsurance getForProduct(BigDecimal insuranceOrderId) throws Exception {
+        return userInsuranceDao.getForProduct(insuranceOrderId);
     }
 
 }

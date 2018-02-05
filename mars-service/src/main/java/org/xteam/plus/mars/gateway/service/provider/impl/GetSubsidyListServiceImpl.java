@@ -1,6 +1,7 @@
 package org.xteam.plus.mars.gateway.service.provider.impl;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.springframework.stereotype.Component;
 import org.xteam.plus.mars.common.JsonUtils;
 import org.xteam.plus.mars.common.Logging;
@@ -18,6 +19,7 @@ import org.xteam.plus.mars.wx.util.StringUtils;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 获取某用户的补贴列表
@@ -50,26 +52,18 @@ public class GetSubsidyListServiceImpl extends Logging implements GateWayService
 
     @Override
     public HttpResponseBody gateWay(HttpRequestBody httpRequestBody) throws Exception {
-        long beginDate = System.currentTimeMillis();
-        this.logInfo(METHOD_NAME + " request  [" + httpRequestBody.toString() + "]");
-        HttpResponseBody httpResponseBody = new HttpResponseBody(GlobalErrorMessage.SUCCESS);
-        try {
-            if (StringUtils.isEmpty(httpRequestBody.getUserId())) {
-                httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
-                return httpResponseBody;
-            }
-            List<UserAccountDetailRspVO> userAccountDetailRspVOS = Lists.newArrayList();
-            List<AccountDetail> accountDetailList = accountDetailManager.queryBusinessTypes(accountDetailTypeEnumList, new BigDecimal(httpRequestBody.getUserId()));
-            for (AccountDetail accountDetail : accountDetailList) {
-                userAccountDetailRspVOS.add(userAccountDetailConvertService.toVO(accountDetail));
-            }
-            httpResponseBody.setBizContent(JsonUtils.toJSON(userAccountDetailRspVOS));
-        } catch (Exception e) {
-            logInfo(METHOD_NAME + " error system_error ", e);
-            httpResponseBody = new HttpResponseBody(GlobalErrorMessage.BUSINESS_FAILED);
-        } finally {
-            logInfo(METHOD_NAME + " finish result[" + JsonUtils.toJSON(httpResponseBody.getBizContent()) + "] longtime[" + (beginDate - System.currentTimeMillis()) + "]");
+
+        if (StringUtils.isEmpty(httpRequestBody.getUserId())) {
+            return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
         }
-        return httpResponseBody;
+        Map<String, Object> bizContentMap = Maps.newHashMap();
+        List<UserAccountDetailRspVO> userAccountDetailRspVOS = Lists.newArrayList();
+        List<AccountDetail> accountDetailList = accountDetailManager.queryBusinessTypes(accountDetailTypeEnumList, new BigDecimal(httpRequestBody.getUserId()));
+        for (AccountDetail accountDetail : accountDetailList) {
+            userAccountDetailRspVOS.add(userAccountDetailConvertService.toVO(accountDetail));
+        }
+        bizContentMap.put("list", userAccountDetailRspVOS);
+
+        return new HttpResponseBody(GlobalErrorMessage.SUCCESS).setBizContent(JsonUtils.toJSON(bizContentMap));
     }
 }

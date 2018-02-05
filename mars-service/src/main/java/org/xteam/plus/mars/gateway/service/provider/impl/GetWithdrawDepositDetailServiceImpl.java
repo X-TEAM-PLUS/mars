@@ -17,9 +17,9 @@ import javax.annotation.Resource;
  * 获取提现记录详情
  */
 @Component
-public class GetRecordInfoServiceImpl extends Logging implements GateWayService {
+public class GetWithdrawDepositDetailServiceImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.zhaoanyun.gateway.user.getRecordInfo";
+    private final String METHOD_NAME = "com.zhaoanyun.gateway.user.getWithdrawDepositInfo";
 
     @Resource
     private WithdrawRecordManager withdrawRecordManager;
@@ -31,27 +31,15 @@ public class GetRecordInfoServiceImpl extends Logging implements GateWayService 
 
     @Override
     public HttpResponseBody gateWay(HttpRequestBody httpRequestBody) throws Exception {
-        long beginDate = System.currentTimeMillis();
-        this.logInfo(METHOD_NAME + " request  [" + httpRequestBody.toString() + "]");
-        HttpResponseBody httpResponseBody = new HttpResponseBody(GlobalErrorMessage.SUCCESS);
-        try {
+
             RecordReqVO recordReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), RecordReqVO.class);
             if (recordReqVO == null || recordReqVO.getRecordId() == null) {
-                httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
-                return httpResponseBody;
+                return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
             }
             WithdrawRecord withdrawRecord = withdrawRecordManager.get(new WithdrawRecord().setId(recordReqVO.getRecordId()));
             if (withdrawRecord == null) {
-                httpResponseBody = new HttpResponseBody(GlobalErrorMessage.OBJECT_ISNULL);
-                return httpResponseBody;
+                return new HttpResponseBody(GlobalErrorMessage.OBJECT_ISNULL);
             }
-            httpResponseBody.setBizContent(JsonUtils.toJSON(withdrawRecord));
-        } catch (Exception e) {
-            logInfo(METHOD_NAME + " error system_error ", e);
-            httpResponseBody = new HttpResponseBody(GlobalErrorMessage.BUSINESS_FAILED);
-        } finally {
-            logInfo(METHOD_NAME + " finish result[" + JsonUtils.toJSON(httpResponseBody.getBizContent()) + "] longtime[" + (beginDate - System.currentTimeMillis()) + "]");
-        }
-        return httpResponseBody;
+        return new HttpResponseBody(GlobalErrorMessage.SUCCESS).setBizContent(JsonUtils.toJSON(withdrawRecord));
     }
 }

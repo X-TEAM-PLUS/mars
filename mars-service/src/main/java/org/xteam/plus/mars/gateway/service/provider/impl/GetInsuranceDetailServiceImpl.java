@@ -17,9 +17,9 @@ import javax.annotation.Resource;
  * 获取保险产品详情
  */
 @Component
-public class GetInsuranceInfoServiceImpl extends Logging implements GateWayService {
+public class GetInsuranceDetailServiceImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.zhaoanyun.gateway.insurance.getInfo";
+    private final String METHOD_NAME = "com.zhaoanyun.gateway.insurance.getDetail";
 
     @Resource
     private InsuranceProductManager insuranceProductManager;

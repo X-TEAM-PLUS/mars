@@ -324,4 +324,15 @@
         LEFT JOIN T_MARS_INSURANCE_COMPANY TMIC ON TMIP.INSURANCE_COMPANY_ID = TMIC.INSURANCE_COMPANY_ID
         <include refid="queryWhereRf"></include>
     </select>
+
+    <!-- 关联查询，查询出保险信息与保险公司信息 -->
+    <select id="getForProduct" resultMap="BaseResultMap" parameterType="DECIMAL">
+        SELECT
+        <include refid="selectColumnsRf"/>
+        FROM T_MARS_USER_INSURANCE TMUI
+        LEFT JOIN T_MARS_INSURANCE_PRODUCT TMIP ON TMUI.INSURANCE_PRODUCT_NO = TMIP.INSURANCE_PRODUCT_NO
+        LEFT JOIN T_MARS_INSURANCE_COMPANY TMIC ON TMIP.INSURANCE_COMPANY_ID = TMIC.INSURANCE_COMPANY_ID
+        WHERE TMUI.INSURANCE_ORDER_ID = #{insuranceOrderId,jdbcType=DECIMAL}
+
+    </select>
 </mapper>

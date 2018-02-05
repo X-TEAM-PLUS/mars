@@ -1,5 +1,6 @@
 package org.xteam.plus.mars.gateway.service;
 
+import com.google.common.collect.Maps;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,13 +15,14 @@ import org.xteam.plus.mars.type.ApplayTypeEnum;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.HashMap;
 
 @RunWith(SpringJUnit4ClassRunner.class) // SpringJUnit支持，由此引入Spring-Test框架支持！
 @SpringBootTest(classes = Service.class)
 public class UserInfoTest {
 
     @Resource
-    private GetUserInfoServiceImpl getUserInfoService;
+    private GetUserDetailServiceImpl getUserInfoService;
 
     @Resource
     private GetRecommendListServiceImpl getRecommendListService;
@@ -32,7 +34,7 @@ public class UserInfoTest {
     private UserLevelApplyServiceImpl userLevelApplyService;
 
     @Resource
-    private UserActivatedHeartCardInfoServiceImpl  userActivatedHeartCardInfoService;
+    private UserActivatedHeartCardDetailServiceImpl userActivatedHeartCardInfoService;
 
     @Resource
     private UserHealthCheckRecordListServiceImpl userHealthCheckRecordListService;
@@ -50,16 +52,16 @@ public class UserInfoTest {
     private GetInsuranceAllListServiceImpl getInsuranceAllListService;
 
     @Resource
-    private GetInsuranceInfoServiceImpl getInsuranceInfoService;
+    private GetInsuranceDetailServiceImpl getInsuranceDetailService;
 
     @Resource
-    private GetRecordListServiceImpl getRecordListService;
+    private GetWithdrawDepositListServiceImpl getRecordListService;
 
     @Resource
     private ApplyRecordServiceImpl applyRecordService;
 
     @Resource
-    private GetRecordInfoServiceImpl getRecordInfoService;
+    private GetWithdrawDepositDetailServiceImpl getRecordInfoService;
 
     @Resource
     private SubmitUserDetectionServiceImpl submitUserDetectionService;
@@ -69,6 +71,25 @@ public class UserInfoTest {
 
     @Resource
     private WxPayServiceAppInfoServiceImpl wxPayServiceAppInfoService;
+
+    @Resource
+    private GetUserInsuranceDetailServiceImpl getUserInsuranceDetailService;
+
+    @Test
+    public void getUserInsuranceDetailService(){
+        HashMap parms = Maps.newHashMap();
+        parms.put("insuranceOrderId",1);
+        HttpRequestBody httpRequestBody = new HttpRequestBody();
+        httpRequestBody.setBizContent(JsonUtils.toJSON(parms));
+        try {
+            httpRequestBody.setUserId("2000000");
+            HttpResponseBody httpResponseBody = getUserInsuranceDetailService.gateWay(httpRequestBody);
+            System.out.println("getUserInsuranceDetailService :" + httpResponseBody.getMsg());
+            System.out.println("getUserInsuranceDetailService :" + httpResponseBody.getBizContent());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Test
     public void wxPayServiceAppInfoService() {
@@ -188,13 +209,13 @@ public class UserInfoTest {
     @Test
     public void getInsuranceInfoService() {
         InsuranceProductReqVO insuranceProductReqVO = new InsuranceProductReqVO();
-        insuranceProductReqVO.setInsuranceProductNo(new BigDecimal(20001));
+        insuranceProductReqVO.setInsuranceProductNo(new BigDecimal(1));
         HttpRequestBody httpRequestBody = new HttpRequestBody();
         httpRequestBody.setBizContent(JsonUtils.toJSON(insuranceProductReqVO));
         try {
-            HttpResponseBody httpResponseBody = getInsuranceInfoService.gateWay(httpRequestBody);
-            System.out.println("getInsuranceInfoService :" + httpResponseBody.getMsg());
-            System.out.println("getInsuranceInfoService :" + httpResponseBody.getBizContent());
+            HttpResponseBody httpResponseBody = getInsuranceDetailService.gateWay(httpRequestBody);
+            System.out.println("getInsuranceDetailService :" + httpResponseBody.getMsg());
+            System.out.println("getInsuranceDetailService :" + httpResponseBody.getBizContent());
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,7 +1,9 @@
 package org.xteam.plus.mars.dao;
 
+import org.apache.ibatis.annotations.Param;
 import org.xteam.plus.mars.domain.UserInsurance;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -24,6 +26,7 @@ public interface UserInsuranceDao {
 
     /**
      * 获取
+     *
      * @param userInsurance
      * @return int
      */
@@ -31,6 +34,7 @@ public interface UserInsuranceDao {
 
     /**
      * 新增
+     *
      * @param userInsurance
      * @return int 记录数
      */
@@ -38,13 +42,15 @@ public interface UserInsuranceDao {
 
     /**
      * 批量新增
-     * @param list   List<UserInsurance>
+     *
+     * @param list List<UserInsurance>
      * @return int  记录数
      */
     public int batchInsert(List<UserInsurance> list) throws Exception;
 
     /**
      * 删除
+     *
      * @param userInsurance
      * @return int
      */
@@ -52,6 +58,7 @@ public interface UserInsuranceDao {
 
     /**
      * 更新
+     *
      * @param userInsurance
      * @return int 记录数
      */
@@ -59,6 +66,7 @@ public interface UserInsuranceDao {
 
     /**
      * 查询
+     *
      * @param userInsurance
      * @return List<UserInsurance>
      */
@@ -66,13 +74,15 @@ public interface UserInsuranceDao {
 
     /**
      * 查询记录数
-     * @param  userInsurance
+     *
+     * @param userInsurance
      * @return List<UserInsurance>
      */
     public Integer queryCount(UserInsurance userInsurance) throws Exception;
 
     /**
      * 关联查询，获取产品信息跟保险公司
+     *
      * @param userInsurance
      * @return
      */
@@ -80,8 +90,16 @@ public interface UserInsuranceDao {
 
     /**
      * 关联查询，获取产品信息跟保险公司（个数）
+     *
      * @param userInsurance
      * @return
      */
     public int queryForProductCount(UserInsurance userInsurance) throws Exception;
+
+    /**
+     * 关联查询用户卡信息
+     * @param insuranceOrderId
+     * @return
+     */
+    public UserInsurance getForProduct(@Param("insuranceOrderId") BigDecimal insuranceOrderId);
 }

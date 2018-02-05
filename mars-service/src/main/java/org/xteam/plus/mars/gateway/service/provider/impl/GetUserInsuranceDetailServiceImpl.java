@@ -42,10 +42,7 @@ public class GetUserInsuranceDetailServiceImpl extends Logging implements GateWa
         }
         Map<String,Object> params = JsonUtils.fromJSON(httpRequestBody.getBizContent(),HashMap.class);
 
-        UserInsurance userInsurance = userInsuranceManager.get(
-                new UserInsurance().setUserId(new BigDecimal(httpRequestBody.getUserId()))
-                                                    .setInsuranceOrderId(new BigDecimal(params.get("insuranceOrderId").toString()))
-        );
+        UserInsurance userInsurance = userInsuranceManager.getForProduct(new BigDecimal(params.get("insuranceOrderId").toString()));
         return new HttpResponseBody(GlobalErrorMessage.SUCCESS).setBizContent(JsonUtils.toJSON(userInsurance));
 
     }

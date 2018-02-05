@@ -2,6 +2,7 @@ package org.xteam.plus.mars.manager;
 
 import org.xteam.plus.mars.domain.UserInsurance;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -85,4 +86,12 @@ public interface UserInsuranceManager {
      * @return
      */
     public int queryForProductCount(UserInsurance userInsurance) throws Exception;
+
+    /**
+     * 按ID进行查询用户健康卡信息
+     * @param insuranceOrderId
+     * @return
+     * @throws Exception
+     */
+    public UserInsurance getForProduct(BigDecimal insuranceOrderId) throws Exception;
 }
