@@ -1,5 +1,5 @@
 //定义接口地址
-var INTERFACE_URL = "http://192.168.31.139:8080/webservice/api/gateway";
+var INTERFACE_URL = "http://"+document.domain + ":8080/webservice/api/gateway";
 var userInfo = {};
 var InterFace = {
     //用户信息
