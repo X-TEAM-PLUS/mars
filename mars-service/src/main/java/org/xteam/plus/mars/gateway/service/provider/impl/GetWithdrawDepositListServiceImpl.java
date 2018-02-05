@@ -25,7 +25,7 @@ import java.util.Map;
 @Component
 public class GetWithdrawDepositListServiceImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.zhaoanyun.gateway.user.getWithdrawDepositList";
+    private final String METHOD_NAME = "com.zhaoanyun.gateway.user.withdrawDeposit.list";
 
     @Resource
     private WithdrawRecordManager withdrawRecordManager;
