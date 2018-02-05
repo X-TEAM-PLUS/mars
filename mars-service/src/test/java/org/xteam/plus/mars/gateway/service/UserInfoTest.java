@@ -188,7 +188,7 @@ public class UserInfoTest {
     @Test
     public void getInsuranceInfoService() {
         InsuranceProductReqVO insuranceProductReqVO = new InsuranceProductReqVO();
-        insuranceProductReqVO.setInsuranceProductNo(new BigDecimal(200001));
+        insuranceProductReqVO.setInsuranceProductNo(new BigDecimal(20001));
         HttpRequestBody httpRequestBody = new HttpRequestBody();
         httpRequestBody.setBizContent(JsonUtils.toJSON(insuranceProductReqVO));
         try {
@@ -259,10 +259,11 @@ public class UserInfoTest {
      */
     @Test
     public void bindBank() {
+        long cardNo = 2333333333333333333l;
         UserCardBindReqVO userCardBindReqVO = new UserCardBindReqVO();
-        userCardBindReqVO.setCardNo(new BigDecimal(121112221));
-        userCardBindReqVO.setCardUserName("宋鑫咧");
-        userCardBindReqVO.setBankId(new BigDecimal(1002));
+        userCardBindReqVO.setCardNo(cardNo);
+        userCardBindReqVO.setCardUserName("严昆更新");
+        userCardBindReqVO.setBankId(new BigDecimal(1004));
         HttpRequestBody httpRequestBody = new HttpRequestBody();
         httpRequestBody.setUserId("2000000");
         httpRequestBody.setBizContent(JsonUtils.toJSON(userCardBindReqVO));

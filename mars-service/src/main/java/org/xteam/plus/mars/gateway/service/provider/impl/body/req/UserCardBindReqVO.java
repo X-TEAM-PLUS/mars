@@ -6,18 +6,17 @@ import java.math.BigDecimal;
 public class UserCardBindReqVO implements Serializable {
 
 
-    private BigDecimal cardNo;
+    private Long cardNo;
 
     private String cardUserName;
 
     private BigDecimal bankId;
 
-
-    public BigDecimal getCardNo() {
+    public Long getCardNo() {
         return cardNo;
     }
 
-    public void setCardNo(BigDecimal cardNo) {
+    public void setCardNo(Long cardNo) {
         this.cardNo = cardNo;
     }
 

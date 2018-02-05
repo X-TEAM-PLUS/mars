@@ -69,4 +69,12 @@ public interface BankCardManager {
      * @return List<BankCard>
      */
     public Integer queryCount(BankCard bankCard) throws Exception;
+
+    /**
+     * 更新或添加绑定银行卡
+     * @param bankCard
+     * @return
+     * @throws Exception
+     */
+    public Integer saveOrUpdate(BankCard bankCard) throws Exception;
 }

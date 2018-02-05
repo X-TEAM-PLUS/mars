@@ -44,46 +44,45 @@ public class BindBankServiceImpl extends Logging implements GateWayService {
         long beginDate = System.currentTimeMillis();
         this.logInfo(METHOD_NAME + " request  [" + httpRequestBody.toString() + "]");
         HttpResponseBody httpResponseBody = new HttpResponseBody(GlobalErrorMessage.SUCCESS);
-        try {
-            UserCardBindReqVO userCardBindReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), UserCardBindReqVO.class);
-            if (httpRequestBody.getUserId() == null
-                    || StringUtils.isEmpty(userCardBindReqVO.getCardUserName())
-                    || userCardBindReqVO.getCardNo() == null
-                    || userCardBindReqVO.getBankId() == null) {
-                httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
-                return httpResponseBody;
-            }
-            List<BankCard> list = bankCardManager.query(new BankCard().setBankAccountNo(userCardBindReqVO.getCardNo().toString()));
-            if (!list.isEmpty()) {
-                httpResponseBody = new HttpResponseBody(GlobalErrorMessage.CARD_ALREAD_BIND);
-                return httpResponseBody;
-            }
-            GlobalConf queryWhereGlobal = new GlobalConf().setParameterType(new BigDecimal(1));
-            queryWhereGlobal.setParameterKey(userCardBindReqVO.getBankId().toString());
-            List globalList =  globalConfManager.query(queryWhereGlobal);
-            // 校验银行编码合法性
-            if (globalList == null || globalList.isEmpty()){
-                httpResponseBody = new HttpResponseBody(GlobalErrorMessage.BANK_ID_ERROR);
-                return httpResponseBody;
-            }
-            BankCard bankCard = new BankCard();
-            bankCard.setBankAccountNo(userCardBindReqVO.getCardNo().toString());
-            bankCard.setBankAccountName(userCardBindReqVO.getCardUserName());
+
+        UserCardBindReqVO userCardBindReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), UserCardBindReqVO.class);
+        if (httpRequestBody.getUserId() == null
+                || StringUtils.isEmpty(userCardBindReqVO.getCardUserName())
+                || userCardBindReqVO.getCardNo() == null
+                || userCardBindReqVO.getBankId() == null) {
+            httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
+            return httpResponseBody;
+        }
+        BankCard bankCard = new BankCard();
+        List<BankCard> list = bankCardManager.query(
+                new BankCard().
+                        setUserId(BigDecimal.valueOf(Long.valueOf(httpRequestBody.getUserId())))
+        );
+
+        GlobalConf queryWhereGlobal = new GlobalConf().setParameterType(new BigDecimal(1));
+        queryWhereGlobal.setParameterKey(userCardBindReqVO.getBankId().toString());
+        List globalList = globalConfManager.query(queryWhereGlobal);
+        // 校验银行编码合法性
+        if (globalList == null || globalList.isEmpty()) {
+            httpResponseBody = new HttpResponseBody(GlobalErrorMessage.BANK_ID_ERROR);
+            return httpResponseBody;
+        }
+        if (list != null && list.size() > 0) {
+            bankCard = list.get(0);
+        } else {
+            bankCard = new BankCard();
             bankCard.setCreated(new Date());
-            bankCard.setBankId(userCardBindReqVO.getBankId());
-            bankCard.setUserId(new BigDecimal(httpRequestBody.getUserId()));
-            int count = bankCardManager.insert(bankCard);
-            if (count <= 0) {
-                logInfo("用户绑定银行卡失败,插入数据为0");
-                httpResponseBody = new HttpResponseBody(GlobalErrorMessage.BUSINESS_FAILED);
-                return httpResponseBody;
-            }
-        } catch (Exception e) {
-            logInfo(METHOD_NAME + " error system_error ", e);
+        }
+        bankCard.setBankAccountNo(userCardBindReqVO.getCardNo().toString());
+        bankCard.setBankAccountName(userCardBindReqVO.getCardUserName());
+        bankCard.setBankId(userCardBindReqVO.getBankId());
+        bankCard.setUserId(new BigDecimal(httpRequestBody.getUserId()));
+        int count = bankCardManager.saveOrUpdate(bankCard);
+        if (count <= 0) {
             httpResponseBody = new HttpResponseBody(GlobalErrorMessage.BUSINESS_FAILED);
-        } finally {
-            logInfo(METHOD_NAME + " finish result[" + JsonUtils.toJSON(httpResponseBody.getBizContent()) + "] longtime[" + (beginDate - System.currentTimeMillis()) + "]");
+            return httpResponseBody;
         }
         return httpResponseBody;
     }
+
 }

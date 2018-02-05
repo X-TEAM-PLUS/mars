@@ -129,6 +129,9 @@
                 <if test="userId!=null ">
                     USER_ID=#{userId,jdbcType=DECIMAL},
                 </if>
+                <if test="bankId!=null ">
+                    BANK_ID=#{bankId,jdbcType=DECIMAL},
+                </if>
             </trim>
         </set>
         where BANK_CARD_ID= #{bankCardId,jdbcType=DECIMAL}

@@ -8,6 +8,7 @@ import org.xteam.plus.mars.dao.BankCardDao;
 import org.xteam.plus.mars.domain.BankCard;
 import org.xteam.plus.mars.manager.BankCardManager;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -62,6 +63,22 @@ public class BankCardManagerImpl implements BankCardManager {
     @Override
     public Integer queryCount(BankCard bankCard) throws Exception {
         return bankCardDao.queryCount(bankCard);
+    }
+
+    @Override
+    public Integer saveOrUpdate(BankCard bankCard) throws Exception {
+        int returnValue = 0;
+        if (bankCard.getBankCardId() != null) {
+            BankCard temp = bankCardDao.get(new BankCard().setBankCardId(bankCard.getBankCardId()));
+            if (temp == null) {
+                throw new Exception("传递的绑定银行卡id错误，不存在的绑定银行卡");
+            }
+            bankCard.setUpdated(new Date());
+            returnValue = bankCardDao.update(bankCard);
+        } else {
+            returnValue = bankCardDao.insert(bankCard);
+        }
+        return returnValue;
     }
 
 }

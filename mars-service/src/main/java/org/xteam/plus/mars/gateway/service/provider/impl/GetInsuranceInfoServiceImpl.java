@@ -31,27 +31,19 @@ public class GetInsuranceInfoServiceImpl extends Logging implements GateWayServi
 
     @Override
     public HttpResponseBody gateWay(HttpRequestBody httpRequestBody) throws Exception {
-        long beginDate = System.currentTimeMillis();
-        this.logInfo(METHOD_NAME + " request  [" + httpRequestBody.toString() + "]");
         HttpResponseBody httpResponseBody = new HttpResponseBody(GlobalErrorMessage.SUCCESS);
-        try {
-            InsuranceProductReqVO insuranceProductReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), InsuranceProductReqVO.class);
-            if (insuranceProductReqVO.getInsuranceProductNo() == null) {
-                httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
-                return httpResponseBody;
-            }
-            InsuranceProduct insuranceProduct = insuranceProductManager.getForCompany(new InsuranceProduct().setInsuranceProductNo(insuranceProductReqVO.getInsuranceProductNo()));
-            if (insuranceProduct == null){
-                httpResponseBody = new HttpResponseBody(GlobalErrorMessage.OBJECT_ISNULL);
-                return httpResponseBody;
-            }
-            httpResponseBody.setBizContent(JsonUtils.toJSON(insuranceProduct));
-        } catch (Exception e) {
-            logInfo(METHOD_NAME + " error system_error ", e);
-            httpResponseBody = new HttpResponseBody(GlobalErrorMessage.BUSINESS_FAILED);
-        } finally {
-            logInfo(METHOD_NAME + " finish result[" + JsonUtils.toJSON(httpResponseBody.getBizContent()) + "] longtime[" + (beginDate - System.currentTimeMillis()) + "]");
+
+        InsuranceProductReqVO insuranceProductReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), InsuranceProductReqVO.class);
+        if (insuranceProductReqVO.getInsuranceProductNo() == null) {
+            httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
+            return httpResponseBody;
         }
-        return httpResponseBody;
+
+        return new HttpResponseBody(GlobalErrorMessage.SUCCESS).setBizContent(
+                JsonUtils.toJSON(
+                        insuranceProductManager.getForCompany(
+                                new InsuranceProduct()
+                                        .setInsuranceProductNo(insuranceProductReqVO.getInsuranceProductNo())
+                        )));
     }
 }
