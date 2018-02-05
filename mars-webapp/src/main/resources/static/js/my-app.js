@@ -82,6 +82,41 @@ function setUserInfo(json) {
     userInfo = json;
 }
 
+/**
+ * 我的信息
+ */
+function meClick() {
+    if(isLogin()){
+        memberView.router.navigate('/me/', {
+            history: true
+        });
+    }else{
+        //去登录
+        gotoLogin();
+    }
+}
+
+/**
+ * 去登录
+ */
+function gotoLogin() {
+    memberView.router.navigate('/login/', {
+        history: true
+    });
+}
+
+/**
+ * 是否登录
+ * @returns {boolean}
+ */
+function isLogin() {
+    if (userInfo.userId) {
+      return true;
+    } else {
+        return false;
+    }
+}
+
 
 /**
  * 删除系统消息
@@ -108,41 +143,55 @@ function removeSystemMessage(messageId) {
  * @param messageId
  */
 function markSystemMessage(messageId) {
-    var bizContent = {messageId: messageId};
-    var params = {
-        method: InterFace.MESSAGE_MARK,
-        userId: userInfo.userId,
-        bizContent: JSON.stringify(bizContent)
-    };
-    //标记消息已读
-    app.request.json(INTERFACE_URL, params, function (data) {
-        if (ResponseCode.SUCCESS == data.code) {
-            document.getElementById("messageId-" + messageId).className = " item-title color-gray ";
-            console.info("标记已读消息成功.")
-        }
-    });
+    if(isLogin()){
+        var bizContent = {messageId: messageId};
+        var params = {
+            method: InterFace.MESSAGE_MARK,
+            userId: userInfo.userId,
+            bizContent: JSON.stringify(bizContent)
+        };
+        //标记消息已读
+        app.request.json(INTERFACE_URL, params, function (data) {
+            if (ResponseCode.SUCCESS == data.code) {
+                document.getElementById("messageId-" + messageId).className = " item-title color-gray ";
+                console.info("标记已读消息成功.")
+            }
+        });
+    }else{
+        //去登录
+        gotoLogin();
+    }
+
+
 }
 
 /**
  * 爱补贴
  */
 function loveBuTieClick() {
-    if (userInfo.userId && userInfo.userLevel >= 2) {
-        memberView.router.navigate('/lovebutie/', {
-            history: true
-        });
-    } else {
-        memberView.router.navigate('/member_rk/', {
-            history: true
-        });
+    if(isLogin()){
+        if ( userInfo.userLevel >= 2) {
+            memberView.router.navigate('/lovebutie/', {
+                history: true
+            });
+        } else {
+            memberView.router.navigate('/member_rk/', {
+                history: true
+            });
+        }
+    }else{
+        //去登录
+        gotoLogin();
     }
+
+
 }
 
 /**
  * 小卡包
  */
 function xiaoKaBaoClick() {
-    if (userInfo.userId && userInfo.userLevel >= 1) {
+    if (isLogin()) {
         memberView.router.navigate('/xiaokabao/', {
             history: true
         });
@@ -151,21 +200,27 @@ function xiaoKaBaoClick() {
             history: true
         });
     }
+
 }
 
 /**
  * 健康卡
  */
 function jianKangKaClick() {
-    if (userInfo.userId && userInfo.userLevel >= 1) {
-        memberView.router.navigate('/jiankangka/', {
-            history: true
-        });
-    } else {
-        memberView.router.navigate('/member_rk/', {
-            history: true
-        });
+    if(isLogin()){
+        if (userInfo.userLevel >= 1) {
+            memberView.router.navigate('/jiankangka/', {
+                history: true
+            });
+        } else {
+            memberView.router.navigate('/member_rk/', {
+                history: true
+            });
+        }
+    }else{
+        gotoLogin();
     }
+
 }
 
 
@@ -173,14 +228,18 @@ function jianKangKaClick() {
  * 转账
  */
 function zhuanzhangClick() {
-    if (userInfo.userId && userInfo.userLevel >= 1) {
-        memberView.router.navigate('/zhuanzhang/', {
-            history: true
-        });
-    } else {
-        memberView.router.navigate('/member_rk/', {
-            history: true
-        });
+    if(isLogin()){
+        if (userInfo.card && userInfo.userLevel >= 1) {
+            memberView.router.navigate('/zhuanzhang/', {
+                history: true
+            });
+        } else {
+            memberView.router.navigate('/bankcard/', {
+                history: true
+            });
+        }
+    }else{
+        gotoLogin();
     }
 }
 
@@ -188,12 +247,14 @@ function zhuanzhangClick() {
  * 保险详单
  */
 function baoxianxiangdanClick(insuranceOrderId) {
-    if (userInfo.userId && userInfo.userLevel >= 1) {
-        memberView.router.navigate('/baoxianxiangdan/?insuranceOrderId='+insuranceOrderId, {
-            history: true
-        });
-    } else {
-
+    if(isLogin()){
+        if (userInfo.userLevel >= 1) {
+            memberView.router.navigate('/baoxianxiangdan/?insuranceOrderId='+insuranceOrderId, {
+                history: true
+            });
+        }
+    }else{
+        gotoLogin();
     }
 }
 

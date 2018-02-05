@@ -24,6 +24,7 @@ import java.util.Map;
  */
 @Component
 public class GetUserDetailServiceImpl implements GateWayService {
+    private final String METHOD_NAME = "cn.zaoangongcheng.api.gateway.user.detail";
 
     @Resource
     private UserInfoManager userInfoManager;
@@ -33,8 +34,6 @@ public class GetUserDetailServiceImpl implements GateWayService {
 
     @Resource
     private BankCardManager bankCardManager;
-
-    private final String METHOD_NAME = "cn.zaoangongcheng.api.gateway.user.getUserDetail";
 
     @Override
     public String getMethodName() {
@@ -48,7 +47,7 @@ public class GetUserDetailServiceImpl implements GateWayService {
         }
         UserInfo userInfo = userInfoManager.get(new UserInfo().setUserId(BigDecimal.valueOf(Long.valueOf(httpRequestBody.getUserId()))));
         if (userInfo == null) {
-            return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
+            return new HttpResponseBody(GlobalErrorMessage.OBJECT_ISNULL);
         }
 
         Map<String, Object> bizContentMap = JsonUtils.transform(userInfo, HashMap.class);

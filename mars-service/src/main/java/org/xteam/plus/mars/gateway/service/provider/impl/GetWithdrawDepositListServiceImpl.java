@@ -25,7 +25,7 @@ import java.util.Map;
 @Component
 public class GetWithdrawDepositListServiceImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.zhaoanyun.gateway.user.getWithdrawDepositList";
+    private final String METHOD_NAME = "cn.zaoangongcheng.api.gateway.user.withdraw.record.list";
 
     @Resource
     private WithdrawRecordManager withdrawRecordManager;
@@ -39,15 +39,15 @@ public class GetWithdrawDepositListServiceImpl extends Logging implements GateWa
     public HttpResponseBody gateWay(HttpRequestBody httpRequestBody) throws Exception {
 
         PageInfoReqVO pageInfoReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), PageInfoReqVO.class);
-        if (pageInfoReqVO == null || StringUtils.isEmpty(httpRequestBody.getUserId())
-                || pageInfoReqVO.getLimit() == null || pageInfoReqVO.getStart() == null) {
+        if (StringUtils.isEmpty(httpRequestBody.getUserId())) {
             return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
         }
         Map<String,Object> bizContentMap = Maps.newHashMap();
-
         bizContentMap.put("list",withdrawRecordManager.query(
                 new WithdrawRecord().
                         setUserId(new BigDecimal(httpRequestBody.getUserId()))
+                        .setStart(pageInfoReqVO!=null && pageInfoReqVO.getStart()!=null ? pageInfoReqVO.getStart():0)
+                        .setLimit(pageInfoReqVO!=null && pageInfoReqVO.getLimit()!=null?pageInfoReqVO.getLimit():Integer.MAX_VALUE)
                 )
         );
         return new HttpResponseBody(GlobalErrorMessage.SUCCESS).setBizContent(JsonUtils.toJSON(bizContentMap));

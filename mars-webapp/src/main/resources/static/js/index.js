@@ -9,12 +9,12 @@ var app = new Framework7({
 });
 $$(document).on('page:init', '.page[data-name="home"]', function (e) {
     //获取用户信
-    loadUserView('2000000');
+    loadUserView(userInfo.userId);
 });
 
 $$(document).on('page:reinit', '.page[data-name="home"]', function (e) {
     //获取用户信
-    loadUserView('2000000');
+    loadUserView(userInfo.userId);
 });
 $$(document).on('page:init', '.page[data-name="buyCard-page"]', function (e) {
     loadData(userInfo, "buy-userinfo", "show-buy-userinfo");
@@ -49,7 +49,13 @@ $$(document).on('page:init', '.page[data-name="wode-baoxian-detail-page"]', func
     var bizContent = {insuranceOrderId:e.detail.route.query.insuranceOrderId};
     loadBizContent(INTERFACE_URL,{method:InterFace.USER_INSURANCE_DETAIL,userId:userInfo.userId,bizContent:JSON.stringify(bizContent)}, "wode-baoxian-detail", "show-wode-baoxian-detail");
 });
+$$(document).on('page:init', '.page[data-name="bankcard-page"]', function (e) {
+    loadBizContent(INTERFACE_URL,{method:InterFace.BANK_LIST}, "bank-list", "show-bank-list");
+});
 
+$$(document).on('page:init', '.page[data-name="zhuanzhang-list-page"]', function (e) {
+    loadBizContent(INTERFACE_URL,{method:InterFace.USER_WITHDRAW_RECORD_LIST,userId:userInfo.userId}, "zhuanzhang-list", "show-zhuanzhang-list");
+});
 
 app.views.create('#view-heart_check', {url: '/heart_check/'});
 app.views.create('#view-college', {url: '/college/'});

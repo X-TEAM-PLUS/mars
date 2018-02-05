@@ -23,7 +23,7 @@ import java.util.Map;
 @Component
 public class GetUserInsuranceDetailServiceImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.zhaoanyun.gateway.user.insurance.detail";
+    private final String METHOD_NAME = "cn.zaoangongcheng.api.gateway.user.insurance.detail";
 
     @Resource
     private UserInsuranceManager userInsuranceManager;

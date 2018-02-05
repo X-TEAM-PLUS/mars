@@ -59,7 +59,7 @@ public class GateWayServiceProxy extends Logging implements ApplicationContextAw
             //根据方法名 获取服务接口
             GateWayService gateWayService = getGateWayService(httpRequestBody.getMethod().toLowerCase());
             if (gateWayService == null) {
-                logWarning("未获取相应的接口.");
+                logWarning("未获取相应的接口["+httpRequestBody.getMethod()+"]");
                 httpResponseBody = new HttpResponseBody(GlobalErrorMessage.UNKNOW);
             } else {
                 //调用接口

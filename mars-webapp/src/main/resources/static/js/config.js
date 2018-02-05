@@ -1,9 +1,9 @@
 //定义接口地址
 var INTERFACE_URL = "http://"+document.domain + ":8080/webservice/api/gateway";
-var userInfo = {};
+var userInfo = {userId:2000000};
 var InterFace = {
     //用户信息
-    USER_INFO: 'cn.zaoangongcheng.api.gateway.user.getUserInfo'
+    USER_INFO: 'cn.zaoangongcheng.api.gateway.user.detail'
     //常见问题
     , QUESTION_LIST: 'cn.zaoangongcheng.api.gateway.global.question.list'
     //问题详情
@@ -21,13 +21,21 @@ var InterFace = {
     //保险产品列表
     ,INSURANCE_LIST:'cn.zaoangongcheng.api.gateway.insurance.product.list'
     //用户保险列表
-    ,USER_INSURANCE_LIST:'com.zhaoanyun.gateway.user.insurance.list'
+    ,USER_INSURANCE_LIST:'cn.zaoangongcheng.api.gateway.user.insurance.list'
     //用户保险详情
-    ,USER_INSURANCE_DETAIL:'com.zhaoanyun.gateway.user.insurance.detail'
+    ,USER_INSURANCE_DETAIL:'cn.zaoangongcheng.api.gateway.user.insurance.detail'
     //用户健康检查记录列表
     ,USER_HEALTH_CHECK_RECORD_LIST:'cn.zaoangongcheng.api.gateway.user.heartcheck.record.list'
     //健康卡包列表
     ,USER_HEALTH_CARD_LIST:'cn.zaoangongcheng.api.gateway.user.heartcard.list'
+    //获取用户提现记录列表
+    ,USER_WITHDRAW_RECORD_LIST:'cn.zaoangongcheng.api.gateway.user.withdraw.record.list'
+    //获取用户提现记录详情
+    ,USER_WITHDRAW_RECORD_DETAIL:'cn.zaoangongcheng.api.gateway.user.withdraw.record.detail'
+    //获取某用户的补贴列表
+    ,USER_SUBSIDY_LIST:'cn.zaoangongcheng.api.gateway.user.subsidy.list'
+    //银行列表
+    ,BANK_LIST:'cn.zaoangongcheng.api.gateway.bank.list'
 }
 
 /**

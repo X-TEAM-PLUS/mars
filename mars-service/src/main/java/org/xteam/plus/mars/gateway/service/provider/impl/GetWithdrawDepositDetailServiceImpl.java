@@ -19,7 +19,7 @@ import javax.annotation.Resource;
 @Component
 public class GetWithdrawDepositDetailServiceImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.zhaoanyun.gateway.user.getWithdrawDepositInfo";
+    private final String METHOD_NAME = "cn.zaoangongcheng.api.gateway.user.withdraw.record.detail";
 
     @Resource
     private WithdrawRecordManager withdrawRecordManager;

@@ -1,5 +1,7 @@
 package org.xteam.plus.mars.domain;
 
+import org.xteam.plus.mars.type.WithDrawStatusName;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -95,6 +97,10 @@ public class WithdrawRecord implements Serializable {
      */
     private String mobileNo;
 
+    /**
+     * 状态名称
+     */
+    private String statusName;
     /**
      * 设置   bankAccountNo
      *
@@ -254,6 +260,7 @@ public class WithdrawRecord implements Serializable {
      */
     public WithdrawRecord setStatus(Integer status) {
         this.status = status;
+        setStatusName(WithDrawStatusName.valueOf(status).getInfo());
         return this;
     }
 
@@ -393,5 +400,13 @@ public class WithdrawRecord implements Serializable {
      */
     public void setMobileNo(String mobileNo) {
         this.mobileNo = mobileNo;
+    }
+
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
     }
 }

@@ -18,7 +18,7 @@ import java.util.HashMap;
 @Component
 public class BankConfigListServiceImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.zhaoanyun.gateway.list.bankConfig";
+    private final String METHOD_NAME = "cn.zaoangongcheng.api.gateway.bank.list";
 
     @Resource
     private GlobalConfManager globalConfManager;

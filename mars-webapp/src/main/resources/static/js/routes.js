@@ -11,6 +11,12 @@ var routes = [
         url: './pages/login.html',
         name: 'login',
     },
+    //我的信息
+    {
+        path: '/me/',
+        url: './pages/me.html',
+        name: 'me',
+    },
     //入口
     {
         path: '/member_rk/',
