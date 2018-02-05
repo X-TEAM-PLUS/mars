@@ -283,7 +283,7 @@ public class UserInfoTest {
 
 
         HttpRequestBody httpRequestBody = new HttpRequestBody();
-        httpRequestBody.setUserId("2000000");
+        httpRequestBody.setUserId("2000001");
         httpRequestBody.setBizContent("");
         try {
             HttpResponseBody httpResponseBody = getUserInfoService.gateWay(httpRequestBody);

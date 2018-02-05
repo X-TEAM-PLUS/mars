@@ -67,8 +67,9 @@ public class GetUserInfoServiceImpl implements GateWayService {
                 new BankCard()
                         .setUserId(BigDecimal.valueOf(Long.valueOf(httpRequestBody.getUserId())))
         );
-
-        bizContentMap.put("card", bankCardList == null || bankCardList.size() == 0 ? "" : bankCardList.get(0));
+        if (bankCardList != null && bankCardList.size() > 0) {
+            bizContentMap.put("card", bankCardList.get(0));
+        }
         return new HttpResponseBody(GlobalErrorMessage.SUCCESS).setBizContent(JsonUtils.toJSON(bizContentMap));
 
     }
