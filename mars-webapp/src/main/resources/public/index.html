@@ -813,7 +813,7 @@
 
 </script>
 <script type="text/template" id="show-bank-list">
-    <select name="bankCode">
+    <select name="bankId" required validate  data-error-message="请选择银行.">
         {{#each list}}
         <option value="{{parameterValue}}">{{parameterKey}}</option>
         {{/each}}

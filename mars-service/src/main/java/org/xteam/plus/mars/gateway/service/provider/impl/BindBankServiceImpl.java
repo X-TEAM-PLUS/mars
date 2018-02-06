@@ -13,6 +13,7 @@ import org.xteam.plus.mars.gateway.service.provider.HttpResponseBody;
 import org.xteam.plus.mars.gateway.service.provider.impl.body.req.UserCardBindReqVO;
 import org.xteam.plus.mars.manager.BankCardManager;
 import org.xteam.plus.mars.manager.GlobalConfManager;
+import org.xteam.plus.mars.type.GlobalConfTypeEnum;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -25,7 +26,7 @@ import java.util.List;
 @Component
 public class BindBankServiceImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.zhaoanyun.gateway.user.bindBank";
+    private final String METHOD_NAME = "cn.zaoangongcheng.api.gateway.user.bindbank";
 
     @Resource
     private BankCardManager bankCardManager;
@@ -59,8 +60,8 @@ public class BindBankServiceImpl extends Logging implements GateWayService {
                         setUserId(BigDecimal.valueOf(Long.valueOf(httpRequestBody.getUserId())))
         );
 
-        GlobalConf queryWhereGlobal = new GlobalConf().setParameterType(new BigDecimal(1));
-        queryWhereGlobal.setParameterKey(userCardBindReqVO.getBankId().toString());
+        GlobalConf queryWhereGlobal = new GlobalConf().setParameterType(new BigDecimal(GlobalConfTypeEnum.WX_BANK_LIST.getCode()));
+        queryWhereGlobal.setParameterValue(userCardBindReqVO.getBankId().toString());
         List globalList = globalConfManager.query(queryWhereGlobal);
         // 校验银行编码合法性
         if (globalList == null || globalList.isEmpty()) {

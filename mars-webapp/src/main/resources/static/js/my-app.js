@@ -258,3 +258,23 @@ function baoxianxiangdanClick(insuranceOrderId) {
     }
 }
 
+/**
+ * 绑定银行卡
+ * @param form
+ */
+function bindBankCard(form) {
+    var bizContent = app.form.convertToData('#'+form);
+    var params = {
+        method: InterFace.BIND_BANK_CARD,
+        userId: userInfo.userId,
+        bizContent: JSON.stringify(bizContent)
+    };
+    app.request.post(INTERFACE_URL,params, function (data) {
+        console.log(data);
+        if (ResponseCode.SUCCESS == data.code) {
+            loveBuTieClick();
+        }else{
+            alert("绑卡失败.");
+        }
+    });
+}

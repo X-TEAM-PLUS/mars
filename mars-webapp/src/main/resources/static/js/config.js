@@ -36,6 +36,8 @@ var InterFace = {
     ,USER_SUBSIDY_LIST:'cn.zaoangongcheng.api.gateway.user.subsidy.list'
     //银行列表
     ,BANK_LIST:'cn.zaoangongcheng.api.gateway.bank.list'
+    //绑定银行卡
+    ,BIND_BANK_CARD:'cn.zaoangongcheng.api.gateway.user.bindBank'
 }
 
 /**

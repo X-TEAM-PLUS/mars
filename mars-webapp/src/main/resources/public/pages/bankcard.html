@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="page-content  navbar-through toolbar-through " style="padding-top: 8px;">
-        <form class="list inline-labels no-hairlines-md" id="my-form">
+        <form class="list inline-labels no-hairlines-md" id="bind-backcard-form">
             <ul>
                 <li class="item-content item-input">
                     <div class="item-media">
@@ -29,7 +29,7 @@
                     <div class="item-inner">
                         <div class="item-title item-label">持卡人</div>
                         <div class="item-input-wrap">
-                            <input type="text" >
+                            <input type="text"  name="cardUserName" required validate  data-error-message="请输入持卡人姓名.">
                         </div>
                     </div>
                 </li>
@@ -40,7 +40,7 @@
                     <div class="item-inner">
                         <div class="item-title item-label">账号</div>
                         <div class="item-input-wrap">
-                            <input type="number" >
+                            <input type="number" name="cardNo" required validate  data-error-message="请输入银行卡账号.">
                         </div>
                     </div>
                 </li>
@@ -49,7 +49,7 @@
             </ul>
         </form>
         <div class="block">
-            <div class="col"><a class="button button-big  button-fill button-raised active" href="#">确定</a></div>
+            <div class="col"><a class="button button-big  button-fill button-raised active" href="#" onclick="bindBankCard('bind-backcard-form')"  >确定</a></div>
         </div>
     </div>
 
