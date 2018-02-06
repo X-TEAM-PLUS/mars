@@ -112,6 +112,12 @@ public class UserHealthCard implements Serializable {
      * 产品信息
      */
     private Product product;
+
+    /**
+     * 订单号
+     */
+    private java.math.BigDecimal orderNo;
+
     /**
      * 设置   sendPeriodMode
      *
@@ -414,6 +420,25 @@ public class UserHealthCard implements Serializable {
      */
     public java.util.Date getCardActivateTime() {
         return this.cardActivateTime;
+    }
+
+    /**
+     * 设置   orderNo
+     *
+     * @param orderNo (订单号)
+     */
+    public UserHealthCard setOrderNo(java.math.BigDecimal orderNo) {
+        this.orderNo = orderNo;
+        return this;
+    }
+
+    /**
+     * 获取   orderNo (订单号)
+     *
+     * @return
+     */
+    public java.math.BigDecimal getOrderNo() {
+        return this.orderNo;
     }
 
 

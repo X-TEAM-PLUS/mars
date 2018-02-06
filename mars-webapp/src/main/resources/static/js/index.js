@@ -57,6 +57,9 @@ $$(document).on('page:init', '.page[data-name="zhuanzhang-list-page"]', function
     loadBizContent(INTERFACE_URL,{method:InterFace.USER_WITHDRAW_RECORD_LIST,userId:userInfo.userId}, "zhuanzhang-list", "show-zhuanzhang-list");
 });
 
+$$(document).on('page:init', '.page[data-name="butiemingxi-list-page"]', function (e) {
+    loadBizContent(INTERFACE_URL,{method:InterFace.USER_SUBSIDY_LIST,userId:userInfo.userId}, "butiemingxi-list", "show-butiemingxi-list");
+});
 app.views.create('#view-heart_check', {url: '/heart_check/'});
 app.views.create('#view-college', {url: '/college/'});
 var memberView = app.views.create('#view-member', {url: '/'});

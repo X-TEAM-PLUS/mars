@@ -850,7 +850,36 @@
             </div>
         </div>
 </script>
-
+<script type="text/template" id="show-butiemingxi-list">
+    <table>
+        <thead>
+        <th >补贴来源</th>
+        <th >补贴金额</th>
+        <th >补贴项目</th>
+        </thead>
+    </table>
+        {{#each list}}
+                <div class="list media-list">
+                    <ul>
+                        <li>
+                            <div  class=" item-content">
+                                <div class="item-media"><img src="{{wxHeadPortrait}}" width="40px" height="40px"></div>
+                                <div class="item-inner">
+                                    <div class="item-title-row">
+                                        <div class="item-title">{{realName}} </div>
+                                        <div class="item-after"><i class="fa fa-rmb color-yellow"></i> {{amount}}<span class="font-12"> {{businesseTypeName}}</span></div>
+                                    </div>
+                                    <div class="item-subtitle">{{created}}</div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+        {{/each}}
+        <tbody>
+        </tbody>
+    </table>
+</script>
 <!-- Path to Framework7 Library JS-->
 <script type="text/javascript" src="/assets/plugins/framework7-2.0.7/js/framework7.min.js"></script>
 <script type="text/javascript" src="/assets/plugins/template7/template7.min.js"></script>

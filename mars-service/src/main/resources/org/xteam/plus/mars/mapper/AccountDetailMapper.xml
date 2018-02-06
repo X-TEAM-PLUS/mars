@@ -11,18 +11,23 @@
         <result column="AMOUNT" property="amount" jdbcType="DECIMAL"/>
         <result column="SERVICE_NO" property="serviceNo" jdbcType="DECIMAL"/>
         <result column="USER_ID" property="userId" jdbcType="DECIMAL"/>
+
+        <result column="WX_HEAD_PORTRAIT" property="wxHeadPortrait" jdbcType="VARCHAR"/>
+        <result column="REAL_NAME" property="realName" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--公用选择列-->
     <sql id="selectColumns">
-        ID,
-        CREATED
-        ,UPDATED
-        ,BUSINESSE_TYPE
-        ,OPERATION_DIRECTION
-        ,AMOUNT
-        ,SERVICE_NO
-        ,USER_ID
+       tmad. ID,
+        tmad.CREATED
+        ,tmad.UPDATED
+        ,tmad.BUSINESSE_TYPE
+        ,tmad.OPERATION_DIRECTION
+        ,tmad.AMOUNT
+        ,tmad.SERVICE_NO
+        ,tmad.USER_ID
+        ,TMUI.WX_HEAD_PORTRAIT
+        ,TMUI.REAL_NAME
     </sql>
 
     <!--公用查询条件-->
@@ -30,44 +35,44 @@
         <where>
             <if test="created!=null ">
                 <![CDATA[
-                        and CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
-                        and CREATED<= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        and tmad.CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and tmad.CREATED<= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
                         ]]>
             </if>
             <if test="updated!=null ">
                 <![CDATA[
-                        and UPDATED>= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
-                        and UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        and tmad.UPDATED>= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and tmad.UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
                         ]]>
             </if>
             <if test="businesseType!=null ">
                 <![CDATA[
-                    and BUSINESSE_TYPE=#{businesseType,jdbcType=INTEGER}
+                    and tmad.BUSINESSE_TYPE=#{businesseType,jdbcType=INTEGER}
                     ]]>
             </if>
             <if test="operationDirection!=null ">
                 <![CDATA[
-                    and OPERATION_DIRECTION=#{operationDirection,jdbcType=INTEGER}
+                    and tmad.OPERATION_DIRECTION=#{operationDirection,jdbcType=INTEGER}
                     ]]>
             </if>
             <if test="amount!=null ">
                 <![CDATA[
-                    and AMOUNT=#{amount,jdbcType=DECIMAL}
+                    and tmad.AMOUNT=#{amount,jdbcType=DECIMAL}
                     ]]>
             </if>
             <if test="serviceNo!=null ">
                 <![CDATA[
-                    and SERVICE_NO=#{serviceNo,jdbcType=DECIMAL}
+                    and tmad.SERVICE_NO=#{serviceNo,jdbcType=DECIMAL}
                     ]]>
             </if>
             <if test="id!=null ">
                 <![CDATA[
-                    and ID=#{id,jdbcType=DECIMAL}
+                    and tmad.ID=#{id,jdbcType=DECIMAL}
                     ]]>
             </if>
             <if test="userId!=null ">
                 <![CDATA[
-                    and USER_ID=#{userId,jdbcType=DECIMAL}
+                    and tmad.USER_ID=#{userId,jdbcType=DECIMAL}
                     ]]>
             </if>
         </where>
@@ -176,7 +181,9 @@
     <select id="query" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.AccountDetail">
         select
         <include refid="selectColumns"></include>
-        from T_MARS_ACCOUNT_DETAIL
+        from T_MARS_ACCOUNT_DETAIL tmad
+        LEFT JOIN T_MARS_USER_HEALTH_CARD tmuhc ON  tmuhc.ORDER_NO=tmad.SERVICE_NO
+        LEFT JOIN  T_MARS_USER_INFO TMUI ON TMUI.USER_ID=tmuhc.ACTIVATE_USER_ID
         <include refid="queryWhere"></include>
         limit #{start},#{limit}
     </select>
@@ -184,7 +191,9 @@
     <!--查询记录数-->
     <select id="queryCount" resultType="int" parameterType="org.xteam.plus.mars.domain.AccountDetail">
         select count(1)
-        from T_MARS_ACCOUNT_DETAIL
+        from T_MARS_ACCOUNT_DETAIL tmad
+        LEFT JOIN T_MARS_USER_HEALTH_CARD tmuhc ON  tmuhc.ORDER_NO=tmad.SERVICE_NO
+        LEFT JOIN  T_MARS_USER_INFO TMUI ON TMUI.USER_ID=tmuhc.ACTIVATE_USER_ID
         <include refid="queryWhere"></include>
     </select>
 
@@ -192,9 +201,12 @@
     <select id="queryBusinessTypes" resultMap="BaseResultMap">
         SELECT
         <include refid="selectColumns"></include>
-        FROM t_mars_account_detail WHERE USER_ID = #{userId,jdbcType=DECIMAL}
+        from T_MARS_ACCOUNT_DETAIL tmad
+        LEFT JOIN T_MARS_USER_HEALTH_CARD tmuhc ON  tmuhc.ORDER_NO=tmad.SERVICE_NO
+        LEFT JOIN  T_MARS_USER_INFO TMUI ON TMUI.USER_ID=tmuhc.ACTIVATE_USER_ID
+        WHERE tmad.USER_ID = #{userId,jdbcType=DECIMAL}
         <if test="types!=null">
-            AND BUSINESSE_TYPE IN
+            AND tmad.BUSINESSE_TYPE IN
             <foreach collection="types" index="index" item="a" open="(" separator="," close=")">
                 #{a}
             </foreach>

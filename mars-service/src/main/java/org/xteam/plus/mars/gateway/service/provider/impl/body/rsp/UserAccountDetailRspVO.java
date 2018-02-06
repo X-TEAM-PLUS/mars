@@ -1,5 +1,7 @@
 package org.xteam.plus.mars.gateway.service.provider.impl.body.rsp;
 
+import org.xteam.plus.mars.type.AccountDetailTypeEnum;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -47,6 +49,22 @@ public class UserAccountDetailRspVO implements Serializable {
      */
     private java.math.BigDecimal userId;
 
+    /**
+     * 真实姓名
+     */
+    private String realName;
+
+    /**
+     * 微信头像地址
+     */
+    private String wxHeadPortrait;
+
+    /**
+     * 业务类型名称
+     * @return
+     */
+    private String businesseTypeName;
+
     public Date getCreated() {
         return created;
     }
@@ -69,6 +87,7 @@ public class UserAccountDetailRspVO implements Serializable {
 
     public void setBusinesseType(Integer businesseType) {
         this.businesseType = businesseType;
+        this.businesseTypeName = AccountDetailTypeEnum.valueOf(businesseType).getInfo();
     }
 
     public Integer getOperationDirection() {
@@ -109,5 +128,29 @@ public class UserAccountDetailRspVO implements Serializable {
 
     public void setUserId(BigDecimal userId) {
         this.userId = userId;
+    }
+
+    public String getBusinesseTypeName() {
+        return businesseTypeName;
+    }
+
+    public void setBusinesseTypeName(String businesseTypeName) {
+        this.businesseTypeName = businesseTypeName;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public String getWxHeadPortrait() {
+        return wxHeadPortrait;
+    }
+
+    public void setWxHeadPortrait(String wxHeadPortrait) {
+        this.wxHeadPortrait = wxHeadPortrait;
     }
 }

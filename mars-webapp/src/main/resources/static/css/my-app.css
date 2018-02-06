@@ -128,7 +128,7 @@
 .bdbox{display: table;width: 90%;padding:0.2rem;border: 1px solid #e35142;border-radius: 5px;margin: 0.3rem 5%}
 
 .timeline-item-inner{
-    background:gainsboro;
+    background: #ffe8a3;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }

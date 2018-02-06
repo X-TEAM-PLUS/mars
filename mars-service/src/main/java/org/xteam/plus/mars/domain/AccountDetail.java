@@ -63,6 +63,17 @@ public class AccountDetail implements Serializable {
      */
     private java.math.BigDecimal userId;
 
+    /**
+     * 真实姓名
+     */
+    private String realName;
+
+    /**
+     * 微信头像地址
+     */
+    private String wxHeadPortrait;
+
+
 
     /**
      * 设置   created
@@ -253,6 +264,24 @@ public class AccountDetail implements Serializable {
      */
     public AccountDetail setLimit(Integer limit) {
         this.limit = limit;
+        return this;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public AccountDetail setRealName(String realName) {
+        this.realName = realName;
+        return this;
+    }
+
+    public String getWxHeadPortrait() {
+        return wxHeadPortrait;
+    }
+
+    public AccountDetail setWxHeadPortrait(String wxHeadPortrait) {
+        this.wxHeadPortrait = wxHeadPortrait;
         return this;
     }
 }

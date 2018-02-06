@@ -27,7 +27,7 @@ import java.util.Map;
 @Component
 public class GetSubsidyListServiceImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.zhaoanyun.gateway.user.getSubsidyList";
+    private final String METHOD_NAME = "cn.zaoangongcheng.api.gateway.user.subsidy.list";
 
     @Resource
     private AccountDetailManager accountDetailManager;

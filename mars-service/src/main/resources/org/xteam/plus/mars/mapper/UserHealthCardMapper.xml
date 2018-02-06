@@ -19,7 +19,7 @@
         <result column="BUYER_USER_ID" property="buyerUserId" jdbcType="DECIMAL"/>
         <result column="ACTIVATE_USER_ID" property="activateUserId" jdbcType="DECIMAL"/>
         <result column="CARD_ACTIVATE_TIME" property="cardActivateTime" jdbcType="TIMESTAMP"/>
-
+        <result column="ORDER_NO" property="orderNo" jdbcType="DECIMAL"/>
         <association property="activateUserInfo" column="ACTIVATE_USER_ID"
                      javaType="org.xteam.plus.mars.domain.UserInfo">
             <id column="USER_ID" property="userId" jdbcType="DECIMAL"/>
@@ -87,6 +87,7 @@
         ,BUYER_USER_ID
         ,ACTIVATE_USER_ID
         ,CARD_ACTIVATE_TIME
+        ,ORDER_NO
     </sql>
 
     <!--公用查询条件-->
@@ -204,6 +205,7 @@
         ,BUYER_USER_ID
         ,ACTIVATE_USER_ID
         ,CARD_ACTIVATE_TIME
+        ,ORDER_NO
         )values(
         #{sendPeriodMode,jdbcType=INTEGER}
         ,#{sendPeriod,jdbcType=INTEGER}
@@ -220,6 +222,7 @@
         ,#{buyerUserId,jdbcType=DECIMAL}
         ,#{activateUserId,jdbcType=DECIMAL}
         ,#{cardActivateTime,jdbcType=TIMESTAMP}
+        ,#{orderNo,jdbcType=DECIMAL}
         )
     </insert>
 
@@ -241,6 +244,7 @@
         ,BUYER_USER_ID
         ,ACTIVATE_USER_ID
         ,CARD_ACTIVATE_TIME
+        ,ORDER_NO
         )values
         <foreach collection="list" item="item" index="index" separator=",">
             (
@@ -259,6 +263,7 @@
             ,#{item.buyerUserId,jdbcType=DECIMAL}
             ,#{item.activateUserId,jdbcType=DECIMAL}
             ,#{item.cardActivateTime,jdbcType=TIMESTAMP}
+            ,#{orderNo,jdbcType=DECIMAL}
             )
         </foreach>
     </insert>
@@ -313,6 +318,9 @@
                 <if test="cardActivateTime!=null ">
                     CARD_ACTIVATE_TIME=#{cardActivateTime,jdbcType=TIMESTAMP},
                 </if>
+                <if test="orderNo!=null ">
+                    ORDER_NO=#{orderNo,jdbcType=DECIMAL},
+                </if>
             </trim>
         </set>
         where CARD_NO= #{cardNo,jdbcType=DECIMAL}
@@ -337,6 +345,7 @@
         ,BUYER_USER_ID
         ,ACTIVATE_USER_ID
         ,CARD_ACTIVATE_TIME
+        ,ORDER_NO
         from T_MARS_USER_HEALTH_CARD
         where CARD_NO= #{cardNo,jdbcType=DECIMAL}
     </select>
@@ -378,6 +387,7 @@
         ,TMUHC.BUYER_USER_ID
         ,TMUHC.ACTIVATE_USER_ID
         ,TMUHC.CARD_ACTIVATE_TIME
+        ,TMUHC.ORDER_NO
         ,TMUI.USER_ID
         ,TMUI.CARD_NO
         ,TMUI.ID_NUMBER
@@ -472,6 +482,7 @@
         ,TMUHC.BUYER_USER_ID
         ,TMUHC.ACTIVATE_USER_ID
         ,TMUHC.CARD_ACTIVATE_TIME
+        ,TMUHC.ORDER_NO
         ,TMP.PRODUCT_ID
         ,TMP.CARD_TYPE
         ,TMP.SURVIVAL_PERIOD_MODE
