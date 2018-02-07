@@ -1,3 +1,5 @@
+//定义日志开关
+var LOG_SWITCH  = true;
 //定义接口地址
 var INTERFACE_URL = "http://"+document.domain + ":8080/webservice/api/gateway";
 var userInfo = {userId:2000000};
@@ -65,3 +67,23 @@ var UserLeve = {
     , STANDING_DIRECTOR: 4
 }
 
+/**
+ * 定义异常信息
+ * @type {Map<any, any>}
+ */
+var ErrorMessage = new Map();
+ErrorMessage.put(10000,"接口调用成功");
+ErrorMessage.put(20000,"服务不可用");
+ErrorMessage.put(20001,"权限不足");
+ErrorMessage.put(40001,"缺少必选参数");
+ErrorMessage.put(40002,"非法的参数");
+ErrorMessage.put(40004,"业务处理失败");
+ErrorMessage.put(40005,"对象为空!");
+ErrorMessage.put(40006,"银行卡已经被绑定");
+ErrorMessage.put(40007,"申请金额不能小与等于0");
+ErrorMessage.put(40008,"用户ID不存在");
+ErrorMessage.put(40009,"金额不足，不能进行转账");
+ErrorMessage.put(40010,"银行编码错误，不能进行绑定");
+ErrorMessage.put(40011,"产品ID不存在");
+ErrorMessage.put(40012,"实名不一致");
+ErrorMessage.put(40013,"重复的绑卡操作");

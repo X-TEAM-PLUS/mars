@@ -14,6 +14,8 @@ public enum GlobalErrorMessage {
     ,AMOUNT_NOT_ENOUGH(40009,"金额不足，不能进行转账")
     ,BANK_ID_ERROR(40010,"银行编码错误，不能进行绑定")
     ,PRODUCT_ID_NOT_HIVE(40011,"产品ID不存在")
+    ,DIFFERENT_REAL_NAME(40012,"实名不一致")
+    ,BANK_CARD_IS_BINDED(40013,"重复的绑卡操作")
     ;
     private Integer code;
     private String message;

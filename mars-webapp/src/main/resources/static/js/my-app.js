@@ -11,6 +11,16 @@ else if (Framework7.Class && Framework7.Class.use) Framework7.Class.use(plugin);
 var $$ = Dom7;
 
 /**
+ * 输出日志
+ * @param data
+ */
+function logInfo(data) {
+    if(LOG_SWITCH){
+        console.log(data);
+    }
+}
+
+/**
  * 加载用户视图
  * @param url
  * @param params
@@ -19,8 +29,9 @@ function loadUserView(userId) {
     var params = {method: InterFace.USER_INFO, userId: userId};
     //获取用户信息
     app.request.json(INTERFACE_URL, params, function (data) {
+        logInfo(data);
         if (ResponseCode.SUCCESS == data.code) {
-            console.info("获取用户信息成功.")
+            logInfo("获取用户信息成功.")
             var bizContent = JSON.parse(data.bizContent);
             setUserInfo(bizContent);
             var userViewDomId = "user-view";
@@ -131,8 +142,9 @@ function removeSystemMessage(messageId) {
     };
     //删除消息
     app.request.json(INTERFACE_URL, params, function (data) {
+        logInfo(data);
         if (ResponseCode.SUCCESS == data.code) {
-            console.info("删除消息成功.")
+            logInfo("删除消息成功.")
         }
     });
 }
@@ -152,9 +164,10 @@ function markSystemMessage(messageId) {
         };
         //标记消息已读
         app.request.json(INTERFACE_URL, params, function (data) {
+            logInfo(data);
             if (ResponseCode.SUCCESS == data.code) {
                 document.getElementById("messageId-" + messageId).className = " item-title color-gray ";
-                console.info("标记已读消息成功.")
+                logInfo("标记已读消息成功.")
             }
         });
     }else{
@@ -270,11 +283,25 @@ function bindBankCard(form) {
         bizContent: JSON.stringify(bizContent)
     };
     app.request.post(INTERFACE_URL,params, function (data) {
-        console.log(data);
-        if (ResponseCode.SUCCESS == data.code) {
-            loveBuTieClick();
+        logInfo(data);
+        var response = JSON.parse(data);
+        if (ResponseCode.SUCCESS == response.code) {
+            memberView.router.navigate('/zhuanzhang/', {
+                history: true
+            });
         }else{
-            alert("绑卡失败.");
+            alert(getErrorMessage(response.code));
         }
     });
+}
+
+/**
+ * 获取异常信息
+ * @param code
+ */
+function getErrorMessage(code) {
+    if(ErrorMessage.containsKey(code)){
+        return ErrorMessage.get(code);
+    }
+    return "操作异常";
 }

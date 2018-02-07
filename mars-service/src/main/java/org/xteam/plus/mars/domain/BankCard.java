@@ -219,7 +219,8 @@ public class BankCard implements Serializable {
         return bankId;
     }
 
-    public void setBankId(BigDecimal bankId) {
+    public BankCard setBankId(BigDecimal bankId) {
         this.bankId = bankId;
+        return this;
     }
 }
