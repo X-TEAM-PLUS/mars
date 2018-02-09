@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import org.xteam.plus.mars.common.JsonUtils;
 import org.xteam.plus.mars.common.Logging;
 import org.xteam.plus.mars.domain.AccountBalance;
+import org.xteam.plus.mars.domain.BankCard;
 import org.xteam.plus.mars.domain.UserInfo;
 import org.xteam.plus.mars.domain.WithdrawRecord;
 import org.xteam.plus.mars.gateway.service.provider.GateWayService;
@@ -12,6 +13,7 @@ import org.xteam.plus.mars.gateway.service.provider.HttpRequestBody;
 import org.xteam.plus.mars.gateway.service.provider.HttpResponseBody;
 import org.xteam.plus.mars.gateway.service.provider.impl.body.req.ApplyRecordReqVO;
 import org.xteam.plus.mars.manager.AccountBalanceManager;
+import org.xteam.plus.mars.manager.BankCardManager;
 import org.xteam.plus.mars.manager.UserInfoManager;
 import org.xteam.plus.mars.manager.WithdrawRecordManager;
 import org.xteam.plus.mars.wx.util.StringUtils;
@@ -19,17 +21,20 @@ import org.xteam.plus.mars.wx.util.StringUtils;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 申请提现接口
  */
 @Component
 public class WithdrawDepositApplyServiceImpl extends Logging implements GateWayService {
-
-    private final String METHOD_NAME = "com.zhaoanyun.gateway.user.applyRecord";
+    private final String METHOD_NAME = "cn.zaoangongcheng.api.gateway.user.withdraw.apply";
 
     @Resource
     private UserInfoManager userInfoManager;
+
+    @Resource
+    private BankCardManager bankCardManager;
 
     @Resource
     private AccountBalanceManager accountBalanceManager;
@@ -47,22 +52,16 @@ public class WithdrawDepositApplyServiceImpl extends Logging implements GateWayS
         HttpResponseBody httpResponseBody = new HttpResponseBody(GlobalErrorMessage.SUCCESS);
 
         ApplyRecordReqVO applyRecordReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), ApplyRecordReqVO.class);
-        if (applyRecordReqVO == null || httpRequestBody.getUserId() == null
-                || StringUtils.isEmpty(applyRecordReqVO.getBankAccountNo())
-                || StringUtils.isEmpty(applyRecordReqVO.getBankAccountName())
-                || applyRecordReqVO.getPayWay() == null
-                || applyRecordReqVO.getAmount() == null) {
-            httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
-            return httpResponseBody;
+        if (httpRequestBody.getUserId() == null   || applyRecordReqVO.getAmount() == null) {
+            return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
         }
-        if (applyRecordReqVO.getAmount().compareTo(new BigDecimal(0)) == -1) {
-            httpResponseBody = new HttpResponseBody(GlobalErrorMessage.CARD_ALREAD_BIND);
-            return httpResponseBody;
+
+        if (applyRecordReqVO.getAmount().compareTo(new BigDecimal(100)) == -1) {
+            return new HttpResponseBody(GlobalErrorMessage.BUSINESS_FAILED);
         }
         UserInfo userInfo = userInfoManager.get(new UserInfo().setUserId(new BigDecimal(httpRequestBody.getUserId())));
         if (userInfo == null) {
-            httpResponseBody = new HttpResponseBody(GlobalErrorMessage.USER_ID_NOT_HIVE);
-            return httpResponseBody;
+            return new HttpResponseBody(GlobalErrorMessage.USER_ID_NOT_HIVE);
         }
         AccountBalance accountBalance = accountBalanceManager.get(new AccountBalance().setUserId(userInfo.getUserId()));
         if (accountBalance == null) {
@@ -71,16 +70,25 @@ public class WithdrawDepositApplyServiceImpl extends Logging implements GateWayS
             accountBalance.setBalanceAmount(new BigDecimal(0));
         }
         if (accountBalance.getBalanceAmount().compareTo(applyRecordReqVO.getAmount()) == -1) {
-            httpResponseBody = new HttpResponseBody(GlobalErrorMessage.AMOUNT_NOT_ENOUGH);
-            return httpResponseBody;
+            return  new HttpResponseBody(GlobalErrorMessage.AMOUNT_NOT_ENOUGH);
         }
+
+        /**
+         * 查询绑定的银行卡
+         */
+        List<BankCard> bankCardList = bankCardManager.query(new BankCard().setUserId(userInfo.getUserId()));
+        if(bankCardList==null || bankCardList.size()==0){
+            return new HttpResponseBody(GlobalErrorMessage.BUSINESS_FAILED);
+        }
+        BankCard  bankCard = bankCardList.get(0);
+
         WithdrawRecord withdrawRecord = new WithdrawRecord();
         withdrawRecord.setCreated(new Date());
         withdrawRecord.setUserId(userInfo.getUserId());
         withdrawRecord.setAmount(applyRecordReqVO.getAmount());
-        withdrawRecord.setBankAccountName(applyRecordReqVO.getBankAccountName());
-        withdrawRecord.setBankAccountNo(applyRecordReqVO.getBankAccountNo());
-        withdrawRecord.setPayWay(applyRecordReqVO.getPayWay());
+        withdrawRecord.setBankAccountName(bankCard.getBankAccountName());
+        withdrawRecord.setBankAccountNo(bankCard.getBankAccountNo());
+        withdrawRecord.setPayWay(1);
         withdrawRecord.setStatus(0);
         withdrawRecord.setApplyTime(new Date());
 

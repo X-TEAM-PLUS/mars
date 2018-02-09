@@ -880,6 +880,60 @@
         </tbody>
     </table>
 </script>
+<script type="text/template" id="show-zhuanzhang-form">
+        <ul>
+            <li class="item-content item-input">
+                <div class="item-media">
+                    <i class="fa fa-rmb  color-yellow"></i>
+                </div>
+                <div class="item-inner">
+                    <div class="item-title item-label">账户余额</div>
+                    <div class="item-input-wrap">
+                        <input type="text" readonly value="{{accountBalance.balanceAmount}}" >
+                        <span class="input-clear-button"></span>
+                    </div>
+                </div>
+            </li>
+            <li class="item-content item-input">
+                <div class="item-media">
+                    <i class="fa fa-user  color-gray"></i>
+                </div>
+                <div class="item-inner">
+                    <div class="item-title item-label">收款人</div>
+                    <div class="item-input-wrap">
+                        <input type="text"  readonly value="{{bankCard.bankAccountName}}">
+                        <span class="input-clear-button"></span>
+                    </div>
+                </div>
+            </li>
+
+            <li class="item-content item-input">
+                <div class="item-media">
+                    <i class="fa fa-credit-card  color-gray"></i>
+                </div>
+                <div class="item-inner">
+                    <div class="item-title item-label">收款账号</div>
+                    <div class="item-input-wrap">
+                        <input type="text" readonly value="{{bankCard.bankAccountNo}}" >
+                        <span class="input-clear-button"></span>
+                    </div>
+                </div>
+            </li>
+            <li class="item-content item-input">
+                <div class="item-media">
+                    <i class="fa fa-rmb fa-2x color-red"></i>
+                </div>
+                <div class="item-inner">
+                    <div class="item-title item-label">转账金额</div>
+                    <div class="item-input-wrap">
+                        <input type="text"  name="amount">
+                        <span class="input-clear-button"></span>
+                    </div>
+                </div>
+            </li>
+        </ul>
+</script>
+
 <!-- Path to Framework7 Library JS-->
 <script type="text/javascript" src="/assets/plugins/framework7-2.0.7/js/framework7.min.js"></script>
 <script type="text/javascript" src="/assets/plugins/template7/template7.min.js"></script>

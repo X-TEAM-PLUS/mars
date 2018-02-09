@@ -286,6 +286,7 @@ function bindBankCard(form) {
         logInfo(data);
         var response = JSON.parse(data);
         if (ResponseCode.SUCCESS == response.code) {
+            app.alert('绑卡成功!');
             memberView.router.navigate('/zhuanzhang/', {
                 history: true
             });
@@ -294,6 +295,34 @@ function bindBankCard(form) {
         }
     });
 }
+
+/**
+ * 提现申请
+ * @param form
+ */
+function applyWithDraw(form) {
+    var bizContent = app.form.convertToData('#'+form);
+    var params = {
+        method: InterFace.WITHDRAW_APPLY,
+        userId: userInfo.userId,
+        bizContent: JSON.stringify(bizContent)
+    };
+    app.request.post(INTERFACE_URL,params, function (data) {
+        logInfo(data);
+        var response = JSON.parse(data);
+        if (ResponseCode.SUCCESS == response.code) {
+            alert('提现申请已提交 !');
+            memberView.router.navigate('/lovebutie/', {
+                history: true
+            });
+        }else{
+            alert(getErrorMessage(response.code));
+        }
+    });
+}
+
+
+
 
 /**
  * 获取异常信息

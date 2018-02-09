@@ -40,6 +40,10 @@ var InterFace = {
     ,BANK_LIST:'cn.zaoangongcheng.api.gateway.bank.list'
     //绑定银行卡
     ,BIND_BANK_CARD:'cn.zaoangongcheng.api.gateway.user.bindBank'
+    //账户and银行卡信息查询
+    ,ACCOUNT_AND_BANK_CARD:'cn.zaoangongcheng.api.gateway.security.user.accountandbankcard.get'
+    //提现申请
+    ,WITHDRAW_APPLY:'cn.zaoangongcheng.api.gateway.user.withdraw.apply'
 }
 
 /**
