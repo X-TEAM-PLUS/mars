@@ -6,6 +6,12 @@ var app = new Framework7({
     , root: '#app'
     , routes: routes
     , dynamicNavbar: true
+    ,dialog: {
+        // set default title for all dialog shortcuts
+        title: '信息提示',
+        // change default "OK" button text
+        buttonOk: '确定',
+    }
 });
 $$(document).on('page:init', '.page[data-name="home"]', function (e) {
     //获取用户信

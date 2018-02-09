@@ -286,12 +286,14 @@ function bindBankCard(form) {
         logInfo(data);
         var response = JSON.parse(data);
         if (ResponseCode.SUCCESS == response.code) {
-            app.alert('绑卡成功!');
-            memberView.router.navigate('/zhuanzhang/', {
-                history: true
+            app.dialog.alert('绑卡成功','信息提示',function () {
+                memberView.router.navigate('/zhuanzhang/', {
+                    history: true
+                });
             });
+
         }else{
-            alert(getErrorMessage(response.code));
+            app.dialog.alert(getErrorMessage(response.code),'信息提示');
         }
     });
 }
@@ -311,12 +313,13 @@ function applyWithDraw(form) {
         logInfo(data);
         var response = JSON.parse(data);
         if (ResponseCode.SUCCESS == response.code) {
-            alert('提现申请已提交 !');
-            memberView.router.navigate('/lovebutie/', {
-                history: true
+            app.dialog.alert('申请已提交成功，请等待后台审核，注意接收消息提醒。','信息提示',function () {
+                memberView.router.navigate('/lovebutie/', {
+                    history: true
+                });
             });
         }else{
-            alert(getErrorMessage(response.code));
+            app.dialog.alert(getErrorMessage(response.code),'信息提示');
         }
     });
 }
