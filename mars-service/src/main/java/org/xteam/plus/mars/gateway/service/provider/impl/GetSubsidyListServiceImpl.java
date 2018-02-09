@@ -43,11 +43,17 @@ public class GetSubsidyListServiceImpl extends Logging implements GateWayService
     public static List<AccountDetailTypeEnum> accountDetailTypeEnumList = Lists.newArrayList();
 
     static {
+
         accountDetailTypeEnumList.add(AccountDetailTypeEnum.DIRECTOR_WORK_SUBSIDY);
-        accountDetailTypeEnumList.add(AccountDetailTypeEnum.EXTENSION_SUBSIDY);
-        accountDetailTypeEnumList.add(AccountDetailTypeEnum.SERVICE_SUBSIDY);
         accountDetailTypeEnumList.add(AccountDetailTypeEnum.SOCIAL_WORK_SUBSIDY);
         accountDetailTypeEnumList.add(AccountDetailTypeEnum.STANDING_DIRECTOR_SUBSIDY);
+
+        accountDetailTypeEnumList.add(AccountDetailTypeEnum.STANDING_DIRECTOR_SERVICE_SUBSIDY);
+        accountDetailTypeEnumList.add(AccountDetailTypeEnum.DIRECTOR_SERVICE_SUBSIDY);
+
+        accountDetailTypeEnumList.add(AccountDetailTypeEnum.SOCIAL_EXTENSION_SUBSIDY);
+        accountDetailTypeEnumList.add(AccountDetailTypeEnum.DIRECTOR_EXTENSION_SUBSIDY);
+        accountDetailTypeEnumList.add(AccountDetailTypeEnum.STANDING_DIRECTOR_EXTENSION_SUBSIDY);
     }
 
     @Override

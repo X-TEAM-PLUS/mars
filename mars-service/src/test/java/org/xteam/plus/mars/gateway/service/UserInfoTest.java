@@ -58,7 +58,7 @@ public class UserInfoTest {
     private GetWithdrawDepositListServiceImpl getRecordListService;
 
     @Resource
-    private ApplyRecordServiceImpl applyRecordService;
+    private WithdrawDepositApplyServiceImpl applyRecordService;
 
     @Resource
     private GetWithdrawDepositDetailServiceImpl getRecordInfoService;

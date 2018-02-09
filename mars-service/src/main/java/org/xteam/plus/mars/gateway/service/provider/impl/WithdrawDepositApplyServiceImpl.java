@@ -24,7 +24,7 @@ import java.util.Date;
  * 申请提现接口
  */
 @Component
-public class ApplyRecordServiceImpl extends Logging implements GateWayService {
+public class WithdrawDepositApplyServiceImpl extends Logging implements GateWayService {
 
     private final String METHOD_NAME = "com.zhaoanyun.gateway.user.applyRecord";
 
