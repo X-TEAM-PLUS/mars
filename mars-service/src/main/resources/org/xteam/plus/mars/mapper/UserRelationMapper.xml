@@ -261,6 +261,13 @@
                         and TUR.CREATED<= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
                         ]]>
             </if>
+            <if test="userInfo!=null">
+                <if test="userInfo.userLevel!=null ">
+                    <![CDATA[
+                    and TUI.USER_LEVEL=#{userInfo.userLevel,jdbcType=DECIMAL}
+                    ]]>
+                </if>
+            </if>
         </where>
     </sql>
     <select id="queryForUser" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.UserInfo">

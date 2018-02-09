@@ -8,7 +8,7 @@ import org.xteam.plus.mars.gateway.service.provider.HttpResponseBody;
 /**
  * 获取团队成员列表
  */
-public class GetMeTeamInfoServiceImpl extends Logging implements GateWayService {
+public class GetMeTeamDetailServiceImpl extends Logging implements GateWayService {
     @Override
     public String getMethodName() {
         return null;
