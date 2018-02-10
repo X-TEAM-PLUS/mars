@@ -17,6 +17,7 @@ import java.util.List;
 /**
  * 社工补贴与社工管理补贴发放
  */
+@Component
 public class SocialWorkerManagerImpl extends SubsidyAbstractManager {
 
     @Resource

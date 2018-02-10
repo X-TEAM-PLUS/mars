@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * 发放理事推广补贴与理事管理补贴
  */
-//@Component
+@Component
 public class DirectorManagerImpl extends SubsidyAbstractManager {
 
     @Override

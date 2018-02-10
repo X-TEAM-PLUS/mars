@@ -6,6 +6,17 @@ eureka:
     service-url:
       defaultZone: http://localhost:8888/eureka/
 spring:
+  redis:
+    host: 172.31.204.16
+    password:
+    pool:
+      max-active: 20
+      max-idle: 20
+      max-wait: 1
+      min-idle: 0
+    ssl: false
+    port: 6379
+    timeout: 0
   application:
     name: mars-service
   http:
@@ -27,9 +38,9 @@ spring:
   datasource:
         type: com.alibaba.druid.pool.DruidDataSource
         driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/mars?useUnicode=true&characterEncoding=utf-8
-        username: mars
-        password: mars
+        url: jdbc:mysql://172.31.204.16:3306/mars?useUnicode=true&characterEncoding=utf-8
+        username: root
+        password: uuZd2xlHeWJorTkC
 mybatis:
     typeAliasesPackage: org.xteam.plus.mars.domain
     mapperLocations: classpath*:org/xteam/plus/mars/mapper/*.xml

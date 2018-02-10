@@ -640,6 +640,7 @@ public class WxService implements IService {
             jsapiConfig.setUrl(url);
             jsapiConfig.setSignature(signature);
             jsapiConfig.setJsApiList(jsApiList);
+            jsapiConfig.setAppid(WxConfig.getInstance().getAppId());
             return jsapiConfig;
         } catch (NoSuchAlgorithmException e) {
             throw new WxErrorException("[wx-tools]createJsapiConfig failure.");

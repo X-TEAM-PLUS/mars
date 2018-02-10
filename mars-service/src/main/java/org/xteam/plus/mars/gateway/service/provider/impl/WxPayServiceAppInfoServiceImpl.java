@@ -19,10 +19,12 @@ import org.xteam.plus.mars.wx.api.WxService;
 import org.xteam.plus.mars.wx.bean.InvokePay;
 import org.xteam.plus.mars.wx.bean.PayOrderInfo;
 import org.xteam.plus.mars.wx.bean.WxJsapiConfig;
+import org.xteam.plus.mars.wx.util.PayUtil;
 import org.xteam.plus.mars.wx.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -30,7 +32,7 @@ import java.util.UUID;
 @Component
 public class WxPayServiceAppInfoServiceImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.zhaoanyun.api.gateway.wx.getAppInfo";
+    private final String METHOD_NAME = "com.zhaoanyun.api.gateway.wx.pay.unifiedOrder";
 
     @Resource
     private UserInfoManager userInfoManager;
@@ -75,11 +77,21 @@ public class WxPayServiceAppInfoServiceImpl extends Logging implements GateWaySe
             InvokePay invokePay = iService.unifiedOrder(payOrderInfo, WxConfig.getInstance().getPayNotifyPath(), userInfo.getWxOpenid());
             List<String> jsApiList = Lists.newArrayList();
             jsApiList.add("chooseWXPay");
-            WxJsapiConfig wxJsapiConfig = iService.createJsapiConfig(WxConfig.getInstance().getPayNotifyPath(), jsApiList);
-            HashMap result = new HashMap<>();
-            result.put("prepay_id", invokePay.getPrepayId());
-            result.put("wxJsapiConfig", wxJsapiConfig);
-            httpRequestBody.setBizContent(JsonUtils.toJSON(result));
+            HashMap params = new HashMap<>();
+            String packageValue = ("prepay_id=" + invokePay.getPrepayId());
+            params.put("appId", WxConfig.getInstance().getAppId());
+            params.put("timeStamp", Long.toString(new Date().getTime()));
+            params.put("nonceStr", StringUtils.randomStr(32));
+            params.put("signType", "MD5");
+            params.put("package",("prepay_id=" + invokePay.getPrepayId()));
+
+            params.put("paySign", PayUtil.createSign(params,WxConfig.getInstance().getApiKey())); // paySign的生成规则和Sign的生成规则一致
+
+            params.put("packageValue", invokePay.getPrepayId()); // 这里用packageValue是预防package是关键字在js获取值出错
+            params.put("sendUrl", WxConfig.getInstance().getPayNotifyPath()); // 付款成功后跳转的页面
+            params.put("out_trade_no", payOrderInfo.getOrderId()); // 付款成功后跳转的页面
+
+            httpResponseBody.setBizContent(JsonUtils.toJSON(params));
 
         } catch (Exception e) {
             logInfo(METHOD_NAME + " error system_error ", e);

@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * 发放常任理事推广补贴与常任理事管理补贴
  */
-//@Component
+@Component
 public class StandingDirectorManagerImpl extends SubsidyAbstractManager {
     @Resource
     private OrdersDao ordersDao;

@@ -99,6 +99,7 @@ public class UserInfoTest {
         wxPayJsApiReqVO.setNumber(new BigDecimal(1));
         wxPayJsApiReqVO.setAddress("北京市丰台区");
         wxPayJsApiReqVO.setContactsMobile("139912313");
+        System.out.println("bizContent : " + JsonUtils.toJSON(wxPayJsApiReqVO));
         HttpRequestBody httpRequestBody = new HttpRequestBody();
         httpRequestBody.setBizContent(JsonUtils.toJSON(wxPayJsApiReqVO));
         try {

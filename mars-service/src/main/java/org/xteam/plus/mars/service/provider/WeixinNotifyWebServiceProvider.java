@@ -1,13 +1,16 @@
 package org.xteam.plus.mars.service.provider;
 
+import com.google.common.collect.Maps;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.xteam.plus.mars.common.JsonUtils;
 import org.xteam.plus.mars.common.Logging;
 import org.xteam.plus.mars.manager.OrdersManager;
 import org.xteam.plus.mars.manager.UserInfoManager;
@@ -33,6 +36,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/weixin")
@@ -44,7 +48,12 @@ public class WeixinNotifyWebServiceProvider extends Logging {
     @Resource
     private UserInfoManager userInfoManager;
 
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
+
     private WxService iService = new WxService();
+
+    private final static String REDIS_TEMP_OATH_KEY = "org.xteam.plus.mars.service.weixin.oath.parms";
 
     @RequestMapping(value = "/payNotify")
     public String payNotify(HttpServletRequest request) throws Exception {
@@ -152,6 +161,23 @@ public class WeixinNotifyWebServiceProvider extends Logging {
         return null;
     }
 
+    @RequestMapping(value = "/goOauth")
+    public ModelAndView goOauth(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String orderId = request.getParameter("orderId");
+        String backUrl = request.getParameter("backUrl");
+        String userId = request.getParameter("userId");
+        HashMap parms = Maps.newHashMap();
+        parms.put("orderId", orderId);
+        parms.put("backUrl", backUrl);
+        parms.put("userId", userId);
+        Long incrementKey = stringRedisTemplate.boundValueOps(REDIS_TEMP_OATH_KEY).increment(1);
+        String redisKey = REDIS_TEMP_OATH_KEY + "." + incrementKey;
+        logInfo("缓存Key [" + redisKey + "] [" + JsonUtils.toJSON(parms) + "]");
+        stringRedisTemplate.opsForValue().set(redisKey, JsonUtils.toJSON(parms), 60, TimeUnit.SECONDS);
+        String result = iService.oauth2buildAuthorizationUrl(WxConfig.getInstance().getOauth2RedirectUri(), "snsapi_userinfo", incrementKey.toString());
+        return new ModelAndView("redirect:" + result);
+    }
+
     /**
      * 微信公众号授权回调
      *
@@ -160,22 +186,45 @@ public class WeixinNotifyWebServiceProvider extends Logging {
      * @throws IOException
      */
     @RequestMapping(value = "/oauth")
-    public void oauth(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public ModelAndView oauth(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String code = request.getParameter("code");
         String state = request.getParameter("state");
-        PrintWriter out = response.getWriter();
         WxOAuth2AccessTokenResult result = null;
         try {
+            logInfo("redis获取key [" + REDIS_TEMP_OATH_KEY + "." + state + "]");
+            String json = stringRedisTemplate.opsForValue().get(REDIS_TEMP_OATH_KEY + "." + state);
+            logInfo("回调获取json [" + json + "]");
+            if (org.apache.commons.lang.StringUtils.isEmpty(json)) {
+                response.sendRedirect("www.baidu.com");
+                return new ModelAndView("redirect:" + "www.baidu.com");
+            }
             result = iService.oauth2ToGetAccessToken(code);
             WxUserList.WxUser user = iService.oauth2ToGetUserInfo(result.getAccess_token(), new WxUserList.WxUser.WxUserGet(result.getOpenid(), WxConsts.LANG_CHINA));
-            System.out.println(user.toString());
-            userInfoManager.registerWxUserInfo(user, new BigDecimal(state));
-            out.print(user.toString());
+            HashMap map = JsonUtils.fromJSON(json, HashMap.class);
+            logInfo("支付授权回调请求参数 [" + map + "]");
+            if (map.get("userId") != null) {
+                userInfoManager.registerWxUserInfo(user, new BigDecimal(map.get("userId").toString()));
+            } else {
+                userInfoManager.registerWxUserInfo(user, null);
+            }
+            return new ModelAndView("redirect:/" + map.get("backUrl").toString());
         } catch (WxErrorException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return new ModelAndView("redirect:/" + "www.baidu.com");
+    }
+
+    public static void main(String [] agre){
+        HashMap parms= Maps.newHashMap();
+        parms.put("orderId", "12");
+        parms.put("backUrl", "www.baidu.com");
+        parms.put("userId", 12);
+
+        String json = JsonUtils.toJSON(parms);
+        System.out.println(json);
+        System.out.println(JsonUtils.fromJSON(json, HashMap.class));
     }
 
     /**

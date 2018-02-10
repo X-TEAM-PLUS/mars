@@ -6,6 +6,17 @@ eureka:
     service-url:
       defaultZone: http://localhost:8888/eureka/
 spring:
+  redis:
+    host: 127.0.0.1
+    password:
+    pool:
+      max-active: 8
+      max-idle: 8
+      max-wait: 1
+      min-idle: 0
+    ssl: false
+    port: 63790
+    timeout: 0
   application:
     name: mars-service
   http:
