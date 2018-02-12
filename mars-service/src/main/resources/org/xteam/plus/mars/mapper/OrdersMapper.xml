@@ -370,4 +370,13 @@
           ]]>
         </if>
     </select>
+
+    <!--分页查询记录-->
+    <select id="queryEffective" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.Orders">
+        select
+        <include refid="selectColumns"></include>
+        from T_MARS_ORDERS tmo
+        LEFT JOIN T_MARS_USER_INFO tmui ON tmo.BUYER_USER_ID=tmui.USER_ID
+        WHERE tmo.CARD_NO = #{cardNo,jdbcType=DECIMAL} AND tmo.STATUS <![CDATA[<>]]> -1
+    </select>
 </mapper>

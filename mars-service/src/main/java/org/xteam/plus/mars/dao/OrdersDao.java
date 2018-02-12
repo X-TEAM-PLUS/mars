@@ -86,4 +86,9 @@ public interface OrdersDao {
      * @return
      */
     public Integer queryOrderTotalCount(@Param("nowDate") Date nowDate);
+
+    /**
+     * 查询有效订单
+     */
+    public List<Orders> queryEffective(Orders orders) throws Exception;
 }

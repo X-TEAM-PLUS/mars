@@ -14,6 +14,7 @@ import org.xteam.plus.mars.common.JsonUtils;
 import org.xteam.plus.mars.common.Logging;
 import org.xteam.plus.mars.manager.OrdersManager;
 import org.xteam.plus.mars.manager.UserInfoManager;
+import org.xteam.plus.mars.type.OrderTypeEnum;
 import org.xteam.plus.mars.wx.api.WxConfig;
 import org.xteam.plus.mars.wx.api.WxConsts;
 import org.xteam.plus.mars.wx.api.WxService;
@@ -96,7 +97,7 @@ public class WeixinNotifyWebServiceProvider extends Logging {
 
     @RequestMapping("/getImage")
     public void getImage(BigDecimal userId, BigDecimal productId, BigDecimal number, String address, String contactsMobile, HttpServletResponse response, HttpSession session) throws Exception {
-        PayOrderInfo payOrderInfo = ordersManager.createStraightPinOrder(userId, productId, number, address, contactsMobile);
+        PayOrderInfo payOrderInfo = ordersManager.createStraightPinOrder(userId, productId, number, address, contactsMobile, OrderTypeEnum.PLATFORM_STRAIGHT, null);
         InvokePay invokePay = iService.unifiedOrder(payOrderInfo, WxConfig.getInstance().getPayNotifyPath(), "");
         String code_url = invokePay.getCodeUrl();
         if (code_url == null || "".equals(code_url))
@@ -216,8 +217,8 @@ public class WeixinNotifyWebServiceProvider extends Logging {
         return new ModelAndView("redirect:/" + "www.baidu.com");
     }
 
-    public static void main(String [] agre){
-        HashMap parms= Maps.newHashMap();
+    public static void main(String[] agre) {
+        HashMap parms = Maps.newHashMap();
         parms.put("orderId", "12");
         parms.put("backUrl", "www.baidu.com");
         parms.put("userId", 12);

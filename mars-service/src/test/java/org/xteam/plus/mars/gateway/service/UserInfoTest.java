@@ -12,6 +12,7 @@ import org.xteam.plus.mars.gateway.service.provider.impl.*;
 import org.xteam.plus.mars.gateway.service.provider.impl.body.req.*;
 import org.xteam.plus.mars.service.Service;
 import org.xteam.plus.mars.type.ApplayTypeEnum;
+import org.xteam.plus.mars.type.OrderTypeEnum;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -99,6 +100,7 @@ public class UserInfoTest {
         wxPayJsApiReqVO.setNumber(new BigDecimal(1));
         wxPayJsApiReqVO.setAddress("北京市丰台区");
         wxPayJsApiReqVO.setContactsMobile("139912313");
+        wxPayJsApiReqVO.setOrderTypeEnum(OrderTypeEnum.PLATFORM_STRAIGHT);
         System.out.println("bizContent : " + JsonUtils.toJSON(wxPayJsApiReqVO));
         HttpRequestBody httpRequestBody = new HttpRequestBody();
         httpRequestBody.setBizContent(JsonUtils.toJSON(wxPayJsApiReqVO));

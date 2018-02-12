@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import org.springframework.stereotype.Component;
 import org.xteam.plus.mars.common.JsonUtils;
 import org.xteam.plus.mars.common.Logging;
-import org.xteam.plus.mars.domain.Product;
 import org.xteam.plus.mars.domain.UserInfo;
 import org.xteam.plus.mars.gateway.service.provider.GateWayService;
 import org.xteam.plus.mars.gateway.service.provider.GlobalErrorMessage;
@@ -14,11 +13,11 @@ import org.xteam.plus.mars.gateway.service.provider.impl.body.req.WxPayJsApiReqV
 import org.xteam.plus.mars.manager.OrdersManager;
 import org.xteam.plus.mars.manager.ProductManager;
 import org.xteam.plus.mars.manager.UserInfoManager;
+import org.xteam.plus.mars.type.OrderTypeEnum;
 import org.xteam.plus.mars.wx.api.WxConfig;
 import org.xteam.plus.mars.wx.api.WxService;
 import org.xteam.plus.mars.wx.bean.InvokePay;
 import org.xteam.plus.mars.wx.bean.PayOrderInfo;
-import org.xteam.plus.mars.wx.bean.WxJsapiConfig;
 import org.xteam.plus.mars.wx.util.PayUtil;
 import org.xteam.plus.mars.wx.util.StringUtils;
 
@@ -58,23 +57,34 @@ public class WxPayServiceAppInfoServiceImpl extends Logging implements GateWaySe
         HttpResponseBody httpResponseBody = new HttpResponseBody(GlobalErrorMessage.SUCCESS);
         try {
             WxPayJsApiReqVO wxPayJsApiReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), WxPayJsApiReqVO.class);
-            if (wxPayJsApiReqVO == null || wxPayJsApiReqVO.getProductId() == null || wxPayJsApiReqVO.getUserId() == null) {
-                httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
-                return httpResponseBody;
+            if (wxPayJsApiReqVO == null || wxPayJsApiReqVO.getUserId() == null || wxPayJsApiReqVO.getOrderTypeEnum() == null) {
+                return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
+            }
+            if (wxPayJsApiReqVO.getOrderTypeEnum() == OrderTypeEnum.PLATFORM_STRAIGHT) {
+                if (wxPayJsApiReqVO.getProductId() == null) {
+                    return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
+                }
+            }
+            if (wxPayJsApiReqVO.getOrderTypeEnum() == OrderTypeEnum.VIP_DISTRIBUTION) {
+                if (wxPayJsApiReqVO.getCardNo() == null) {
+                    return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
+                }
             }
             UserInfo userInfo = userInfoManager.get(new UserInfo().setUserId(wxPayJsApiReqVO.getUserId()));
             if (userInfo == null || StringUtils.isEmpty(userInfo.getWxOpenid())) {
-                httpResponseBody = new HttpResponseBody(GlobalErrorMessage.USER_ID_NOT_HIVE);
-                return httpResponseBody;
+                return new HttpResponseBody(GlobalErrorMessage.USER_ID_NOT_HIVE);
             }
-            Product product = productManager.get(new Product().setProductId(wxPayJsApiReqVO.getProductId()));
-            if (product == null) {
-                httpResponseBody = new HttpResponseBody(GlobalErrorMessage.PRODUCT_ID_NOT_HIVE);
-                return httpResponseBody;
-            }
-            PayOrderInfo payOrderInfo = ordersManager.createStraightPinOrder(wxPayJsApiReqVO.getUserId(), wxPayJsApiReqVO.getProductId(), wxPayJsApiReqVO.getNumber(), wxPayJsApiReqVO.getAddress(), wxPayJsApiReqVO.getContactsMobile());
+
+            PayOrderInfo payOrderInfo = ordersManager.createStraightPinOrder(wxPayJsApiReqVO.getUserId(),
+                    wxPayJsApiReqVO.getProductId(),
+                    wxPayJsApiReqVO.getNumber(),
+                    wxPayJsApiReqVO.getAddress(),
+                    wxPayJsApiReqVO.getContactsMobile(),
+                    wxPayJsApiReqVO.getOrderTypeEnum(),
+                    wxPayJsApiReqVO.getCardNo());
             payOrderInfo.setTradeType("JSAPI");
             InvokePay invokePay = iService.unifiedOrder(payOrderInfo, WxConfig.getInstance().getPayNotifyPath(), userInfo.getWxOpenid());
+            logInfo("统一下单接口返回结果 : " + JsonUtils.toJSON(invokePay));
             List<String> jsApiList = Lists.newArrayList();
             jsApiList.add("chooseWXPay");
             HashMap params = new HashMap<>();
@@ -83,9 +93,9 @@ public class WxPayServiceAppInfoServiceImpl extends Logging implements GateWaySe
             params.put("timeStamp", Long.toString(new Date().getTime()));
             params.put("nonceStr", StringUtils.randomStr(32));
             params.put("signType", "MD5");
-            params.put("package",("prepay_id=" + invokePay.getPrepayId()));
+            params.put("package", ("prepay_id=" + invokePay.getPrepayId()));
 
-            params.put("paySign", PayUtil.createSign(params,WxConfig.getInstance().getApiKey())); // paySign的生成规则和Sign的生成规则一致
+            params.put("paySign", PayUtil.createSign(params, WxConfig.getInstance().getApiKey())); // paySign的生成规则和Sign的生成规则一致
 
             params.put("packageValue", invokePay.getPrepayId()); // 这里用packageValue是预防package是关键字在js获取值出错
             params.put("sendUrl", WxConfig.getInstance().getPayNotifyPath()); // 付款成功后跳转的页面

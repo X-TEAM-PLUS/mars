@@ -1,6 +1,7 @@
 package org.xteam.plus.mars.manager;
 
 import org.xteam.plus.mars.domain.Orders;
+import org.xteam.plus.mars.type.OrderTypeEnum;
 import org.xteam.plus.mars.wx.bean.PayOrderInfo;
 
 import java.math.BigDecimal;
@@ -95,7 +96,7 @@ public interface OrdersManager {
      * @return
      * @throws Exception
      */
-    public PayOrderInfo createStraightPinOrder(BigDecimal userId, BigDecimal productId, BigDecimal number, String address, String contactsMobile) throws Exception;
+    public PayOrderInfo createStraightPinOrder(BigDecimal userId, BigDecimal productId, BigDecimal number, String address, String contactsMobile,OrderTypeEnum orderTypeEnum,BigDecimal cardNo) throws Exception;
 
     /**
      * 支付回调后进行更新订单

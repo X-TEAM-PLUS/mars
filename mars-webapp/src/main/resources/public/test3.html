@@ -15,18 +15,7 @@
     <div class="lbox_close wxapi_form">
         <h3 id="menu-pay">微信支付接口</h3>
         <span class="desc">发起一个微信支付请求</span>
-        用户id <input type="text" id="userId">
-        产品id <input type="text" id="productId">
-
-        <button class="btn btn_primary" type="button" onclick="" id="chooseWXPay">买卡</button>
-    </div>
-
-    <div class="lbox_close wxapi_form">
-        <h3 id="menu-pay">微信支付接口</h3>
-        <span class="desc">发起一个微信支付请求</span>
-        用户id <input type="text" id="userId2">
-        卡号id <input type="text" id="cardNo">
-        <button class="btn btn_primary" type="button" onclick="" id="chooseWXPay2">卖卡</button>
+        <button class="btn btn_primary" type="button" onclick="aaa()" id="chooseWXPay">chooseWXPay</button>
     </div>
 </div>
 
@@ -63,8 +52,6 @@
 
 </script>
 <script>
-    // var url = "http://localhost:8000";
-    var url = "http://t.kuai-kaifa.com";
     /*
      * 注意：
      * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
@@ -78,14 +65,11 @@
      */
     // 10 微信支付接口
     // 10.1 发起一个支付请求
-    $("#chooseWXPay").on("click", function () {
-        var userId = $("#userId").val();
-        var productId = $("#productId").val();
-        alert("userId :" + userId + " productId:" + productId);
-        var bizContent = "{\"orderTypeEnum\":\"PLATFORM_STRAIGHT\",\"userId\":"+userId+",\"productId\":"+productId+",\"number\":1,\"address\":\"北京市丰台区\",\"contactsMobile\":\"139912313\"}";
+    $("button").on("click",function () {
+        var bizContent = "{\"orderTypeEnum\":\"VIP_DISTRIBUTION\",\"userId\":2000003,\"cardNo\":200000004,\"number\":1,\"address\":\"北京市丰台区\",\"contactsMobile\":\"139912313\"}";
         var obj = eval("(" + bizContent + ")");
         $.ajax({
-            url: encodeURI(url + "/api/gateway?channelCode=11&method=com.zhaoanyun.api.gateway.wx.pay.unifiedOrder&bizContent=" + bizContent),
+            url: encodeURI("http://t.kuai-kaifa.com/api/gateway?channelCode=11&method=com.zhaoanyun.api.gateway.wx.pay.unifiedOrder&bizContent=" + bizContent),
             type: "GET",
             datatype: "JSON",
             success: function (data) {
@@ -119,14 +103,11 @@
         });
     })
 
-    $("#chooseWXPay2").on("click", function () {
-        var userId = $("#userId2").val();
-        var cardNo = $("#cardNo").val();
-        var bizContent = "{\"orderTypeEnum\":\"VIP_DISTRIBUTION\",\"userId\":"+userId+",\"cardNo\":"+cardNo+",\"address\":\"北京市丰台区\",\"contactsMobile\":\"139912313\"}";
-        // var bizContent = "{\"orderTypeEnum\":\"PLATFORM_STRAIGHT\",\"userId\":2000003,\"productId\":10001,\"number\":1,\"address\":\"北京市丰台区\",\"contactsMobile\":\"139912313\"}";
+    $("button").on("click",function () {
+        var bizContent = "{\"orderTypeEnum\":\"VIP_DISTRIBUTION\",\"userId\":2000003,\"cardNo\":200000004,\"address\":\"北京市丰台区\",\"contactsMobile\":\"139912313\"}";
         var obj = eval("(" + bizContent + ")");
         $.ajax({
-            url: encodeURI(url + "/api/gateway?channelCode=11&method=com.zhaoanyun.api.gateway.wx.pay.unifiedOrder&bizContent=" + bizContent),
+            url: encodeURI("http://t.kuai-kaifa.com/api/gateway?channelCode=11&method=com.zhaoanyun.api.gateway.wx.pay.unifiedOrder&bizContent=" + bizContent),
             type: "GET",
             datatype: "JSON",
             success: function (data) {

@@ -4,24 +4,18 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.xteam.plus.mars.dao.AccountDetailDao;
-import org.xteam.plus.mars.dao.OrdersDao;
-import org.xteam.plus.mars.dao.ProductDao;
-import org.xteam.plus.mars.dao.UserInfoDao;
-import org.xteam.plus.mars.domain.AccountDetail;
-import org.xteam.plus.mars.domain.Orders;
-import org.xteam.plus.mars.domain.Product;
-import org.xteam.plus.mars.domain.UserInfo;
+import org.xteam.plus.mars.dao.*;
+import org.xteam.plus.mars.domain.*;
 import org.xteam.plus.mars.manager.OrdersManager;
 import org.xteam.plus.mars.type.AccountDetailTypeEnum;
+import org.xteam.plus.mars.type.CardStatusTypeEnum;
+import org.xteam.plus.mars.type.OrderTypeEnum;
 import org.xteam.plus.mars.wx.bean.PayOrderInfo;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -45,6 +39,12 @@ public class OrdersManagerImpl implements OrdersManager {
 
     @Resource
     private AccountDetailDao accountDetailDao;
+
+    @Resource
+    private UserHealthCardDao userHealthCardDao;
+
+    @Resource
+    private UserRelationDao userRelationDao;
 
     @Override
     public Orders get(Orders orders) throws Exception {
@@ -92,24 +92,48 @@ public class OrdersManagerImpl implements OrdersManager {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public PayOrderInfo createStraightPinOrder(BigDecimal userId, BigDecimal productId, BigDecimal number, String address, String contactsMobile) throws Exception {
+    public PayOrderInfo createStraightPinOrder(BigDecimal userId, BigDecimal productId, BigDecimal number, String address, String contactsMobile, OrderTypeEnum orderTypeEnum, BigDecimal cardNo) throws Exception {
         UserInfo userInfo = userInfoDao.get(new UserInfo().setUserId(userId));
+        Orders orders = new Orders();
         if (userId == null) {
             throw new Exception("用户id不存在，不能生成订单!");
         }
-        Product product = productDao.get(new Product().setProductId(productId));
-        if (product == null) {
-            throw new Exception("产品不存在，不能生成订单!");
+
+        // 如果是会员分销
+        if (orderTypeEnum.getCode() == OrderTypeEnum.VIP_DISTRIBUTION.getCode()) {
+            List<Orders> ordersList = ordersDao.queryEffective(new Orders().setCardNo(cardNo));
+            if (ordersList != null && ordersList.size() > 0) {
+                throw new Exception("订单已经生成，无法再次进行支付，请先进行取消或删除订单!");
+            }
+            UserHealthCard userHealthCard = userHealthCardDao.get(new UserHealthCard().setCardNo(cardNo));
+            if (userHealthCard == null) {
+                throw new Exception("用户健康卡为空，不能进行支付!");
+            }
+            Product product = productDao.get(new Product().setProductId(userHealthCard.getProductId()));
+            if (product == null && orderTypeEnum.getCode() == OrderTypeEnum.PLATFORM_STRAIGHT.getCode()) {
+                throw new Exception("产品不存在，不能生成订单!");
+            }
+            orders.setProductNum(1);
+            orders.setProductPrice(product.getAmount());
+            orders.setSellerUserId(userHealthCard.getBuyerUserId());
+            orders.setProductName(product.getProductName());
+            orders.setProductId(product.getProductId());
+        } else {
+            Product product = productDao.get(new Product().setProductId(productId));
+            if (product == null && orderTypeEnum.getCode() == OrderTypeEnum.PLATFORM_STRAIGHT.getCode()) {
+                throw new Exception("产品不存在，不能生成订单!");
+            }
+            orders.setProductNum(number.intValue());
+            orders.setProductPrice(product.getAmount().divide(number));
+            orders.setProductName(product.getProductName());
+            orders.setProductId(product.getProductId());
         }
-        Orders orders = new Orders();
-        orders.setOrderType(0);
+        orders.setOrderType(orderTypeEnum.getCode());
         orders.setBuyerUserId(userId);
-        orders.setProductName(product.getProductName());
+
         orders.setCardType(0);
-        orders.setProductPrice(product.getAmount());
-        orders.setProductNum(number.intValue());
+        orders.setCardNo(cardNo);
         orders.setCreated(new Date());
-        orders.setProductId(productId);
         orders.setAddress(address);
         orders.setContactsMobile(contactsMobile);
         orders.setStatus(0);
@@ -121,10 +145,10 @@ public class OrdersManagerImpl implements OrdersManager {
         }
         PayOrderInfo payOrderInfo = new PayOrderInfo();
         payOrderInfo.setOrderId(String.valueOf(orders.getOrderNo()));
-        payOrderInfo.setOrderName(product.getProductName());
-        payOrderInfo.setTotalFee(String.valueOf(product.getAmount().intValue()));
+        payOrderInfo.setOrderName(orders.getProductName());
+        payOrderInfo.setTotalFee(String.valueOf(orders.getProductPrice()));
         payOrderInfo.setTradeType("NATIVE");
-        payOrderInfo.setProductId(productId.toString());
+        payOrderInfo.setProductId(orders.getProductId().toString());
         payOrderInfo.setUserIp("124.193.184.90");
         payOrderInfo.setTimeExpire(getWaitDate());
         payOrderInfo.setTimeStart(getDate());
@@ -139,6 +163,10 @@ public class OrdersManagerImpl implements OrdersManager {
         if (orders == null) {
             throw new Exception("不存在的订单，请检查本次请求来源!");
         }
+        Product product = productDao.get(new Product().setProductId(orders.getProductId()));
+        if (product == null) {
+            throw new Exception("产品不存在，不能生成订单!");
+        }
         try {
             orders.setPayOrderNo((String) reqMap.get("transaction_id"));
             orders.setUpdated(new Date());
@@ -152,17 +180,58 @@ public class OrdersManagerImpl implements OrdersManager {
         if (count <= 0) {
             throw new Exception("更新订单数据失败");
         }
-        // 插入账户明细表
-        AccountDetail accountDetail = new AccountDetail();
-        accountDetail.setAmount(orders.getOrderPrice());
-        accountDetail.setServiceNo(orders.getOrderNo());
-        accountDetail.setCreated(new Date());
-        accountDetail.setUserId(orders.getBuyerUserId());
-        accountDetail.setBusinesseType(AccountDetailTypeEnum.USER_BUY.getCode());
-        accountDetail.setOperationDirection(1);
-        count = accountDetailDao.insert(accountDetail);
-        if (count <= 0) {
-            throw new Exception("更新订单数据失败");
+        if (orders.getOrderType() == OrderTypeEnum.PLATFORM_STRAIGHT.getCode()) {
+            // 插入卡
+            for (int i = 0; i < orders.getProductNum(); i++) {
+                UserHealthCard userHealthCard = new UserHealthCard();
+                userHealthCard.setCreated(new Date());
+                userHealthCard.setProductId(orders.getProductId());
+                userHealthCard.setProductType(product.getCardType());
+                userHealthCard.setSurvivalPeriodMode(product.getSurvivalPeriodMode());
+                userHealthCard.setSurvivalPeriodNum(product.getSurvivalPeriodNum());
+                userHealthCard.setSendPeriodMode(product.getSendPeriodMode());
+                userHealthCard.setSendPeriod(product.getSendPeriod());
+                userHealthCard.setSendTotalCount(product.getSendTotalCount());
+                userHealthCard.setStatus(CardStatusTypeEnum.NOT_ATIVE.getCode());
+                userHealthCard.setBuyerUserId(orders.getBuyerUserId());
+                userHealthCard.setSendCount(0);
+                userHealthCard.setOrderNo(orders.getOrderNo());
+                userHealthCardDao.insert(userHealthCard);
+                // 插入账户明细表
+                AccountDetail accountDetail = new AccountDetail();
+                accountDetail.setAmount(orders.getOrderPrice());
+                accountDetail.setServiceNo(orders.getOrderNo());
+                accountDetail.setCreated(new Date());
+                accountDetail.setUserId(orders.getBuyerUserId());
+                accountDetail.setBusinesseType(AccountDetailTypeEnum.USER_BUY.getCode());
+                accountDetail.setOperationDirection(1);
+                count = accountDetailDao.insert(accountDetail);
+                if (count <= 0) {
+                    throw new Exception("更新订单数据失败");
+                }
+            }
+        }
+        if (orders.getOrderType() == OrderTypeEnum.VIP_DISTRIBUTION.getCode()) {
+            UserHealthCard userHealthCard = userHealthCardDao.get(new UserHealthCard().setCardNo(orders.getCardNo()));
+            if (userHealthCard == null) {
+                throw new Exception("支付时，用户健康卡不存在，错误的地方，严重!");
+            }
+            userHealthCard.setUpdated(new Date());
+            userHealthCard.setStatus(CardStatusTypeEnum.ATIVE.getCode());
+            userHealthCard.setActivateUserId(orders.getBuyerUserId());
+            userHealthCard.setCardActivateTime(new Date());
+            userHealthCard.setOrderNo(orders.getOrderNo());
+            userHealthCard.setCardDeadline(computationalValidity(product));
+            userHealthCard.setSendCount(0);
+            userHealthCardDao.update(userHealthCard);
+            // 查询关系是否存在，如果不存在则创建关系
+            if (userRelationDao.queryCount(new UserRelation().setUserId(orders.getBuyerUserId())) <= 0) {
+                UserRelation userRelation = new UserRelation();
+                userRelation.setUserId(orders.getBuyerUserId());
+                userRelation.setRefereeUserId(orders.getSellerUserId());
+                userRelation.setCreated(new Date());
+                userRelationDao.insert(userRelation);
+            }
         }
         return true;
     }
@@ -176,5 +245,19 @@ public class OrdersManagerImpl implements OrdersManager {
         date += 30 * 60 * 1000;
         return new java.text.SimpleDateFormat("yyyyMMddHHmmss").format(new Date(date));
 
+    }
+
+    /**
+     * 获取健康卡有效期
+     *
+     * @param product
+     * @return
+     */
+    private Date computationalValidity(Product product) {
+        Date date = new Date();//取时间
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        calendar.add(calendar.YEAR, product.getSurvivalPeriodNum());//把日期往后增加一年.整数往后推,负数往前移动
+        return calendar.getTime();
     }
 }
