@@ -124,7 +124,7 @@ public class OrdersManagerImpl implements OrdersManager {
                 throw new Exception("产品不存在，不能生成订单!");
             }
             orders.setProductNum(number.intValue());
-            orders.setProductPrice(product.getAmount().divide(number));
+            orders.setProductPrice(product.getAmount().multiply(number));
             orders.setProductName(product.getProductName());
             orders.setProductId(product.getProductId());
         }

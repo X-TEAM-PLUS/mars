@@ -407,19 +407,19 @@ function submitBuyCard(form, lableName) {
         logInfo(data);
         var response = JSON.parse(data);
         if (ResponseCode.SUCCESS == response.code) {
-            closeDynamicPopup();
+            var bizContent = JSON.parse(response.bizContent);
             WeixinJSBridge.invoke('getBrandWCPayRequest', {
-                "appId": response.appId, //公众号名称，由商户传入
-                "timeStamp": response.timeStamp, //时间戳，自1970年以来的秒数
-                "nonceStr": response.nonceStr, //随机串
-                "package": "prepay_id=" + response.packageValue,
-                "signType": response.signType, //微信签名方式：
-                "paySign": response.paySign
+                "appId": bizContent.appId, //公众号名称，由商户传入
+                "timeStamp": bizContent.timeStamp, //时间戳，自1970年以来的秒数
+                "nonceStr": bizContent.nonceStr, //随机串
+                "package": "prepay_id=" + bizContent.packageValue,
+                "signType": bizContent.signType, //微信签名方式：
+                "paySign": bizContent.paySign
                 //微信签名
             }, function (res) {
                 if (res.err_msg == "get_brand_wcpay_request:ok") {
-
-                    alert("ok");
+                    closeDynamicPopup();
+                    alert("支付完成");
                 } // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
                 else {
                     $api.rmStorage('orderData');
@@ -438,7 +438,7 @@ function submitBuyCard(form, lableName) {
  * @param form
  */
 function buyCard(form) {
-    if (typeof WeixinJSBridge == "undefined"){
+    if (typeof WeixinJSBridge == "undefined") {
         app.dialog.alert("请在微信端内进行操作!", '信息提示');
         return false;
     }

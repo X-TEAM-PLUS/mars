@@ -729,7 +729,9 @@ public class WxService implements IService {
         System.out.println(postResult);
 
         UnifiedOrderResult result = UnifiedOrderResult.fromXml(postResult);
-
+        if(result.getReturnCode().equals("FAIL") ){
+            throw new WxErrorException(result.getReturnMsg());
+        }
         //赋值
         ivp.setAppId(result.getAppid());
         ivp.setNonceStr(result.getNonceStr());
