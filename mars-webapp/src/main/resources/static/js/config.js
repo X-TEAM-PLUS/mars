@@ -44,6 +44,8 @@ var InterFace = {
     ,ACCOUNT_AND_BANK_CARD:'cn.zaoangongcheng.api.gateway.security.user.accountandbankcard.get'
     //提现申请
     ,WITHDRAW_APPLY:'cn.zaoangongcheng.api.gateway.user.withdraw.apply'
+    //预下单接口
+    ,PAY_UNIFIED_ORDER:'com.zhaoanyun.api.gateway.wx.pay.unifiedOrder'
 }
 
 /**

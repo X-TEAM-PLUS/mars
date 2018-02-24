@@ -15,6 +15,8 @@ import org.xteam.plus.mars.manager.UserInfoManager;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,10 +51,13 @@ public class GetUserDetailServiceImpl implements GateWayService {
         if (userInfo == null) {
             return new HttpResponseBody(GlobalErrorMessage.OBJECT_ISNULL);
         }
+        userInfo.setRealName(URLDecoder.decode(userInfo.getRealName(), "utf-8"));
 
         Map<String, Object> bizContentMap = JsonUtils.transform(userInfo, HashMap.class);
         //加密身份证号
-        bizContentMap.put("idNumber", userInfo.getIdNumber().replaceAll("(\\d{4})\\d{10}(\\w{4})", "$1*****$2"));
+        if (userInfo != null && userInfo.getIdNumber() != null) {
+            bizContentMap.put("idNumber", userInfo.getIdNumber().replaceAll("(\\d{4})\\d{10}(\\w{4})", "$1*****$2"));
+        }
 
         //查询用户未读消息数
         bizContentMap.put("newMessageCount", messageManager.queryCount(

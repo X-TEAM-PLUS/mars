@@ -15,7 +15,12 @@ var app = new Framework7({
 });
 $$(document).on('page:init', '.page[data-name="home"]', function (e) {
     //获取用户信
-    loadUserView(userInfo.userId);
+    var userId = "";
+    var page = e.detail.route;
+    if (page != undefined && page.query != undefined && page.query.userId != undefined){
+        userId = page.query.userId;
+    }
+    loadUserView(userId);
 });
 
 $$(document).on('page:reinit', '.page[data-name="home"]', function (e) {

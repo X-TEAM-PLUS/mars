@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.xteam.plus.mars.common.JsonUtils;
 import org.xteam.plus.mars.common.Logging;
+import org.xteam.plus.mars.domain.UserInfo;
 import org.xteam.plus.mars.manager.OrdersManager;
 import org.xteam.plus.mars.manager.UserInfoManager;
 import org.xteam.plus.mars.type.OrderTypeEnum;
@@ -34,6 +35,7 @@ import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -203,30 +205,25 @@ public class WeixinNotifyWebServiceProvider extends Logging {
             WxUserList.WxUser user = iService.oauth2ToGetUserInfo(result.getAccess_token(), new WxUserList.WxUser.WxUserGet(result.getOpenid(), WxConsts.LANG_CHINA));
             HashMap map = JsonUtils.fromJSON(json, HashMap.class);
             logInfo("支付授权回调请求参数 [" + map + "]");
+            UserInfo userInfo = null;
+            user.setNickname(URLEncoder.encode(user.getNickname(), "utf-8"));
+            logInfo("昵称转码: " + user.getNickname());
             if (map.get("userId") != null) {
-                userInfoManager.registerWxUserInfo(user, new BigDecimal(map.get("userId").toString()));
+                userInfo = userInfoManager.registerWxUserInfo(user, new BigDecimal(map.get("userId").toString()));
             } else {
-                userInfoManager.registerWxUserInfo(user, null);
+                userInfo = userInfoManager.registerWxUserInfo(user, null);
             }
-            return new ModelAndView("redirect:/" + map.get("backUrl").toString());
+            return new ModelAndView("redirect:/" + map.get("backUrl").toString() + "?userId=" + userInfo.getUserId());
+
         } catch (WxErrorException e) {
-            e.printStackTrace();
+            logInfo("微信回调注册用户失败 失败原因 e[" + e.getMessage() + "]", e);
+
         } catch (Exception e) {
-            e.printStackTrace();
+            logInfo("微信回调注册用户失败 失败原因 e[" + e.getMessage() + "]", e);
         }
         return new ModelAndView("redirect:/" + "www.baidu.com");
     }
 
-    public static void main(String[] agre) {
-        HashMap parms = Maps.newHashMap();
-        parms.put("orderId", "12");
-        parms.put("backUrl", "www.baidu.com");
-        parms.put("userId", 12);
-
-        String json = JsonUtils.toJSON(parms);
-        System.out.println(json);
-        System.out.println(JsonUtils.fromJSON(json, HashMap.class));
-    }
 
     /**
      * 获取公众号关注二维码

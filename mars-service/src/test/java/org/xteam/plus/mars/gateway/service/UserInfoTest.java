@@ -95,7 +95,6 @@ public class UserInfoTest {
     @Test
     public void wxPayServiceAppInfoService() {
         WxPayJsApiReqVO wxPayJsApiReqVO = new WxPayJsApiReqVO();
-        wxPayJsApiReqVO.setUserId(new BigDecimal(2000004));
         wxPayJsApiReqVO.setProductId(new BigDecimal(1));
         wxPayJsApiReqVO.setNumber(new BigDecimal(1));
         wxPayJsApiReqVO.setAddress("北京市丰台区");

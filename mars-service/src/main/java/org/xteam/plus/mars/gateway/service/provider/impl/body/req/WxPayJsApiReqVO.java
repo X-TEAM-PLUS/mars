@@ -6,8 +6,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 public class WxPayJsApiReqVO implements Serializable {
-    // 用户ID
-    private java.math.BigDecimal userId;
     // 产品ID
     private BigDecimal productId;
     // 购买个数
@@ -20,14 +18,6 @@ public class WxPayJsApiReqVO implements Serializable {
     private OrderTypeEnum orderTypeEnum;
     // 卡号
     private BigDecimal cardNo;
-
-    public BigDecimal getUserId() {
-        return userId;
-    }
-
-    public void setUserId(BigDecimal userId) {
-        this.userId = userId;
-    }
 
     public BigDecimal getProductId() {
         return productId;

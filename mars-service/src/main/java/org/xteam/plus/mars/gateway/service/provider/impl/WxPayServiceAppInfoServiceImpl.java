@@ -22,6 +22,7 @@ import org.xteam.plus.mars.wx.util.PayUtil;
 import org.xteam.plus.mars.wx.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
@@ -57,7 +58,7 @@ public class WxPayServiceAppInfoServiceImpl extends Logging implements GateWaySe
         HttpResponseBody httpResponseBody = new HttpResponseBody(GlobalErrorMessage.SUCCESS);
         try {
             WxPayJsApiReqVO wxPayJsApiReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), WxPayJsApiReqVO.class);
-            if (wxPayJsApiReqVO == null || wxPayJsApiReqVO.getUserId() == null || wxPayJsApiReqVO.getOrderTypeEnum() == null) {
+            if (wxPayJsApiReqVO == null || httpRequestBody.getUserId() == null || wxPayJsApiReqVO.getOrderTypeEnum() == null) {
                 return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
             }
             if (wxPayJsApiReqVO.getOrderTypeEnum() == OrderTypeEnum.PLATFORM_STRAIGHT) {
@@ -70,12 +71,12 @@ public class WxPayServiceAppInfoServiceImpl extends Logging implements GateWaySe
                     return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
                 }
             }
-            UserInfo userInfo = userInfoManager.get(new UserInfo().setUserId(wxPayJsApiReqVO.getUserId()));
+            UserInfo userInfo = userInfoManager.get(new UserInfo().setUserId(new BigDecimal(httpRequestBody.getUserId())));
             if (userInfo == null || StringUtils.isEmpty(userInfo.getWxOpenid())) {
                 return new HttpResponseBody(GlobalErrorMessage.USER_ID_NOT_HIVE);
             }
 
-            PayOrderInfo payOrderInfo = ordersManager.createStraightPinOrder(wxPayJsApiReqVO.getUserId(),
+            PayOrderInfo payOrderInfo = ordersManager.createStraightPinOrder(userInfo.getUserId(),
                     wxPayJsApiReqVO.getProductId(),
                     wxPayJsApiReqVO.getNumber(),
                     wxPayJsApiReqVO.getAddress(),
