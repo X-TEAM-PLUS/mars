@@ -1,7 +1,7 @@
 //定义日志开关
 var LOG_SWITCH  = true;
 //定义接口地址
-var INTERFACE_URL = "http://"+document.domain + "/webservice/api/gateway";
+var INTERFACE_URL = "http://"+document.domain + ":8080/webservice/api/gateway";
 var userInfo = {userId:2000000};
 var InterFace = {
     //用户信息
@@ -30,6 +30,8 @@ var InterFace = {
     ,USER_HEALTH_CHECK_RECORD_LIST:'cn.zaoangongcheng.api.gateway.user.heartcheck.record.list'
     //健康卡包列表
     ,USER_HEALTH_CARD_LIST:'cn.zaoangongcheng.api.gateway.user.heartcard.list'
+    //健康卡详情与购卡人信息
+    ,USER_HEALTH_CARD_DETAIL:'cn.zaoangongcheng.api.gateway.user.heartcard.get'
     //获取用户提现记录列表
     ,USER_WITHDRAW_RECORD_LIST:'cn.zaoangongcheng.api.gateway.user.withdraw.record.list'
     //获取用户提现记录详情
@@ -46,6 +48,8 @@ var InterFace = {
     ,WITHDRAW_APPLY:'cn.zaoangongcheng.api.gateway.user.withdraw.apply'
     //预下单接口
     ,PAY_UNIFIED_ORDER:'com.zhaoanyun.api.gateway.wx.pay.unifiedOrder'
+    //微信全局设置
+    ,WX_GLOBLE_CONFIG:'com.zhaoanyun.api.gateway.wx.globle.config'
 }
 
 /**

@@ -488,6 +488,219 @@ function buyCard(form) {
     dynamicPopup.open();
 }
 
+function sellCard(form) {
+    if (typeof WeixinJSBridge == "undefined") {
+        app.dialog.alert("请在微信端内进行操作!", '信息提示');
+        return false;
+    }
+    dynamicPopup = app.popup.create({
+        content: '<div class="popup" style="height: 50%">' +
+        '<div class="block-title">请填写您的收获地址与联系方式</div>\n' +
+        '<div class="list inset">\n' +
+        '  <ul>\n' +
+        '    <li class="item-content item-input">\n' +
+        '      <div class="item-inner">\n' +
+        '        <div class="item-input-wrap">\n' +
+        '          <input type="text" name="mobile" placeholder="您的手机号码" maxlength="20">\n' +
+        '          <span class="input-clear-button"></span>\n' +
+        '        </div>\n' +
+        '      </div>\n' +
+        '    </li>\n' +
+        '    <li class="item-content item-input">\n' +
+        '      <div class="item-inner">\n' +
+        '        <div class="item-input-wrap">\n' +
+        '          <input type="text" name="address" placeholder="收获地址" maxlength="120">\n' +
+        '          <span class="input-clear-button"></span>\n' +
+        '        </div>\n' +
+        '      </div>\n' +
+        '    </li>\n' +
+        '  </ul>\n' +
+        '<div class="row">\n' +
+        '  <div class="col-50">\n' +
+        '    <a href="#" class="button button-big button-fill button-raised active" onclick="closeDynamicPopup()">取消</a>\n' +
+        '  </div>\n' +
+        '  <div class="col-50">\n' +
+        '    <a href="#" class="button button-big button-fill button-raised active" onclick="submitSellCard(\'submitForm\',\'numberLabel\')">确定</a>\n' +
+        '  </div>\n' +
+        '</div>    ' +
+        '</div>' +
+
+        '</div>',
+        // Events
+        on: {
+            open: function (popup) {
+                console.log('Popup open');
+            },
+            opened: function (popup) {
+                console.log('Popup opened');
+            },
+        }
+    });
+    dynamicPopup.open();
+}
+
+
+function submitSellCard(form, lableName) {
+    var mobile = "";
+    var address = "";
+    $$(dynamicPopup.el).find('input[type=text]').each(function (index, element) {
+        if (element.name == "mobile") {
+            mobile = element.value;
+        }
+        if (element.name == "address") {
+            address = element.value;
+        }
+    });
+    if (mobile == "" || address == "" || mobile.length < 11) {
+        app.dialog.alert("输入信息有误，请从新输入", '信息提示');
+        return false;
+    }
+    var number = document.getElementById(lableName).innerText;
+    app.form.fillFromData('#' + form, {
+        'cardNo': cardNo,
+        'contactsMobile': mobile,
+        'address': address
+    })
+    var bizContent = app.form.convertToData('#' + form);
+    var params = {
+        method: InterFace.PAY_UNIFIED_ORDER,
+        userId: userInfo.userId,
+        bizContent: JSON.stringify(bizContent)
+    };
+
+    app.request.post(INTERFACE_URL, params, function (data) {
+        logInfo(data);
+        var response = JSON.parse(data);
+        if (ResponseCode.SUCCESS == response.code) {
+            var bizContent = JSON.parse(response.bizContent);
+            WeixinJSBridge.invoke('getBrandWCPayRequest', {
+                "appId": bizContent.appId, //公众号名称，由商户传入
+                "timeStamp": bizContent.timeStamp, //时间戳，自1970年以来的秒数
+                "nonceStr": bizContent.nonceStr, //随机串
+                "package": "prepay_id=" + bizContent.packageValue,
+                "signType": bizContent.signType, //微信签名方式：
+                "paySign": bizContent.paySign
+                //微信签名
+            }, function (res) {
+                if (res.err_msg == "get_brand_wcpay_request:ok") {
+                    closeDynamicPopup();
+                    alert("支付完成");
+                } // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+                else {
+                    $api.rmStorage('orderData');
+                    history.back(-1);
+                }
+            });
+        } else {
+            app.dialog.alert(getErrorMessage(response.code), '信息提示');
+        }
+    });
+}
+
+/**
+ * 分享微信售卡链接
+ * @param cardNo
+ */
+function shardWeixin(cardNo) {
+    var params = {
+        method: InterFace.WX_GLOBLE_CONFIG,
+        userId: userInfo.userId
+    };
+
+
+    if (typeof WeixinJSBridge == "undefined") {
+        alert(" 通过微信分享文章:)  ");
+    } else {
+        WeixinJSBridge.invoke('shareTimeline', {
+            "title": " ",
+            "link": "http://www.36kr.com",
+            "desc": " ",
+            "img_url": "http:// "
+        });
+
+    }
+
+//     app.request.post(INTERFACE_URL, params, function (data) {
+//         logInfo(data)
+//         var response = JSON.parse(data);
+//         if (ResponseCode.SUCCESS == response.code) {
+//             var bizContent = JSON.parse(response.bizContent);
+//             wx.config({
+//                 debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+//                 appId: bizContent.appId, // 必填，公众号的唯一标识
+//                 timestamp: bizContent.timeStamp, // 必填，生成签名的时间戳
+//                 nonceStr: bizContent.nonceStr, // 必填，生成签名的随机串
+//                 signature: bizContent.signature,// 必填，签名，见附录1
+//                 jsApiList: ['checkJsApi', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ',
+//                     'onMenuShareQZone']
+//                 // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+//             });
+// // 分享给朋友、QQ、微博
+//             wx.onMenuShareTimeline({
+//                 title: '快来!分享朋友圈', // 分享标题
+//                 link: 'http://www.baidu.com', // 分享链接
+//                 imgUrl: 'http://img1.3lian.com/img013/v2/4/d/101.jpg', // 分享图标
+//                 success: function () {
+//                     // 用户确认分享后执行的回调函数
+//                     app.dialog.alert("分享成功!");
+//                 },
+//                 cancel: function () {
+//                     // 用户取消分享后执行的回调函数
+//                     app.dialog.alert("分享取消!");
+//                 }
+//             });
+//             wx.error(function (res) {
+//                 alert(res.errMsg);
+//             });
+//             wx.ready(function () {
+//                 alert('ready环境');
+//                 wx.onMenuShareAppMessage({
+//                     title: '11', // 分享标题
+//                     desc: '11', // 分享描述
+//                     link: 'http://www.baidu.com', // 分享链接
+//                     imgUrl: 'http://img1.3lian.com/img013/v2/4/d/101.jpg', // 分享图标
+//                     type: '', // 分享类型,music、video或link，不填默认为link
+//                     dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+//                     success: function () {
+//                         // 用户确认分享后执行的回调函数
+//                         app.dialog.alert("分享成功");
+//                     },
+//                     cancel: function () {
+//                         // 用户取消分享后执行的回调函数
+//                     }
+//                 });
+//                 wx.onMenuShareTimeline({
+//                     title: '快来!分享朋友圈', // 分享标题
+//                     link: 'http://www.baidu.com', // 分享链接
+//                     imgUrl: 'http://img1.3lian.com/img013/v2/4/d/101.jpg', // 分享图标
+//                     success: function () {
+//                         // 用户确认分享后执行的回调函数
+//                         app.dialog.alert("分享成功!");
+//                     },
+//                     cancel: function () {
+//                         // 用户取消分享后执行的回调函数
+//                         app.dialog.alert("分享取消!");
+//                     }
+//                 });
+//             });
+//             wx.onMenuShareAppMessage({
+//                 title: '11', // 分享标题
+//                 desc: '11', // 分享描述
+//                 link: 'http://www.baidu.com', // 分享链接
+//                 imgUrl: 'http://img1.3lian.com/img013/v2/4/d/101.jpg', // 分享图标
+//                 type: '', // 分享类型,music、video或link，不填默认为link
+//                 dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+//                 success: function () {
+//                     // 用户确认分享后执行的回调函数
+//                     app.dialog.alert("分享成功");
+//                 },
+//                 cancel: function () {
+//                     // 用户取消分享后执行的回调函数
+//                 }
+//             });
+//         }
+//     });
+}
 
 /**
  * 获取异常信息

@@ -125,6 +125,12 @@ var routes = [
         url: './pages/butiemingxi.html',
         name: 'butiemingxi',
     },
+    //卖卡
+    {
+        path: '/sellCard/',
+        url: './pages/sell_card.html',
+        name: 'sellCard',
+    },
 
   // Default route (404 page). MUST BE THE LAST
   {

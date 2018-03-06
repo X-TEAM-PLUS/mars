@@ -748,7 +748,6 @@ public class WxService implements IService {
         map.put("package", "prepay_id=" + ivp.getPrepayId());
         map.put("signType", ivp.getSignType());
         ivp.setPaySign(PayUtil.createSign(map, WxConfig.getInstance().getApiKey()));
-        ;
         return ivp;
     }
 

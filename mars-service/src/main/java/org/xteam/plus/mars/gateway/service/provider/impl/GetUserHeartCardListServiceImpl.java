@@ -47,6 +47,5 @@ public class GetUserHeartCardListServiceImpl extends Logging implements GateWayS
         Map<String,Object> bizContentMap = new HashMap<>();
         bizContentMap.put("list",userHealthCards);
         return new HttpResponseBody(GlobalErrorMessage.SUCCESS).setBizContent(JsonUtils.toJSON(bizContentMap));
-
     }
 }

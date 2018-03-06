@@ -64,6 +64,11 @@ public class HttpRequestBody {
      */
     private String sign;
 
+    /**
+     * 请求地址
+     */
+    private String requestUrl;
+
     public String getChannelCode() {
         return channelCode;
     }
@@ -158,5 +163,13 @@ public class HttpRequestBody {
 
     public void setMultipartFileHashMap(LinkedMultiValueMap<String, MultipartFile> multipartFileHashMap) {
         this.multipartFileHashMap = multipartFileHashMap;
+    }
+
+    public String getRequestUrl() {
+        return requestUrl;
+    }
+
+    public void setRequestUrl(String requestUrl) {
+        this.requestUrl = requestUrl;
     }
 }

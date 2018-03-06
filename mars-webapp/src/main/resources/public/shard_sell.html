@@ -13,6 +13,10 @@
     <link rel="stylesheet" href="/css/my-app.css">
     <title>早安工程</title>
 </head>
+<script>
+    // 全局变量cardNo
+    var cardNo = "";
+</script>
 <body>
 <div id="app">
     <!-- Views/Tabs container -->
@@ -37,71 +41,131 @@
         <!-- 我-->
         <div id="view-member" class="view view-main tab tab-active">
             <!-- Page, data-name contains page name which can be used in page callbacks -->
-            <div class="page" data-name="home">
-                <!-- Top Navbar -->
-                <div class="navbar">
-                    <div class="navbar-inner">
-                        <div class="title ">用户中心</div>
+            <div class="page" data-name="sellCard-page">
+                <div class="page no-toolbar" data-name="sellCard-page">
+
+                    <div class="navbar">
+                        <div class="navbar-inner">
+                            <div class="left sliding">
+                                <a href="#" class="link back color-theme-white">
+                                    <i class="icon icon-back"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+                                </a>
+                            </div>
+                            <div class="title ">开通会员</div>
+                        </div>
                     </div>
-                </div>
-                <!-- Scrollable page content-->
-                <div class="page-content" style="padding-top: 8px;">
-                    <div id="user-view">
+                    <div class="page-content  navbar-through toolbar-through " style="padding-top: 8px;">
                         <div class="list media-list">
                             <ul>
                                 <li>
-                                    <a href="#" class="item-link item-content" onclick="meClick()">
-                                        <div class="item-media"><img src="images/visitor.jpg" width="80px" height="80px"></div>
-                                        <div class="item-inner">
-                                            <div class="item-title-row">
-                                                <div class="item-title">游客</div>
+                                    <div id="sell-userinfo">
+                                        <a href="#" class="item-link item-content">
+                                            <div class="item-media"><img src="images/portrait_img2.png" width="80"></div>
+                                            <div class="item-inner">
+                                                <div class="item-title-row">
+                                                    <div class="item-title">小张</div>
+                                                </div>
+                                                <div class="item-subtitle">NO.1234567489</div>
+                                                <div class="item-text">买后会员有效期至：2018-10-10</div>
                                             </div>
-                                            <div class="item-subtitle">NO.000000000</div>
-                                            <div class="item-text">有效期至：今天</div>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="list media-list">
+                            <ul>
+                                <li>
+                                    <div id="card-userinfo">
+
+                                            <div class="item-media"><img src="images/portrait_img2.png" width="80"></div>
+                                            <div class="item-inner">
+                                                <div class="item-title-row">
+                                                    <div class="item-title">小张</div>
+                                                </div>
+                                                <div class="item-subtitle">NO.1234567489</div>
+                                                <div class="item-text">买后会员有效期至：2018-10-10</div>
+                                            </div>
+
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="list">
+                            <ul>
+                                <li class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title">包含</div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <ul>
+                                <li>
+                                    <a class="item-link smart-select smart-select-init" data-open-in="sheet">
+                                        <select name="pay_way">
+                                            <option value="微信支付" selected>微信支付</option>
+                                            <!--<option value="支付宝" selected>支付宝</option>-->
+                                        </select>
+                                        <div class="item-content">
+                                            <div class="item-inner">
+                                                <div class="item-title">支付方式</div>
+                                            </div>
                                         </div>
                                     </a>
                                 </li>
                             </ul>
                             <ul>
-                                <li>
-                                    <a href="/buyCard/" class="item-link item-content">
-                                        <div class="item-media"><i class="fa fa-star color-yellow  "></i>游客</div>
-                                        <div class="item-inner">
-                                            <div class="item-title-row">
-                                                <div class="item-after">申请成为会员</div>
-                                            </div>
-                                        </div>
-                                    </a>
+                                <li class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title">包含</div>
+                                    </div>
                                 </li>
                             </ul>
-                        </div>
-                        <div class="block-title" style="text-align: center;top: -20px">公益会员权益</div>
-                        <div class="block">
-                            <div class="tabbar-labels">
+
+                            <ul>
+                                <li>
+                                    <div class="item-content">
+                                        <div class="col-50">共计：<i class="fa fa-rmb"></i><s><label id="numberLabel_all">365</label></s></div>
+                                        <div class="col-50 " style="text-align: right;padding-right: 16px"></div>
+                                    </div>
+                                    <div class="row item-content">
+                                        <div class="col-100 " style="text-align: right;padding-right: 12px">
+                                            <label class="color-red font-14">
+                                                <input type="checkbox" name="demo-checkbox" value=""/>已阅读并同意组委会章程&nbsp;&nbsp;&nbsp;&nbsp;
+                                            </label>
+                                            <br>
+                                            <label class="color-red font-14">
+                                                <input type="checkbox" name="demo-checkbox" value=""/>已阅读并了解会员服务协议
+                                            </label>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <ul class="bottomfixed">
                                 <div class="row">
-                                    <div class="col-33">
-                                        <a href="/message/" class="tab-link  ">
-                                            <i class="fa fa-bell-o fa-2x "></i>
-                                            <span class="tabbar-label ">消息通知</span>
-                                        </a>
-                                    </div>
-                                    <div class="col-33">
-                                        <a href="/question/" class="tab-link ">
-                                            <i class="fa fa-question-circle fa-2x "></i>
-                                            <span class="tabbar-label ">常见问题</span>
-                                        </a>
-                                    </div>
-                                    <div class="col-33">
-                                        <a href="#" class="tab-link " onclick="loveBuTieClick()">
-                                            <i class="fa fa-heart-o fa-2x "></i>
-                                            <span class="tabbar-label ">爱补贴</span>
-                                        </a>
+                                    <div class="col-60" style="font-size: large;margin-top: 8px;margin-left: 8px"><b>总计：<i
+                                            class="fa fa-rmb"></i> <label id="numberLabel_total"> 365 </label></b></div>
+                                    <div class="col-40"><a href="#" class="button button-big  button-fill button-raised active"
+                                                           onclick="sellCard()">确认支付</a>
                                     </div>
                                 </div>
-                            </div>
+                            </ul>
                         </div>
+
                     </div>
+
+                    <form name="submitForm" id="submitForm">
+                        <input type="hidden" name="orderTypeEnum" value="VIP_DISTRIBUTION">
+                        <input type="hidden" name="address" value="">
+                        <input type="hidden" name="contactsMobile" value="">
+                        <input type="hidden" name="cardNo" value="">
+                    </form>
                 </div>
+
+
+
             </div>
         </div>
 
@@ -699,7 +763,7 @@
                 <div class=" row left-16" style="height: 25px"><b>NO.{{cardNo}}</b></div>
             </div>
             <div class="col-50" style="text-align: right;padding-right: 12px">
-                <img src="images/b12.png" width="60px" height="60px" onclick="shardWeixin({{cardNo}})">
+                <img src="images/b12.png" width="60px" height="60px">
             </div>
         </div>
         <div class=" row bg-color-light-blue">
@@ -932,6 +996,33 @@
                 </div>
             </li>
         </ul>
+</script>
+
+<script type="text/template" id="show-sell-userinfo">
+    <a href="#" class="item-link item-content" onclick="meClick()">
+        <div class="item-media"><img src="{{wxHeadPortrait}}" width="80" height="80px"></div>
+        <div class="item-inner">
+            <div class="item-title-row">
+                <div class="item-title">{{realName}}</div>
+            </div>
+            <div class="item-subtitle">NO.{{cardNo}}</div>
+        </div>
+    </a>
+</script>
+
+<script type="text/template" id="show-card-userinfo">
+    <div class="block-title" style="top: -20px">卡归属用户</div>
+    <div class="center">
+        <div class="item-inner">
+            <img src="{{buyerUser.wxHeadPortrait}}" width="80" height="80px">
+            <div class="item-title">{{buyerUser.realName}}</div>
+
+            <div class="item-subtitle">NO.{{buyerUser.cardNo}}</div>
+            <div class="item-text">有效期至：{{buyerUser.cardLifeTime}}</div>
+        </div>
+    </div>
+
+
 </script>
 
 <!-- Path to Framework7 Library JS-->

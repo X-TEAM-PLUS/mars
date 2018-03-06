@@ -164,15 +164,23 @@ public class WeixinNotifyWebServiceProvider extends Logging {
         return null;
     }
 
+    /**
+     *  微信公众号跳转
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value = "/goOauth")
     public ModelAndView goOauth(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String orderId = request.getParameter("orderId");
         String backUrl = request.getParameter("backUrl");
         String userId = request.getParameter("userId");
+        String cardNo = request.getParameter("cardNo");
         HashMap parms = Maps.newHashMap();
-        parms.put("orderId", orderId);
         parms.put("backUrl", backUrl);
         parms.put("userId", userId);
+        parms.put("cardNo", cardNo);
         Long incrementKey = stringRedisTemplate.boundValueOps(REDIS_TEMP_OATH_KEY).increment(1);
         String redisKey = REDIS_TEMP_OATH_KEY + "." + incrementKey;
         logInfo("缓存Key [" + redisKey + "] [" + JsonUtils.toJSON(parms) + "]");
@@ -207,11 +215,14 @@ public class WeixinNotifyWebServiceProvider extends Logging {
             logInfo("支付授权回调请求参数 [" + map + "]");
             UserInfo userInfo = null;
             user.setNickname(URLEncoder.encode(user.getNickname(), "utf-8"));
-            logInfo("昵称转码: " + user.getNickname());
             if (map.get("userId") != null) {
                 userInfo = userInfoManager.registerWxUserInfo(user, new BigDecimal(map.get("userId").toString()));
             } else {
                 userInfo = userInfoManager.registerWxUserInfo(user, null);
+            }
+            // 卖卡地址
+            if (map.get("cardNo") != null && !map.get("cardNo").equals("")) {
+                return new ModelAndView("redirect:/" + map.get("backUrl").toString() + "?userId=" + userInfo.getUserId() + "&cardNo=" + map.get("cardNo").toString());
             }
             return new ModelAndView("redirect:/" + map.get("backUrl").toString() + "?userId=" + userInfo.getUserId());
 
