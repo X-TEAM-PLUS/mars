@@ -51,8 +51,6 @@ public class GetUserDetailServiceImpl implements GateWayService {
         if (userInfo == null) {
             return new HttpResponseBody(GlobalErrorMessage.OBJECT_ISNULL);
         }
-        userInfo.setRealName(URLDecoder.decode(userInfo.getRealName(), "utf-8"));
-
         Map<String, Object> bizContentMap = JsonUtils.transform(userInfo, HashMap.class);
         //加密身份证号
         if (userInfo != null && userInfo.getIdNumber() != null) {

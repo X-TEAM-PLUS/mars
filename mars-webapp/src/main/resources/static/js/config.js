@@ -1,7 +1,7 @@
 //定义日志开关
 var LOG_SWITCH  = true;
 //定义接口地址
-var INTERFACE_URL = "http://"+document.domain + ":8080/webservice/api/gateway";
+var INTERFACE_URL = "http://"+document.domain + "/webservice/api/gateway";
 var userInfo = {userId:2000000};
 var InterFace = {
     //用户信息
@@ -77,6 +77,14 @@ var UserLeve = {
     , STANDING_DIRECTOR: 4
 }
 
+/**
+ * 跳回首页地址
+ * 预留方法，会校验微信端内，端外
+ * @returns {string}
+ */
+function goIndex() {
+    return "weixin/goOauth?backUrl=index.html";
+}
 /**
  * 定义异常信息
  * @type {Map<any, any>}

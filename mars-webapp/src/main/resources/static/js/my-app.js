@@ -375,6 +375,12 @@ function delNumber(lableName) {
     document.getElementById(lableName + "_total").innerText = " " + (number * 365) + " ";
 }
 
+/**
+ * 买卡提交
+ * @param form
+ * @param lableName
+ * @returns {boolean}
+ */
 function submitBuyCard(form, lableName) {
     var mobile = "";
     var address = "";
@@ -488,6 +494,11 @@ function buyCard(form) {
     dynamicPopup.open();
 }
 
+/**
+ * 卖卡弹出收件信息
+ * @param form
+ * @returns {boolean}
+ */
 function sellCard(form) {
     if (typeof WeixinJSBridge == "undefined") {
         app.dialog.alert("请在微信端内进行操作!", '信息提示');
@@ -539,7 +550,12 @@ function sellCard(form) {
     dynamicPopup.open();
 }
 
-
+/**
+ * 提交卖卡数据
+ * @param form
+ * @param lableName
+ * @returns {boolean}
+ */
 function submitSellCard(form, lableName) {
     var mobile = "";
     var address = "";
@@ -598,108 +614,112 @@ function submitSellCard(form, lableName) {
 }
 
 /**
+ * 引导用户进行分享覆层
+ * @type {{$: _system.$, _client: _system._client, _scroll: _system._scroll, _cover: _system._cover, _guide: _system._guide, _zero: _system._zero}}
+ * @private
+ */
+var _system = {
+    $: function (id) {
+        return document.getElementById(id);
+    },
+    _client: function () {
+        return {
+            w: document.documentElement.scrollWidth,
+            h: document.documentElement.scrollHeight,
+            bw: document.documentElement.clientWidth,
+            bh: document.documentElement.clientHeight
+        };
+    },
+    _scroll: function () {
+        return {
+            x: document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft,
+            y: document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop
+        };
+    },
+    _cover: function (show) {
+        if (show) {
+            this.$("cover").style.display = "block";
+            this.$("cover").style.width = (this._client().bw > this._client().w ? this._client().bw : this._client().w) + "px";
+            this.$("cover").style.height = (this._client().bh > this._client().h ? this._client().bh : this._client().h) + "px";
+        } else {
+            this.$("cover").style.display = "none";
+        }
+    },
+    _guide: function (click) {
+        this._cover(true);
+        this.$("guide").style.display = "block";
+        this.$("guide").style.top = (_system._scroll().y + 5) + "px";
+        window.onresize = function () {
+            _system._cover(true);
+            _system.$("guide").style.top = (_system._scroll().y + 5) + "px";
+        };
+        if (click) {
+            _system.$("cover").onclick = function () {
+                _system._cover();
+                _system.$("guide").style.display = "none";
+                _system.$("cover").onclick = null;
+                window.onresize = null;
+            };
+        }
+    },
+    _zero: function (n) {
+        return n < 0 ? 0 : n;
+    }
+}
+
+/**
  * 分享微信售卡链接
  * @param cardNo
  */
 function shardWeixin(cardNo) {
+    var bizContent = {cardNo: cardNo};
+
     var params = {
         method: InterFace.WX_GLOBLE_CONFIG,
-        userId: userInfo.userId
+        userId: userInfo.userId,
+        bizContent: JSON.stringify(bizContent)
     };
 
-
-    if (typeof WeixinJSBridge == "undefined") {
-        alert(" 通过微信分享文章:)  ");
-    } else {
-        WeixinJSBridge.invoke('shareTimeline', {
-            "title": " ",
-            "link": "http://www.36kr.com",
-            "desc": " ",
-            "img_url": "http:// "
-        });
-
-    }
-
-//     app.request.post(INTERFACE_URL, params, function (data) {
-//         logInfo(data)
-//         var response = JSON.parse(data);
-//         if (ResponseCode.SUCCESS == response.code) {
-//             var bizContent = JSON.parse(response.bizContent);
-//             wx.config({
-//                 debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-//                 appId: bizContent.appId, // 必填，公众号的唯一标识
-//                 timestamp: bizContent.timeStamp, // 必填，生成签名的时间戳
-//                 nonceStr: bizContent.nonceStr, // 必填，生成签名的随机串
-//                 signature: bizContent.signature,// 必填，签名，见附录1
-//                 jsApiList: ['checkJsApi', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ',
-//                     'onMenuShareQZone']
-//                 // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-//             });
-// // 分享给朋友、QQ、微博
-//             wx.onMenuShareTimeline({
-//                 title: '快来!分享朋友圈', // 分享标题
-//                 link: 'http://www.baidu.com', // 分享链接
-//                 imgUrl: 'http://img1.3lian.com/img013/v2/4/d/101.jpg', // 分享图标
-//                 success: function () {
-//                     // 用户确认分享后执行的回调函数
-//                     app.dialog.alert("分享成功!");
-//                 },
-//                 cancel: function () {
-//                     // 用户取消分享后执行的回调函数
-//                     app.dialog.alert("分享取消!");
-//                 }
-//             });
-//             wx.error(function (res) {
-//                 alert(res.errMsg);
-//             });
-//             wx.ready(function () {
-//                 alert('ready环境');
-//                 wx.onMenuShareAppMessage({
-//                     title: '11', // 分享标题
-//                     desc: '11', // 分享描述
-//                     link: 'http://www.baidu.com', // 分享链接
-//                     imgUrl: 'http://img1.3lian.com/img013/v2/4/d/101.jpg', // 分享图标
-//                     type: '', // 分享类型,music、video或link，不填默认为link
-//                     dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-//                     success: function () {
-//                         // 用户确认分享后执行的回调函数
-//                         app.dialog.alert("分享成功");
-//                     },
-//                     cancel: function () {
-//                         // 用户取消分享后执行的回调函数
-//                     }
-//                 });
-//                 wx.onMenuShareTimeline({
-//                     title: '快来!分享朋友圈', // 分享标题
-//                     link: 'http://www.baidu.com', // 分享链接
-//                     imgUrl: 'http://img1.3lian.com/img013/v2/4/d/101.jpg', // 分享图标
-//                     success: function () {
-//                         // 用户确认分享后执行的回调函数
-//                         app.dialog.alert("分享成功!");
-//                     },
-//                     cancel: function () {
-//                         // 用户取消分享后执行的回调函数
-//                         app.dialog.alert("分享取消!");
-//                     }
-//                 });
-//             });
-//             wx.onMenuShareAppMessage({
-//                 title: '11', // 分享标题
-//                 desc: '11', // 分享描述
-//                 link: 'http://www.baidu.com', // 分享链接
-//                 imgUrl: 'http://img1.3lian.com/img013/v2/4/d/101.jpg', // 分享图标
-//                 type: '', // 分享类型,music、video或link，不填默认为link
-//                 dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-//                 success: function () {
-//                     // 用户确认分享后执行的回调函数
-//                     app.dialog.alert("分享成功");
-//                 },
-//                 cancel: function () {
-//                     // 用户取消分享后执行的回调函数
-//                 }
-//             });
-//         }
-//     });
+    app.request.post(INTERFACE_URL, params, function (data) {
+        logInfo(data)
+        var response = JSON.parse(data);
+        if (ResponseCode.SUCCESS == response.code) {
+            var bizContent = JSON.parse(response.bizContent);
+            var sellUserInfo = bizContent.sellUser;
+            wx.config({
+                debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                appId: bizContent.appId, // 必填，公众号的唯一标识
+                timestamp: bizContent.timeStamp, // 必填，生成签名的时间戳
+                nonceStr: bizContent.nonceStr, // 必填，生成签名的随机串
+                signature: bizContent.signature,// 必填，签名，见附录1
+                jsApiList: ['checkJsApi', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ',
+                    'onMenuShareQZone']
+                // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+            });
+            wx.ready(function () {
+                wx.onMenuShareAppMessage({
+                    title: '健康卡购买', // 分享标题
+                    desc: '用户'+sellUserInfo.nickName+"给您分享了他的健康卡", // 分享描述
+                    link: 'http://t.kuai-kaifa.com/weixin/goOauth?backUrl=shard_sell.html&cardNo='+cardNo, // 分享链接
+                    imgUrl: 'http://img1.3lian.com/img013/v2/4/d/101.jpg', // 分享图标
+                    type: '', // 分享类型,music、video或link，不填默认为link
+                    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                    success: function () {
+                        // 用户确认分享后执行的回调函数
+                        app.dialog.alert("分享成功");
+                    },
+                    cancel: function () {
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+            });
+            _system._guide(true);
+        } else {
+            app.dialog.alert(data.msg, function () {
+                location.href = goIndex();
+            });
+        }
+    });
 }
 
 /**

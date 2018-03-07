@@ -48,15 +48,16 @@ $$(document).on('page:init', '.page[data-name="sellCard-page"]', function (e) {
     params = {method: InterFace.USER_HEALTH_CARD_DETAIL,
         bizContent: JSON.stringify(bizContent)}
     app.request.json(INTERFACE_URL, params, function (data) {
-        logInfo("数据返回"+data);
+        logInfo(data);
         if (ResponseCode.SUCCESS == data.code) {
             logInfo("获取用户健康卡详情与购卡人信息成功")
             var bizContent = JSON.parse(data.bizContent);
             setUserInfo(bizContent);
             loadData(userInfo, "card-userinfo", "show-card-userinfo");
         }else{
-            app.dialog.alert(data.msg);
-            location.href="index.html";
+            app.dialog.alert(data.msg,function () {
+                location.href=goIndex();
+            });
         }
     })
 });

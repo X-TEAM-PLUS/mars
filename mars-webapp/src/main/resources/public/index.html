@@ -3,7 +3,8 @@
 <head>
     <!-- Required meta tags-->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="theme-color" content="#FF0000">
@@ -13,6 +14,74 @@
     <link rel="stylesheet" href="/css/my-app.css">
     <title>早安工程</title>
 </head>
+<style>
+    button {
+        width: 100%;
+        text-align: center;
+        border-radius: 3px;
+    }
+
+    .button2 {
+        font-size: 16px;
+        padding: 8px 0;
+        border: 1px solid #adadab;
+        color: #000000;
+        background-color: #e8e8e8;
+        background-image: linear-gradient(to top, #dbdbdb, #f4f4f4);
+        background-image: -webkit-gradient(linear, 0 100%, 0 0, from(#dbdbdb), to(#f4f4f4));
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.45), inset 0 1px 1px #efefef;
+        text-shadow: 0.5px 0.5px 1px #ffffff;
+    }
+
+    .button2:active {
+        background-color: #dedede;
+        background-image: linear-gradient(to top, #cacaca, #e0e0e0);
+        background-image: -webkit-gradient(linear, 0 100%, 0 0, from(#cacaca), to(#e0e0e0));
+    }
+
+    #mess_share {
+        margin: 15px 0;
+    }
+
+    #share_1 {
+        float: left;
+        width: 49%;
+    }
+
+    #share_2 {
+        float: right;
+        width: 49%;
+    }
+
+    #mess_share img {
+        width: 22px;
+        height: 22px;
+    }
+
+    #cover {
+        display: none;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 18888;
+        background-color: #000000;
+        opacity: 0.7;
+    }
+
+    #guide {
+        display: none;
+        position: absolute;
+        right: 18px;
+        top: 5px;
+        z-index: 19999;
+    }
+
+    #guide img {
+        width: 260px;
+        height: 180px;
+    }
+
+</style>
 <body>
 <div id="app">
     <!-- Views/Tabs container -->
@@ -51,7 +120,8 @@
                             <ul>
                                 <li>
                                     <a href="#" class="item-link item-content" onclick="meClick()">
-                                        <div class="item-media"><img src="images/visitor.jpg" width="80px" height="80px"></div>
+                                        <div class="item-media"><img src="images/visitor.jpg" width="80px"
+                                                                     height="80px"></div>
                                         <div class="item-inner">
                                             <div class="item-title-row">
                                                 <div class="item-title">游客</div>
@@ -149,7 +219,8 @@
         <div class="tabbar-labels">
             <div class="row">
                 <div class="col-33">
-                    <a href="/message/" class="tab-link"> <i class="icon f7-icons">bell<span class="badge color-red"><span class="color-white"> {{newMessageCount}}</span></span></i>
+                    <a href="/message/" class="tab-link"> <i class="icon f7-icons">bell<span
+                            class="badge color-red"><span class="color-white"> {{newMessageCount}}</span></span></i>
                         <span class="tabbar-label">消息通知</span>
                     </a>
                 </div>
@@ -561,7 +632,9 @@
                     <a href="#" class="item-link item-content">
                         <div class="item-inner">
                             <div class="item-title-row">
-                                <div class="item-title {{#if status}} color-gray {{/if}}" id="messageId-{{messageId}}">{{messageTitle}}</div>
+                                <div class="item-title {{#if status}} color-gray {{/if}}" id="messageId-{{messageId}}">
+                                    {{messageTitle}}
+                                </div>
                                 <div class="item-after">{{created}}</div>
                             </div>
                             <div class="item-text">
@@ -571,7 +644,8 @@
                     </a>
                 </div>
                 <div class="swipeout-actions-right">
-                    <a href="#" class="swipeout-close color-orange  " onclick="markSystemMessage('{{messageId}}')">标记已读</a>
+                    <a href="#" class="swipeout-close color-orange  "
+                       onclick="markSystemMessage('{{messageId}}')">标记已读</a>
                     <a href="#" class="swipeout-delete" onclick="removeSystemMessage('{{messageId}}')">删除</a>
                 </div>
             </li>
@@ -665,7 +739,8 @@
             <div class="col-50 right-16 color-gray">{{insuranceCompany.insuranceCompanyName}}</div>
         </div>
     </div>
-    <div class="block" style="height: 159px;background:url({{imgInfo}}) no-repeat center center;background-size:345px 159px; margin-left: 0.1rem;">
+    <div class="block"
+         style="height: 159px;background:url({{imgInfo}}) no-repeat center center;background-size:345px 159px; margin-left: 0.1rem;">
     </div>
     {{/each}}
 </script>
@@ -709,6 +784,7 @@
                 购买时间:2018-02-03 10:10:10
             </div>
         </div>
+
     </div>
     {{/if}}
     {{/each}}
@@ -721,7 +797,8 @@
                 <div class=" row">
                     <div class="col-60">
                         <div class="row ">
-                            <div class="col-40 height-65 left-3"><img src="/images/b1.png" width="35px" height="39px"></div>
+                            <div class="col-40 height-65 left-3"><img src="/images/b1.png" width="35px" height="39px">
+                            </div>
                             <div class="col-60 height-65">
                                 <b>{{insuranceProduct.insuranceName}}</b>
                             </div>
@@ -732,7 +809,9 @@
                     </div>
                 </div>
                 <div class=" row">
-                    <div class="col-100" style="vertical-align: middle;text-align:center"> 保障期限:{{acceptInsuranceDate}}至{{expirationDate}}</div>
+                    <div class="col-100" style="vertical-align: middle;text-align:center">
+                        保障期限:{{acceptInsuranceDate}}至{{expirationDate}}
+                    </div>
                 </div>
             </div>
 
@@ -745,15 +824,15 @@
         <ul>
             <li>
                 <div class="row height-44">
-                    <div class="col-40 left-16 color-gray"><i class="fa fa-bookmark-o "></i> 保险名称 </div>
-                    <div class="col-60 right-16 color-gray" >{{insuranceProduct.insuranceName}}</div>
+                    <div class="col-40 left-16 color-gray"><i class="fa fa-bookmark-o "></i> 保险名称</div>
+                    <div class="col-60 right-16 color-gray">{{insuranceProduct.insuranceName}}</div>
                 </div>
             </li>
         </ul>
         <ul>
             <li>
                 <div class="row height-44">
-                    <div class="col-40 left-16 color-gray"><i class="fa fa-building-o"></i> 承保公司 </div>
+                    <div class="col-40 left-16 color-gray"><i class="fa fa-building-o"></i> 承保公司</div>
                     <div class="col-60 right-16 color-gray">{{insuranceCompany.insuranceCompanyName}}</div>
                 </div>
             </li>
@@ -761,7 +840,7 @@
         <ul>
             <li>
                 <div class="row height-44">
-                    <div class="col-40 left-16 color-gray"><i class="fa fa-calendar-check-o "></i> 承保日期 </div>
+                    <div class="col-40 left-16 color-gray"><i class="fa fa-calendar-check-o "></i> 承保日期</div>
                     <div class="col-60 right-16 color-gray">{{acceptInsuranceDate}}</div>
                 </div>
             </li>
@@ -769,7 +848,7 @@
         <ul>
             <li>
                 <div class="row height-44">
-                    <div class="col-40 left-16 color-gray"><i class="fa fa-calendar-minus-o " ></i> 截止日期 </div>
+                    <div class="col-40 left-16 color-gray"><i class="fa fa-calendar-minus-o "></i> 截止日期</div>
                     <div class="col-60 right-16 color-gray">{{expirationDate}}</div>
                 </div>
             </li>
@@ -777,7 +856,7 @@
         <ul>
             <li>
                 <div class="row height-44 ">
-                    <div class="col-40 left-16 color-gray"><i class="fa fa-paperclip "></i> 保单合同号 </div>
+                    <div class="col-40 left-16 color-gray"><i class="fa fa-paperclip "></i> 保单合同号</div>
                     <div class="col-60 right-16 color-gray">{{contractNo}}</div>
                 </div>
             </li>
@@ -785,7 +864,7 @@
         <ul>
             <li>
                 <div class="row  height-44">
-                    <div class="col-40 left-16 color-gray height-44"><i class="fa fa-user "></i> 投保人姓名 </div>
+                    <div class="col-40 left-16 color-gray height-44"><i class="fa fa-user "></i> 投保人姓名</div>
                     <div class="col-60 right-16 color-gray ">{{policyHolder}}</div>
                 </div>
             </li>
@@ -793,7 +872,7 @@
         <ul>
             <li>
                 <div class="row  height-44">
-                    <div class="col-40 left-16 color-gray height-44"><i class="fa fa-barcode "></i> 身份证号 </div>
+                    <div class="col-40 left-16 color-gray height-44"><i class="fa fa-barcode "></i> 身份证号</div>
                     <div class="col-60 right-16 color-gray ">{{holderIdNumber}}</div>
                 </div>
             </li>
@@ -801,7 +880,7 @@
         <ul>
             <li>
                 <div class="row  height-44">
-                    <div class="col-40 left-16 color-gray height-44"><i class="fa fa-ticket "></i> 保单实时查询 </div>
+                    <div class="col-40 left-16 color-gray height-44"><i class="fa fa-ticket "></i> 保单实时查询</div>
                 </div>
             </li>
         </ul>
@@ -813,127 +892,157 @@
 
 </script>
 <script type="text/template" id="show-bank-list">
-    <select name="bankId" required validate  data-error-message="请选择银行.">
+    <select name="bankId" required validate data-error-message="请选择银行.">
         {{#each list}}
         <option value="{{parameterValue}}">{{parameterKey}}</option>
         {{/each}}
     </select>
 </script>
 <script type="text/template" id="show-zhuanzhang-list">
-        <div class="timeline">
-            <div class="timeline timeline-sides">
-                {{#each list}}
-                <div class="timeline-item">
-                    <div class="timeline-item-date"></div>
-                    <div class="timeline-item-divider"></div>
-                    <div class="timeline-item-content">
-                        <a class="link popover-open" href="#" data-popover=".popover-links-{{id}}">
-                        <div class="timeline-item-inner"><span class="font-14"> {{applyTime}} </span><br><span class="font-14">转账</span> <i class="fa fa-rmb color-yellow"></i><span class="color-yellow"> <b>{{amount}}</b></span></div>
-                        </a>
-                    </div>
-                    <div class="popover popover-links-{{id}}">
-                        <div class="popover-inner">
-                            <div class="list">
-                                <ul>
-                                    <li><div class=" list-button item-link"><div class="col  left-16 font-14">转账金额: <i class="fa fa-rmb color-yellow"></i><span class="font-18"><b>{{amount}}</b></span></div> </div></li>
-                                    <li><div class="list-button item-link"><div class="col  left-16 font-14">资金去向:{{bankAccountNo}}</div></div> </li>
-                                    <li><div class="list-button item-link"><div class="col  left-16 font-14">收款人: {{bankAccountName}}</div></div></li>
-                                    <li><div class="list-button item-link"><div class="col  left-16 font-14">状态: {{statusName}}</div></div></li>
-                                    <li><div class="list-button item-link"><div class="col  left-16 font-14">申请时间: {{created}}</div></div></li>
-                                    <li><div class="list-button item-link"><div class="col  left-16 font-14">交易单号: {{transactionNo}}</div></div></li>
-                                </ul>
-                            </div>
+    <div class="timeline">
+        <div class="timeline timeline-sides">
+            {{#each list}}
+            <div class="timeline-item">
+                <div class="timeline-item-date"></div>
+                <div class="timeline-item-divider"></div>
+                <div class="timeline-item-content">
+                    <a class="link popover-open" href="#" data-popover=".popover-links-{{id}}">
+                        <div class="timeline-item-inner"><span class="font-14"> {{applyTime}} </span><br><span
+                                class="font-14">转账</span> <i class="fa fa-rmb color-yellow"></i><span
+                                class="color-yellow"> <b>{{amount}}</b></span></div>
+                    </a>
+                </div>
+                <div class="popover popover-links-{{id}}">
+                    <div class="popover-inner">
+                        <div class="list">
+                            <ul>
+                                <li>
+                                    <div class=" list-button item-link">
+                                        <div class="col  left-16 font-14">转账金额: <i
+                                                class="fa fa-rmb color-yellow"></i><span
+                                                class="font-18"><b>{{amount}}</b></span></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="list-button item-link">
+                                        <div class="col  left-16 font-14">资金去向:{{bankAccountNo}}</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="list-button item-link">
+                                        <div class="col  left-16 font-14">收款人: {{bankAccountName}}</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="list-button item-link">
+                                        <div class="col  left-16 font-14">状态: {{statusName}}</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="list-button item-link">
+                                        <div class="col  left-16 font-14">申请时间: {{created}}</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="list-button item-link">
+                                        <div class="col  left-16 font-14">交易单号: {{transactionNo}}</div>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-                {{/each}}
             </div>
+            {{/each}}
         </div>
+    </div>
 </script>
 <script type="text/template" id="show-butiemingxi-list">
     <table>
         <thead>
-        <th >补贴来源</th>
-        <th >补贴金额</th>
-        <th >补贴项目</th>
+        <th>补贴来源</th>
+        <th>补贴金额</th>
+        <th>补贴项目</th>
         </thead>
     </table>
-        {{#each list}}
-                <div class="list media-list">
-                    <ul>
-                        <li>
-                            <div  class=" item-content">
-                                <div class="item-media"><img src="{{wxHeadPortrait}}" width="40px" height="40px"></div>
-                                <div class="item-inner">
-                                    <div class="item-title-row">
-                                        <div class="item-title">{{realName}} </div>
-                                        <div class="item-after"><i class="fa fa-rmb color-yellow"></i> {{amount}}<span class="font-12"> {{businesseTypeName}}</span></div>
-                                    </div>
-                                    <div class="item-subtitle">{{created}}</div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-        {{/each}}
-        <tbody>
-        </tbody>
-    </table>
-</script>
-<script type="text/template" id="show-zhuanzhang-form">
+    {{#each list}}
+    <div class="list media-list">
         <ul>
-            <li class="item-content item-input">
-                <div class="item-media">
-                    <i class="fa fa-rmb  color-yellow"></i>
-                </div>
-                <div class="item-inner">
-                    <div class="item-title item-label">账户余额</div>
-                    <div class="item-input-wrap">
-                        <input type="text" readonly value="{{accountBalance.balanceAmount}}" >
-                        <span class="input-clear-button"></span>
-                    </div>
-                </div>
-            </li>
-            <li class="item-content item-input">
-                <div class="item-media">
-                    <i class="fa fa-user  color-gray"></i>
-                </div>
-                <div class="item-inner">
-                    <div class="item-title item-label">收款人</div>
-                    <div class="item-input-wrap">
-                        <input type="text"  readonly value="{{bankCard.bankAccountName}}">
-                        <span class="input-clear-button"></span>
-                    </div>
-                </div>
-            </li>
-
-            <li class="item-content item-input">
-                <div class="item-media">
-                    <i class="fa fa-credit-card  color-gray"></i>
-                </div>
-                <div class="item-inner">
-                    <div class="item-title item-label">收款账号</div>
-                    <div class="item-input-wrap">
-                        <input type="text" readonly value="{{bankCard.bankAccountNo}}" >
-                        <span class="input-clear-button"></span>
-                    </div>
-                </div>
-            </li>
-            <li class="item-content item-input">
-                <div class="item-media">
-                    <i class="fa fa-rmb fa-2x color-red"></i>
-                </div>
-                <div class="item-inner">
-                    <div class="item-title item-label">转账金额</div>
-                    <div class="item-input-wrap">
-                        <input type="text"  name="amount">
-                        <span class="input-clear-button"></span>
+            <li>
+                <div class=" item-content">
+                    <div class="item-media"><img src="{{wxHeadPortrait}}" width="40px" height="40px"></div>
+                    <div class="item-inner">
+                        <div class="item-title-row">
+                            <div class="item-title">{{realName}}</div>
+                            <div class="item-after"><i class="fa fa-rmb color-yellow"></i> {{amount}}<span
+                                    class="font-12"> {{businesseTypeName}}</span></div>
+                        </div>
+                        <div class="item-subtitle">{{created}}</div>
                     </div>
                 </div>
             </li>
         </ul>
+    </div>
+    {{/each}}
+    <tbody>
+    </tbody>
+    </table>
 </script>
+<script type="text/template" id="show-zhuanzhang-form">
+    <ul>
+        <li class="item-content item-input">
+            <div class="item-media">
+                <i class="fa fa-rmb  color-yellow"></i>
+            </div>
+            <div class="item-inner">
+                <div class="item-title item-label">账户余额</div>
+                <div class="item-input-wrap">
+                    <input type="text" readonly value="{{accountBalance.balanceAmount}}">
+                    <span class="input-clear-button"></span>
+                </div>
+            </div>
+        </li>
+        <li class="item-content item-input">
+            <div class="item-media">
+                <i class="fa fa-user  color-gray"></i>
+            </div>
+            <div class="item-inner">
+                <div class="item-title item-label">收款人</div>
+                <div class="item-input-wrap">
+                    <input type="text" readonly value="{{bankCard.bankAccountName}}">
+                    <span class="input-clear-button"></span>
+                </div>
+            </div>
+        </li>
 
+        <li class="item-content item-input">
+            <div class="item-media">
+                <i class="fa fa-credit-card  color-gray"></i>
+            </div>
+            <div class="item-inner">
+                <div class="item-title item-label">收款账号</div>
+                <div class="item-input-wrap">
+                    <input type="text" readonly value="{{bankCard.bankAccountNo}}">
+                    <span class="input-clear-button"></span>
+                </div>
+            </div>
+        </li>
+        <li class="item-content item-input">
+            <div class="item-media">
+                <i class="fa fa-rmb fa-2x color-red"></i>
+            </div>
+            <div class="item-inner">
+                <div class="item-title item-label">转账金额</div>
+                <div class="item-input-wrap">
+                    <input type="text" name="amount">
+                    <span class="input-clear-button"></span>
+                </div>
+            </div>
+        </li>
+    </ul>
+</script>
+<div id="cover"></div>
+<div id="guide"><img src="images/guide1.png"></div>
 <!-- Path to Framework7 Library JS-->
 <script type="text/javascript" src="/assets/plugins/framework7-2.0.7/js/framework7.min.js"></script>
 <script type="text/javascript" src="/assets/plugins/template7/template7.min.js"></script>

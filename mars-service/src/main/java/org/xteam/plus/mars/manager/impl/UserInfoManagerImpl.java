@@ -11,6 +11,7 @@ import org.xteam.plus.mars.type.UserLevelEnum;
 import org.xteam.plus.mars.wx.bean.WxUserList;
 
 import java.math.BigDecimal;
+import java.net.URLDecoder;
 import java.util.Date;
 import java.util.List;
 
@@ -31,7 +32,9 @@ public class UserInfoManagerImpl implements UserInfoManager {
 
     @Override
     public UserInfo get(UserInfo userInfo) throws Exception {
-        return userInfoDao.get(userInfo);
+        UserInfo returnValue = userInfoDao.get(userInfo);
+        returnValue.setRealName(URLDecoder.decode(returnValue.getRealName(), "utf-8"));
+        return returnValue;
     }
 
     @Override
