@@ -69,7 +69,11 @@ $$(document).on('page:init', '.page[data-name="sellCard-page"]', function (e) {
 
 $$(document).on('page:reinit', '.page[data-name="home"]', function (e) {
     //获取用户信
-    loadUserView(userInfo.userId);
+    if(typeof(userInfo)==="undefined" || typeof(userInfo.userId)==="undefined"){
+    }else {
+        loadUserView(userInfo.userId);
+    }
+
 });
 $$(document).on('page:init', '.page[data-name="buyCard-page"]', function (e) {
     loadData(userInfo, "buy-userinfo", "show-buy-userinfo");
@@ -146,6 +150,9 @@ $$(document).on('page:init', '.page[data-name="zhuanzhang-form-page"]', function
         method: InterFace.ACCOUNT_AND_BANK_CARD,
         userId: userInfo.userId
     }, "zhuanzhang-form", "show-zhuanzhang-form");
+});
+$$(document).on('page:init', '.page[data-name="show-me-page"]', function (e) {
+    loadBizContent(userInfo, "show-me", "show-me-view");
 });
 app.views.create('#view-heart_check', {url: '/heart_check/'});
 app.views.create('#view-college', {url: '/college/'});

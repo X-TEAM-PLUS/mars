@@ -121,10 +121,10 @@ function gotoLogin() {
  * @returns {boolean}
  */
 function isLogin() {
-    if (userInfo.userId) {
-        return true;
+    if(typeof(userInfo)==="undefined" || typeof(userInfo.userId)==="undefined"){
+        return false ;
     } else {
-        return false;
+        return true ;
     }
 }
 
@@ -730,4 +730,17 @@ function getErrorMessage(code) {
         return ErrorMessage.get(code);
     }
     return "操作异常";
+}
+
+/**
+ * 游客申请会员
+ */
+function appylyMember() {
+    if (isLogin()) {
+            memberView.router.navigate('/buyCard/', {
+                history: true
+            });
+    } else {
+        gotoLogin();
+    }
 }
