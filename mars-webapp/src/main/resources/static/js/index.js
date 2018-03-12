@@ -41,25 +41,30 @@ $$(document).on('page:init', '.page[data-name="sellCard-page"]', function (e) {
             var bizContent = JSON.parse(data.bizContent);
             setUserInfo(bizContent);
             loadData(userInfo, "sell-userinfo", "show-sell-userinfo");
-        }
-    });
-    // 获取用户健康卡详情与购卡人信息
-    var bizContent = {cardNo:cardNo};
-    params = {method: InterFace.USER_HEALTH_CARD_DETAIL,
-        bizContent: JSON.stringify(bizContent)}
-    app.request.json(INTERFACE_URL, params, function (data) {
-        logInfo(data);
-        if (ResponseCode.SUCCESS == data.code) {
-            logInfo("获取用户健康卡详情与购卡人信息成功")
-            var bizContent = JSON.parse(data.bizContent);
-            setUserInfo(bizContent);
-            loadData(userInfo, "card-userinfo", "show-card-userinfo");
+
+            // 获取用户健康卡详情与购卡人信息
+            var bizContent = {cardNo:cardNo};
+            params = {method: InterFace.USER_HEALTH_CARD_DETAIL,
+                bizContent: JSON.stringify(bizContent)}
+            app.request.json(INTERFACE_URL, params, function (dataHealth) {
+                logInfo(data);
+                if (ResponseCode.SUCCESS == dataHealth.code) {
+                    logInfo("获取用户健康卡详情与购卡人信息成功")
+                    var bizContentHealth = JSON.parse(dataHealth.bizContent);
+                    loadData(bizContentHealth, "card-userinfo", "show-card-userinfo");
+                }else{
+                    app.dialog.alert(data.msg,function () {
+                        location.href=goIndex();
+                    });
+                }
+            });
         }else{
             app.dialog.alert(data.msg,function () {
                 location.href=goIndex();
             });
         }
-    })
+    });
+
 });
 
 $$(document).on('page:reinit', '.page[data-name="home"]', function (e) {

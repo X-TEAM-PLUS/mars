@@ -433,7 +433,7 @@ function submitBuyCard(form, lableName) {
                 }
             });
         } else {
-            app.dialog.alert(getErrorMessage(response.code), '信息提示');
+            app.dialog.alert(response.msg, '信息提示');
         }
     });
 
@@ -531,7 +531,7 @@ function sellCard(form) {
         '    <a href="#" class="button button-big button-fill button-raised active" onclick="closeDynamicPopup()">取消</a>\n' +
         '  </div>\n' +
         '  <div class="col-50">\n' +
-        '    <a href="#" class="button button-big button-fill button-raised active" onclick="submitSellCard(\'submitForm\',\'numberLabel\')">确定</a>\n' +
+        '    <a href="#" class="button button-big button-fill button-raised active" onclick="submitSellCard(\'sellSubmitForm\')">确定</a>\n' +
         '  </div>\n' +
         '</div>    ' +
         '</div>' +
@@ -556,7 +556,7 @@ function sellCard(form) {
  * @param lableName
  * @returns {boolean}
  */
-function submitSellCard(form, lableName) {
+function submitSellCard(form) {
     var mobile = "";
     var address = "";
     $$(dynamicPopup.el).find('input[type=text]').each(function (index, element) {
@@ -571,11 +571,10 @@ function submitSellCard(form, lableName) {
         app.dialog.alert("输入信息有误，请从新输入", '信息提示');
         return false;
     }
-    var number = document.getElementById(lableName).innerText;
     app.form.fillFromData('#' + form, {
-        'cardNo': cardNo,
         'contactsMobile': mobile,
-        'address': address
+        'address': address,
+        'cardNo': cardNo
     })
     var bizContent = app.form.convertToData('#' + form);
     var params = {
@@ -608,7 +607,7 @@ function submitSellCard(form, lableName) {
                 }
             });
         } else {
-            app.dialog.alert(getErrorMessage(response.code), '信息提示');
+            app.dialog.alert(response.msg, '信息提示');
         }
     });
 }
@@ -701,7 +700,7 @@ function shardWeixin(cardNo) {
                     title: '健康卡购买', // 分享标题
                     desc: '用户'+sellUserInfo.nickName+"给您分享了他的健康卡", // 分享描述
                     link: 'http://t.kuai-kaifa.com/weixin/goOauth?backUrl=shard_sell.html&cardNo='+cardNo, // 分享链接
-                    imgUrl: 'http://img1.3lian.com/img013/v2/4/d/101.jpg', // 分享图标
+                    imgUrl: sellUserInfo.wxHeadPortrait, // 分享图标
                     type: '', // 分享类型,music、video或link，不填默认为link
                     dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
                     success: function () {

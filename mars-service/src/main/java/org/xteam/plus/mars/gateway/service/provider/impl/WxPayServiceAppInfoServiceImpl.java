@@ -1,6 +1,7 @@
 package org.xteam.plus.mars.gateway.service.provider.impl;
 
 import com.google.common.collect.Lists;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.xteam.plus.mars.common.JsonUtils;
 import org.xteam.plus.mars.common.Logging;
@@ -11,7 +12,6 @@ import org.xteam.plus.mars.gateway.service.provider.HttpRequestBody;
 import org.xteam.plus.mars.gateway.service.provider.HttpResponseBody;
 import org.xteam.plus.mars.gateway.service.provider.impl.body.req.WxPayJsApiReqVO;
 import org.xteam.plus.mars.manager.OrdersManager;
-import org.xteam.plus.mars.manager.ProductManager;
 import org.xteam.plus.mars.manager.UserInfoManager;
 import org.xteam.plus.mars.type.OrderTypeEnum;
 import org.xteam.plus.mars.wx.api.WxConfig;
@@ -34,14 +34,16 @@ public class WxPayServiceAppInfoServiceImpl extends Logging implements GateWaySe
 
     private final String METHOD_NAME = "com.zhaoanyun.api.gateway.wx.pay.unifiedOrder";
 
+    public final static String REDIS_TEMP_OATH_KEY = "org.xteam.plus.mars.service.weixin.pay.parms";
+
     @Resource
     private UserInfoManager userInfoManager;
 
     @Resource
-    private ProductManager productManager;
+    private OrdersManager ordersManager;
 
     @Resource
-    private OrdersManager ordersManager;
+    private StringRedisTemplate stringRedisTemplate;
 
     private WxService iService = new WxService();
 
@@ -76,6 +78,7 @@ public class WxPayServiceAppInfoServiceImpl extends Logging implements GateWaySe
                 return new HttpResponseBody(GlobalErrorMessage.USER_ID_NOT_HIVE);
             }
 
+
             PayOrderInfo payOrderInfo = ordersManager.createStraightPinOrder(userInfo.getUserId(),
                     wxPayJsApiReqVO.getProductId(),
                     wxPayJsApiReqVO.getNumber(),
@@ -84,6 +87,7 @@ public class WxPayServiceAppInfoServiceImpl extends Logging implements GateWaySe
                     wxPayJsApiReqVO.getOrderTypeEnum(),
                     wxPayJsApiReqVO.getCardNo());
             payOrderInfo.setTradeType("JSAPI");
+            logInfo("预下单接口生成订单 [" + JsonUtils.toJSON(payOrderInfo) + "]");
             InvokePay invokePay = iService.unifiedOrder(payOrderInfo, WxConfig.getInstance().getPayNotifyPath(), userInfo.getWxOpenid());
             logInfo("统一下单接口返回结果 : " + JsonUtils.toJSON(invokePay));
             List<String> jsApiList = Lists.newArrayList();
@@ -103,10 +107,9 @@ public class WxPayServiceAppInfoServiceImpl extends Logging implements GateWaySe
             params.put("out_trade_no", payOrderInfo.getOrderId()); // 付款成功后跳转的页面
 
             httpResponseBody.setBizContent(JsonUtils.toJSON(params));
-
         } catch (Exception e) {
             logInfo(METHOD_NAME + " error system_error ", e);
-            httpResponseBody = new HttpResponseBody(GlobalErrorMessage.BUSINESS_FAILED);
+            httpResponseBody = new HttpResponseBody("999912", e.getMessage());
         } finally {
             logInfo(METHOD_NAME + " finish result[" + JsonUtils.toJSON(httpResponseBody.getBizContent()) + "] longtime[" + (beginDate - System.currentTimeMillis()) + "]");
         }

@@ -15,6 +15,13 @@ public enum OrderTypeEnum {
         this.info = info;
     }
 
+    public static boolean isVip(OrderTypeEnum orderTypeEnum) {
+        if (orderTypeEnum.code == 1) {
+            return true;
+        }
+        return false;
+    }
+
     public int getCode() {
         return code;
     }

@@ -2,10 +2,12 @@ package org.xteam.plus.mars.manager.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.xteam.plus.mars.dao.*;
 import org.xteam.plus.mars.domain.*;
+import org.xteam.plus.mars.gateway.service.provider.impl.WxPayServiceAppInfoServiceImpl;
 import org.xteam.plus.mars.manager.OrdersManager;
 import org.xteam.plus.mars.type.AccountDetailTypeEnum;
 import org.xteam.plus.mars.type.CardStatusTypeEnum;
@@ -45,6 +47,9 @@ public class OrdersManagerImpl implements OrdersManager {
 
     @Resource
     private UserRelationDao userRelationDao;
+
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
 
     @Override
     public Orders get(Orders orders) throws Exception {
@@ -98,12 +103,16 @@ public class OrdersManagerImpl implements OrdersManager {
         if (userId == null) {
             throw new Exception("用户id不存在，不能生成订单!");
         }
-
+        boolean isInsert = false;
         // 如果是会员分销
         if (orderTypeEnum.getCode() == OrderTypeEnum.VIP_DISTRIBUTION.getCode()) {
             List<Orders> ordersList = ordersDao.queryEffective(new Orders().setCardNo(cardNo));
             if (ordersList != null && ordersList.size() > 0) {
-                throw new Exception("订单已经生成，无法再次进行支付，请先进行取消或删除订单!");
+                orders = ordersList.get(0);
+                isInsert = true;
+                if (orders.getStatus() == 1) {
+                    throw new Exception("此卡已经被卖掉，无法进行购买!");
+                }
             }
             UserHealthCard userHealthCard = userHealthCardDao.get(new UserHealthCard().setCardNo(cardNo));
             if (userHealthCard == null) {
@@ -133,15 +142,20 @@ public class OrdersManagerImpl implements OrdersManager {
 
         orders.setCardType(0);
         orders.setCardNo(cardNo);
-        orders.setCreated(new Date());
         orders.setAddress(address);
         orders.setContactsMobile(contactsMobile);
         orders.setStatus(0);
         orders.setPayWay(1);
         orders.setOrderTime(new Date());
-        int count = ordersDao.insert(orders);
-        if (count <= 0) {
-            throw new Exception("订单生成插入数据库异常!");
+        if (!isInsert) {
+            orders.setCreated(new Date());
+            int count = ordersDao.insert(orders);
+            if (count <= 0) {
+                throw new Exception("订单生成插入数据库异常!");
+            }
+        } else {
+            orders.setUpdated(new Date());
+            ordersDao.update(orders);
         }
         PayOrderInfo payOrderInfo = new PayOrderInfo();
         payOrderInfo.setOrderId(String.valueOf(orders.getOrderNo()));
@@ -175,6 +189,10 @@ public class OrdersManagerImpl implements OrdersManager {
             orders.setStatus(1);
         } catch (Exception e) {
             throw new Exception("更新订单数据失败，系统错误，导致用户无法更新订单，问题严重!");
+        }
+        // 如果是会员分销订单，清理缓存
+        if (OrderTypeEnum.valueOf(orders.getOrderType()) == OrderTypeEnum.VIP_DISTRIBUTION) {
+            stringRedisTemplate.delete(WxPayServiceAppInfoServiceImpl.REDIS_TEMP_OATH_KEY + orders.getCardNo());
         }
         int count = ordersDao.update(orders);
         if (count <= 0) {
