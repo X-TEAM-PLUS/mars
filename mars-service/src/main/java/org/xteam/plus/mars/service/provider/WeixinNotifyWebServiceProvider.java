@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.xteam.plus.mars.common.JsonUtils;
 import org.xteam.plus.mars.common.Logging;
+import org.xteam.plus.mars.domain.Orders;
 import org.xteam.plus.mars.domain.UserInfo;
 import org.xteam.plus.mars.manager.OrdersManager;
 import org.xteam.plus.mars.manager.UserInfoManager;
+import org.xteam.plus.mars.manager.subsidy.impl.SubsidyManagerFactory;
 import org.xteam.plus.mars.type.OrderTypeEnum;
 import org.xteam.plus.mars.wx.api.WxConfig;
 import org.xteam.plus.mars.wx.api.WxConsts;
@@ -54,6 +56,9 @@ public class WeixinNotifyWebServiceProvider extends Logging {
     @Resource
     private StringRedisTemplate stringRedisTemplate;
 
+    @Resource
+    private SubsidyManagerFactory subsidyManagerFactory;
+
     private WxService iService = new WxService();
 
     private final static String REDIS_TEMP_OATH_KEY = "org.xteam.plus.mars.service.weixin.oath.parms";
@@ -85,6 +90,9 @@ public class WeixinNotifyWebServiceProvider extends Logging {
             }
             if (reqMap.get("result_code").toString().equalsIgnoreCase("SUCCESS")) {
                 ordersManager.updateStraightPinOrder(reqMap);
+                Orders orders = ordersManager.get(new Orders().setOrderNo(new BigDecimal(reqMap.get("out_trade_no").toString())));
+                // 发放补贴
+                subsidyManagerFactory.execute(orders);
                 returnValue = "SUCCESS";
             } else {
                 logInfo("微信支付通知接口返回失败 reqMap[" + reqMap + "]");

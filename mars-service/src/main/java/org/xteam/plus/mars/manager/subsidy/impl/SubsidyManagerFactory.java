@@ -10,6 +10,7 @@ import org.xteam.plus.mars.dao.UserInfoDao;
 import org.xteam.plus.mars.domain.Orders;
 import org.xteam.plus.mars.domain.UserInfo;
 import org.xteam.plus.mars.manager.SubsidyManager;
+import org.xteam.plus.mars.type.OrderTypeEnum;
 import org.xteam.plus.mars.type.UserLevelEnum;
 
 import javax.annotation.Resource;
@@ -58,6 +59,14 @@ public class SubsidyManagerFactory extends Logging implements ApplicationContext
         logInfo("开始发放补贴 SubsidyManagerFactory orders [" + JsonUtils.toJSON(orders) + "]");
         if (orders.getSellerUserId() == null) {
             logInfo("orders [" + JsonUtils.toJSON(orders) + "] 不存在销售人员id，不进行补贴");
+            return true;
+        }
+        if (OrderTypeEnum.valueOf(orders.getOrderType()) != OrderTypeEnum.VIP_DISTRIBUTION) {
+            logInfo("订单ID [" + orders.getOrderNo() + "] 不是会员分销订单，不能进行发放补贴");
+            return true;
+        }
+        if (orders.getStatus() != 1) {
+            logInfo("订单ID [" + orders.getOrderNo() + "] 支付状态 [" + orders.getStatus() + "] 支付状态错误，不能进行补贴!");
             return true;
         }
         UserInfo sellerUserInfo = userInfoDao.get(new UserInfo().setUserId(orders.getSellerUserId()));
