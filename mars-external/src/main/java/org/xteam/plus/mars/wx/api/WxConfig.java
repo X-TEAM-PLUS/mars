@@ -39,6 +39,14 @@ public class WxConfig {
     // 支付回调地址
     private volatile String payNotifyPath;
 
+    // 微信支付证书文件路径
+    private volatile String certPath;
+    private volatile String certPass;
+    // 企业代付公钥pkcs8 转换后的
+    private volatile String pkcs8;
+
+    private volatile String payIp;
+
     public WxConfig() {
         //写读配置文件代码
         Properties p = new Properties();
@@ -68,6 +76,14 @@ public class WxConfig {
             if (StringUtils.isNotBlank(this.oauth2RedirectUri)) this.oauth2RedirectUri = this.oauth2RedirectUri.trim();
             this.payNotifyPath = p.getProperty("wx.payNotifyPath");
             if (StringUtils.isNotBlank(this.payNotifyPath)) this.payNotifyPath = this.payNotifyPath.trim();
+            this.certPath = p.getProperty("wx.cert.path");
+            if (StringUtils.isNotBlank(this.certPath)) this.certPath = this.certPath.trim();
+            this.certPass = p.getProperty("wx.cert.pass");
+            if (StringUtils.isNotBlank(this.certPass)) this.certPass = this.certPass.trim();
+            this.pkcs8 = p.getProperty("wx.pkcs8.pass");
+            if (StringUtils.isNotBlank(this.pkcs8)) this.pkcs8 = this.pkcs8.trim();
+            this.payIp = p.getProperty("wx.pay.ip");
+            if (StringUtils.isNotBlank(this.payIp)) this.payIp = this.payIp.trim();
             inStream.close();
         } catch (IOException e) {
             try {
@@ -173,8 +189,25 @@ public class WxConfig {
     public String getPayNotifyPath() {
         return payNotifyPath;
     }
+
+    public String getCertPass() {
+        return certPass;
+    }
+
     public void setApiKey(String apiKey) {
         this.apiKey = apiKey;
+    }
+
+    public String getCertPath() {
+        return certPath;
+    }
+
+    public String getPkcs8() {
+        return pkcs8;
+    }
+
+    public String getPayIp() {
+        return payIp;
     }
 
     @Override
@@ -184,6 +217,7 @@ public class WxConfig {
                 + expiresTime + ", jsapiTicket=" + jsapiTicket + ", jsapiTicketExpiresTime=" + jsapiTicketExpiresTime
                 + "]";
     }
+
 
     public String getOauth2RedirectUri() {
         return oauth2RedirectUri;

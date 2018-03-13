@@ -1,8 +1,14 @@
 package org.xteam.plus.mars.wx.api;
 
 
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.SSLContexts;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.xteam.plus.mars.wx.bean.*;
@@ -11,13 +17,14 @@ import org.xteam.plus.mars.wx.exception.WxErrorException;
 import org.xteam.plus.mars.wx.util.DateUtil;
 import org.xteam.plus.mars.wx.util.PayUtil;
 import org.xteam.plus.mars.wx.util.RandomUtils;
+import org.xteam.plus.mars.wx.util.crypto.GetRSA;
 import org.xteam.plus.mars.wx.util.crypto.SHA1;
 import org.xteam.plus.mars.wx.util.file.FileUtils;
 import org.xteam.plus.mars.wx.util.http.*;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.net.ssl.SSLContext;
+import java.io.*;
+import java.security.KeyStore;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
@@ -714,6 +721,175 @@ public class WxService implements IService {
         return result;
     }
 
+    @Override
+    public PayPocketMoneyResult payForAnotherPocketMoney(String openId, String check_name, String re_user_name, String amount, String desc) throws WxErrorException{
+        WxPayPocketMoney request = new WxPayPocketMoney();
+        StringBuffer postResult = new StringBuffer();
+        try{
+            request.setOpenid(openId);
+            request.setCheckName(check_name);
+            request.setReUserName(re_user_name);
+            request.setAmount(amount);
+            request.setDesc(desc);
+            request = PayUtil.createPayPocketMoney(request);
+            System.out.println(request.toXml());
+            // 发送请求
+            KeyStore keyStore = KeyStore.getInstance("PKCS12");
+            FileInputStream instream = new FileInputStream(new File(WxConfig.getInstance().getCertPath()));
+            keyStore.load(instream, WxConfig.getInstance().getMchId().toCharArray());
+            SSLContext sslcontext = SSLContexts.custom()
+                    .loadKeyMaterial(keyStore, WxConfig.getInstance().getMchId().toCharArray())
+                    .build();
+            // Allow TLSv1 protocol only
+            SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
+                    sslcontext,
+                    new String[]{"TLSv1"},
+                    null,
+                    SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
+            CloseableHttpClient httpclient = HttpClients.custom()
+                    .setSSLSocketFactory(sslsf)
+                    .build();
+
+            HttpPost httpPost = new HttpPost(WxConsts.URL_TRANSFERS);
+            StringEntity se = new StringEntity(request.toXml());
+            httpPost.setEntity(se);
+            CloseableHttpResponse response = httpclient.execute(httpPost);
+            HttpEntity entity = response.getEntity();
+            if (entity != null) {
+
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(entity.getContent()));
+                String text;
+                while ((text = bufferedReader.readLine()) != null) {
+                    System.out.println(text);
+                    postResult.append(text);
+                }
+
+            }
+
+        }catch (Exception e){
+            throw new WxErrorException("[wx-tools] keystore 错误" + e.getMessage());
+        }
+        System.out.println(postResult);
+        PayPocketMoneyResult payPocketMoneyResult = PayPocketMoneyResult.fromXml(postResult.toString());
+        if (payPocketMoneyResult.getReturnCode().equals("FAIL")) {
+            throw new WxErrorException(payPocketMoneyResult.getReturnMsg());
+        }
+        return payPocketMoneyResult;
+    }
+
+    @Override
+    public PayBankInfoResult payForAnotherBank(String enc_bank_no,
+                                               String enc_true_name,
+                                               String bank_code,
+                                               String amount,
+                                               String desc) throws WxErrorException {
+        WxPayAnotherBank request = new WxPayAnotherBank();
+        StringBuffer postResult = new StringBuffer();
+        try {
+
+            String readStrPkcs8 = WxConfig.getInstance().getPkcs8();
+            enc_bank_no = GetRSA.getRSA(enc_bank_no, readStrPkcs8);
+            enc_true_name = GetRSA.getRSA(enc_true_name, readStrPkcs8);
+            request.setEnc_bank_no(enc_bank_no);
+            request.setEnc_true_name(enc_true_name);
+            request.setBank_code(bank_code);
+            request.setAmount(amount);
+            request.setDesc(desc);
+            request = PayUtil.createPayAnotherBank(request);
+            System.out.println(request.toXml());
+            // 发送请求
+            KeyStore keyStore = KeyStore.getInstance("PKCS12");
+            FileInputStream instream = new FileInputStream(new File(WxConfig.getInstance().getCertPath()));
+            keyStore.load(instream, WxConfig.getInstance().getMchId().toCharArray());
+            SSLContext sslcontext = SSLContexts.custom()
+                    .loadKeyMaterial(keyStore, WxConfig.getInstance().getMchId().toCharArray())
+                    .build();
+            // Allow TLSv1 protocol only
+            SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
+                    sslcontext,
+                    new String[]{"TLSv1"},
+                    null,
+                    SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
+            CloseableHttpClient httpclient = HttpClients.custom()
+                    .setSSLSocketFactory(sslsf)
+                    .build();
+
+            HttpPost httpPost = new HttpPost(WxConsts.URL_PAY_FOR_ANOTHER_BANK);
+            StringEntity se = new StringEntity(request.toXml());
+            httpPost.setEntity(se);
+            CloseableHttpResponse response = httpclient.execute(httpPost);
+            HttpEntity entity = response.getEntity();
+            if (entity != null) {
+
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(entity.getContent()));
+                String text;
+                while ((text = bufferedReader.readLine()) != null) {
+                    System.out.println(text);
+                    postResult.append(text);
+                }
+
+            }
+
+        } catch (Exception e) {
+            throw new WxErrorException("[wx-tools] keystore 错误" + e.getMessage());
+        }
+        System.out.println(postResult);
+        PayBankInfoResult payBankInfoResult = PayBankInfoResult.fromXml(postResult.toString());
+        if (payBankInfoResult.getReturnCode().equals("FAIL")) {
+            throw new WxErrorException(payBankInfoResult.getErrCodeDes());
+        }
+        return payBankInfoResult;
+    }
+
+    @Override
+    public GetPublicKeyResult getPublicKey() throws WxErrorException {
+        WxGetPublicKey request = PayUtil.createPublicKey();
+        StringBuffer postResult = new StringBuffer();
+        try {
+            System.out.println(request.toXml());
+            // 发送请求
+            KeyStore keyStore = KeyStore.getInstance("PKCS12");
+            FileInputStream instream = new FileInputStream(new File(WxConfig.getInstance().getCertPath()));
+            keyStore.load(instream, WxConfig.getInstance().getMchId().toCharArray());
+            SSLContext sslcontext = SSLContexts.custom()
+                    .loadKeyMaterial(keyStore, WxConfig.getInstance().getMchId().toCharArray())
+                    .build();
+            // Allow TLSv1 protocol only
+            SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
+                    sslcontext,
+                    new String[]{"TLSv1"},
+                    null,
+                    SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
+            CloseableHttpClient httpclient = HttpClients.custom()
+                    .setSSLSocketFactory(sslsf)
+                    .build();
+
+            HttpPost httpPost = new HttpPost(WxConsts.URL_GET_PUBLIC_KEY);
+            StringEntity se = new StringEntity(request.toXml());
+            httpPost.setEntity(se);
+            CloseableHttpResponse response = httpclient.execute(httpPost);
+            HttpEntity entity = response.getEntity();
+            if (entity != null) {
+
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(entity.getContent()));
+                String text;
+                while ((text = bufferedReader.readLine()) != null) {
+                    System.out.println(text);
+                    postResult.append(text);
+                }
+
+            }
+        } catch (Exception e) {
+            throw new WxErrorException("[wx-tools] keystore 错误" + e.getMessage());
+        }
+        System.out.println(postResult);
+        GetPublicKeyResult getPublicKeyResult = GetPublicKeyResult.fromXml(postResult.toString());
+        if (getPublicKeyResult.getResultCode().equals("FAIL")) {
+            throw new WxErrorException(getPublicKeyResult.getReturnMsg());
+        }
+        return getPublicKeyResult;
+    }
+
     @Deprecated
     @Override
     public InvokePay unifiedOrder(PayOrderInfo order, String notifyUrl, String openid) throws WxErrorException {
@@ -729,7 +905,7 @@ public class WxService implements IService {
         System.out.println(postResult);
 
         UnifiedOrderResult result = UnifiedOrderResult.fromXml(postResult);
-        if(result.getReturnCode().equals("FAIL") ){
+        if (result.getReturnCode().equals("FAIL")) {
             throw new WxErrorException(result.getReturnMsg());
         }
         //赋值

@@ -814,4 +814,44 @@ public interface IService {
      */
     <T, E> T execute(RequestExecutor<T, E> executor, String uri, E data) throws WxErrorException;
 
+    /**
+     * 获取商户RSA公钥
+     *
+     * @return
+     * @throws WxErrorException
+     */
+    public GetPublicKeyResult getPublicKey() throws WxErrorException;
+
+    /**
+     * 微信代付接口，企业向用户进行打款（银行卡）
+     * https://pay.weixin.qq.com/wiki/doc/api/tools/mch_pay.php?chapter=24_4
+     *
+     * @param enc_bank_no   收款方银行卡号
+     * @param enc_true_name 收款方用户名
+     * @param bank_code     收款方开户行
+     * @param amount        付款金额
+     * @param desc          付款说明
+     * @return
+     * @throws WxErrorException
+     */
+    public PayBankInfoResult payForAnotherBank(String enc_bank_no,
+                                               String enc_true_name,
+                                               String bank_code,
+                                               String amount,
+                                               String desc) throws WxErrorException;
+
+    /**
+     * 微信代付接口，企业面向用户进行打款（零钱）
+     *
+     * @param openId       用户OPENID
+     * @param check_name   校验用户姓名选项 NO_CHECK：不校验真实姓名
+     *                     FORCE_CHECK：强校验真实姓名
+     * @param re_user_name 收款用户姓名
+     * @param amount       金额
+     * @param desc         企业付款描述信息
+     * @return
+     * @throws WxErrorException
+     */
+    public PayPocketMoneyResult payForAnotherPocketMoney(String openId, String check_name, String re_user_name, String amount, String desc) throws WxErrorException;
+
 }

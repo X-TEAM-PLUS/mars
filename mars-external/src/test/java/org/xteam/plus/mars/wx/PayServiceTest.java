@@ -64,4 +64,37 @@ public class PayServiceTest {
         return new java.text.SimpleDateFormat("yyyyMMddHHmmss").format(new Date(date));
 
     }
+
+    @Test
+    public void getPublicKey(){
+        try {
+            System.out.println(JsonUtils.toJSON(wxService.getPublicKey()));
+        } catch (WxErrorException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 微信代付到银行卡
+     */
+    @Test
+    public void payForAnotherBank(){
+        try {
+            wxService.payForAnotherBank("6214830163371957","宋鑫磊","1001","100","test");
+        } catch (WxErrorException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 微信代付到零钱
+     */
+    @Test
+    public void payForAnotherPocket(){
+        try {
+            wxService.payForAnotherPocketMoney("o31nujoJe-vOD8h9X5EbmIV64BJQ","NO_CHECK","12","100","test");
+        } catch (WxErrorException e) {
+            e.printStackTrace();
+        }
+    }
 }

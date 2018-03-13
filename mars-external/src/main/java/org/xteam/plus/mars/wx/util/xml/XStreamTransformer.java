@@ -3,6 +3,9 @@ package org.xteam.plus.mars.wx.util.xml;
 
 import com.thoughtworks.xstream.XStream;
 import org.xteam.plus.mars.wx.bean.*;
+import org.xteam.plus.mars.wx.bean.result.GetPublicKeyResult;
+import org.xteam.plus.mars.wx.bean.result.PayBankInfoResult;
+import org.xteam.plus.mars.wx.bean.result.PayPocketMoneyResult;
 import org.xteam.plus.mars.wx.bean.result.UnifiedOrderResult;
 
 import java.io.InputStream;
@@ -50,7 +53,15 @@ public class XStreamTransformer {
 
 	private static Map<Class, XStream> configXStreamInstance() {
 		Map<Class, XStream> map = new HashMap<Class, XStream>();
+		map.put(PayBankInfoResult.class,config_PayBankInfoResult());
+		map.put(WxPayAnotherBank.class,config_WxPayAnotherBank());
+
+		map.put(PayPocketMoneyResult.class,config_PayPocketMoney());
+		map.put(WxPayPocketMoney.class,config_PayPocket());
+
+		map.put(GetPublicKeyResult.class,config_GetPublicKey());
 		map.put(UnifiedOrderResult.class,config_UnifiedOrderResult());
+		map.put(WxGetPublicKey.class,config_WxGetPublicKey());
 		map.put(WxUnifiedOrder.class,config_WxUnifiedOrder());
 		map.put(WxXmlMessage.class, config_WxXmlMessage());
 		map.put(WxXmlOutNewsMessage.class, config_WxXmlOutNewsMessage());
@@ -59,6 +70,37 @@ public class XStreamTransformer {
 		map.put(WxXmlOutVideoMessage.class, config_WxXmlOutVideoMessage());
 		map.put(WxXmlOutVoiceMessage.class, config_WxXmlOutVoiceMessage());
 		return map;
+	}
+
+	private static XStream config_PayPocket(){
+		XStream xstream = XStreamInitializer.getInstance();
+		xstream.processAnnotations(WxPayPocketMoney.class);
+		return xstream;
+	}
+	private static XStream config_PayPocketMoney(){
+		XStream xstream = XStreamInitializer.getInstance();
+		xstream.processAnnotations(PayPocketMoneyResult.class);
+		return xstream;
+	}
+	private static XStream config_PayBankInfoResult(){
+		XStream xstream = XStreamInitializer.getInstance();
+		xstream.processAnnotations(PayBankInfoResult.class);
+		return xstream;
+	}
+	private static XStream config_WxPayAnotherBank(){
+		XStream xstream = XStreamInitializer.getInstance();
+		xstream.processAnnotations(WxPayAnotherBank.class);
+		return xstream;
+	}
+	private static XStream config_WxGetPublicKey(){
+		XStream xstream = XStreamInitializer.getInstance();
+		xstream.processAnnotations(WxGetPublicKey.class);
+		return xstream;
+	}
+	private static XStream config_GetPublicKey(){
+		XStream xstream = XStreamInitializer.getInstance();
+		xstream.processAnnotations(GetPublicKeyResult.class);
+		return xstream;
 	}
 	private static XStream config_UnifiedOrderResult(){
 		XStream xstream = XStreamInitializer.getInstance();

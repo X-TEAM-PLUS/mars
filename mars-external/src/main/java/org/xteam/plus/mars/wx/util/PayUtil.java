@@ -1,14 +1,11 @@
 package org.xteam.plus.mars.wx.util;
 
 import org.xteam.plus.mars.wx.api.WxConfig;
-import org.xteam.plus.mars.wx.bean.PayOrderInfo;
-import org.xteam.plus.mars.wx.bean.WxUnifiedOrder;
+import org.xteam.plus.mars.wx.bean.*;
 import org.xteam.plus.mars.wx.util.crypto.MD5;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 支付工具类
@@ -64,6 +61,87 @@ public class PayUtil {
         return pay;
     }
 
+    public static WxGetPublicKey createPublicKey() {
+        Map<String, String> publicKey = new HashMap<>();
+        publicKey.put("mch_id", WxConfig.getInstance().getMchId());
+        publicKey.put("nonce_str", StringUtils.randomStr(32));
+        publicKey.put("sign_type", "MD5");
+
+        WxGetPublicKey wxGetPublicKey = new WxGetPublicKey();
+        wxGetPublicKey.setMchId(publicKey.get("mch_id"));
+        wxGetPublicKey.setNonceStr(publicKey.get("nonce_str"));
+        wxGetPublicKey.setSign_type(publicKey.get("sign_type"));
+        wxGetPublicKey.setSign(createSign(publicKey, WxConfig.getInstance().getApiKey()));
+        return wxGetPublicKey;
+    }
+
+    public static WxPayPocketMoney createPayPocketMoney(WxPayPocketMoney wxPayPocketMoney) {
+        Map<String, String> wxPayPocketMoneyMap = new HashMap<>();
+        wxPayPocketMoneyMap.put("mch_appid", WxConfig.getInstance().getAppId());
+        wxPayPocketMoneyMap.put("mchid", WxConfig.getInstance().getMchId());
+        wxPayPocketMoneyMap.put("device_info", "zaoan");
+        wxPayPocketMoneyMap.put("nonce_str", StringUtils.randomStr(32));
+        wxPayPocketMoneyMap.put("partner_trade_no", getPartnerTradeNo());
+        wxPayPocketMoneyMap.put("spbill_create_ip", WxConfig.getInstance().getPayIp());
+        wxPayPocketMoneyMap.put("openid", wxPayPocketMoney.getOpenid());
+        wxPayPocketMoneyMap.put("check_name", wxPayPocketMoney.getCheckName());
+        wxPayPocketMoneyMap.put("re_user_name", wxPayPocketMoney.getReUserName());
+        wxPayPocketMoneyMap.put("amount", wxPayPocketMoney.getAmount());
+        wxPayPocketMoneyMap.put("desc", wxPayPocketMoney.getDesc());
+
+        wxPayPocketMoney.setMchAppid(wxPayPocketMoneyMap.get("mch_appid"));
+        wxPayPocketMoney.setMchId(wxPayPocketMoneyMap.get("mchid"));
+        wxPayPocketMoney.setDeviceInfo(wxPayPocketMoneyMap.get("device_info"));
+        wxPayPocketMoney.setNonce_str(wxPayPocketMoneyMap.get("nonce_str"));
+        wxPayPocketMoney.setPartnerTradeNo(wxPayPocketMoneyMap.get("partner_trade_no"));
+        wxPayPocketMoney.setSpbillCreateIp(wxPayPocketMoneyMap.get("spbill_create_ip"));
+        wxPayPocketMoney.setSign(createSign(wxPayPocketMoneyMap, WxConfig.getInstance().getApiKey()));
+        return wxPayPocketMoney;
+    }
+
+    public static WxPayAnotherBank createPayAnotherBank(WxPayAnotherBank wxPayAnotherBank) {
+        Map<String, String> wxPayAnotherBankMap = new HashMap<>();
+        wxPayAnotherBankMap.put("mch_id", WxConfig.getInstance().getMchId());
+        wxPayAnotherBankMap.put("partner_trade_no", getPartnerTradeNo());
+        wxPayAnotherBankMap.put("nonce_str", StringUtils.randomStr(32));
+        wxPayAnotherBankMap.put("enc_bank_no", wxPayAnotherBank.getEnc_bank_no());
+        wxPayAnotherBankMap.put("enc_true_name", wxPayAnotherBank.getEnc_true_name());
+        wxPayAnotherBankMap.put("bank_code", wxPayAnotherBank.getBank_code());
+        wxPayAnotherBankMap.put("amount", wxPayAnotherBank.getAmount());
+        wxPayAnotherBankMap.put("desc", wxPayAnotherBank.getDesc());
+
+        wxPayAnotherBank.setMch_id(wxPayAnotherBankMap.get("mch_id"));
+        wxPayAnotherBank.setPartner_trade_no(wxPayAnotherBankMap.get("partner_trade_no"));
+        wxPayAnotherBank.setNonce_str(wxPayAnotherBankMap.get("nonce_str"));
+        wxPayAnotherBank.setSign(createSign(wxPayAnotherBankMap, WxConfig.getInstance().getApiKey()));
+        return wxPayAnotherBank;
+    }
+
+    public static int index = 0;
+
+    public static String getPartnerTradeNo() {
+        StringBuffer returnValue = new StringBuffer("110");
+        try {
+            String dateIndex = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+            returnValue.append(dateIndex).append(getSeq());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return returnValue.toString();
+    }
+
+    public static String getSeq() {
+        if (index >= 99999) {
+            index = 0;
+        }
+        index++;
+        String indexStr = String.valueOf(index);
+        while (indexStr.length() < 5) {
+            indexStr = "0" + indexStr;
+        }
+        return indexStr;
+    }
+
     /**
      * 生成sign签名
      *
@@ -92,6 +170,7 @@ public class PayUtil {
             temp.append(valueString);
         }
         String tempStr = temp.toString() + "&key=" + keyStr;
+        System.out.println(tempStr);
         return MD5.getMD5(tempStr, "UTF-8").toUpperCase();
     }
 }
