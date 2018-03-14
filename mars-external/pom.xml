@@ -137,27 +137,27 @@
     </profiles>
 
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                    <!-- added by xiluhua 20160627
-                        com.sun.org.apache.xml.internal.security.utils.Base64;编译异常
-                        将${java.home}/lib/rt.jar添加到maven的compiler里面
-            　　　　　　　如果 JAVA_HOME 里面没有，将 jre 里面的 copy 过来
-                    -->
-                    <compilerArguments>
-                        <verbose/>
-                        <bootclasspath>${java.home}/lib/rt.jar:${java.home}/lib/jce.jar</bootclasspath>
-                    </compilerArguments>
-                </configuration>
-            </plugin>
-        </plugins>
+        <!--<plugins>-->
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-compiler-plugin</artifactId>-->
+                <!--<version>2.3.2</version>-->
+                <!--<configuration>-->
+                    <!--<source>1.8</source>-->
+                    <!--<target>1.8</target>-->
+                    <!--<encoding>${project.build.sourceEncoding}</encoding>-->
+                    <!--&lt;!&ndash; added by xiluhua 20160627-->
+                        <!--com.sun.org.apache.xml.internal.security.utils.Base64;编译异常-->
+                        <!--将${java.home}/lib/rt.jar添加到maven的compiler里面-->
+            <!--　　　　　　　如果 JAVA_HOME 里面没有，将 jre 里面的 copy 过来-->
+                    <!--&ndash;&gt;-->
+                    <!--<compilerArguments>-->
+                        <!--<verbose/>-->
+                        <!--<bootclasspath>${java.home}/lib/rt.jar:${java.home}/lib/jce.jar</bootclasspath>-->
+                    <!--</compilerArguments>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
+        <!--</plugins>-->
         <resources>
             <resource>
                 <directory>${project.basedir}/src/main/resources</directory>
