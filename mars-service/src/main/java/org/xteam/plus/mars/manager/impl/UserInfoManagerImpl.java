@@ -32,9 +32,7 @@ public class UserInfoManagerImpl implements UserInfoManager {
 
     @Override
     public UserInfo get(UserInfo userInfo) throws Exception {
-        UserInfo returnValue = userInfoDao.get(userInfo);
-        returnValue.setRealName(URLDecoder.decode(returnValue.getRealName(), "utf-8"));
-        return returnValue;
+        return userInfoDao.get(userInfo);
     }
 
     @Override

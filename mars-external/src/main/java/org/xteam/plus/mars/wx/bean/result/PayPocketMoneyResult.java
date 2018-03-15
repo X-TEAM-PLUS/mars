@@ -48,6 +48,15 @@ public class PayPocketMoneyResult {
     @XStreamConverter(value = XStreamCDataConverter.class)
     private String mchAppid;
 
+    @XStreamAlias("err_code")
+    @XStreamConverter(value = XStreamCDataConverter.class)
+    private String errCode;
+
+    @XStreamAlias("err_code_des")
+    @XStreamConverter(value = XStreamCDataConverter.class)
+    private String errCodeDes;
+
+
     public String getReturnCode() {
         return returnCode;
     }
@@ -130,5 +139,21 @@ public class PayPocketMoneyResult {
 
     public static PayPocketMoneyResult fromXml(String xml) {
         return XStreamTransformer.fromXml(PayPocketMoneyResult.class, xml);
+    }
+
+    public String getErrCode() {
+        return errCode;
+    }
+
+    public void setErrCode(String errCode) {
+        this.errCode = errCode;
+    }
+
+    public String getErrCodeDes() {
+        return errCodeDes;
+    }
+
+    public void setErrCodeDes(String errCodeDes) {
+        this.errCodeDes = errCodeDes;
     }
 }

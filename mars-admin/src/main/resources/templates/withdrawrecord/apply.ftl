@@ -81,7 +81,7 @@
                             <th column="balanceAmount">剩余金额（元）</th>
                             <th column="bankAccountNo">打款账号</th>
                             <th column="status" type="enum"
-                                enum-v="{'-1':'<span class=\'bold badge badge-danger\'>审批未通过</span>',0:'<span class=\'bold badge badge-default\'>未审批</span>',1:'<span class=\'badge badge-success \'>审批通过</span>',2:'<span class=\' bold badge badge-info\'>已打款</span>',3:'<span class=\'bold badge badge-primary \'>已确认</span>'}">
+                                enum-v="{'-1':'<span class=\'bold badge badge-danger\'>审批未通过</span>',0:'<span class=\'bold badge badge-default\'>未审批</span>',1:'<span class=\'badge badge-success \'>审批通过</span>',2:'<span class=\' bold badge badge-info\'>已打款</span>',3:'<span class=\'bold badge badge-primary \'>已确认</span>',4:'<span class=\'bold badge badge-danger\'>打款失败</span>'}">
                                 状态
                             </th>
                             <th type="action" style="width: 200px">操作</th>
@@ -118,6 +118,17 @@
                     , equalField: 'status'
                     , equalValue: '0'
                 }, {
+                        name: '同意提现申请'
+                        , buttonColor: 'green'
+                        , iconClass: 'glyphicon glyphicon-ok'
+                        , action: '/services/mars/withdrawrecord/agreeApply'
+                        , confirm: true
+                        , ajax: true
+                        , parmaName: 'id'
+                        , column: 'id'
+                        , equalField: 'status'
+                        , equalValue: '4'
+                    },{
                     name: '不同意提现申请'
                     , buttonColor: 'red'
                     , iconClass: 'glyphicon glyphicon-remove'

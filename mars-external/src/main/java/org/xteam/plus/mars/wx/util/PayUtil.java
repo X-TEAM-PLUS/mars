@@ -171,6 +171,6 @@ public class PayUtil {
         }
         String tempStr = temp.toString() + "&key=" + keyStr;
         System.out.println(tempStr);
-        return MD5.getMD5(tempStr, "UTF-8").toUpperCase();
+        return MD5.getMD5(tempStr, "iso8859-1").toUpperCase();
     }
 }

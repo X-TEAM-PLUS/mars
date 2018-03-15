@@ -7,10 +7,13 @@ import org.xteam.plus.mars.wx.api.WxConfig;
 import org.xteam.plus.mars.wx.api.WxService;
 import org.xteam.plus.mars.wx.bean.InvokePay;
 import org.xteam.plus.mars.wx.bean.PayOrderInfo;
+import org.xteam.plus.mars.wx.bean.result.PayPocketMoneyResult;
 import org.xteam.plus.mars.wx.exception.WxErrorException;
 import org.xteam.plus.mars.wx.util.PayUtil;
 import org.xteam.plus.mars.wx.util.StringUtils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -66,7 +69,7 @@ public class PayServiceTest {
     }
 
     @Test
-    public void getPublicKey(){
+    public void getPublicKey() {
         try {
             System.out.println(JsonUtils.toJSON(wxService.getPublicKey()));
         } catch (WxErrorException e) {
@@ -78,9 +81,9 @@ public class PayServiceTest {
      * 微信代付到银行卡
      */
     @Test
-    public void payForAnotherBank(){
+    public void payForAnotherBank() {
         try {
-            wxService.payForAnotherBank("6214830163371957","宋鑫磊","1001","100","test");
+            wxService.payForAnotherBank("6214830163371957", "宋鑫磊", "1001", "100", "test");
         } catch (WxErrorException e) {
             e.printStackTrace();
         }
@@ -90,10 +93,21 @@ public class PayServiceTest {
      * 微信代付到零钱
      */
     @Test
-    public void payForAnotherPocket(){
+    public void payForAnotherPocket() {
         try {
-            wxService.payForAnotherPocketMoney("o31nujoJe-vOD8h9X5EbmIV64BJQ","NO_CHECK","12","100","test");
+            PayPocketMoneyResult payPocketMoneyResult = wxService.payForAnotherPocketMoney("o31nujoJe-vOD8h9X5EbmIV64BJQ", "FORCE_CHECK", "宋鑫磊1", "100", "发放补贴(早安工程)");
+            System.out.println(JsonUtils.toJSON(payPocketMoneyResult));
         } catch (WxErrorException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void getName() {
+        String userName = "%E4%B8%A5%E7%90%A8";
+        try {
+            System.out.println(URLDecoder.decode(userName, "utf-8"));
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
     }

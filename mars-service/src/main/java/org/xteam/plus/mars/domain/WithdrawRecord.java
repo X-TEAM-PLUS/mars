@@ -101,6 +101,11 @@ public class WithdrawRecord implements Serializable {
      * 状态名称
      */
     private String statusName;
+
+    /**
+     * 错误信息(第三方)
+     */
+    private String errorInfo;
     /**
      * 设置   bankAccountNo
      *
@@ -408,5 +413,14 @@ public class WithdrawRecord implements Serializable {
 
     public void setStatusName(String statusName) {
         this.statusName = statusName;
+    }
+
+    public String getErrorInfo() {
+        return errorInfo;
+    }
+
+    public WithdrawRecord setErrorInfo(String errorInfo) {
+        this.errorInfo = errorInfo;
+        return this;
     }
 }

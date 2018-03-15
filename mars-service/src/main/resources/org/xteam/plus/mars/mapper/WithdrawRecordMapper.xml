@@ -15,9 +15,10 @@
         <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
         <result column="BANK_ACCOUNT_NAME" property="bankAccountName" jdbcType="VARCHAR"/>
         <result column="PAY_TIME" property="payTime" jdbcType="TIMESTAMP"/>
-
         <result column="BALANCE_AMOUNT" property="balanceAmount" jdbcType="DECIMAL"/>
         <result column="MOBILE_NO" property="mobileNo" jdbcType="VARCHAR"/>
+
+        <result column="ERROR_INFO" property="errorInfo" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--公用选择列-->
@@ -36,6 +37,7 @@
         ,tmwr.PAY_TIME
         ,tmab.BALANCE_AMOUNT
         ,tmui.MOBILE_NO
+        ,tmwr.ERROR_INFO
     </sql>
 
     <!--公用查询条件-->
@@ -128,6 +130,7 @@
         ,CREATED
         ,BANK_ACCOUNT_NAME
         ,PAY_TIME
+        ,ERROR_INFO
         )values(
         #{bankAccountNo,jdbcType=VARCHAR}
         ,#{updated,jdbcType=TIMESTAMP}
@@ -140,6 +143,7 @@
         ,#{created,jdbcType=TIMESTAMP}
         ,#{bankAccountName,jdbcType=VARCHAR}
         ,#{payTime,jdbcType=TIMESTAMP}
+        ,#{errorInfo,jdbcType=VARCHAR}
         )
     </insert>
 
@@ -157,6 +161,7 @@
         ,CREATED
         ,BANK_ACCOUNT_NAME
         ,PAY_TIME
+        ,ERROR_INFO
         )values
         <foreach collection="list" item="item" index="index" separator=",">
             (
@@ -171,6 +176,7 @@
             ,#{item.created,jdbcType=TIMESTAMP}
             ,#{item.bankAccountName,jdbcType=VARCHAR}
             ,#{item.payTime,jdbcType=TIMESTAMP}
+            ,#{item.errorInfo,jdbcType=VARCHAR}
             )
         </foreach>
     </insert>
@@ -212,6 +218,9 @@
                 </if>
                 <if test="payTime!=null ">
                     PAY_TIME=#{payTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="errorInfo!=null ">
+                    ERROR_INFO=#{errorInfo,jdbcType=VARCHAR},
                 </if>
             </trim>
         </set>

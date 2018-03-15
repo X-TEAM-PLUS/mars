@@ -4,10 +4,21 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.xteam.plus.mars.common.JsonUtils;
+import org.xteam.plus.mars.common.Logging;
+import org.xteam.plus.mars.dao.UserInfoDao;
 import org.xteam.plus.mars.dao.WithdrawRecordDao;
+import org.xteam.plus.mars.domain.UserInfo;
 import org.xteam.plus.mars.domain.WithdrawRecord;
 import org.xteam.plus.mars.manager.WithdrawRecordManager;
+import org.xteam.plus.mars.type.WithDrawStatusName;
+import org.xteam.plus.mars.wx.api.IService;
+import org.xteam.plus.mars.wx.api.WxService;
+import org.xteam.plus.mars.wx.bean.result.PayPocketMoneyResult;
+import org.xteam.plus.mars.wx.exception.WxErrorException;
+import org.xteam.plus.mars.wx.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
@@ -20,8 +31,14 @@ import java.util.List;
  */
 
 @Service
-public class WithdrawRecordManagerImpl implements WithdrawRecordManager {
+public class WithdrawRecordManagerImpl extends Logging implements WithdrawRecordManager {
     private static final Log log = LogFactory.getLog(WithdrawRecordManagerImpl.class);
+
+    IService wxService = new WxService();
+
+    @Resource
+    public UserInfoDao userInfoDao;
+
     @javax.annotation.Resource
     private WithdrawRecordDao withdrawRecordDao;
 
@@ -68,9 +85,37 @@ public class WithdrawRecordManagerImpl implements WithdrawRecordManager {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int agreeApply(WithdrawRecord withdrawrecord) throws Exception {
-        //TODO 调用转帐接口转帐
+        withdrawrecord = withdrawRecordDao.get(withdrawrecord);
+        if (withdrawrecord == null) {
+            throw new Exception("系统异常,找不到该笔申请!");
+        }
         withdrawrecord.setUpdated(new Date());
-        return withdrawRecordDao.agreeApply(withdrawrecord);
+        UserInfo userInfo = userInfoDao.get(new UserInfo().setUserId(withdrawrecord.getUserId()));
+        if (userInfo == null || StringUtils.isEmpty(userInfo.getWxOpenid())) {
+            withdrawrecord.setStatus(WithDrawStatusName.PayError.getCode());
+            logInfo("后台进行微信支付零钱打款失败 不存在的用户ID [" + JsonUtils.toJSON(userInfo) + "]");
+            throw new Exception("不存在的用户进行申请!");
+        } else {
+            try {
+                PayPocketMoneyResult payPocketMoneyResult = wxService.payForAnotherPocketMoney(userInfo.getWxOpenid(), "FORCE_CHECK", withdrawrecord.getBankAccountName(), String.valueOf(withdrawrecord.getAmount().intValue()), "早安工程发放补贴");
+                logInfo("代付返回结果:" + JsonUtils.toJSON(payPocketMoneyResult));
+                if (payPocketMoneyResult.getResultCode().equals("SUCCESS")) {
+                    withdrawrecord.setTransactionNo(payPocketMoneyResult.getPaymentNo());
+                    withdrawrecord.setPayTime(new Date());
+                    withdrawrecord.setUpdated(new Date());
+                    withdrawrecord.setStatus(WithDrawStatusName.Pay.getCode());
+                    return withdrawRecordDao.update(withdrawrecord);
+                }else {
+                    withdrawrecord.setErrorInfo(payPocketMoneyResult.getErrCodeDes());
+                    withdrawrecord.setStatus(WithDrawStatusName.PayError.getCode());
+                    return withdrawRecordDao.update(withdrawrecord);
+                }
+            } catch (WxErrorException wxError) {
+                withdrawrecord.setStatus(WithDrawStatusName.PayError.getCode());
+                logInfo("代付调用微信企业到零钱接口失败 失败原因 [" + wxError.getMessage() + "]", wxError);
+                return withdrawRecordDao.update(withdrawrecord);
+            }
+        }
     }
 
     @Override

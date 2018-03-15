@@ -722,15 +722,15 @@ public class WxService implements IService {
     }
 
     @Override
-    public PayPocketMoneyResult payForAnotherPocketMoney(String openId, String check_name, String re_user_name, String amount, String desc) throws WxErrorException{
+    public PayPocketMoneyResult payForAnotherPocketMoney(String openId, String check_name, String re_user_name, String amount, String desc) throws WxErrorException {
         WxPayPocketMoney request = new WxPayPocketMoney();
         StringBuffer postResult = new StringBuffer();
-        try{
+        try {
             request.setOpenid(openId);
-            request.setCheckName(check_name);
-            request.setReUserName(re_user_name);
+            request.setCheckName(new String(check_name.getBytes(), "iso8859-1"));
+            request.setReUserName(new String(re_user_name.getBytes(), "iso8859-1"));
             request.setAmount(amount);
-            request.setDesc(desc);
+            request.setDesc(new String(desc.getBytes(), "iso8859-1"));
             request = PayUtil.createPayPocketMoney(request);
             System.out.println(request.toXml());
             // 发送请求
@@ -766,7 +766,7 @@ public class WxService implements IService {
 
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new WxErrorException("[wx-tools] keystore 错误" + e.getMessage());
         }
         System.out.println(postResult);

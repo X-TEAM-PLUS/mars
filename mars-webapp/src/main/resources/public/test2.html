@@ -82,10 +82,10 @@
         var userId = $("#userId").val();
         var productId = $("#productId").val();
         alert("userId :" + userId + " productId:" + productId);
-        var bizContent = "{\"orderTypeEnum\":\"PLATFORM_STRAIGHT\",\"userId\":"+userId+",\"productId\":"+productId+",\"number\":1,\"address\":\"北京市丰台区\",\"contactsMobile\":\"139912313\"}";
+        var bizContent = "{\"orderTypeEnum\":\"PLATFORM_STRAIGHT\",\"userId\":" + userId + ",\"productId\":" + productId + ",\"number\":1,\"address\":\"北京市丰台区\",\"contactsMobile\":\"139912313\"}";
         var obj = eval("(" + bizContent + ")");
         $.ajax({
-            url: encodeURI(url + "/api/gateway?channelCode=11&method=com.zhaoanyun.api.gateway.wx.pay.unifiedOrder&bizContent=" + bizContent),
+            url: encodeURI(url + "/api/gateway?channelCode=11&method=com.zhaoanyun.api.gateway.wx.pay.unifiedOrder&bizContent=" + bizContent + "&userId=" + userId),
             type: "GET",
             datatype: "JSON",
             success: function (data) {
@@ -122,11 +122,11 @@
     $("#chooseWXPay2").on("click", function () {
         var userId = $("#userId2").val();
         var cardNo = $("#cardNo").val();
-        var bizContent = "{\"orderTypeEnum\":\"VIP_DISTRIBUTION\",\"userId\":"+userId+",\"cardNo\":"+cardNo+",\"address\":\"北京市丰台区\",\"contactsMobile\":\"139912313\"}";
+        var bizContent = "{\"orderTypeEnum\":\"VIP_DISTRIBUTION\",\"userId\":" + userId + ",\"cardNo\":" + cardNo + ",\"address\":\"北京市丰台区\",\"contactsMobile\":\"139912313\"}";
         // var bizContent = "{\"orderTypeEnum\":\"PLATFORM_STRAIGHT\",\"userId\":2000003,\"productId\":10001,\"number\":1,\"address\":\"北京市丰台区\",\"contactsMobile\":\"139912313\"}";
         var obj = eval("(" + bizContent + ")");
         $.ajax({
-            url: encodeURI(url + "/api/gateway?channelCode=11&method=com.zhaoanyun.api.gateway.wx.pay.unifiedOrder&bizContent=" + bizContent),
+            url: encodeURI(url + "/api/gateway?channelCode=11&method=com.zhaoanyun.api.gateway.wx.pay.unifiedOrder&bizContent=" + bizContent + "&userId=" + userId),
             type: "GET",
             datatype: "JSON",
             success: function (data) {
