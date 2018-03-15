@@ -6,11 +6,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.xteam.plus.mars.common.JsonUtils;
 import org.xteam.plus.mars.common.Logging;
+import org.xteam.plus.mars.dao.AccountDetailDao;
 import org.xteam.plus.mars.dao.UserInfoDao;
 import org.xteam.plus.mars.dao.WithdrawRecordDao;
+import org.xteam.plus.mars.domain.AccountDetail;
 import org.xteam.plus.mars.domain.UserInfo;
 import org.xteam.plus.mars.domain.WithdrawRecord;
 import org.xteam.plus.mars.manager.WithdrawRecordManager;
+import org.xteam.plus.mars.type.AccountDetailTypeEnum;
 import org.xteam.plus.mars.type.WithDrawStatusName;
 import org.xteam.plus.mars.wx.api.IService;
 import org.xteam.plus.mars.wx.api.WxService;
@@ -35,6 +38,9 @@ public class WithdrawRecordManagerImpl extends Logging implements WithdrawRecord
     private static final Log log = LogFactory.getLog(WithdrawRecordManagerImpl.class);
 
     IService wxService = new WxService();
+
+    @Resource
+    private AccountDetailDao accountDetailDao;
 
     @Resource
     public UserInfoDao userInfoDao;
@@ -104,6 +110,16 @@ public class WithdrawRecordManagerImpl extends Logging implements WithdrawRecord
                     withdrawrecord.setPayTime(new Date());
                     withdrawrecord.setUpdated(new Date());
                     withdrawrecord.setStatus(WithDrawStatusName.Pay.getCode());
+                    // 插入账户明细表
+                    AccountDetail accountDetail = new AccountDetail();
+                    accountDetail.setAmount(withdrawrecord.getAmount());
+                    accountDetail.setServiceNo(withdrawrecord.getId());
+                    accountDetail.setCreated(new Date());
+                    accountDetail.setUserId(withdrawrecord.getUserId());
+                    accountDetail.setBusinesseType(AccountDetailTypeEnum.WITHDRAWALS.getCode());
+                    accountDetail.setOperationDirection(1);
+                    accountDetailDao.insert(accountDetail);
+
                     return withdrawRecordDao.update(withdrawrecord);
                 }else {
                     withdrawrecord.setErrorInfo(payPocketMoneyResult.getErrCodeDes());

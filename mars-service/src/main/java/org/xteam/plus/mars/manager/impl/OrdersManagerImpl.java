@@ -217,7 +217,7 @@ public class OrdersManagerImpl implements OrdersManager {
                 userHealthCardDao.insert(userHealthCard);
                 // 插入账户明细表
                 AccountDetail accountDetail = new AccountDetail();
-                accountDetail.setAmount(orders.getOrderPrice());
+                accountDetail.setAmount(product.getAmount());
                 accountDetail.setServiceNo(orders.getOrderNo());
                 accountDetail.setCreated(new Date());
                 accountDetail.setUserId(orders.getBuyerUserId());

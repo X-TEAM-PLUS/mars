@@ -84,6 +84,7 @@
                             <th column="payTime">打款时间</th>
                             <th column="amount">提取金额（元）</th>
                             <th column="bankAccountNo">打款账号</th>
+                            <th column="errorInfo">错误内容</th>
                             <th column="status" type="enum" enum-v="{'-1':'<span class=\'bold badge badge-danger\'>审批未通过</span>',0:'<span class=\'bold badge badge-default\'>未审批</span>',1:'<span class=\'badge badge-success \'>审批通过</span>',2:'<span class=\' bold badge badge-info\'>已打款</span>',3:'<span class=\'bold badge badge-primary \'>已确认</span>',4:'<span class=\'bold badge badge-danger\'>打款失败</span>'}">状态</th>
                         </tr>
                         </thead>
