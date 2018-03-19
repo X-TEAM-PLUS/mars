@@ -217,10 +217,11 @@ public class WeixinNotifyWebServiceProvider extends Logging {
                 response.sendRedirect("www.baidu.com");
                 return new ModelAndView("redirect:" + "www.baidu.com");
             }
+            logInfo("微信授权返回code [" + code + "]");
             result = iService.oauth2ToGetAccessToken(code);
             WxUserList.WxUser user = iService.oauth2ToGetUserInfo(result.getAccess_token(), new WxUserList.WxUser.WxUserGet(result.getOpenid(), WxConsts.LANG_CHINA));
             HashMap map = JsonUtils.fromJSON(json, HashMap.class);
-            logInfo("支付授权回调请求参数 [" + map + "]");
+            logInfo("支付授权回调请求参数 [" + map + "] 微信返回内容[" + JsonUtils.toJSON(user) + "]");
             UserInfo userInfo = null;
             user.setNickname(URLEncoder.encode(user.getNickname(), "utf-8"));
             if (map.get("userId") != null) {

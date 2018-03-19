@@ -1,7 +1,7 @@
 //定义日志开关
 var LOG_SWITCH  = true;
 //定义接口地址
-var INTERFACE_URL = "http://"+document.domain + ":8080/webservice/api/gateway";
+var INTERFACE_URL = "http://"+document.domain + "/webservice/api/gateway";
 var userInfo ;
 var InterFace = {
     //用户信息

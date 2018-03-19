@@ -1,5 +1,7 @@
 package org.xteam.plus.mars.domain;
 
+import org.xteam.plus.mars.wx.util.StringUtils;
+
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -269,12 +271,7 @@ public class UserInfo implements Serializable {
      * @return
      */
     public String getRealName() {
-        try {
-            return URLDecoder.decode(realName, "utf-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return realName;
     }
 
     /**

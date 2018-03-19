@@ -39,7 +39,7 @@ public class PayUtil {
         }
         payinfo.put("time_start", order.getTimeStart());
         payinfo.put("time_expire", order.getTimeExpire());
-        payinfo.put("sign", createSign(payinfo, WxConfig.getInstance().getApiKey()));
+        payinfo.put("sign", createSignPay(payinfo, WxConfig.getInstance().getApiKey()));
 
         //赋值对象
         WxUnifiedOrder pay = new WxUnifiedOrder();
@@ -172,5 +172,37 @@ public class PayUtil {
         String tempStr = temp.toString() + "&key=" + keyStr;
         System.out.println(tempStr);
         return MD5.getMD5(tempStr, "iso8859-1").toUpperCase();
+    }
+
+    /**
+     * 生成sign签名
+     *
+     * @param payinfo
+     * @param key
+     * @return
+     */
+    public static String createSignPay(Map<String, String> payinfo, String keyStr) {
+        Set<String> keysSet = payinfo.keySet();
+        Object[] keys = keysSet.toArray();
+        Arrays.sort(keys);
+        StringBuffer temp = new StringBuffer();
+        boolean first = true;
+        for (Object key : keys) {
+            if (first) {
+                first = false;
+            } else {
+                temp.append("&");
+            }
+            temp.append(key).append("=");
+            Object value = payinfo.get(key);
+            String valueString = "";
+            if (null != value) {
+                valueString = value.toString();
+            }
+            temp.append(valueString);
+        }
+        String tempStr = temp.toString() + "&key=" + keyStr;
+        System.out.println(tempStr);
+        return MD5.getMD5(tempStr, "UTF-8").toUpperCase();
     }
 }

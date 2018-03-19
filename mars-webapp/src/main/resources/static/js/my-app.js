@@ -98,9 +98,9 @@ function setUserInfo(json) {
  */
 function meClick() {
     if (isLogin()) {
-        memberView.router.navigate('/me/', {
-            history: true
-        });
+        // memberView.router.navigate('/me/', {
+        //     history: true
+        // });
     } else {
         //去登录
         gotoLogin();
@@ -121,11 +121,13 @@ function gotoLogin() {
  * @returns {boolean}
  */
 function isLogin() {
-    if(typeof(userInfo)==="undefined" || typeof(userInfo.userId)==="undefined"){
-        return false ;
-    } else {
-        return true ;
-    }
+    return true;
+    /** 暂时屏蔽，不进行登录 */
+    // if(typeof(userInfo)==="undefined" || typeof(userInfo.userId)==="undefined"){
+    //     return false ;
+    // } else {
+    //     return true ;
+    // }
 }
 
 
@@ -425,7 +427,7 @@ function submitBuyCard(form, lableName) {
             }, function (res) {
                 if (res.err_msg == "get_brand_wcpay_request:ok") {
                     closeDynamicPopup();
-                    alert("支付完成");
+                    location.href=goIndex();
                 } // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
                 else {
                     $api.rmStorage('orderData');
@@ -599,7 +601,7 @@ function submitSellCard(form) {
             }, function (res) {
                 if (res.err_msg == "get_brand_wcpay_request:ok") {
                     closeDynamicPopup();
-                    alert("支付完成");
+                    location.href=goIndex();
                 } // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
                 else {
                     $api.rmStorage('orderData');

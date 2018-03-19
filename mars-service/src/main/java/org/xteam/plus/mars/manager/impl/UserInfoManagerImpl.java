@@ -10,6 +10,7 @@ import org.xteam.plus.mars.manager.UserInfoManager;
 import org.xteam.plus.mars.type.UserLevelEnum;
 import org.xteam.plus.mars.wx.bean.WxUserList;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.util.Date;
@@ -32,12 +33,12 @@ public class UserInfoManagerImpl implements UserInfoManager {
 
     @Override
     public UserInfo get(UserInfo userInfo) throws Exception {
-        return userInfoDao.get(userInfo);
+        return convertRealName(userInfoDao.get(userInfo));
     }
 
     @Override
     public UserInfo getWorker(UserInfo userInfo) throws Exception {
-        return userInfoDao.getWorker(userInfo);
+        return convertRealName(userInfoDao.getWorker(userInfo));
     }
 
     @Override
@@ -66,7 +67,7 @@ public class UserInfoManagerImpl implements UserInfoManager {
 
     @Override
     public List<UserInfo> query(UserInfo userInfo) throws Exception {
-        return userInfoDao.query(userInfo);
+        return convertRealName(userInfoDao.query(userInfo));
     }
 
     @Override
@@ -76,7 +77,7 @@ public class UserInfoManagerImpl implements UserInfoManager {
 
     @Override
     public List<UserInfo> queryWorker(UserInfo userInfo, Integer applyType) throws Exception {
-        return userInfoDao.queryWorker(userInfo, applyType);
+        return convertRealName(userInfoDao.queryWorker(userInfo, applyType));
     }
 
     @Override
@@ -119,6 +120,28 @@ public class UserInfoManagerImpl implements UserInfoManager {
             }
         }
         return userInfo;
+    }
+
+    private List<UserInfo> convertRealName(List<UserInfo> userInfos) {
+        for (UserInfo userInfo : userInfos) {
+            try {
+                userInfo.setRealName(URLDecoder.decode(userInfo.getRealName(), "utf-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        return userInfos;
+    }
+
+    private UserInfo convertRealName(UserInfo userInfos) {
+
+        try {
+            userInfos.setRealName(URLDecoder.decode(userInfos.getRealName(), "utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        return userInfos;
     }
 
     private boolean updateWxUser(WxUserList.WxUser wxUser, UserInfo userInfo) throws Exception {
