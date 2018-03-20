@@ -63,6 +63,14 @@ public class ApplyInfo implements Serializable {
      */
     private Integer applyType;
 
+    private String realName;
+
+    private String mobile;
+
+    private String idNumber;
+
+    private String interests;
+
 
     /**
      * 设置   created
@@ -254,5 +262,37 @@ public class ApplyInfo implements Serializable {
     public ApplyInfo setLimit(Integer limit) {
         this.limit = limit;
         return this;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getIdNumber() {
+        return idNumber;
+    }
+
+    public void setIdNumber(String idNumber) {
+        this.idNumber = idNumber;
+    }
+
+    public String getInterests() {
+        return interests;
+    }
+
+    public void setInterests(String interests) {
+        this.interests = interests;
     }
 }

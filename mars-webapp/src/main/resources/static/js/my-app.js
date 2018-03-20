@@ -259,6 +259,33 @@ function zhuanzhangClick() {
 }
 
 /**
+ * 申请升级
+ * @param form
+ */
+function appLevel(form) {
+    var bizContent = app.form.convertToData('#' + form);
+    var params = {
+        method: InterFace.APPLY_LEVEL,
+        userId: userInfo.userId,
+        bizContent: JSON.stringify(bizContent)
+    };
+    app.request.post(INTERFACE_URL, params, function (data) {
+        logInfo(data);
+        var response = JSON.parse(data);
+        if (ResponseCode.SUCCESS == response.code) {
+            app.dialog.alert('申请成功，请等待审核', '信息提示', function () {
+                memberView.router.navigate('/?userId='+userInfo.userId, {
+                    history: true
+                });
+            });
+
+        } else {
+            app.dialog.alert(getErrorMessage(response.code), '信息提示');
+        }
+    });
+}
+
+/**
  * 保险详单
  */
 function baoxianxiangdanClick(insuranceOrderId) {

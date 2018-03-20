@@ -29,6 +29,11 @@ var routes = [
         url: './pages/buyCard.html',
         name: 'buyCard',
     },
+    {
+        path: '/appLevel',
+        url: './pages/appLevel.html',
+        name: 'appLevel'
+    },
     //健康检查
     {
         path: '/heart_check/',

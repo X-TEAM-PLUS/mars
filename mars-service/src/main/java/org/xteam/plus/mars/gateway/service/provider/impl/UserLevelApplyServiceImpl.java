@@ -47,6 +47,10 @@ public class UserLevelApplyServiceImpl extends Logging implements GateWayService
             applyInfo.setStatus(0);
             applyInfo.setCreated(new Date());
             applyInfo.setUserId(new BigDecimal(httpRequestBody.getUserId()));
+            applyInfo.setMobile(userApplyInfoReqVO.getMobile());
+            applyInfo.setIdNumber(userApplyInfoReqVO.getIdNumber());
+            applyInfo.setInterests(userApplyInfoReqVO.getInterests());
+            applyInfo.setRealName(userApplyInfoReqVO.getRealName());
             int count = applyInfoManager.insert(applyInfo);
             if (count > 0) {
                 return new HttpResponseBody(GlobalErrorMessage.SUCCESS);

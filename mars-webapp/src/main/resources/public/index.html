@@ -117,6 +117,7 @@
         </div>
     </div>
 </div>
+<!-- ********************************** 游客 ****************************** -->
 <script type="text/template" id="show-member-view">
     <div class="list media-list">
         <ul>
@@ -135,43 +136,44 @@
         </ul>
         <ul>
             <li>
-                <a href="/buyCard/" class="item-link item-content">
-                    <div class="item-media"><i class="fa fa-star color-yellow  "></i>游客</div>
+                <a href="#" class="item-link item-content" onclick="loveBuTieClick()">
+                    <div class="item-inner">
+                        <div class="item-title-row" onclick="loveBuTieClick()">
+                            <i class="fa fa-star color-red"></i>
+                            <span class="item-after">会员中心</span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <a href="/message/" class="item-link item-content">
                     <div class="item-inner">
                         <div class="item-title-row">
-                            <div class="item-after">申请成为会员</div>
+                            <i class="icon f7-icons">bell<span class="badge color-red"><span class="color-white"> {{newMessageCount}}</span></span></i>
+                            <span class="item-after">消息通知</span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <a href="/question/" class="item-link item-content">
+                    <div class="item-media"><i class="icon fa fa-question-circle fa-2x"></i></div>
+                    <div class="item-inner">
+                        <div class="item-title-row">
+                            <div class="item-after">常见问题</div>
                         </div>
                     </div>
                 </a>
             </li>
         </ul>
     </div>
-    <div class="block-title" style="text-align: center;top: -20px">公益会员权益</div>
-    <div class="block">
-        <div class="tabbar-labels">
-            <div class="row">
-                <div class="col-33">
-                    <a href="/message/" class="tab-link"> <i class="icon f7-icons">bell<span
-                            class="badge color-red"><span class="color-white"> {{newMessageCount}}</span></span></i>
-                        <span class="tabbar-label">消息通知</span>
-                    </a>
-                </div>
-                <div class="col-33">
-                    <a href="/question/" class="tab-link ">
-                        <i class="icon fa fa-question-circle fa-2x "></i>
-                        <span class="tabbar-label ">常见问题</span>
-                    </a>
-                </div>
-                <div class="col-33">
-                    <a href="#" class="tab-link " onclick="loveBuTieClick()">
-                        <i class="icon fa fa-heart-o fa-2x "></i>
-                        <span class="tabbar-label ">爱补贴</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
 </script>
+<!-- ********************************** 游客 ****************************** -->
+<!-- ********************************** 会员 ****************************** -->
 <script type="text/template" id="show-gongyi-view">
     <div class="list media-list">
         <ul>
@@ -190,7 +192,7 @@
         </ul>
         <ul>
             <li>
-                <a href="/buyCard/" class="item-link item-content">
+                <a href="/appLevel/" class="item-link item-content">
                     <div class="item-media"><i class="fa fa-star color-yellow  "></i>公益会员</div>
                     <div class="item-inner">
                         <div class="item-title-row">
@@ -204,27 +206,6 @@
     <div class="block-title" style="text-align: center;top: -20px">公益会员权益</div>
     <div class="block">
         <div class="tabbar-labels">
-            <div class="row">
-                <div class="col-33">
-                    <a href="/message/" class="tab-link">
-                        <i class="icon f7-icons">bell<span class="badge color-red"><span class="color-white"> {{newMessageCount}}</span></span></i>
-                        <span class="tabbar-label">消息通知</span>
-                    </a>
-                </div>
-                <div class="col-33">
-                    <a href="/question/" class="tab-link ">
-                        <i class="icon fa fa-question-circle fa-2x "></i>
-                        <span class="tabbar-label ">常见问题</span>
-                    </a>
-                </div>
-                <div class="col-33">
-                    <a href="#" class="tab-link " onclick="loveBuTieClick()">
-                        <i class="icon fa fa-heart-o fa-2x "></i>
-                        <span class="tabbar-label ">爱补贴</span>
-                    </a>
-                </div>
-            </div>
-            <br>
             <div class="row">
                 <div class="col-33">
                     <a href="#" class="tab-link  " onclick="jianKangKaClick()">
@@ -241,9 +222,11 @@
                 <div class="col-33">
                 </div>
             </div>
+            <br>
         </div>
     </div>
 </script>
+<!-- ********************************** 会员 ****************************** -->
 <script type="text/template" id="show-shegong-view">
     <div class="list media-list">
         <ul>
@@ -305,10 +288,10 @@
                     </a>
                 </div>
                 <!--<div class="col-33">-->
-                    <!--<a href="/" class="tab-link ">-->
-                        <!--<i class="icon fa fa-users fa-2x "></i>-->
-                        <!--<span class="tabbar-label ">我和TM</span>-->
-                    <!--</a>-->
+                <!--<a href="/" class="tab-link ">-->
+                <!--<i class="icon fa fa-users fa-2x "></i>-->
+                <!--<span class="tabbar-label ">我和TM</span>-->
+                <!--</a>-->
                 <!--</div>-->
                 <div class="col-33">
                     <a href="#" class="tab-link " onclick="xiaoKaBaoClick()">
@@ -398,10 +381,10 @@
                     </a>
                 </div>
                 <!--<div class="col-33">-->
-                    <!--<a href="/" class="tab-link ">-->
-                        <!--<i class="icon fa fa-users fa-2x "></i>-->
-                        <!--<span class="tabbar-label ">我和TM</span>-->
-                    <!--</a>-->
+                <!--<a href="/" class="tab-link ">-->
+                <!--<i class="icon fa fa-users fa-2x "></i>-->
+                <!--<span class="tabbar-label ">我和TM</span>-->
+                <!--</a>-->
                 <!--</div>-->
                 <div class="col-33">
                     <a href="#" class="tab-link " onclick="xiaoKaBaoClick()">
@@ -492,16 +475,16 @@
                     </a>
                 </div>
                 <!--<div class="col-33">-->
-                    <!--<a href="/" class="tab-link  ">-->
-                        <!--<i class="icon fa fa-paper-plane-o fa-2x "></i>-->
-                        <!--<span class="tabbar-label ">推广码</span>-->
-                    <!--</a>-->
+                <!--<a href="/" class="tab-link  ">-->
+                <!--<i class="icon fa fa-paper-plane-o fa-2x "></i>-->
+                <!--<span class="tabbar-label ">推广码</span>-->
+                <!--</a>-->
                 <!--</div>-->
                 <!--<div class="col-33">-->
-                    <!--<a href="/" class="tab-link ">-->
-                        <!--<i class="icon fa fa-users fa-2x "></i>-->
-                        <!--<span class="tabbar-label ">我和TM</span>-->
-                    <!--</a>-->
+                <!--<a href="/" class="tab-link ">-->
+                <!--<i class="icon fa fa-users fa-2x "></i>-->
+                <!--<span class="tabbar-label ">我和TM</span>-->
+                <!--</a>-->
                 <!--</div>-->
                 <div class="col-33">
                     <a href="#" class="tab-link " onclick="xiaoKaBaoClick()">
