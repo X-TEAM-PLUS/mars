@@ -1,14 +1,21 @@
 package org.xteam.plus.mars.manager.impl;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.xteam.plus.mars.dao.UserInfoDao;
 import org.xteam.plus.mars.dao.UserRelationDao;
+import org.xteam.plus.mars.domain.UserInfo;
 import org.xteam.plus.mars.domain.UserRelation;
 import org.xteam.plus.mars.manager.UserRelationManager;
+import org.xteam.plus.mars.type.UserLevelEnum;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -25,6 +32,8 @@ public class UserRelationManagerImpl implements UserRelationManager {
     @javax.annotation.Resource
     private UserRelationDao userRelationDao;
 
+    @Resource
+    private UserInfoDao userInfoDao;
 
     @Override
     public UserRelation get(UserRelation userRelation) throws Exception {
@@ -93,6 +102,27 @@ public class UserRelationManagerImpl implements UserRelationManager {
     @Override
     public List<UserRelation> queryThisAndNextLevelUserCount(BigDecimal userId) throws Exception {
         return userRelationDao.queryThisAndNextLevelUserCount(userId);
+    }
+
+    @Override
+    public HashMap<String, Object> queryMyTeamCountAndNextLevelCount(BigDecimal userId) throws Exception {
+        HashMap returnValue = Maps.newHashMap();
+        returnValue.put("refereeUserCount", userRelationDao.queryRefereeUserIdCount(userId));
+        returnValue.put("userLevel", UserLevelEnum.valueOf(userInfoDao.get(new UserInfo().setUserId(userId)).getUserLevel()).getInfo());
+
+        List<UserRelation> nextRefereeUser = userRelationDao.queryNextRefereeUserCount(userId);
+        returnValue.put("userSize",nextRefereeUser.size());
+        if (nextRefereeUser != null && !nextRefereeUser.isEmpty()) {
+            List myTeamList = Lists.newArrayList();
+            for (UserRelation userRelation : nextRefereeUser) {
+                HashMap map = Maps.newHashMap();
+                map.put("userCount", userRelation.getUserCount());
+                map.put("userId", userRelation.getRefereeUserId());
+                myTeamList.add(map);
+            }
+            returnValue.put("userTeamList", myTeamList);
+        }
+        return returnValue;
     }
 
 }

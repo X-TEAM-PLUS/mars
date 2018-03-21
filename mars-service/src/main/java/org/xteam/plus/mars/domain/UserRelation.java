@@ -1,5 +1,7 @@
 package org.xteam.plus.mars.domain;
 
+import org.apache.commons.collections4.IterableGet;
+
 import java.io.Serializable;
 
 
@@ -52,6 +54,11 @@ public class UserRelation implements Serializable {
      * 用户信息
      */
     private UserInfo userInfo;
+
+    /**
+     * 团队人数
+     */
+    private Integer userCount;
 
     /**
      * 查询相关成员职务信息
@@ -206,5 +213,13 @@ public class UserRelation implements Serializable {
 
     public void setLocalCouncilMember(LocalCouncilMember localCouncilMember) {
         this.localCouncilMember = localCouncilMember;
+    }
+
+    public Integer getUserCount() {
+        return userCount;
+    }
+
+    public void setUserCount(Integer userCount) {
+        this.userCount = userCount;
     }
 }

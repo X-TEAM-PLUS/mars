@@ -52,6 +52,8 @@ var InterFace = {
     ,WX_GLOBLE_CONFIG:'com.zhaoanyun.api.gateway.wx.globle.config'
     //申请升级
     ,APPLY_LEVEL:'com.zhaoanyun.gateway.user.userLevelApply'
+    //理事申请升级展示用户发展会员情况页面
+    ,TEAM_COUNT: 'cn.zaoangongcheng.api.gateway.user.team.count'
 }
 
 /**

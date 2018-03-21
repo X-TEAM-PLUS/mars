@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Param;
 import org.xteam.plus.mars.domain.UserRelation;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -135,4 +136,20 @@ public interface UserRelationDao {
      * @throws Exception
      */
     public List<UserRelation> queryThisAndNextLevelUserCount(@Param("userId") BigDecimal userId) throws Exception;
+
+    /**
+     * 查询用户推荐的总人数
+     * @param userId
+     * @return
+     * @throws Exception
+     */
+    public int queryRefereeUserIdCount(@Param("userId") BigDecimal userId) throws Exception;
+
+    /**
+     * 查询当前用户下级的所有推荐人数
+     * @param userId
+     * @return  HashMap<Count,UserId></Count,UserId>
+     * @throws Exception
+     */
+    public List<UserRelation> queryNextRefereeUserCount(@Param("userId") BigDecimal userId) throws Exception;
 }

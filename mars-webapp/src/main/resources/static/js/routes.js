@@ -136,6 +136,11 @@ var routes = [
         url: './pages/sell_card.html',
         name: 'sellCard',
     },
+    {
+        path: '/lishiLevelView',
+        url: './pages/lishiLevelView.html',
+        name: 'lishiLevelView',
+    },
 
   // Default route (404 page). MUST BE THE LAST
   {

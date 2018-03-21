@@ -59,6 +59,21 @@ function loadUserView(userId) {
 }
 
 /**
+ * 展示理事升级的team信息
+ */
+function showLishiTeamView() {
+    if (isLogin()) {
+        memberView.router.navigate('/lishiLevelView/', {
+            history: true
+        });
+    } else {
+        //去登录
+        gotoLogin();
+    }
+}
+
+
+/**
  * 获取 bizContent
  * @param url  请求地址
  * @param domId
@@ -274,7 +289,7 @@ function appLevel(form) {
         var response = JSON.parse(data);
         if (ResponseCode.SUCCESS == response.code) {
             app.dialog.alert('申请成功，请等待审核', '信息提示', function () {
-                memberView.router.navigate('/?userId='+userInfo.userId, {
+                memberView.router.navigate('/?userId=' + userInfo.userId, {
                     history: true
                 });
             });
@@ -454,7 +469,9 @@ function submitBuyCard(form, lableName) {
             }, function (res) {
                 if (res.err_msg == "get_brand_wcpay_request:ok") {
                     closeDynamicPopup();
-                    location.href=goIndex();
+                    memberView.router.navigate('/?userId=' + userInfo.userId, {
+                        history: true
+                    });
                 } // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
                 else {
                     $api.rmStorage('orderData');
@@ -628,7 +645,9 @@ function submitSellCard(form) {
             }, function (res) {
                 if (res.err_msg == "get_brand_wcpay_request:ok") {
                     closeDynamicPopup();
-                    location.href=goIndex();
+                    memberView.router.navigate('/?userId=' + userInfo.userId, {
+                        history: true
+                    });
                 } // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
                 else {
                     $api.rmStorage('orderData');
@@ -727,8 +746,8 @@ function shardWeixin(cardNo) {
             wx.ready(function () {
                 wx.onMenuShareAppMessage({
                     title: '健康卡购买', // 分享标题
-                    desc: '用户'+sellUserInfo.nickName+"给您分享了他的健康卡", // 分享描述
-                    link: 'http://t.kuai-kaifa.com/weixin/goOauth?backUrl=shard_sell.html&cardNo='+cardNo, // 分享链接
+                    desc: '用户' + sellUserInfo.nickName + "给您分享了他的健康卡", // 分享描述
+                    link: 'http://t.kuai-kaifa.com/weixin/goOauth?backUrl=shard_sell.html&cardNo=' + cardNo, // 分享链接
                     imgUrl: sellUserInfo.wxHeadPortrait, // 分享图标
                     type: '', // 分享类型,music、video或link，不填默认为link
                     dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
@@ -766,9 +785,9 @@ function getErrorMessage(code) {
  */
 function appylyMember() {
     if (isLogin()) {
-            memberView.router.navigate('/buyCard/', {
-                history: true
-            });
+        memberView.router.navigate('/buyCard/', {
+            history: true
+        });
     } else {
         gotoLogin();
     }

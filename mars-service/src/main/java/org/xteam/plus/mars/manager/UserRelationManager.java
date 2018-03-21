@@ -3,6 +3,7 @@ package org.xteam.plus.mars.manager;
 import org.xteam.plus.mars.domain.UserRelation;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -122,4 +123,11 @@ public interface UserRelationManager {
      * @throws Exception
      */
     public List<UserRelation> queryThisAndNextLevelUserCount(BigDecimal userId) throws Exception;
+
+    /**
+     * 查询当前用户下的最多推荐人数，以及团队下推荐人数最多的两个人
+     *
+     * @return
+     */
+    public HashMap<String, Object> queryMyTeamCountAndNextLevelCount(BigDecimal userId) throws Exception;
 }

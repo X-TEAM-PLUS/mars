@@ -112,6 +112,14 @@ $$(document).on('page:init', '.page[data-name="heart-card-list-page"]', function
         userId: userInfo.userId
     }, "heart-card-list", "show-heart-card-list");
 });
+
+$$(document).on('page:init', '.page[data-name="lishi-level-user-view"]', function (e) {
+    loadBizContent(INTERFACE_URL, {
+        method: InterFace.TEAM_COUNT,
+        userId: userInfo.userId
+    }, "user-next-level", "show-user-next-level");
+});
+
 $$(document).on('page:init', '.page[data-name="wode-baoxian-list-page"]', function (e) {
     loadBizContent(INTERFACE_URL, {
         method: InterFace.USER_INSURANCE_LIST,

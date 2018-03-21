@@ -8,6 +8,7 @@
         <result column="USER_ID" property="userId" jdbcType="DECIMAL"/>
         <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
         <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="USER_COUNT" property="userCount" jdbcType="DECIMAL"/>
         <association property="userInfo" column="USER_ID"
                      javaType="org.xteam.plus.mars.domain.UserInfo">
             <id column="USER_ID" property="userId" jdbcType="DECIMAL"/>
@@ -388,5 +389,33 @@
         )
         )
         OR TUR.REFEREE_USER_ID = #{userId,jdbcType=DECIMAL}
+    </select>
+
+    <!-- 查询用户推荐的总人数 -->
+    <select id="queryRefereeUserIdCount" resultType="int" parameterType="DECIMAL">
+      SELECT COUNT(*) FROM t_mars_user_relation TMUR WHERE TMUR.REFEREE_USER_ID = #{userId,jdbcType=DECIMAL};
+    </select>
+
+    <!-- 查询当前用户下级的所有推荐人数 -->
+    <select id="queryNextRefereeUserCount" resultMap="BaseResultMap" parameterType="DECIMAL">
+        SELECT
+            COUNT(*) as USER_COUNT,TUR.REFEREE_USER_ID
+        FROM
+            t_mars_user_relation TUR
+        WHERE
+            FIND_IN_SET(
+                TUR.REFEREE_USER_ID ,
+                (
+                    SELECT
+                        GROUP_CONCAT(TMUR.USER_ID)
+                    FROM
+                        t_mars_user_info TMUI
+                    LEFT JOIN t_mars_user_relation TMUR ON TMUI.USER_ID = TMUR.USER_ID
+                    WHERE
+                        TMUR.REFEREE_USER_ID = #{userId,jdbcType=DECIMAL}
+                    GROUP BY
+                        TMUR.REFEREE_USER_ID
+                ))
+        GROUP BY TUR.REFEREE_USER_ID ORDER BY COUNT(*) DESC
     </select>
 </mapper>
