@@ -15,12 +15,9 @@ var app = new Framework7({
 });
 $$(document).on('page:init', '.page[data-name="home"]', function (e) {
     //获取用户信
-    var userId = "";
-    var page = e.detail.route;
-    if (page != undefined && page.query != undefined && page.query.userId != undefined) {
-        userId = page.query.userId;
+    if(localStorage.hasOwnProperty(TOKEN)){
+        loadUserView(localStorage.getItem(TOKEN));
     }
-    loadUserView(userId);
 });
 
 $$(document).on('page:init', '.page[data-name="sellCard-page"]', function (e) {
@@ -69,9 +66,8 @@ $$(document).on('page:init', '.page[data-name="sellCard-page"]', function (e) {
 
 $$(document).on('page:reinit', '.page[data-name="home"]', function (e) {
     //获取用户信
-    if(typeof(userInfo)==="undefined" || typeof(userInfo.userId)==="undefined"){
-    }else {
-        loadUserView(userInfo.userId);
+    if(localStorage.hasOwnProperty(TOKEN)){
+        loadUserView(localStorage.getItem(TOKEN));
     }
 
 });

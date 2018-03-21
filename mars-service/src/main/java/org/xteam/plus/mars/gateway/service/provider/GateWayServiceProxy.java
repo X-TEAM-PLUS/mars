@@ -4,9 +4,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import org.xteam.plus.mars.cache.CacheUtils;
 import org.xteam.plus.mars.common.JsonUtils;
 import org.xteam.plus.mars.common.Logging;
+import org.xteam.plus.mars.gateway.token.Token;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,6 +18,9 @@ import java.util.Map;
  */
 @Component
 public class GateWayServiceProxy extends Logging implements ApplicationContextAware {
+
+    @Resource
+    private CacheUtils cacheUtils;
 
     private static Map<String, GateWayService> gateWayServiceHashMap = new HashMap<String, GateWayService>();
 
@@ -67,6 +73,14 @@ public class GateWayServiceProxy extends Logging implements ApplicationContextAw
                 logWarning("未获取相应的接口["+method+"]");
                 httpResponseBody = new HttpResponseBody(GlobalErrorMessage.UNKNOW);
             } else {
+
+                //如果带token
+                if (!StringUtils.isEmpty(httpRequestBody.getToken())) {
+                    //获取取缓存
+                    Token  token = cacheUtils.getToken(httpRequestBody.getToken());
+                    httpRequestBody.setUserId(token.getUserId());
+                }
+
                 //调用接口
                 httpResponseBody = gateWayService.gateWay(httpRequestBody);
             }

@@ -15,7 +15,7 @@ spring:
       max-wait: 1
       min-idle: 0
     ssl: false
-    port: 63790
+    port: 6379
     timeout: 0
   application:
     name: mars-service
@@ -49,3 +49,10 @@ logging:
   path: d:/logs
   level: debug
   config: classpath:service-logback.xml
+mars:
+  cache:
+    verifycode-life: 2
+    verifycode-limit: 10
+  test:
+    mobileNos: 13701312791,18810863866
+    password: 888888

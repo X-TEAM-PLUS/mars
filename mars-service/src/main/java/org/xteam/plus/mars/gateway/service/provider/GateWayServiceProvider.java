@@ -2,15 +2,20 @@ package org.xteam.plus.mars.gateway.service.provider;
 
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
+import org.xteam.plus.mars.cache.CacheUtils;
+import org.xteam.plus.mars.common.JsonUtils;
 import org.xteam.plus.mars.gateway.token.Token;
 import org.xteam.plus.mars.service.provider.AbstractServiceProvider;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -50,27 +55,8 @@ public class GateWayServiceProvider extends AbstractServiceProvider {
             url += "?" + request.getQueryString();
         }
         httpRequestBody.setRequestUrl(url);
+
         return gateWayServiceProxy.gateWay(httpRequestBody);
     }
 
-
-    /**
-     * 获取Token信息
-     *
-     * @param tokenString
-     * @return int
-     */
-    @RequestMapping("/token/get")
-    public Token getToken(String tokenString) throws Exception {
-        Token token = null;
-        //先取缓存
-        try {
-            // token = cacheUtils.getToken(tokenString);
-
-        } catch (Exception e) {
-            logError("获取通道信息异常", e);
-        }
-        //返回
-        return token;
-    }
 }

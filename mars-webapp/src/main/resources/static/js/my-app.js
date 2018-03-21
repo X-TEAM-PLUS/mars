@@ -25,8 +25,9 @@ function logInfo(data) {
  * @param url
  * @param params
  */
-function loadUserView(userId) {
-    var params = {method: InterFace.USER_INFO, userId: userId};
+function loadUserView(token) {
+    var params = {
+        method: InterFace.USER_INFO, token: token};
     //获取用户信息
     app.request.json(INTERFACE_URL, params, function (data) {
         logInfo(data);
@@ -136,13 +137,11 @@ function gotoLogin() {
  * @returns {boolean}
  */
 function isLogin() {
-    return true;
-    /** 暂时屏蔽，不进行登录 */
-    // if(typeof(userInfo)==="undefined" || typeof(userInfo.userId)==="undefined"){
-    //     return false ;
-    // } else {
-    //     return true ;
-    // }
+    if(localStorage.hasOwnProperty(TOKEN)){
+        return true ;
+    }else{
+        return false ;
+    }
 }
 
 
@@ -791,4 +790,90 @@ function appylyMember() {
     } else {
         gotoLogin();
     }
+}
+
+// 判断是否为手机号
+function isPoneAvailable(pone) {
+    var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+    if (!myreg.test(pone)) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+/**
+ * 获取短信验证码
+ * @param form
+ */
+function getSmsCode(form) {
+    let bizContent = app.form.convertToData('#' + form);
+    if(typeof(bizContent)==="undefined" || typeof(bizContent.mobileNo)==="undefined"){
+        app.dialog.alert("请输入手机号", '信息提示');
+    }else if(isPoneAvailable(bizContent.mobileNo)){
+        //发送短信验证码
+        sendSmsCode(bizContent.mobileNo);
+    }else{
+        app.dialog.alert("手机号输入不正确", '信息提示');
+    }
+}
+
+/**
+ * 发送短信验证码
+ * @param mobileNo
+ */
+function sendSmsCode(mobileNo) {
+    var params = {
+        method: InterFace.GET_SMS_CODE,
+        bizContent: JSON.stringify({
+            mobileNo: mobileNo
+        })
+    };
+    app.request.post(INTERFACE_URL, params, function (data) {
+        logInfo(data);
+        var response = JSON.parse(data);
+        if (ResponseCode.SUCCESS == response.code) {
+            app.dialog.alert('短信验证码发送成功，请注意查收', '信息提示');
+        } else {
+            app.dialog.alert(getErrorMessage(response.code), '信息提示');
+        }
+    });
+}
+
+/**
+ * 登录
+ * @param form
+ */
+function goLogin(form) {
+    let bizContent = app.form.convertToData('#' + form);
+    if(typeof(bizContent)==="undefined" || typeof(bizContent.mobileNo)==="undefined" ||typeof(bizContent.smsCode)==="undefined" ){
+        app.dialog.alert("请输入手机号和短信验证码", '信息提示');
+    }else if(isPoneAvailable(bizContent.mobileNo)){
+        doLogin(bizContent);
+    }else{
+        app.dialog.alert("手机号输入不正确", '信息提示');
+    }
+}
+
+/**
+ * 登录
+ */
+function doLogin(formData) {
+    var params = {
+        method: InterFace.SMS_LOGIN,
+        bizContent: JSON.stringify(formData)
+    };
+    app.request.post(INTERFACE_URL, params, function (data) {
+        logInfo(data);
+        var response = JSON.parse(data);
+        if (ResponseCode.SUCCESS == response.code) {
+            var bizContent = JSON.parse(response.bizContent);
+            localStorage.setItem(TOKEN,bizContent.token);
+                memberView.router.navigate('/', {
+                    history: true
+                });
+        } else {
+            app.dialog.alert(getErrorMessage(response.code), '信息提示');
+        }
+    });
 }

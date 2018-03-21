@@ -11,7 +11,7 @@
     </div>
     <div class="page-content login-screen-content">
         <div class="login-screen-title">用户登录</div>
-        <form>
+        <form id="smsLoginForm">
 
             <div class="list">
                 <ul>
@@ -28,8 +28,8 @@
                             <div class="item-title item-label">短信密码</div>
                             <div class="item-input">
                                 <div class="row">
-                                    <div class="col-70"><input type="password" name="password" placeholder="短信密码"></div>
-                                    <div class="col-30"> <a href="#" class="button button-fill color-green">获取密码</a></div>
+                                    <div class="col-70"><input type="password" name="smsCode" placeholder="短信密码"></div>
+                                    <div class="col-30" onclick="getSmsCode('smsLoginForm')"> <a href="#" class="button button-fill color-green" >获取密码</a></div>
                                 </div>
                             </div>
                         </div>
@@ -38,7 +38,7 @@
             </div>
             <div class="list">
                 <ul>
-                    <li><a href="#" class="item-link list-button ">登 录</a></li>
+                    <li onclick="goLogin('smsLoginForm')"><a href="#" class="item-link list-button " >登 录</a></li>
                 </ul>
             </div>
         </form>

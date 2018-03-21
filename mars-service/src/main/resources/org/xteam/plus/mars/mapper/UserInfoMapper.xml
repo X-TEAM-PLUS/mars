@@ -489,7 +489,42 @@
         where USER_ID= #{userId,jdbcType=DECIMAL}
     </select>
 
-
+    <!--查询单条记录-->
+    <select id="getByMobileNo" resultMap="BaseResultMap" parameterType="string">
+        select
+        USER_ID
+        ,CARD_NO
+        ,ID_NUMBER
+        ,CARD_ACTIVATE_MODE
+        ,REAL_NAME
+        ,CARD_TYPE
+        ,LINK_ADDRESS
+        ,CARD_LIFE_TIME
+        ,MOBILE_NO
+        ,CARD_ACTIVATE_TIME
+        ,REGISTER_TIME
+        ,CREATED
+        ,WEIXIN_ACCOUNT
+        ,STATUS
+        ,LOGIN_COUNT
+        ,REGISTER_SOURCE
+        ,UPDATED
+        ,PASSWORD
+        ,USER_LEVEL
+        ,LAST_LOGIN_TIME
+        ,NICK_NAME
+        ,PROVINCE
+        ,CITY
+        ,COUNTY
+        ,PROVINCE_NAME
+        ,CITY_NAME
+        ,COUNTY_NAME
+        ,PAY_TIMES
+        ,WX_HEAD_PORTRAIT
+        ,WX_OPENID
+        from T_MARS_USER_INFO
+        where MOBILE_NO=#{mobileNo,jdbcType=VARCHAR}
+    </select>
     <!--分页查询记录-->
     <select id="query" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.UserInfo">
         select

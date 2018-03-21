@@ -122,6 +122,11 @@ public class UserInfoManagerImpl implements UserInfoManager {
         return userInfo;
     }
 
+    @Override
+    public UserInfo getByMobileNo(String mobileNo) {
+        return userInfoDao.getByMobileNo(mobileNo);
+    }
+
     private List<UserInfo> convertRealName(List<UserInfo> userInfos) {
         for (UserInfo userInfo : userInfos) {
             try {

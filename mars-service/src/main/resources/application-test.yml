@@ -8,6 +8,17 @@ eureka:
 spring:
   application:
     name: mars-service
+  redis:
+      host: 127.0.0.1
+      password:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: 1
+        min-idle: 0
+      ssl: false
+      port: 6379
+      timeout: 0
   http:
     converters:
       preferred-json-mapper: jackson
@@ -38,3 +49,11 @@ logging:
   path: /var/log/mars
   level: debug
   config: classpath:service-logback.xml
+
+mars:
+  cache:
+    verifycode-life: 2
+    verifycode-limit: 10
+  test:
+    mobileNos: 13701312791,18810863866
+    password: 888888

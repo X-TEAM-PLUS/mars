@@ -2,7 +2,7 @@
 var LOG_SWITCH  = true;
 //定义接口地址
 var INTERFACE_URL = "http://"+document.domain + ":8080/webservice/api/gateway";
-var userInfo ;
+var TOKEN ="token";
 var InterFace = {
     //用户信息
     USER_INFO: 'cn.zaoangongcheng.api.gateway.user.detail'
@@ -54,6 +54,10 @@ var InterFace = {
     ,APPLY_LEVEL:'com.zhaoanyun.gateway.user.userLevelApply'
     //理事申请升级展示用户发展会员情况页面
     ,TEAM_COUNT: 'cn.zaoangongcheng.api.gateway.user.team.count'
+    //获取短信验证码
+    ,GET_SMS_CODE:'cn.zaoangongcheng.api.gateway.verification.code'
+    //验证码登录
+    ,SMS_LOGIN:'cn.zaoangongcheng.api.gateway.smscode.login'
 }
 
 /**
@@ -61,12 +65,23 @@ var InterFace = {
  * @type {{SUCCESS: number, UNKNOW: number, UNAUTHORIZED: number, MISSING_PARAMETERS: number, ILLEGAL_PARAMETERS: number, USER_ID_NOT_HIVE: number}}
  */
 var ResponseCode = {
-    SUCCESS: 10000
-    , UNKNOW: 20000
-    , UNAUTHORIZED: 20001
-    , MISSING_PARAMETERS: 40001
-    , ILLEGAL_PARAMETERS: 40002
-    , USER_ID_NOT_HIVE: 40008
+    SUCCESS:10000
+    ,UNKNOW:20000
+    ,UNAUTHORIZED:20001
+    ,MISSING_PARAMETERS:40001
+    ,ILLEGAL_PARAMETERS:40002
+    ,BUSINESS_FAILED:40004
+    ,SELL_USER_NOT_FIND:40015
+    ,OBJECT_ISNULL:40005
+    ,CARD_ALREAD_BIND:40006
+    ,APPLY_AMOUNT_ZER:40007
+    ,USER_ID_NOT_HIVE:40008
+    ,AMOUNT_NOT_ENOUGH:40009
+    ,BANK_ID_ERROR:40010
+    ,PRODUCT_ID_NOT_HIVE:40011
+    ,DIFFERENT_REAL_NAME:40012
+    ,BANK_CARD_IS_BINDED:40013
+    ,CARD_NO_NOT_FIND:40014
 };
 
 /**

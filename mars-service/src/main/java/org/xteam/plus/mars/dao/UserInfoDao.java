@@ -114,4 +114,11 @@ public interface UserInfoDao {
      * @return
      */
     public Integer queryUserTotalCount(@Param("userLevel") Integer userLevel, @Param("nowDate") Date nowDate);
+
+    /**
+     * 手机号查询用户
+     * @param mobileNo
+     * @return
+     */
+    UserInfo getByMobileNo(@Param("mobileNo") String mobileNo);
 }

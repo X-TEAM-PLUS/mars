@@ -117,4 +117,11 @@ public interface UserInfoManager {
      * @throws Exception
      */
     public UserInfo registerWxUserInfo(WxUserList.WxUser wxUser, BigDecimal userId) throws Exception;
+
+    /**
+     * 手机号查询用户
+     * @param mobileNo
+     * @return
+     */
+    UserInfo getByMobileNo(String mobileNo);
 }
