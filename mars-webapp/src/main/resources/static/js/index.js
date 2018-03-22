@@ -78,23 +78,25 @@ $$(document).on('page:init', '.page[data-name="question-page"]', function (e) {
     loadBizContent(INTERFACE_URL, {method: InterFace.QUESTION_LIST}, "question-list", "show-question-list");
 });
 $$(document).on('page:init', '.page[data-name="message-page"]', function (e) {
-    loadBizContent(INTERFACE_URL, {
-        method: InterFace.MESSAGE_LIST,
-        userId: userInfo.userId
-    }, "message-list", "show-message-list");
+    if(localStorage.hasOwnProperty(TOKEN)) {
+        loadBizContent(INTERFACE_URL, {
+            method: InterFace.MESSAGE_LIST,
+            token: localStorage.getItem(TOKEN)
+        }, "message-list", "show-message-list");
+    }
 });
 
 $$(document).on('page:init', '.page[data-name="account-info-page"]', function (e) {
     loadBizContent(INTERFACE_URL, {
         method: InterFace.ACCOUNT_INFO,
-        userId: userInfo.userId
+        token: localStorage.getItem(TOKEN)
     }, "account-info", "show-account-info");
 });
 
 $$(document).on('page:init', '.page[data-name="jiankangka-page"]', function (e) {
     loadBizContent(INTERFACE_URL, {
         method: InterFace.ME_HEART_CARD_INFO,
-        userId: userInfo.userId
+        token: localStorage.getItem(TOKEN)
     }, "jiankangka-info", "show-jiankangka-info");
 });
 
@@ -105,21 +107,21 @@ $$(document).on('page:init', '.page[data-name="insurance-product-list-page"]', f
 $$(document).on('page:init', '.page[data-name="heart-card-list-page"]', function (e) {
     loadBizContent(INTERFACE_URL, {
         method: InterFace.USER_HEALTH_CARD_LIST,
-        userId: userInfo.userId
+        token: localStorage.getItem(TOKEN)
     }, "heart-card-list", "show-heart-card-list");
 });
 
 $$(document).on('page:init', '.page[data-name="lishi-level-user-view"]', function (e) {
     loadBizContent(INTERFACE_URL, {
         method: InterFace.TEAM_COUNT,
-        userId: userInfo.userId
+        token: localStorage.getItem(TOKEN)
     }, "user-next-level", "show-user-next-level");
 });
 
 $$(document).on('page:init', '.page[data-name="wode-baoxian-list-page"]', function (e) {
     loadBizContent(INTERFACE_URL, {
         method: InterFace.USER_INSURANCE_LIST,
-        userId: userInfo.userId
+        token: localStorage.getItem(TOKEN)
     }, "wode-baoxian-list", "show-wode-baoxian-list");
 });
 
@@ -127,7 +129,7 @@ $$(document).on('page:init', '.page[data-name="wode-baoxian-detail-page"]', func
     var bizContent = {insuranceOrderId: e.detail.route.query.insuranceOrderId};
     loadBizContent(INTERFACE_URL, {
         method: InterFace.USER_INSURANCE_DETAIL,
-        userId: userInfo.userId,
+        token: localStorage.getItem(TOKEN),
         bizContent: JSON.stringify(bizContent)
     }, "wode-baoxian-detail", "show-wode-baoxian-detail");
 });
@@ -138,21 +140,21 @@ $$(document).on('page:init', '.page[data-name="bankcard-page"]', function (e) {
 $$(document).on('page:init', '.page[data-name="zhuanzhang-list-page"]', function (e) {
     loadBizContent(INTERFACE_URL, {
         method: InterFace.USER_WITHDRAW_RECORD_LIST,
-        userId: userInfo.userId
+        token: localStorage.getItem(TOKEN)
     }, "zhuanzhang-list", "show-zhuanzhang-list");
 });
 
 $$(document).on('page:init', '.page[data-name="butiemingxi-list-page"]', function (e) {
     loadBizContent(INTERFACE_URL, {
         method: InterFace.USER_SUBSIDY_LIST,
-        userId: userInfo.userId
+        token: localStorage.getItem(TOKEN)
     }, "butiemingxi-list", "show-butiemingxi-list");
 });
 
 $$(document).on('page:init', '.page[data-name="zhuanzhang-form-page"]', function (e) {
     loadBizContent(INTERFACE_URL, {
         method: InterFace.ACCOUNT_AND_BANK_CARD,
-        userId: userInfo.userId
+        token: localStorage.getItem(TOKEN)
     }, "zhuanzhang-form", "show-zhuanzhang-form");
 });
 $$(document).on('page:init', '.page[data-name="show-me-page"]', function (e) {

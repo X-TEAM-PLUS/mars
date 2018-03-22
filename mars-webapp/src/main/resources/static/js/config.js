@@ -3,6 +3,7 @@ var LOG_SWITCH  = true;
 //定义接口地址
 var INTERFACE_URL = "http://"+document.domain + ":8080/webservice/api/gateway";
 var TOKEN ="token";
+var userInfo;
 var InterFace = {
     //用户信息
     USER_INFO: 'cn.zaoangongcheng.api.gateway.user.detail'
