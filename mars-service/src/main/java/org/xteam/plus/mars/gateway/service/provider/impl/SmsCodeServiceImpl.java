@@ -128,12 +128,13 @@ public class SmsCodeServiceImpl extends Logging implements GateWayService {
      */
     private boolean checkVerifyCodeLimit(String mobileNo) {
         if(testMobileNos.indexOf(mobileNo)==-1){
+            String date  =  new SimpleDateFormat("yyyyMMdd").format(new Date());
+            Long limit =cacheUtils.getSmsVerificationCodeLimit(mobileNo,date);
+            if(limit!=null && limit.intValue()> verifyCodeLimit){
+                return false;
+            }
+        }else{
             return true;
-        }
-        String date  =  new SimpleDateFormat("yyyyMMdd").format(new Date());
-        Long limit =cacheUtils.getSmsVerificationCodeLimit(mobileNo,date);
-        if(limit!=null && limit.intValue()> verifyCodeLimit){
-            return false;
         }
         return true;
     }

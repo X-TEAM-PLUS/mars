@@ -18,6 +18,7 @@ public enum GlobalErrorMessage {
     ,DIFFERENT_REAL_NAME(40012,"实名不一致")
     ,BANK_CARD_IS_BINDED(40013,"重复的绑卡操作")
     ,CARD_NO_NOT_FIND(40014,"卡号不存在，无法进行获取")
+    ,TOKEN_IS_EFFICACY(40015,"token已经失效")
     ;
     private Integer code;
     private String message;

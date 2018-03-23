@@ -78,6 +78,9 @@ public class GateWayServiceProxy extends Logging implements ApplicationContextAw
                 if (!StringUtils.isEmpty(httpRequestBody.getToken())) {
                     //获取取缓存
                     Token  token = cacheUtils.getToken(httpRequestBody.getToken());
+                    if (token == null){
+                        return new HttpResponseBody(GlobalErrorMessage.TOKEN_IS_EFFICACY);
+                    }
                     httpRequestBody.setUserId(token.getUserId());
                 }
 

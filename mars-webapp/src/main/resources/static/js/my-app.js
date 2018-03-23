@@ -27,7 +27,8 @@ function logInfo(data) {
  */
 function loadUserView(token) {
     var params = {
-        method: InterFace.USER_INFO, token: token};
+        method: InterFace.USER_INFO, token: token
+    };
     //获取用户信息
     app.request.json(INTERFACE_URL, params, function (data) {
         logInfo(data);
@@ -55,6 +56,8 @@ function loadUserView(token) {
                 default:
                     break;
             }
+        } else {
+            gotoLogin();
         }
     });
 }
@@ -137,10 +140,10 @@ function gotoLogin() {
  * @returns {boolean}
  */
 function isLogin() {
-    if(localStorage.hasOwnProperty(TOKEN)){
-        return true ;
-    }else{
-        return false ;
+    if (localStorage.hasOwnProperty(TOKEN)) {
+        return true;
+    } else {
+        return false;
     }
 }
 
@@ -808,12 +811,12 @@ function isPoneAvailable(pone) {
  */
 function getSmsCode(form) {
     let bizContent = app.form.convertToData('#' + form);
-    if(typeof(bizContent)==="undefined" || typeof(bizContent.mobileNo)==="undefined"){
+    if (typeof(bizContent) === "undefined" || typeof(bizContent.mobileNo) === "undefined") {
         app.dialog.alert("请输入手机号", '信息提示');
-    }else if(isPoneAvailable(bizContent.mobileNo)){
+    } else if (isPoneAvailable(bizContent.mobileNo)) {
         //发送短信验证码
         sendSmsCode(bizContent.mobileNo);
-    }else{
+    } else {
         app.dialog.alert("手机号输入不正确", '信息提示');
     }
 }
@@ -846,11 +849,11 @@ function sendSmsCode(mobileNo) {
  */
 function goLogin(form) {
     let bizContent = app.form.convertToData('#' + form);
-    if(typeof(bizContent)==="undefined" || typeof(bizContent.mobileNo)==="undefined" ||typeof(bizContent.smsCode)==="undefined" ){
+    if (typeof(bizContent) === "undefined" || typeof(bizContent.mobileNo) === "undefined" || typeof(bizContent.smsCode) === "undefined") {
         app.dialog.alert("请输入手机号和短信验证码", '信息提示');
-    }else if(isPoneAvailable(bizContent.mobileNo)){
+    } else if (isPoneAvailable(bizContent.mobileNo)) {
         doLogin(bizContent);
-    }else{
+    } else {
         app.dialog.alert("手机号输入不正确", '信息提示');
     }
 }
@@ -868,10 +871,15 @@ function doLogin(formData) {
         var response = JSON.parse(data);
         if (ResponseCode.SUCCESS == response.code) {
             var bizContent = JSON.parse(response.bizContent);
-            localStorage.setItem(TOKEN,bizContent.token);
+            localStorage.setItem(TOKEN, bizContent.token);
+            // 微信端内进行跳转
+            if (typeof WeixinJSBridge != "undefined") {
+                location.href = "http://" + document.domain + "/weixin/goOauth?backUrl=index.html&cipherTxt=" + bizContent.token;
+            } else {
                 memberView.router.navigate('/', {
                     history: true
                 });
+            }
         } else {
             app.dialog.alert(getErrorMessage(response.code), '信息提示');
         }

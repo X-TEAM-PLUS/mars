@@ -13,10 +13,17 @@ var app = new Framework7({
         buttonOk: '确定',
     }
 });
-$$(document).on('page:init', '.page[data-name="home"]', function (e) {
+
+
+$$(document).on('page:init popupOpen', '.page[data-name="home"]', function (e) {
     //获取用户信
     if(localStorage.hasOwnProperty(TOKEN)){
         loadUserView(localStorage.getItem(TOKEN));
+    }else{
+        app.dialog.alert("您还没有登录，等先进行登录!",function () {
+            gotoLogin();
+        });
+
     }
 });
 
@@ -68,6 +75,8 @@ $$(document).on('page:reinit', '.page[data-name="home"]', function (e) {
     //获取用户信
     if(localStorage.hasOwnProperty(TOKEN)){
         loadUserView(localStorage.getItem(TOKEN));
+    }else{
+        gotoLogin();
     }
 
 });
@@ -162,8 +171,7 @@ $$(document).on('page:init', '.page[data-name="show-me-page"]', function (e) {
 });
 app.views.create('#view-heart_check', {url: '/heart_check/'});
 app.views.create('#view-college', {url: '/college/'});
+
 var memberView = app.views.create('#view-member', {url: '/'});
-
-
 
 

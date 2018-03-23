@@ -6,14 +6,17 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+import com.google.zxing.common.StringUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.xteam.plus.mars.cache.CacheUtils;
 import org.xteam.plus.mars.common.JsonUtils;
 import org.xteam.plus.mars.common.Logging;
 import org.xteam.plus.mars.domain.Orders;
 import org.xteam.plus.mars.domain.UserInfo;
+import org.xteam.plus.mars.gateway.token.Token;
 import org.xteam.plus.mars.manager.OrdersManager;
 import org.xteam.plus.mars.manager.UserInfoManager;
 import org.xteam.plus.mars.manager.subsidy.impl.SubsidyManagerFactory;
@@ -58,6 +61,9 @@ public class WeixinNotifyWebServiceProvider extends Logging {
 
     @Resource
     private SubsidyManagerFactory subsidyManagerFactory;
+
+    @Resource
+    private CacheUtils cacheUtils;
 
     private WxService iService = new WxService();
 
@@ -183,11 +189,18 @@ public class WeixinNotifyWebServiceProvider extends Logging {
     @RequestMapping(value = "/goOauth")
     public ModelAndView goOauth(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String backUrl = request.getParameter("backUrl");
-        String userId = request.getParameter("userId");
+        String cipherTxt = request.getParameter("cipherTxt");
+        if(cipherTxt == null || org.apache.commons.lang.StringUtils.isEmpty(cipherTxt)){
+            return new ModelAndView("redirect:www.baidu.com");
+        }
+        Token token = cacheUtils.getToken(cipherTxt);
+        if (token == null){
+            return new ModelAndView("redirect:www.baidu.com");
+        }
         String cardNo = request.getParameter("cardNo");
         HashMap parms = Maps.newHashMap();
         parms.put("backUrl", backUrl);
-        parms.put("userId", userId);
+        parms.put("userId", token.getUserId());
         parms.put("cardNo", cardNo);
         Long incrementKey = stringRedisTemplate.boundValueOps(REDIS_TEMP_OATH_KEY).increment(1);
         String redisKey = REDIS_TEMP_OATH_KEY + "." + incrementKey;
@@ -233,7 +246,7 @@ public class WeixinNotifyWebServiceProvider extends Logging {
             if (map.get("cardNo") != null && !map.get("cardNo").equals("")) {
                 return new ModelAndView("redirect:/" + map.get("backUrl").toString() + "?userId=" + userInfo.getUserId() + "&cardNo=" + map.get("cardNo").toString());
             }
-            return new ModelAndView("redirect:/" + map.get("backUrl").toString() + "?userId=" + userInfo.getUserId());
+            return new ModelAndView("redirect:/" + map.get("backUrl").toString());
 
         } catch (WxErrorException e) {
             logInfo("微信回调注册用户失败 失败原因 e[" + e.getMessage() + "]", e);

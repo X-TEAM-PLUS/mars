@@ -70,6 +70,7 @@ public class SmsLoginServiceImpl extends Logging implements GateWayService {
                         userInfo.setCreated(new Date());
                         userInfo.setUpdated(new Date());
                         userInfo.setUserLevel(UserLevelEnum.TOURIST.getCode());
+                        userInfo.setRegisterTime(new Date());
                         //注册用户
                         userInfoManager.insert(userInfo);
                     }
