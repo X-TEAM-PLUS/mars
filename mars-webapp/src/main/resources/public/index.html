@@ -7,10 +7,13 @@
           content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="theme-color" content="#FF0000">
-    <link rel="stylesheet" href="/assets/plugins/framework7-2.0.7/css/framework7.min.css">
-    <link rel="stylesheet" href="/assets/plugins/framework7-2.0.7/css/framework7-icons.css">
+    <meta name="theme-color" content="#E35041">
+    <link rel="stylesheet" href="/assets/plugins/framework7-2.1.3/css/framework7.min.css">
+    <link rel="stylesheet" href="/assets/plugins/framework7-2.1.3/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" href="/assets/plugins/framework7-2.1.3/css/framework7-icons.css">
     <link rel="stylesheet" href="/assets/plugins/font-awesome/css/font-awesome.min.css">
+
+
     <link rel="stylesheet" href="/css/my-app.css">
     <title>早安工程</title>
 </head>
@@ -346,7 +349,7 @@
         </ul>
         <ul>
             <li>
-                <a href="#" class="item-link item-content" onclick="showLishiTeamView()">
+                <a href="/changrenlishiLevelView/" class="item-link item-content" onclick="showChangrenLishiTeamView()">
                     <div class="item-media"><i class="fa fa-graduation-cap color-yellow  "></i>理事</div>
                     <div class="item-inner">
                         <div class="item-title-row">
@@ -718,60 +721,6 @@
     {{/each}}
 </script>
 <!-- ********************************** 小卡包 ****************************** -->
-
-<!-- ********************************** 社工会员升级展示 ****************************** -->
-<script type="text/template" id="show-user-next-level">
-
-    <div class="list">
-        <ul>
-            <li>
-                <div class="item-content">
-                    <div class="item-media"><i class="icon icon-f7"></i></div>
-                    <div class="item-inner">
-                        <div class="item-title">您当前的会员身份为</div>
-                        <div class="item-after"><span class="badge">{{userLevel}}</span></div>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div class="item-content">
-                    <div class="item-media"><i class="icon icon-f7"></i></div>
-                    <div class="item-inner">
-                        <div class="item-title">直接推荐公益会员人数达1500人</div>
-                        <div class="item-after"><span class="badge color-blue">{{refereeUserCount}}</span></div>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div class="item-content">
-                    <div class="item-media"><i class="icon icon-f7"></i></div>
-                    <div class="item-inner">
-                        <div class="item-title">我的团队中有{{userSize}}人直接推荐人数达1500人</div>
-                    </div>
-                </div>
-            </li>
-            <div class="list">
-                <ul>
-                    {{#each userTeamList}}
-                    <li>
-                        <div class="item-content">
-                            <div class="item-media"><i class="icon icon-f7">{{userCount}}</i></div>
-                            <div class="item-inner">
-                                <div class="progressbar color-green" data-progress="2000"><span
-                                        style="transform: translate3d(-20%, 0px, 1000px);"></span></div>
-                            </div>
-                        </div>
-                    </li>
-                    {{/each}}
-                </ul>
-            </div>
-
-        </ul>
-    </div>
-
-
-</script>
-<!-- ********************************** 社工会员升级展示 ****************************** -->
 <script type="text/template" id="show-wode-baoxian-list">
     {{#each list}}
     <a href="#" class="item-link item-content" onclick="baoxianxiangdanClick({{insuranceOrderId}})">
@@ -1070,7 +1019,7 @@
 <div id="cover"></div>
 <div id="guide"><img src="images/guide1.png"></div>
 <!-- Path to Framework7 Library JS-->
-<script type="text/javascript" src="/assets/plugins/framework7-2.0.7/js/framework7.min.js"></script>
+<script type="text/javascript" src="/assets/plugins/framework7-2.1.3/js/framework7.min.js"></script>
 <script type="text/javascript" src="/assets/plugins/template7/template7.min.js"></script>
 <script type="text/javascript" src="/js/Map.js"></script>
 <!--app-config-->

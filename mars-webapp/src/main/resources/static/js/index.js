@@ -121,10 +121,10 @@ $$(document).on('page:init', '.page[data-name="heart-card-list-page"]', function
 });
 
 $$(document).on('page:init', '.page[data-name="lishi-level-user-view"]', function (e) {
-    loadBizContent(INTERFACE_URL, {
-        method: InterFace.TEAM_COUNT,
-        token: localStorage.getItem(TOKEN)
-    }, "user-next-level", "show-user-next-level");
+ viewMarketingInformation(localStorage.getItem(TOKEN));
+});
+$$(document).on('page:init', '.page[data-name="changrenlishi-level-user-view"]', function (e) {
+    viewMarketingInformationByLishi(localStorage.getItem(TOKEN));
 });
 
 $$(document).on('page:init', '.page[data-name="wode-baoxian-list-page"]', function (e) {

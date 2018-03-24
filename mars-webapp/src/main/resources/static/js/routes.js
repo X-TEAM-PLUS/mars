@@ -141,6 +141,13 @@ var routes = [
         url: './pages/lishiLevelView.html',
         name: 'lishiLevelView',
     },
+    {
+        path: '/changrenlishiLevelView',
+        url: './pages/changrenlishiLevelView.html',
+        name: 'changrenlishiLevelView',
+    },
+
+
 
   // Default route (404 page). MUST BE THE LAST
   {

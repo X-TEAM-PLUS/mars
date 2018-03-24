@@ -76,6 +76,19 @@ function showLishiTeamView() {
     }
 }
 
+/**
+ * 展示常任理事升级的team信息
+ */
+function showChangrenLishiTeamView() {
+    if (isLogin()) {
+        memberView.router.navigate('/changrenlishiLevelView/', {
+            history: true
+        });
+    } else {
+        //去登录
+        gotoLogin();
+    }
+}
 
 /**
  * 获取 bizContent
@@ -882,6 +895,82 @@ function doLogin(formData) {
             }
         } else {
             app.dialog.alert(getErrorMessage(response.code), '信息提示');
+        }
+    });
+}
+
+
+/**
+ * 显示会员销售信息
+ * @param token
+ */
+function viewMarketingInformation(token) {
+    var params = {
+        method: InterFace.TEAM_COUNT, token: token
+    };
+    app.request.json(INTERFACE_URL, params, function (data) {
+        logInfo(bizContent);
+        var bizContent = JSON.parse(data.bizContent);
+        logInfo(bizContent);
+        document.getElementById("userLevel").innerText=bizContent.userLevel;
+        document.getElementById("directReachCount").innerText=bizContent.refereeUserCount+"/500";
+        if(bizContent.refereeUserCount==500){
+            document.getElementById("isDirectReach").innerText="已达成";
+        }else{
+            document.getElementById("isDirectReach").innerText="未达成";
+        }
+        app.progressbar.set('#directReachProgressbar1', bizContent.refereeUserCount*100/500.0);
+
+        if( bizContent.userTeamList.length>0){
+            document.getElementById("indirectReachCount1").innerText=bizContent.userTeamList[0].userCount+"/500";
+            app.progressbar.set('#indirectReachProgressbar1',bizContent.userTeamList[0].userCount*100/500.0);
+        }
+        if( bizContent.userTeamList.length>1){
+            document.getElementById("indirectReachCount2").innerText=bizContent.userTeamList[1].userCount+"/500";
+            if(bizContent.userTeamList[0].userCount==500 && bizContent.userTeamList[1].userCount==500){
+                document.getElementById("isIndirectReach").innerText="已达成";
+            }else{
+                document.getElementById("isIndirectReach").innerText="未达成";
+            }
+            app.progressbar.set('#indirectReachProgressbar2',bizContent.userTeamList[1].userCount*100/500.0);
+        }
+    });
+}
+
+
+/**
+ * 显示理事销售信息
+ * @param token
+ */
+function viewMarketingInformationByLishi(token) {
+    var params = {
+        method: InterFace.TEAM_COUNT, token: token
+    };
+    app.request.json(INTERFACE_URL, params, function (data) {
+        logInfo(bizContent);
+        var bizContent = JSON.parse(data.bizContent);
+        logInfo(bizContent);
+        document.getElementById("userLevel").innerText=bizContent.userLevel;
+        document.getElementById("directReachCount").innerText=bizContent.refereeUserCount+"/1500";
+        if(bizContent.refereeUserCount==500){
+            document.getElementById("isDirectReach").innerText="已达成";
+        }else{
+            document.getElementById("isDirectReach").innerText="未达成";
+        }
+        app.progressbar.set('#directReachProgressbar1', bizContent.refereeUserCount*100/1500.0);
+
+        if( bizContent.userTeamList.length>0){
+            document.getElementById("indirectReachCount1").innerText=bizContent.userTeamList[0].userCount+"/1500";
+            app.progressbar.set('#indirectReachProgressbar1',bizContent.userTeamList[0].userCount*100/1500.0);
+        }
+        if( bizContent.userTeamList.length>1){
+            document.getElementById("indirectReachCount2").innerText=bizContent.userTeamList[1].userCount+"/1500";
+            if(bizContent.userTeamList[0].userCount==1500 && bizContent.userTeamList[1].userCount==1500){
+                document.getElementById("isIndirectReach").innerText="已达成";
+            }else{
+                document.getElementById("isIndirectReach").innerText="未达成";
+            }
+            app.progressbar.set('#indirectReachProgressbar2',bizContent.userTeamList[1].userCount*100/1500.0);
         }
     });
 }
