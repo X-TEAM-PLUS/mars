@@ -13,6 +13,7 @@ import org.xteam.plus.mars.wx.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,17 +36,22 @@ public class GetUserHeartCardListServiceImpl extends Logging implements GateWayS
 
     @Override
     public HttpResponseBody gateWay(HttpRequestBody httpRequestBody) throws Exception {
-            Map<String,Object>params = JsonUtils.fromJSON(httpRequestBody.getBizContent(), HashMap.class);
-            if (StringUtils.isEmpty(httpRequestBody.getUserId())) {
-                return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
+        Map<String, Object> params = JsonUtils.fromJSON(httpRequestBody.getBizContent(), HashMap.class);
+        if (StringUtils.isEmpty(httpRequestBody.getUserId())) {
+            return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
+        }
+        List<UserHealthCard> userHealthCards = userHealthCardManager.queryForActiveUser(
+                new UserHealthCard().setBuyerUserId(new BigDecimal(httpRequestBody.getUserId()))
+                        .setStart(params != null && params.containsKey("start") ? Integer.valueOf(params.get("start").toString()) : 0)
+                        .setLimit(params != null && params.containsKey("limit") ? Integer.valueOf(params.get("start").toString()) : Integer.MAX_VALUE)
+        );
+        Map<String, Object> bizContentMap = new HashMap<>();
+        for (UserHealthCard userHealthCard : userHealthCards) {
+            if (userHealthCard.getActivateUserInfo() != null && userHealthCard.getActivateUserInfo().getRealName() != null) {
+                userHealthCard.getActivateUserInfo().setRealName(URLDecoder.decode(userHealthCard.getActivateUserInfo().getRealName(), "utf-8"));
             }
-            List<UserHealthCard> userHealthCards = userHealthCardManager.queryForActiveUser(
-                    new UserHealthCard().setBuyerUserId(new BigDecimal(httpRequestBody.getUserId()))
-                    .setStart(params!=null && params.containsKey("start")?Integer.valueOf(params.get("start").toString()):0)
-                            .setLimit(params!=null && params.containsKey("limit")?Integer.valueOf(params.get("start").toString()):Integer.MAX_VALUE)
-            );
-        Map<String,Object> bizContentMap = new HashMap<>();
-        bizContentMap.put("list",userHealthCards);
+        }
+        bizContentMap.put("list", userHealthCards);
         return new HttpResponseBody(GlobalErrorMessage.SUCCESS).setBizContent(JsonUtils.toJSON(bizContentMap));
     }
 }

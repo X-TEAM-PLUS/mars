@@ -5,6 +5,8 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.xteam.plus.mars.common.JsonUtils;
+import org.xteam.plus.mars.common.Logging;
 import org.xteam.plus.mars.dao.*;
 import org.xteam.plus.mars.domain.*;
 import org.xteam.plus.mars.gateway.service.provider.impl.WxPayServiceAppInfoServiceImpl;
@@ -12,6 +14,7 @@ import org.xteam.plus.mars.manager.OrdersManager;
 import org.xteam.plus.mars.type.AccountDetailTypeEnum;
 import org.xteam.plus.mars.type.CardStatusTypeEnum;
 import org.xteam.plus.mars.type.OrderTypeEnum;
+import org.xteam.plus.mars.type.UserLevelEnum;
 import org.xteam.plus.mars.wx.bean.PayOrderInfo;
 
 import javax.annotation.Resource;
@@ -28,7 +31,7 @@ import java.util.*;
  */
 
 @Service
-public class OrdersManagerImpl implements OrdersManager {
+public class OrdersManagerImpl extends Logging implements OrdersManager {
     private static final Log log = LogFactory.getLog(OrdersManagerImpl.class);
     @javax.annotation.Resource
     private OrdersDao ordersDao;
@@ -199,8 +202,21 @@ public class OrdersManagerImpl implements OrdersManager {
             throw new Exception("更新订单数据失败");
         }
         if (orders.getOrderType() == OrderTypeEnum.PLATFORM_STRAIGHT.getCode()) {
+            BigDecimal buyUserId = orders.getBuyerUserId();
+            UserInfo userInfo = userInfoDao.get(new UserInfo().setUserId(buyUserId));
+            // 如果用户是游客，直接提升为会员
+            if (userInfo.getUserLevel() == UserLevelEnum.TOURIST.getCode()) {
+                userInfo.setUserLevel(UserLevelEnum.MEMBER.getCode());
+                logInfo("用户ID [" + userInfo.getUserId() + "] 开始升级为会员 ");
+                count = userInfoDao.update(userInfo);
+                if (count <= 0) {
+                    throw new Exception("升级用户等级失败,更新数据库为" + count + "!");
+                }
+            }
+            List<UserHealthCard> userHealthCards = userHealthCardDao.queryForActiveUser(new UserHealthCard().setActivateUserId(userInfo.getUserId()));
             // 插入卡
             for (int i = 0; i < orders.getProductNum(); i++) {
+
                 UserHealthCard userHealthCard = new UserHealthCard();
                 userHealthCard.setCreated(new Date());
                 userHealthCard.setProductId(orders.getProductId());
@@ -210,10 +226,17 @@ public class OrdersManagerImpl implements OrdersManager {
                 userHealthCard.setSendPeriodMode(product.getSendPeriodMode());
                 userHealthCard.setSendPeriod(product.getSendPeriod());
                 userHealthCard.setSendTotalCount(product.getSendTotalCount());
-                userHealthCard.setStatus(CardStatusTypeEnum.NOT_ATIVE.getCode());
                 userHealthCard.setBuyerUserId(orders.getBuyerUserId());
                 userHealthCard.setSendCount(0);
                 userHealthCard.setOrderNo(orders.getOrderNo());
+                if (userHealthCards != null && userHealthCards.size() > 0) {
+                    userHealthCard.setStatus(CardStatusTypeEnum.NOT_ATIVE.getCode());
+                } else {
+                    logInfo("用户购买卡自己激活 [" + JsonUtils.toJSON(userHealthCard) + "]");
+                    userHealthCard.setStatus(CardStatusTypeEnum.ATIVE.getCode());
+                    userHealthCard.setActivateUserId(orders.getBuyerUserId());
+                }
+
                 userHealthCardDao.insert(userHealthCard);
                 // 插入账户明细表
                 AccountDetail accountDetail = new AccountDetail();

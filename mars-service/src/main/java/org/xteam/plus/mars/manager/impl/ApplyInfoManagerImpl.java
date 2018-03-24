@@ -4,10 +4,16 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.xteam.plus.mars.common.Logging;
 import org.xteam.plus.mars.dao.ApplyInfoDao;
+import org.xteam.plus.mars.dao.UserInfoDao;
 import org.xteam.plus.mars.domain.ApplyInfo;
+import org.xteam.plus.mars.domain.UserInfo;
 import org.xteam.plus.mars.manager.ApplyInfoManager;
+import org.xteam.plus.mars.type.ApplayTypeEnum;
+import org.xteam.plus.mars.type.UserLevelEnum;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -19,8 +25,12 @@ import java.util.List;
  */
 
 @Service
-public class ApplyInfoManagerImpl implements ApplyInfoManager {
+public class ApplyInfoManagerImpl extends Logging implements ApplyInfoManager {
     private static final Log log = LogFactory.getLog(ApplyInfoManagerImpl.class);
+
+    @Resource
+    private UserInfoDao userInfoDao;
+
     @javax.annotation.Resource
     private ApplyInfoDao applyInfoDao;
 
@@ -33,6 +43,12 @@ public class ApplyInfoManagerImpl implements ApplyInfoManager {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int insert(ApplyInfo applyInfo) throws Exception {
+        if (applyInfo.getApplyType() == ApplayTypeEnum.SOCIAL.getCode()) {
+            logInfo("用户ID["+applyInfo.getUserId()+"] 正在进行社工升级申请，系统将直接升级为社工");
+            UserInfo userInfo = userInfoDao.get(new UserInfo().setUserId(applyInfo.getUserId()));
+            userInfo.setUserLevel(UserLevelEnum.SOCIAL.getCode());
+            userInfoDao.update(userInfo);
+        }
         return applyInfoDao.insert(applyInfo);
     }
 

@@ -12,6 +12,8 @@ import org.xteam.plus.mars.gateway.service.provider.HttpResponseBody;
 import org.xteam.plus.mars.gateway.service.provider.check.UserLevelApplyCheckService;
 import org.xteam.plus.mars.gateway.service.provider.impl.body.req.UserApplyInfoReqVO;
 import org.xteam.plus.mars.manager.ApplyInfoManager;
+import org.xteam.plus.mars.manager.UserInfoManager;
+import org.xteam.plus.mars.type.ApplayTypeEnum;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -30,6 +32,9 @@ public class UserLevelApplyServiceImpl extends Logging implements GateWayService
 
     @Resource
     private UserLevelApplyCheckService userLevelApplyCheckService;
+
+    @Resource
+    private UserInfoManager userInfoManager;
 
     @Override
     public String getMethodName() {

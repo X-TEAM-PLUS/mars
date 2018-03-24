@@ -244,7 +244,7 @@ public class WeixinNotifyWebServiceProvider extends Logging {
             }
             // 卖卡地址
             if (map.get("cardNo") != null && !map.get("cardNo").equals("")) {
-                return new ModelAndView("redirect:/" + map.get("backUrl").toString() + "?userId=" + userInfo.getUserId() + "&cardNo=" + map.get("cardNo").toString());
+                return new ModelAndView("redirect:/" + map.get("backUrl").toString() + "?cardNo=" + map.get("cardNo").toString());
             }
             return new ModelAndView("redirect:/" + map.get("backUrl").toString());
 

@@ -436,6 +436,17 @@
                     ]]>
                 </if>
             </if>
+
+            <if test="activateUserId!=null ">
+                <![CDATA[
+                    and TMUHC.ACTIVATE_USER_ID=#{activateUserId,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="buyerUserId!=null ">
+                <![CDATA[
+                    and TMUHC.BUYER_USER_ID=#{buyerUserId,jdbcType=INTEGER}
+                    ]]>
+            </if>
         </where>
     </sql>
 

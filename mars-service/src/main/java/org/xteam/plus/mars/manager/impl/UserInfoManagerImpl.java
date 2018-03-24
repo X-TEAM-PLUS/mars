@@ -141,6 +141,9 @@ public class UserInfoManagerImpl implements UserInfoManager {
     private UserInfo convertRealName(UserInfo userInfos) {
 
         try {
+            if (userInfos == null) {
+                return null;
+            }
             userInfos.setRealName(URLDecoder.decode(userInfos.getRealName(), "utf-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

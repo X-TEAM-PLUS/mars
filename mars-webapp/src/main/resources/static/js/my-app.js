@@ -758,11 +758,12 @@ function shardWeixin(cardNo) {
                     'onMenuShareQZone']
                 // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
             });
+            app.dialog.alert("分享内容开始 link[" + '' + document.domain + '/weixin/goOauth?backUrl=shard_sell.html&cardNo=' + cardNo + "]");
             wx.ready(function () {
                 wx.onMenuShareAppMessage({
                     title: '健康卡购买', // 分享标题
                     desc: '用户' + sellUserInfo.nickName + "给您分享了他的健康卡", // 分享描述
-                    link: 'http://t.kuai-kaifa.com/weixin/goOauth?backUrl=shard_sell.html&cardNo=' + cardNo, // 分享链接
+                    link: 'http://' + document.domain + '/weixin/goOauth?backUrl=shard_sell.html&cardNo=' + cardNo, // 分享链接
                     imgUrl: sellUserInfo.wxHeadPortrait, // 分享图标
                     type: '', // 分享类型,music、video或link，不填默认为link
                     dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
@@ -774,6 +775,7 @@ function shardWeixin(cardNo) {
                         // 用户取消分享后执行的回调函数
                     }
                 });
+
             });
             _system._guide(true);
         } else {
@@ -887,7 +889,11 @@ function doLogin(formData) {
             localStorage.setItem(TOKEN, bizContent.token);
             // 微信端内进行跳转
             if (typeof WeixinJSBridge != "undefined") {
-                location.href = "http://" + document.domain + "/weixin/goOauth?backUrl=index.html&cipherTxt=" + bizContent.token;
+                if (cardNo != undefined && cardNo != "") {
+                    location.href = "http://" + document.domain + "/weixin/goOauth?backUrl=shard_sell.html&cipherTxt=" + bizContent.token + "&cardNo=" + cardNo;
+                } else {
+                    location.href = "http://" + document.domain + "/weixin/goOauth?backUrl=index.html&cipherTxt=" + bizContent.token;
+                }
             } else {
                 memberView.router.navigate('/', {
                     history: true
@@ -898,7 +904,6 @@ function doLogin(formData) {
         }
     });
 }
-
 
 /**
  * 显示会员销售信息
@@ -912,27 +917,27 @@ function viewMarketingInformation(token) {
         logInfo(bizContent);
         var bizContent = JSON.parse(data.bizContent);
         logInfo(bizContent);
-        document.getElementById("userLevel").innerText=bizContent.userLevel;
-        document.getElementById("directReachCount").innerText=bizContent.refereeUserCount+"/500";
-        if(bizContent.refereeUserCount==500){
-            document.getElementById("isDirectReach").innerText="已达成";
-        }else{
-            document.getElementById("isDirectReach").innerText="未达成";
+        document.getElementById("userLevel").innerText = bizContent.userLevel;
+        document.getElementById("directReachCount").innerText = bizContent.refereeUserCount + "/500";
+        if (bizContent.refereeUserCount == 500) {
+            document.getElementById("isDirectReach").innerText = "已达成";
+        } else {
+            document.getElementById("isDirectReach").innerText = "未达成";
         }
-        app.progressbar.set('#directReachProgressbar1', bizContent.refereeUserCount*100/500.0);
+        app.progressbar.set('#directReachProgressbar1', bizContent.refereeUserCount * 100 / 500.0);
 
-        if( bizContent.userTeamList.length>0){
-            document.getElementById("indirectReachCount1").innerText=bizContent.userTeamList[0].userCount+"/500";
-            app.progressbar.set('#indirectReachProgressbar1',bizContent.userTeamList[0].userCount*100/500.0);
+        if (bizContent.userTeamList.length > 0) {
+            document.getElementById("indirectReachCount1").innerText = bizContent.userTeamList[0].userCount + "/500";
+            app.progressbar.set('#indirectReachProgressbar1', bizContent.userTeamList[0].userCount * 100 / 500.0);
         }
-        if( bizContent.userTeamList.length>1){
-            document.getElementById("indirectReachCount2").innerText=bizContent.userTeamList[1].userCount+"/500";
-            if(bizContent.userTeamList[0].userCount==500 && bizContent.userTeamList[1].userCount==500){
-                document.getElementById("isIndirectReach").innerText="已达成";
-            }else{
-                document.getElementById("isIndirectReach").innerText="未达成";
+        if (bizContent.userTeamList.length > 1) {
+            document.getElementById("indirectReachCount2").innerText = bizContent.userTeamList[1].userCount + "/500";
+            if (bizContent.userTeamList[0].userCount == 500 && bizContent.userTeamList[1].userCount == 500) {
+                document.getElementById("isIndirectReach").innerText = "已达成";
+            } else {
+                document.getElementById("isIndirectReach").innerText = "未达成";
             }
-            app.progressbar.set('#indirectReachProgressbar2',bizContent.userTeamList[1].userCount*100/500.0);
+            app.progressbar.set('#indirectReachProgressbar2', bizContent.userTeamList[1].userCount * 100 / 500.0);
         }
     });
 }
@@ -950,27 +955,27 @@ function viewMarketingInformationByLishi(token) {
         logInfo(bizContent);
         var bizContent = JSON.parse(data.bizContent);
         logInfo(bizContent);
-        document.getElementById("userLevel").innerText=bizContent.userLevel;
-        document.getElementById("directReachCount").innerText=bizContent.refereeUserCount+"/1500";
-        if(bizContent.refereeUserCount==500){
-            document.getElementById("isDirectReach").innerText="已达成";
-        }else{
-            document.getElementById("isDirectReach").innerText="未达成";
+        document.getElementById("userLevel").innerText = bizContent.userLevel;
+        document.getElementById("directReachCount").innerText = bizContent.refereeUserCount + "/1500";
+        if (bizContent.refereeUserCount == 500) {
+            document.getElementById("isDirectReach").innerText = "已达成";
+        } else {
+            document.getElementById("isDirectReach").innerText = "未达成";
         }
-        app.progressbar.set('#directReachProgressbar1', bizContent.refereeUserCount*100/1500.0);
+        app.progressbar.set('#directReachProgressbar1', bizContent.refereeUserCount * 100 / 1500.0);
 
-        if( bizContent.userTeamList.length>0){
-            document.getElementById("indirectReachCount1").innerText=bizContent.userTeamList[0].userCount+"/1500";
-            app.progressbar.set('#indirectReachProgressbar1',bizContent.userTeamList[0].userCount*100/1500.0);
+        if (bizContent.userTeamList.length > 0) {
+            document.getElementById("indirectReachCount1").innerText = bizContent.userTeamList[0].userCount + "/1500";
+            app.progressbar.set('#indirectReachProgressbar1', bizContent.userTeamList[0].userCount * 100 / 1500.0);
         }
-        if( bizContent.userTeamList.length>1){
-            document.getElementById("indirectReachCount2").innerText=bizContent.userTeamList[1].userCount+"/1500";
-            if(bizContent.userTeamList[0].userCount==1500 && bizContent.userTeamList[1].userCount==1500){
-                document.getElementById("isIndirectReach").innerText="已达成";
-            }else{
-                document.getElementById("isIndirectReach").innerText="未达成";
+        if (bizContent.userTeamList.length > 1) {
+            document.getElementById("indirectReachCount2").innerText = bizContent.userTeamList[1].userCount + "/1500";
+            if (bizContent.userTeamList[0].userCount == 1500 && bizContent.userTeamList[1].userCount == 1500) {
+                document.getElementById("isIndirectReach").innerText = "已达成";
+            } else {
+                document.getElementById("isIndirectReach").innerText = "未达成";
             }
-            app.progressbar.set('#indirectReachProgressbar2',bizContent.userTeamList[1].userCount*100/1500.0);
+            app.progressbar.set('#indirectReachProgressbar2', bizContent.userTeamList[1].userCount * 100 / 1500.0);
         }
     });
 }
