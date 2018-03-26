@@ -748,7 +748,6 @@ function shardWeixin(cardNo) {
         if (ResponseCode.SUCCESS == response.code) {
             var bizContent = JSON.parse(response.bizContent);
             var sellUserInfo = bizContent.sellUser;
-            alert("bizContent.signature:"+bizContent.signature);
             wx.config({
                 debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
                 appId: bizContent.appId, // 必填，公众号的唯一标识
@@ -761,11 +760,11 @@ function shardWeixin(cardNo) {
             });
 
             wx.ready(function () {
-                app.dialog.alert('http://' + document.domain + '/shard_sell.html');
+                app.dialog.alert('http://' + document.domain + '/index.html');
                 wx.onMenuShareAppMessage({
                     title: '健康卡购买', // 分享标题
                     desc: '用户给您分享了他的健康卡', // 分享描述
-                    link: 'http://' + document.domain + '/shard_sell.html', // 分享链接
+                    link: 'http://' + document.domain + '/index.html', // 分享链接
                     imgUrl: sellUserInfo.wxHeadPortrait, // 分享图标
                     type: '', // 分享类型,music、video或link，不填默认为link
                     dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
