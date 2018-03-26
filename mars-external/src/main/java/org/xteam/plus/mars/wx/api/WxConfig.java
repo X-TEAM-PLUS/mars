@@ -46,6 +46,8 @@ public class WxConfig {
     private volatile String pkcs8;
 
     private volatile String payIp;
+    // 微信分享回调
+    private volatile String shardUrl;
 
     public WxConfig() {
         //写读配置文件代码
@@ -84,6 +86,9 @@ public class WxConfig {
             if (StringUtils.isNotBlank(this.pkcs8)) this.pkcs8 = this.pkcs8.trim();
             this.payIp = p.getProperty("wx.pay.ip");
             if (StringUtils.isNotBlank(this.payIp)) this.payIp = this.payIp.trim();
+            this.shardUrl = p.getProperty("wx.shard.url");
+            if (StringUtils.isNotBlank(this.shardUrl)) this.shardUrl = this.shardUrl.trim();
+
             inStream.close();
         } catch (IOException e) {
             try {
@@ -218,6 +223,9 @@ public class WxConfig {
                 + "]";
     }
 
+    public String getShardUrl() {
+        return shardUrl;
+    }
 
     public String getOauth2RedirectUri() {
         return oauth2RedirectUri;

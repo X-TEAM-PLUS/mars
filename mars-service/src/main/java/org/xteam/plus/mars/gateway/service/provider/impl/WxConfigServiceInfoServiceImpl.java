@@ -53,10 +53,14 @@ public class WxConfigServiceInfoServiceImpl extends Logging implements GateWaySe
         if (hashMap == null || hashMap.isEmpty() || hashMap.get("cardNo") == null) {
             return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
         }
+        UserHealthCard userHealthCard = userHealthCardManager.get(new UserHealthCard().setCardNo(new BigDecimal(hashMap.get("cardNo").toString())));
+        if (userHealthCard == null) {
+            return new HttpResponseBody(GlobalErrorMessage.OBJECT_ISNULL);
+        }
         String timeStamp = Long.toString(new Date().getTime()).substring(0, 10);
         String ticket = iService.getJsapiTicket();
         String nonceStr = StringUtils.randomStr(32);
-        String shardUrl = "jsapi_ticket=" + ticket + "&noncestr=" + nonceStr + "&timestamp=" + timeStamp + "&url=http://t.kuai-kaifa.com/index.html?userId=2000003";
+        String shardUrl = "jsapi_ticket=" + ticket + "&noncestr=" + nonceStr + "&timestamp=" + timeStamp + "&url=" + WxConfig.getInstance().getShardUrl() + "/shard_sell.html";
         logInfo("shardUrl  [" + shardUrl + "]");
         params.put("appId", WxConfig.getInstance().getAppId());
         params.put("timeStamp", timeStamp);
@@ -66,10 +70,8 @@ public class WxConfigServiceInfoServiceImpl extends Logging implements GateWaySe
         crypt.update(shardUrl.getBytes("UTF-8"));
         String signature = byteToHex(crypt.digest());
         params.put("signature", signature); // paySign的生成规则和Sign的生成规则一致
-        UserHealthCard userHealthCard = userHealthCardManager.get(new UserHealthCard().setCardNo(new BigDecimal(hashMap.get("cardNo").toString())));
-        if (userHealthCard == null) {
-            return new HttpResponseBody(GlobalErrorMessage.OBJECT_ISNULL);
-        }
+
+
         UserInfo userInfo = userInfoManager.get(new UserInfo().setUserId(userHealthCard.getBuyerUserId()));
         if (userInfo == null) {
             return new HttpResponseBody(GlobalErrorMessage.SELL_USER_NOT_FIND);
