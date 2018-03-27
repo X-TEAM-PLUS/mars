@@ -219,7 +219,11 @@ function loveBuTieClick() {
             memberView.router.navigate('/lovebutie/', {
                 history: true
             });
-        } else {
+        } else if (userInfo.userLevel == 1){
+            memberView.router.navigate('/appLevel/', {
+                history: true
+            });
+        }else {
             memberView.router.navigate('/member_rk/', {
                 history: true
             });
