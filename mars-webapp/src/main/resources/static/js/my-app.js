@@ -758,17 +758,17 @@ function shardWeixin(cardNo) {
                     'onMenuShareQZone']
                 // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
             });
+
             wx.ready(function() {
                 app.dialog.alert(bizContent.shardLink);
                 wx.onMenuShareAppMessage({
                     title: '健康卡购买', // 分享标题
                     desc: '用户给您分享了他的健康卡', // 分享描述
-                    link: encodeURIComponent(bizContent.shardLink), // 分享链接
+                    link: encodeURI(bizContent.shardLink), // 分享链接
                    // link: 'http://' + document.domain + '/weixin/goOauth?backUrl=shard_sell.html&cardNo=' + cardNo, // 分享链接
                    // link: 'http://t.kuai-kaifa.com/weixin/goOauth?backUrl=shard_sell.html&cardNo='+cardNo, // 分享链接
-                   // path:'/index.html?cardNo'+cardNo,
                     imgUrl: sellUserInfo.wxHeadPortrait, // 分享图标
-                    type: 'link', // 分享类型,music、video或link，不填默认为link
+                    type: '', // 分享类型,music、video或link，不填默认为link
                     dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
                     success: function () {
                         // 用户确认分享后执行的回调函数
