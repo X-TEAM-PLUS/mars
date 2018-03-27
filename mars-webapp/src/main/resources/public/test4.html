@@ -1,152 +1,214 @@
-﻿﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+﻿<!DOCTYPE html>
+<html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>手机端微信朋友圈微信分享代码 - xw素材网</title>
-    <meta name="viewport"
-          content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
-    <meta name="format-detection" content="telephone=no">
     <meta charset="utf-8">
+    <title>微信JS-SDK Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+    <link rel="stylesheet" href="http://203.195.235.76/jssdk/css/style.css">
 </head>
-<body>
-<button class="button2" onclick="_system._guide(true)">
-    <img src="img/icon_msg.png">&nbsp;发送给朋友
-</button>
-<div class="list">
-    <div id="mess_share">
-        <div id="share_1">
-            <button class="button2" onclick="_system._guide(true)">
-                <img src="img/icon_msg.png">&nbsp;发送给朋友
-            </button>
-        </div>
-        <div id="share_2">
-            <button class="button2" onclick="_system._guide(true)">
-                <img src="img/icon_timeline.png">&nbsp;分享到朋友圈
-            </button>
-        </div>
-        <div class="clr"></div>
+<body ontouchstart="">
+<div class="wxapi_container">
+    <div class="wxapi_index_container">
+        <ul class="label_box lbox_close wxapi_index_list">
+            <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-basic">基础接口</a></li>
+            <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-share">分享接口</a></li>
+            <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-image">图像接口</a></li>
+            <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-voice">音频接口</a></li>
+            <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-smart">智能接口</a></li>
+            <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-device">设备信息接口</a></li>
+            <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-location">地理位置接口</a></li>
+            <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-webview">界面操作接口</a></li>
+            <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-scan">微信扫一扫接口</a></li>
+            <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-shopping">微信小店接口</a></li>
+            <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-card">微信卡券接口</a></li>
+            <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-pay">微信支付接口</a></li>
+        </ul>
+    </div>
+    <div class="lbox_close wxapi_form">
+        <h3 id="menu-basic">基础接口</h3>
+        <span class="desc">判断当前客户端是否支持指定JS接口</span>
+        <button class="btn btn_primary" id="checkJsApi">checkJsApi</button>
+
+        <h3 id="menu-share">分享接口</h3>
+        <span class="desc">获取“分享到朋友圈”按钮点击状态及自定义分享内容接口</span>
+        <button class="btn btn_primary" id="onMenuShareTimeline">onMenuShareTimeline</button>
+        <span class="desc">获取“分享给朋友”按钮点击状态及自定义分享内容接口</span>
+        <button class="btn btn_primary" id="onMenuShareAppMessage">onMenuShareAppMessage</button>
+        <span class="desc">获取“分享到QQ”按钮点击状态及自定义分享内容接口</span>
+        <button class="btn btn_primary" id="onMenuShareQQ">onMenuShareQQ</button>
+        <span class="desc">获取“分享到腾讯微博”按钮点击状态及自定义分享内容接口</span>
+        <button class="btn btn_primary" id="onMenuShareWeibo">onMenuShareWeibo</button>
+        <span class="desc">获取“分享到QZone”按钮点击状态及自定义分享内容接口</span>
+        <button class="btn btn_primary" id="onMenuShareQZone">onMenuShareQZone</button>
+
+        <h3 id="menu-image">图像接口</h3>
+        <span class="desc">拍照或从手机相册中选图接口</span>
+        <button class="btn btn_primary" id="chooseImage">chooseImage</button>
+        <span class="desc">预览图片接口</span>
+        <button class="btn btn_primary" id="previewImage">previewImage</button>
+        <span class="desc">上传图片接口</span>
+        <button class="btn btn_primary" id="uploadImage">uploadImage</button>
+        <span class="desc">下载图片接口</span>
+        <button class="btn btn_primary" id="downloadImage">downloadImage</button>
+
+        <h3 id="menu-voice">音频接口</h3>
+        <span class="desc">开始录音接口</span>
+        <button class="btn btn_primary" id="startRecord">startRecord</button>
+        <span class="desc">停止录音接口</span>
+        <button class="btn btn_primary" id="stopRecord">stopRecord</button>
+        <span class="desc">播放语音接口</span>
+        <button class="btn btn_primary" id="playVoice">playVoice</button>
+        <span class="desc">暂停播放接口</span>
+        <button class="btn btn_primary" id="pauseVoice">pauseVoice</button>
+        <span class="desc">停止播放接口</span>
+        <button class="btn btn_primary" id="stopVoice">stopVoice</button>
+        <span class="desc">上传语音接口</span>
+        <button class="btn btn_primary" id="uploadVoice">uploadVoice</button>
+        <span class="desc">下载语音接口</span>
+        <button class="btn btn_primary" id="downloadVoice">downloadVoice</button>
+
+        <h3 id="menu-smart">智能接口</h3>
+        <span class="desc">识别音频并返回识别结果接口</span>
+        <button class="btn btn_primary" id="translateVoice">translateVoice</button>
+
+        <h3 id="menu-device">设备信息接口</h3>
+        <span class="desc">获取网络状态接口</span>
+        <button class="btn btn_primary" id="getNetworkType">getNetworkType</button>
+
+        <h3 id="menu-location">地理位置接口</h3>
+        <span class="desc">使用微信内置地图查看位置接口</span>
+        <button class="btn btn_primary" id="openLocation">openLocation</button>
+        <span class="desc">获取地理位置接口</span>
+        <button class="btn btn_primary" id="getLocation">getLocation</button>
+
+        <h3 id="menu-webview">界面操作接口</h3>
+        <span class="desc">隐藏右上角菜单接口</span>
+        <button class="btn btn_primary" id="hideOptionMenu">hideOptionMenu</button>
+        <span class="desc">显示右上角菜单接口</span>
+        <button class="btn btn_primary" id="showOptionMenu">showOptionMenu</button>
+        <span class="desc">关闭当前网页窗口接口</span>
+        <button class="btn btn_primary" id="closeWindow">closeWindow</button>
+        <span class="desc">批量隐藏功能按钮接口</span>
+        <button class="btn btn_primary" id="hideMenuItems">hideMenuItems</button>
+        <span class="desc">批量显示功能按钮接口</span>
+        <button class="btn btn_primary" id="showMenuItems">showMenuItems</button>
+        <span class="desc">隐藏所有非基础按钮接口</span>
+        <button class="btn btn_primary" id="hideAllNonBaseMenuItem">hideAllNonBaseMenuItem</button>
+        <span class="desc">显示所有功能按钮接口</span>
+        <button class="btn btn_primary" id="showAllNonBaseMenuItem">showAllNonBaseMenuItem</button>
+
+        <h3 id="menu-scan">微信扫一扫</h3>
+        <span class="desc">调起微信扫一扫接口</span>
+        <button class="btn btn_primary" id="scanQRCode0">scanQRCode(微信处理结果)</button>
+        <button class="btn btn_primary" id="scanQRCode1">scanQRCode(直接返回结果)</button>
+
+        <h3 id="menu-shopping">微信小店接口</h3>
+        <span class="desc">跳转微信商品页接口</span>
+        <button class="btn btn_primary" id="openProductSpecificView">openProductSpecificView</button>
+
+        <h3 id="menu-card">微信卡券接口</h3>
+        <span class="desc">批量添加卡券接口</span>
+        <button class="btn btn_primary" id="addCard">addCard</button>
+        <span class="desc">调起适用于门店的卡券列表并获取用户选择列表</span>
+        <button class="btn btn_primary" id="chooseCard">chooseCard</button>
+        <span class="desc">查看微信卡包中的卡券接口</span>
+        <button class="btn btn_primary" id="openCard">openCard</button>
+
+        <h3 id="menu-pay">微信支付接口</h3>
+        <span class="desc">发起一个微信支付请求</span>
+        <button class="btn btn_primary" id="chooseWXPay">chooseWXPay</button>
     </div>
 </div>
-<style type="text/css">
-    button {
-        width: 100%;
-        text-align: center;
-        border-radius: 3px;
-    }
-
-    .button2 {
-        font-size: 16px;
-        padding: 8px 0;
-        border: 1px solid #adadab;
-        color: #000000;
-        background-color: #e8e8e8;
-        background-image: linear-gradient(to top, #dbdbdb, #f4f4f4);
-        background-image: -webkit-gradient(linear, 0 100%, 0 0, from(#dbdbdb), to(#f4f4f4));
-        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.45), inset 0 1px 1px #efefef;
-        text-shadow: 0.5px 0.5px 1px #ffffff;
-    }
-
-    .button2:active {
-        background-color: #dedede;
-        background-image: linear-gradient(to top, #cacaca, #e0e0e0);
-        background-image: -webkit-gradient(linear, 0 100%, 0 0, from(#cacaca), to(#e0e0e0));
-    }
-
-    #mess_share {
-        margin: 15px 0;
-    }
-
-    #share_1 {
-        float: left;
-        width: 49%;
-    }
-
-    #share_2 {
-        float: right;
-        width: 49%;
-    }
-
-    #mess_share img {
-        width: 22px;
-        height: 22px;
-    }
-
-    #cover {
-        display: none;
-        position: absolute;
-        left: 0;
-        top: 0;
-        z-index: 18888;
-        background-color: #000000;
-        opacity: 0.7;
-    }
-
-    #guide {
-        display: none;
-        position: absolute;
-        right: 18px;
-        top: 5px;
-        z-index: 19999;
-    }
-
-    #guide img {
-        width: 260px;
-        height: 180px;
-    }
-</style>
-<script type="text/javascript">
-    var _system = {
-        $: function (id) {
-            return document.getElementById(id);
-        },
-        _client: function () {
-            return {
-                w: document.documentElement.scrollWidth,
-                h: document.documentElement.scrollHeight,
-                bw: document.documentElement.clientWidth,
-                bh: document.documentElement.clientHeight
-            };
-        },
-        _scroll: function () {
-            return {
-                x: document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft,
-                y: document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop
-            };
-        },
-        _cover: function (show) {
-            if (show) {
-                this.$("cover").style.display = "block";
-                this.$("cover").style.width = (this._client().bw > this._client().w ? this._client().bw : this._client().w) + "px";
-                this.$("cover").style.height = (this._client().bh > this._client().h ? this._client().bh : this._client().h) + "px";
-            } else {
-                this.$("cover").style.display = "none";
-            }
-        },
-        _guide: function (click) {
-            this._cover(true);
-            this.$("guide").style.display = "block";
-            this.$("guide").style.top = (_system._scroll().y + 5) + "px";
-            window.onresize = function () {
-                _system._cover(true);
-                _system.$("guide").style.top = (_system._scroll().y + 5) + "px";
-            };
-            if (click) {
-                _system.$("cover").onclick = function () {
-                    _system._cover();
-                    _system.$("guide").style.display = "none";
-                    _system.$("cover").onclick = null;
-                    window.onresize = null;
-                };
-            }
-        },
-        _zero: function (n) {
-            return n < 0 ? 0 : n;
-        }
-    }
-</script>
-</div>
-<div id="cover"></div>
-<div id="guide"><img src="images/guide1.png"></div>
-
 </body>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script>
+    /*
+     * 注意：
+     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+     * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     *
+     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+     * 邮箱地址：weixin-open@qq.com
+     * 邮件主题：【微信JS-SDK反馈】具体问题
+     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+     */
+    var bizContent = "{\"cardNo\":\"200000006\"}";
+    $.ajax({
+        url: encodeURI("http://t.kuai-kaifa.com:8080/webservice/api/gateway?channelCode=11&method=com.zhaoanyun.api.gateway.wx.globle.config&bizContent=" + bizContent),
+        type: "GET",
+        datatype: "JSON",
+        success: function (data) {
+            var bizContent = $.parseJSON(data.bizContent);
+            wx.config({
+                debug: false,
+                appId: bizContent.appId, // 必填，公众号的唯一标识
+                timestamp: bizContent.timeStamp, // 必填，生成签名的时间戳
+                nonceStr: bizContent.nonceStr, // 必填，生成签名的随机串
+                signature: bizContent.signature,// 必填，签名，见附录1
+
+                jsApiList: [
+                    'checkJsApi',
+                    'onMenuShareTimeline',
+                    'onMenuShareAppMessage',
+                    'onMenuShareQQ',
+                    'onMenuShareWeibo',
+                    'onMenuShareQZone',
+                    'hideMenuItems',
+                    'showMenuItems',
+                    'hideAllNonBaseMenuItem',
+                    'showAllNonBaseMenuItem',
+                    'translateVoice',
+                    'startRecord',
+                    'stopRecord',
+                    'onVoiceRecordEnd',
+                    'playVoice',
+                    'onVoicePlayEnd',
+                    'pauseVoice',
+                    'stopVoice',
+                    'uploadVoice',
+                    'downloadVoice',
+                    'chooseImage',
+                    'previewImage',
+                    'uploadImage',
+                    'downloadImage',
+                    'getNetworkType',
+                    'openLocation',
+                    'getLocation',
+                    'hideOptionMenu',
+                    'showOptionMenu',
+                    'closeWindow',
+                    'scanQRCode',
+                    'chooseWXPay',
+                    'openProductSpecificView',
+                    'addCard',
+                    'chooseCard',
+                    'openCard'
+                ]
+            });
+
+            wx.ready(function () {
+
+                wx.onMenuShareAppMessage({
+                    title: '健康卡购买', // 分享标题
+                    desc: '用户给您分享了他的健康卡', // 分享描述
+                    link: bizContent.shardLink, // 分享链接
+                    imgUrl: "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2354279463,1770961825&fm=27&gp=0.jpg", // 分享图标
+                    type: '', // 分享类型,music、video或link，不填默认为link
+                    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                    success: function () {
+                        // 用户确认分享后执行的回调函数
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+            });
+        }
+    });
+</script>
+<script src="http://203.195.235.76/jssdk/js/zepto.min.js"></script>
+<script src="http://203.195.235.76/jssdk/js/demo.js"></script>
 </html>

@@ -748,25 +748,75 @@ function shardWeixin(cardNo) {
         if (ResponseCode.SUCCESS == response.code) {
             var bizContent = JSON.parse(response.bizContent);
             var sellUserInfo = bizContent.sellUser;
+
             wx.config({
-                debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                debug: false,
                 appId: bizContent.appId, // 必填，公众号的唯一标识
                 timestamp: bizContent.timeStamp, // 必填，生成签名的时间戳
                 nonceStr: bizContent.nonceStr, // 必填，生成签名的随机串
                 signature: bizContent.signature,// 必填，签名，见附录1
-                jsApiList: ['checkJsApi', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ',
-                    'onMenuShareQZone']
-                // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                jsApiList: [
+                    'checkJsApi',
+                    'onMenuShareTimeline',
+                    'onMenuShareAppMessage',
+                    'onMenuShareQQ',
+                    'onMenuShareWeibo',
+                    'onMenuShareQZone',
+                    'hideMenuItems',
+                    'showMenuItems',
+                    'hideAllNonBaseMenuItem',
+                    'showAllNonBaseMenuItem',
+                    'translateVoice',
+                    'startRecord',
+                    'stopRecord',
+                    'onVoiceRecordEnd',
+                    'playVoice',
+                    'onVoicePlayEnd',
+                    'pauseVoice',
+                    'stopVoice',
+                    'uploadVoice',
+                    'downloadVoice',
+                    'chooseImage',
+                    'previewImage',
+                    'uploadImage',
+                    'downloadImage',
+                    'getNetworkType',
+                    'openLocation',
+                    'getLocation',
+                    'hideOptionMenu',
+                    'showOptionMenu',
+                    'closeWindow',
+                    'scanQRCode',
+                    'chooseWXPay',
+                    'openProductSpecificView',
+                    'addCard',
+                    'chooseCard',
+                    'openCard'
+                ]
             });
 
-            wx.ready(function() {
-                app.dialog.alert(bizContent.shardLink);
+
+            wx.ready(function () {
                 wx.onMenuShareAppMessage({
                     title: '健康卡购买', // 分享标题
                     desc: '用户给您分享了他的健康卡', // 分享描述
-                    link: encodeURIComponent(bizContent.shardLink), // 分享链接
-                   // link: 'http://' + document.domain + '/weixin/goOauth?backUrl=shard_sell.html&cardNo=' + cardNo, // 分享链接
-                   // link: 'http://t.kuai-kaifa.com/weixin/goOauth?backUrl=shard_sell.html&cardNo='+cardNo, // 分享链接
+                    link: bizContent.shardLink, // 分享链接
+                    imgUrl: sellUserInfo.wxHeadPortrait, // 分享图标
+                    type: '', // 分享类型,music、video或link，不填默认为link
+                    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                    success: function () {
+                        // 用户确认分享后执行的回调函数
+                        app.dialog.alert("分享成功");
+                    },
+                    cancel: function () {
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+
+                wx.onMenuShareQQ({
+                    title: '健康卡购买', // 分享标题
+                    desc: '用户给您分享了他的健康卡', // 分享描述
+                    link: bizContent.shardLink, // 分享链接
                     imgUrl: sellUserInfo.wxHeadPortrait, // 分享图标
                     type: '', // 分享类型,music、video或link，不填默认为link
                     dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
@@ -782,7 +832,7 @@ function shardWeixin(cardNo) {
             });
 
             wx.error(function (res) {
-
+                app.dialog.alert("res : " + obj2string(res));
 
             });
 
@@ -792,6 +842,31 @@ function shardWeixin(cardNo) {
             });
         }
     });
+}
+
+function obj2string(o) {
+    var r = [];
+    if (typeof o == "string") {
+        return "\"" + o.replace(/([\'\"\\])/g, "\\$1").replace(/(\n)/g, "\\n").replace(/(\r)/g, "\\r").replace(/(\t)/g, "\\t") + "\"";
+    }
+    if (typeof o == "object") {
+        if (!o.sort) {
+            for (var i in o) {
+                r.push(i + ":" + obj2string(o[i]));
+            }
+            if (!!document.all && !/^\n?function\s*toString\(\)\s*\{\n?\s*\[native code\]\n?\s*\}\n?\s*$/.test(o.toString)) {
+                r.push("toString:" + o.toString.toString());
+            }
+            r = "{" + r.join() + "}";
+        } else {
+            for (var i = 0; i < o.length; i++) {
+                r.push(obj2string(o[i]))
+            }
+            r = "[" + r.join() + "]";
+        }
+        return r;
+    }
+    return o.toString();
 }
 
 /**
