@@ -84,6 +84,13 @@
     z-index:1;
     box-shadow:0 0 2px #8f8f94 inset;
 }
+.bottomfixed2 {
+    position: fixed;
+    bottom: 48px;
+    left: 0;
+    width: 100%;
+    z-index:1;
+}
 
 .bg-color-lightred{
     background-color: #ffe3df;
