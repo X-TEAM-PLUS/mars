@@ -60,7 +60,9 @@ public class WxConfigServiceInfoServiceImpl extends Logging implements GateWaySe
         String timeStamp = Long.toString(System.currentTimeMillis()).substring(0, 10);
         String ticket = iService.getJsapiTicket();
         String nonceStr = StringUtils.randomStr(32).toUpperCase();
-        String shardUrl = "jsapi_ticket=" + ticket + "&noncestr=" + nonceStr + "&timestamp=" + timeStamp + "&url=" + WxConfig.getInstance().getShardUrl() + "/index.html?cardNo="+userHealthCard.getCardNo();
+        String url = WxConfig.getInstance().getShardUrl() + "/index.html";
+//        String shardUrl = "jsapi_ticket=" + ticket + "&noncestr=" + nonceStr + "&timestamp=" + timeStamp + "&url=" + WxConfig.getInstance().getShardUrl() + "/index.html?cardNo="+userHealthCard.getCardNo();
+        String shardUrl = "jsapi_ticket=" + ticket + "&noncestr=" + nonceStr + "&timestamp=" + timeStamp + "&url=" + url;
         logInfo("shardUrl  [" + shardUrl + "]");
         params.put("appId", WxConfig.getInstance().getAppId());
         params.put("timeStamp", timeStamp);
@@ -70,8 +72,8 @@ public class WxConfigServiceInfoServiceImpl extends Logging implements GateWaySe
         crypt.update(shardUrl.getBytes("UTF-8"));
         String signature = byteToHex(crypt.digest());
         params.put("signature", signature); // paySign的生成规则和Sign的生成规则一致
-        params.put("shardLink",WxConfig.getInstance().getShardUrl() + "/index.html?cardNo="+userHealthCard.getCardNo());
-
+//        params.put("shardLink",WxConfig.getInstance().getShardUrl() + "/index.html?cardNo="+userHealthCard.getCardNo());
+        params.put("shardLink",url);
         UserInfo userInfo = userInfoManager.get(new UserInfo().setUserId(userHealthCard.getBuyerUserId()));
         if (userInfo == null) {
             return new HttpResponseBody(GlobalErrorMessage.SELL_USER_NOT_FIND);
