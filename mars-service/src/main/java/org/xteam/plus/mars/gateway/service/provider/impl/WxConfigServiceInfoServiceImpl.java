@@ -57,7 +57,7 @@ public class WxConfigServiceInfoServiceImpl extends Logging implements GateWaySe
         if (userHealthCard == null) {
             return new HttpResponseBody(GlobalErrorMessage.OBJECT_ISNULL);
         }
-        String timeStamp = Long.toString(new Date().getTime()).substring(0, 10);
+        String timeStamp = Long.toString(System.currentTimeMillis()).substring(0, 10);
         String ticket = iService.getJsapiTicket();
         String nonceStr = StringUtils.randomStr(32).toUpperCase();
         String shardUrl = "jsapi_ticket=" + ticket + "&noncestr=" + nonceStr + "&timestamp=" + timeStamp + "&url=" + WxConfig.getInstance().getShardUrl() + "/index.html?cardNo="+userHealthCard.getCardNo();

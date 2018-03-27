@@ -763,9 +763,9 @@ function shardWeixin(cardNo) {
                 wx.onMenuShareAppMessage({
                     title: '健康卡购买', // 分享标题
                     desc: '用户给您分享了他的健康卡', // 分享描述
-                   // link: bizContent.shardLink, // 分享链接
+                    link: bizContent.shardLink, // 分享链接
                    // link: 'http://' + document.domain + '/weixin/goOauth?backUrl=shard_sell.html&cardNo=' + cardNo, // 分享链接
-                    link: 'http://t.kuai-kaifa.com/weixin/goOauth?backUrl=shard_sell.html&cardNo='+cardNo, // 分享链接
+                   // link: 'http://t.kuai-kaifa.com/weixin/goOauth?backUrl=shard_sell.html&cardNo='+cardNo, // 分享链接
                    // path:'/index.html?cardNo'+cardNo,
                     imgUrl: sellUserInfo.wxHeadPortrait, // 分享图标
                     type: 'link', // 分享类型,music、video或link，不填默认为link
