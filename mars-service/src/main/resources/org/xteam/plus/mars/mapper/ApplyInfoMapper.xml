@@ -11,10 +11,6 @@
         <result column="USER_ID" property="userId" jdbcType="DECIMAL"/>
         <result column="APPLY_WAY" property="applyWay" jdbcType="INTEGER"/>
         <result column="APPLY_TYPE" property="applyType" jdbcType="INTEGER"/>
-        <result column="REAL_NAME" property="realName" jdbcType="VARCHAR"/>
-        <result column="MOBILE" property="mobile" jdbcType="VARCHAR"/>
-        <result column="ID_NUMBER" property="idNumber" jdbcType="VARCHAR"/>
-        <result column="INTERESTS" property="interests" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--公用选择列-->
@@ -27,10 +23,6 @@
         ,USER_ID
         ,APPLY_WAY
         ,APPLY_TYPE
-        ,REAL_NAME
-        ,MOBILE
-        ,ID_NUMBER
-        ,INTERESTS
     </sql>
 
     <!--公用查询条件-->
@@ -97,10 +89,6 @@
         ,USER_ID
         ,APPLY_WAY
         ,APPLY_TYPE
-        ,REAL_NAME
-        ,MOBILE
-        ,ID_NUMBER
-        ,INTERESTS
         )values(
         #{created,jdbcType=TIMESTAMP}
         ,#{updated,jdbcType=TIMESTAMP}
@@ -109,10 +97,6 @@
         ,#{userId,jdbcType=DECIMAL}
         ,#{applyWay,jdbcType=INTEGER}
         ,#{applyType,jdbcType=INTEGER}
-        ,#{realName,jdbcType=VARCHAR}
-        ,#{mobile,jdbcType=VARCHAR}
-        ,#{idNumber,jdbcType=VARCHAR}
-        ,#{interests,jdbcType=VARCHAR}
         )
     </insert>
 
@@ -126,10 +110,6 @@
         ,USER_ID
         ,APPLY_WAY
         ,APPLY_TYPE
-        ,REAL_NAME
-        ,MOBILE
-        ,ID_NUMBER
-        ,INTERESTS
         )values
         <foreach collection="list" item="item" index="index" separator=",">
             (
@@ -140,10 +120,6 @@
             ,#{item.userId,jdbcType=DECIMAL}
             ,#{item.applyWay,jdbcType=INTEGER}
             ,#{item.applyType,jdbcType=INTEGER}
-            ,#{item.realName,jdbcType=VARCHAR}
-            ,#{item.mobile,jdbcType=VARCHAR}
-            ,#{item.idNumber,jdbcType=VARCHAR}
-            ,#{item.interests,jdbcType=VARCHAR}
             )
         </foreach>
     </insert>
@@ -190,10 +166,6 @@
         ,USER_ID
         ,APPLY_WAY
         ,APPLY_TYPE
-        ,REAL_NAME
-        ,MOBILE
-        ,ID_NUMBER
-        ,INTERESTS
         from T_MARS_APPLY_INFO
         where APPLY_ID= #{applyId,jdbcType=DECIMAL}
     </select>

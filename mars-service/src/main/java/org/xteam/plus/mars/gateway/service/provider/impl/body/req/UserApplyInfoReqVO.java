@@ -11,26 +11,13 @@ import java.math.BigDecimal;
 public class UserApplyInfoReqVO implements Serializable {
 
 
-    private ApplayTypeEnum applayTypeEnum;
-
     private String reason;
 
     private String realName;
 
-    private String mobile;
-
     private String idNumber;
 
     private String interests;
-
-
-    public ApplayTypeEnum getApplayTypeEnum() {
-        return applayTypeEnum;
-    }
-
-    public void setApplayTypeEnum(ApplayTypeEnum applayTypeEnum) {
-        this.applayTypeEnum = applayTypeEnum;
-    }
 
     public String getReason() {
         return reason;
@@ -46,14 +33,6 @@ public class UserApplyInfoReqVO implements Serializable {
 
     public void setRealName(String realName) {
         this.realName = realName;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
     }
 
     public String getIdNumber() {

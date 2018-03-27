@@ -19,7 +19,6 @@ import org.xteam.plus.mars.wx.util.StringUtils;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.security.MessageDigest;
-import java.util.Date;
 import java.util.Formatter;
 import java.util.HashMap;
 
@@ -73,7 +72,7 @@ public class WxConfigServiceInfoServiceImpl extends Logging implements GateWaySe
         String signature = byteToHex(crypt.digest());
         params.put("signature", signature); // paySign的生成规则和Sign的生成规则一致
 //        params.put("shardLink",WxConfig.getInstance().getShardUrl() + "/index.html?cardNo="+userHealthCard.getCardNo());
-        params.put("shardLink",url);
+        params.put("shardLink", WxConfig.getInstance().getShardUrl()+"/shard_sell.html?cardNo=" + userHealthCard.getCardNo());
         UserInfo userInfo = userInfoManager.get(new UserInfo().setUserId(userHealthCard.getBuyerUserId()));
         if (userInfo == null) {
             return new HttpResponseBody(GlobalErrorMessage.SELL_USER_NOT_FIND);

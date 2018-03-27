@@ -43,12 +43,23 @@ public class ApplyInfoManagerImpl extends Logging implements ApplyInfoManager {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int insert(ApplyInfo applyInfo) throws Exception {
-        if (applyInfo.getApplyType() == ApplayTypeEnum.SOCIAL.getCode()) {
-            logInfo("用户ID["+applyInfo.getUserId()+"] 正在进行社工升级申请，系统将直接升级为社工");
+        if (applyInfo.getStatus() == 1) {
+            logInfo("用户ID[" + applyInfo.getUserId() + "] 正在进行" + ApplayTypeEnum.valueOf(applyInfo.getApplyType()) + "升级申请，系统将自动审核通过，进行升级");
             UserInfo userInfo = userInfoDao.get(new UserInfo().setUserId(applyInfo.getUserId()));
-            userInfo.setUserLevel(UserLevelEnum.SOCIAL.getCode());
+            if (applyInfo.getApplyType() == ApplayTypeEnum.SOCIAL.getCode()) {
+                userInfo.setUserLevel(UserLevelEnum.SOCIAL.getCode());
+            }
+            if (applyInfo.getApplyType() == ApplayTypeEnum.STANDING_DIRECTOR.getCode()) {
+                userInfo.setUserLevel(UserLevelEnum.STANDING_DIRECTOR.getCode());
+            }
+            if (applyInfo.getApplyType() == ApplayTypeEnum.DIRECTOR.getCode()) {
+                userInfo.setUserLevel(UserLevelEnum.DIRECTOR.getCode());
+            }
+            userInfo.setRealName(applyInfo.getRealName());
+            userInfo.setIdNumber(applyInfo.getIdNumber());
             userInfoDao.update(userInfo);
         }
+
         return applyInfoDao.insert(applyInfo);
     }
 

@@ -6,17 +6,20 @@ package org.xteam.plus.mars.type;
  */
 public enum ApplayTypeEnum {
 
-    SOCIAL(1, "社工"),
+    SOCIAL(1, "社工", 0),
 
-    DIRECTOR(2, "理事"),
+    DIRECTOR(2, "理事", 500),
 
-    STANDING_DIRECTOR(3, "常务理事");
+    STANDING_DIRECTOR(3, "常务理事", 1500);
 
     private String info;
 
     private Integer code;
 
-    ApplayTypeEnum(Integer code, String info) {
+    // 升级限额
+    private Integer limit;
+
+    ApplayTypeEnum(Integer code, String info, int limit) {
         this.info = info;
         this.code = code;
     }
@@ -52,5 +55,13 @@ public enum ApplayTypeEnum {
             default:
                 return null;
         }
+    }
+
+    public Integer getLimit() {
+        return limit;
+    }
+
+    public void setLimit(Integer limit) {
+        this.limit = limit;
     }
 }
