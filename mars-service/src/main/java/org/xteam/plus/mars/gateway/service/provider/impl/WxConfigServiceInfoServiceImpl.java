@@ -70,7 +70,7 @@ public class WxConfigServiceInfoServiceImpl extends Logging implements GateWaySe
         crypt.update(shardUrl.getBytes("UTF-8"));
         String signature = byteToHex(crypt.digest());
         params.put("signature", signature); // paySign的生成规则和Sign的生成规则一致
-
+        params.put("shardLink",WxConfig.getInstance().getShardUrl() + "/index.html?cardNo="+userHealthCard.getCardNo());
 
         UserInfo userInfo = userInfoManager.get(new UserInfo().setUserId(userHealthCard.getBuyerUserId()));
         if (userInfo == null) {

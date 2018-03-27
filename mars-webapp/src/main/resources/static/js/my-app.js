@@ -755,16 +755,16 @@ function shardWeixin(cardNo) {
                 nonceStr: bizContent.nonceStr, // 必填，生成签名的随机串
                 signature: bizContent.signature,// 必填，签名，见附录1
                 jsApiList: ['checkJsApi', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ',
-                    'onMenuShareQZone']
+                    'onMenuShareQZone','translateVoice']
                 // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
             });
+            wx.ready(function() {
+                app.dialog.alert('http://' + document.domain + '/index.html?' + cardNo);
 
-            wx.ready(function () {
-                app.dialog.alert('http://' + document.domain + '/index.html');
                 wx.onMenuShareAppMessage({
                     title: '健康卡购买', // 分享标题
                     desc: '用户给您分享了他的健康卡', // 分享描述
-                    link: 'http://' + document.domain + '/index.html', // 分享链接
+                    link: bizContent.shardLink, // 分享链接
                     imgUrl: sellUserInfo.wxHeadPortrait, // 分享图标
                     type: '', // 分享类型,music、video或link，不填默认为link
                     dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
@@ -776,9 +776,14 @@ function shardWeixin(cardNo) {
                         // 用户取消分享后执行的回调函数
                     }
                 });
+                _system._guide(true);
+            });
+
+            wx.error(function (res) {
+
 
             });
-            _system._guide(true);
+
         } else {
             app.dialog.alert(data.msg, function () {
                 location.href = goIndex();
