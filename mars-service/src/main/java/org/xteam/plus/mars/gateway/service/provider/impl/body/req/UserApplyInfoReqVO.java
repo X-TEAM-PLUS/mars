@@ -19,6 +19,8 @@ public class UserApplyInfoReqVO implements Serializable {
 
     private String interests;
 
+    private Integer wayType;
+
     public String getReason() {
         return reason;
     }
@@ -49,5 +51,13 @@ public class UserApplyInfoReqVO implements Serializable {
 
     public void setInterests(String interests) {
         this.interests = interests;
+    }
+
+    public Integer getWayType() {
+        return wayType;
+    }
+
+    public void setWayType(Integer wayType) {
+        this.wayType = wayType;
     }
 }

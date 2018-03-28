@@ -20,6 +20,7 @@ public enum GlobalErrorMessage {
     ,CARD_NO_NOT_FIND(40014,"卡号不存在，无法进行获取")
     ,TOKEN_IS_EFFICACY(40015,"token已经失效")
     ,USER_LEVEL_LIMIT_ERROR(40016,"用户申请升级失败，条件不足，不能进行申请升级")
+    ,USER_LEVEL_WAY_IS_NOT_NULL(40017,"用户申请方式不能为空")
     ;
     private Integer code;
     private String message;
