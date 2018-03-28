@@ -11,6 +11,43 @@
         <result column="USER_ID" property="userId" jdbcType="DECIMAL"/>
         <result column="APPLY_WAY" property="applyWay" jdbcType="INTEGER"/>
         <result column="APPLY_TYPE" property="applyType" jdbcType="INTEGER"/>
+
+        <!--结果集对应列-->
+        <association property="userInfo" column="USER_ID"
+                     javaType="org.xteam.plus.mars.domain.UserInfo">
+            <id column="USER_ID" property="userId" jdbcType="DECIMAL"/>
+            <result column="CARD_NO" property="cardNo" jdbcType="DECIMAL"/>
+            <result column="ID_NUMBER" property="idNumber" jdbcType="VARCHAR"/>
+            <result column="CARD_ACTIVATE_MODE" property="cardActivateMode" jdbcType="INTEGER"/>
+            <result column="REAL_NAME" property="realName" jdbcType="VARCHAR"/>
+            <result column="CARD_TYPE" property="cardType" jdbcType="DECIMAL"/>
+            <result column="LINK_ADDRESS" property="linkAddress" jdbcType="VARCHAR"/>
+            <result column="CARD_LIFE_TIME" property="cardLifeTime" jdbcType="TIMESTAMP"/>
+            <result column="MOBILE_NO" property="mobileNo" jdbcType="VARCHAR"/>
+            <result column="CARD_ACTIVATE_TIME" property="cardActivateTime" jdbcType="TIMESTAMP"/>
+            <result column="REGISTER_TIME" property="registerTime" jdbcType="TIMESTAMP"/>
+            <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+            <result column="WEIXIN_ACCOUNT" property="weixinAccount" jdbcType="VARCHAR"/>
+            <result column="STATUS" property="status" jdbcType="INTEGER"/>
+            <result column="LOGIN_COUNT" property="loginCount" jdbcType="DECIMAL"/>
+            <result column="REGISTER_SOURCE" property="registerSource" jdbcType="VARCHAR"/>
+            <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
+            <result column="PASSWORD" property="password" jdbcType="VARCHAR"/>
+            <result column="USER_LEVEL" property="userLevel" jdbcType="INTEGER"/>
+            <result column="LAST_LOGIN_TIME" property="lastLoginTime" jdbcType="TIMESTAMP"/>
+            <result column="NICK_NAME" property="nickName" jdbcType="VARCHAR"/>
+            <result column="ACCUMULATIVE_WITHDRAWALS" property="accumulativeWithdrawals" jdbcType="DECIMAL"/>
+            <result column="ACCUMULATIVE_SUBSIDY" property="accumulativeSubsidy" jdbcType="DECIMAL"/>
+            <result column="PROVINCE" property="province" jdbcType="DECIMAL"/>
+            <result column="CITY" property="city" jdbcType="DECIMAL"/>
+            <result column="COUNTY" property="county" jdbcType="DECIMAL"/>
+            <result column="PROVINCE_NAME" property="provinceName" jdbcType="DECIMAL"/>
+            <result column="CITY_NAME" property="cityName" jdbcType="DECIMAL"/>
+            <result column="COUNTY_NAME" property="countyName" jdbcType="DECIMAL"/>
+            <result column="PAY_TIMES" property="payTimes" jdbcType="INTEGER"/>
+            <result column="WX_HEAD_PORTRAIT" property="wxHeadPortrait" jdbcType="VARCHAR"/>
+            <result column="WX_OPENID" property="wxOpenid" jdbcType="VARCHAR"/>
+        </association>
     </resultMap>
 
     <!--公用选择列-->
@@ -80,7 +117,8 @@
     </delete>
 
     <!--插入记录-->
-    <insert id="insert" parameterType="org.xteam.plus.mars.domain.ApplyInfo" useGeneratedKeys="true" keyProperty="applyId">
+    <insert id="insert" parameterType="org.xteam.plus.mars.domain.ApplyInfo" useGeneratedKeys="true"
+            keyProperty="applyId">
         insert into T_MARS_APPLY_INFO (
         CREATED
         ,UPDATED
@@ -185,5 +223,106 @@
         select count(1)
         from T_MARS_APPLY_INFO
         <include refid="queryWhere"></include>
+    </select>
+
+    <!-- 关联查询方法 UserInfo -->
+    <!-- 关联查询 用户信息表 -->
+    <!-- 关联查询选择列-->
+    <sql id="selectColumnsRf">
+        TAI.APPLY_ID
+        ,TAI.CREATED
+        ,TAI.UPDATED
+        ,TAI.APPLY_REASON
+        ,TAI.STATUS
+        ,TAI.USER_ID
+        ,TAI.APPLY_WAY
+        ,TAI.APPLY_TYPE
+        ,TUI.USER_ID
+        ,TUI.CARD_NO
+        ,TUI.ID_NUMBER
+        ,TUI.CARD_ACTIVATE_MODE
+        ,TUI.REAL_NAME
+        ,TUI.CARD_TYPE
+        ,TUI.LINK_ADDRESS
+        ,TUI.CARD_LIFE_TIME
+        ,TUI.MOBILE_NO
+        ,TUI.CARD_ACTIVATE_TIME
+        ,TUI.REGISTER_TIME
+        ,TUI.CREATED
+        ,TUI.WEIXIN_ACCOUNT
+        ,TUI.LOGIN_COUNT
+        ,TUI.REGISTER_SOURCE
+        ,TUI.UPDATED
+        ,TUI.PASSWORD
+        ,TUI.USER_LEVEL
+        ,TUI.LAST_LOGIN_TIME
+        ,TUI.NICK_NAME
+        ,TUI.PROVINCE
+        ,TUI.CITY
+        ,TUI.COUNTY
+        ,TUI.PROVINCE_NAME
+        ,TUI.CITY_NAME
+        ,TUI.COUNTY_NAME
+        ,TUI.WX_HEAD_PORTRAIT
+        ,TUI.WX_OPENID
+
+    </sql>
+
+    <sql id="queryWhereRf">
+        <where>
+            <if test="created!=null ">
+                <![CDATA[
+                        and TAI.CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and TAI.CREATED<= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="updated!=null ">
+                <![CDATA[
+                        and TAI.UPDATED>= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and TAI.UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="userInfo != null  and userInfo.realName != null">
+                <![CDATA[
+                  and TUI.REAL_NAME like #{userInfo.realName,jdbcType=VARCHAR}
+                ]]>
+            </if>
+            <if test="userInfo != null  and userInfo.realName != null">
+                <![CDATA[
+                  and TUI.REAL_NAME like #{userInfo.realName,jdbcType=VARCHAR}
+                ]]>
+            </if>
+
+            <if test="status != null">
+                <![CDATA[
+                  and TAI.STATUS = #{status,jdbcType=INTEGER}
+                ]]>
+            </if>
+
+            <if test="applyWay != null">
+                <![CDATA[
+                  and TAI.APPLY_WAY = #{applyWay,jdbcType=INTEGER}
+                ]]>
+            </if>
+        </where>
+    </sql>
+
+    <!--分页查询记录-->
+    <select id="queryForUserInfo" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.ApplyInfo">
+        select
+        <include refid="selectColumnsRf"></include>
+        from T_MARS_APPLY_INFO TAI
+        LEFT JOIN T_MARS_USER_INFO TUI ON TAI.USER_ID = TUI.USER_ID
+        <include refid="queryWhereRf"></include>
+        limit #{start},#{limit}
+    </select>
+
+    <select id="queryForUserInfoCount" resultType="int" parameterType="org.xteam.plus.mars.domain.ApplyInfo">
+        select
+       count(*)
+        from T_MARS_APPLY_INFO TAI
+        LEFT JOIN T_MARS_USER_INFO TUI ON TAI.USER_ID = TUI.USER_ID
+        <include refid="queryWhereRf"></include>
+        limit #{start},#{limit}
     </select>
 </mapper>

@@ -5,15 +5,17 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.xteam.plus.mars.common.Logging;
-import org.xteam.plus.mars.dao.ApplyInfoDao;
-import org.xteam.plus.mars.dao.UserInfoDao;
-import org.xteam.plus.mars.domain.ApplyInfo;
-import org.xteam.plus.mars.domain.UserInfo;
+import org.xteam.plus.mars.dao.*;
+import org.xteam.plus.mars.domain.*;
 import org.xteam.plus.mars.manager.ApplyInfoManager;
+import org.xteam.plus.mars.type.AccountDetailTypeEnum;
 import org.xteam.plus.mars.type.ApplayTypeEnum;
+import org.xteam.plus.mars.type.CardStatusTypeEnum;
 import org.xteam.plus.mars.type.UserLevelEnum;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,6 +36,14 @@ public class ApplyInfoManagerImpl extends Logging implements ApplyInfoManager {
     @javax.annotation.Resource
     private ApplyInfoDao applyInfoDao;
 
+    @Resource
+    private ProductDao productDao;
+
+    @Resource
+    private UserHealthCardDao userHealthCardDao;
+
+    @Resource
+    private AccountDetailDao accountDetailDao;
 
     @Override
     public ApplyInfo get(ApplyInfo applyInfo) throws Exception {
@@ -88,6 +98,113 @@ public class ApplyInfoManagerImpl extends Logging implements ApplyInfoManager {
     @Override
     public Integer queryCount(ApplyInfo applyInfo) throws Exception {
         return applyInfoDao.queryCount(applyInfo);
+    }
+
+    @Override
+    public List<ApplyInfo> queryForUserInfo(ApplyInfo applyInfo) throws Exception {
+        return applyInfoDao.queryForUserInfo(applyInfo);
+    }
+
+    @Override
+    public Integer queryForUserInfoCount(ApplyInfo applyInfo) throws Exception {
+        return applyInfoDao.queryForUserInfoCount(applyInfo);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean auditpass(BigDecimal applyId) throws Exception {
+        ApplyInfo applyInfo = applyInfoDao.get(new ApplyInfo().setApplyId(applyId));
+        if (applyInfo == null) {
+            throw new Exception("不存在的对象");
+        }
+        UserInfo userInfo = userInfoDao.get(new UserInfo().setUserId(applyInfo.getUserId()));
+        if (userInfo == null) {
+            throw new Exception("不存在的用户");
+        }
+        ApplayTypeEnum applayTypeEnum = ApplayTypeEnum.valueOf(applyInfo.getApplyType());
+        if (applayTypeEnum.getCode() == ApplayTypeEnum.DIRECTOR.getCode()) {
+            userInfo.setUserLevel(UserLevelEnum.DIRECTOR.getCode());
+            userInfoDao.update(userInfo);
+        }
+        if (applayTypeEnum.getCode() == ApplayTypeEnum.STANDING_DIRECTOR.getCode()) {
+            userInfo.setUserLevel(UserLevelEnum.STANDING_DIRECTOR.getCode());
+            userInfoDao.update(userInfo);
+        }
+        applyInfo.setStatus(1);
+        applyInfo.setUpdated(new Date());
+        int count = applyInfoDao.update(applyInfo);
+        if (count > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean dismissal(BigDecimal applyId) throws Exception {
+        ApplyInfo applyInfo = applyInfoDao.get(new ApplyInfo().setApplyId(applyId));
+        if (applyInfo == null) {
+            throw new Exception("不存在的对象");
+        }
+        applyInfo.setStatus(-1);
+        applyInfo.setUpdated(new Date());
+        int count = applyInfoDao.update(applyInfo);
+        if (count > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean greenChannel(BigDecimal applyId, int cardNum) throws Exception {
+        ApplyInfo applyInfo = applyInfoDao.get(new ApplyInfo().setApplyId(applyId));
+
+        if (applyInfo == null) {
+            throw new Exception("不存在的对象");
+        }
+        if (applyInfo.getStatus() != 0) {
+            throw new Exception("申请状态不是未审核状态不能进行绿色通道升级");
+        }
+        List<Product> products = productDao.query(new Product());
+        Product product = products.get(0);
+        for (int i = 0; i < cardNum; i++) {
+            createUserHealthCard(applyInfo, product);
+        }
+        applyInfo.setStatus(1);
+        int count = applyInfoDao.update(applyInfo);
+        if (count > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    private void createUserHealthCard(ApplyInfo applyInfo, Product product) throws Exception {
+        UserHealthCard userHealthCard = new UserHealthCard();
+        userHealthCard.setCreated(new Date());
+        userHealthCard.setProductId(product.getProductId());
+        userHealthCard.setProductType(product.getCardType());
+        userHealthCard.setSurvivalPeriodMode(product.getSurvivalPeriodMode());
+        userHealthCard.setSurvivalPeriodNum(product.getSurvivalPeriodNum());
+        userHealthCard.setSendPeriodMode(product.getSendPeriodMode());
+        userHealthCard.setSendPeriod(product.getSendPeriod());
+        userHealthCard.setSendTotalCount(product.getSendTotalCount());
+        userHealthCard.setBuyerUserId(applyInfo.getUserId());
+        userHealthCard.setSendCount(0);
+        userHealthCard.setStatus(CardStatusTypeEnum.NOT_ATIVE.getCode());
+        userHealthCard.setOrderNo(applyInfo.getApplyId());
+        userHealthCardDao.insert(userHealthCard);
+        // 插入账户明细表
+        AccountDetail accountDetail = new AccountDetail();
+        accountDetail.setAmount(product.getAmount());
+        accountDetail.setServiceNo(applyInfo.getApplyId());
+        accountDetail.setCreated(new Date());
+        accountDetail.setUserId(applyInfo.getUserId());
+        accountDetail.setBusinesseType(AccountDetailTypeEnum.USER_BUY_GREEN.getCode());
+        accountDetail.setOperationDirection(1);
+        int count = accountDetailDao.insert(accountDetail);
+        if (count <= 0) {
+            throw new Exception("更新订单数据失败");
+        }
     }
 
 }

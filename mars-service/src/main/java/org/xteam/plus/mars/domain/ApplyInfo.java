@@ -71,6 +71,8 @@ public class ApplyInfo implements Serializable {
 
     private String interests;
 
+    private UserInfo userInfo;
+
 
     /**
      * 设置   created
@@ -294,5 +296,14 @@ public class ApplyInfo implements Serializable {
 
     public void setInterests(String interests) {
         this.interests = interests;
+    }
+
+
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 }

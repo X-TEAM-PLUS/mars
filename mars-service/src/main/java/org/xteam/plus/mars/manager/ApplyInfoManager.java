@@ -2,6 +2,7 @@ package org.xteam.plus.mars.manager;
 
 import org.xteam.plus.mars.domain.ApplyInfo;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -69,4 +70,44 @@ public interface ApplyInfoManager {
      * @return List<ApplyInfo>
      */
     public Integer queryCount(ApplyInfo applyInfo) throws Exception;
+
+    /**
+     * 查询
+     *
+     * @param applyInfo
+     * @return List<ApplyInfo>
+     */
+    public List<ApplyInfo> queryForUserInfo(ApplyInfo applyInfo) throws Exception;
+
+    /**
+     * 查询记录数
+     *
+     * @param applyInfo
+     * @return List<ApplyInfo>
+     */
+    public Integer queryForUserInfoCount(ApplyInfo applyInfo) throws Exception;
+
+    /**
+     * 审批通过
+     * @param applyId       申请id
+     * @return
+     * @throws Exception
+     */
+    public boolean auditpass(BigDecimal applyId) throws Exception;
+
+    /**
+     * 审批驳回
+     * @param applyId       申请id
+     * @return
+     * @throws Exception
+     */
+    public boolean dismissal(BigDecimal applyId) throws Exception;
+
+    /**
+     * 绿色通道
+     * @param applyId       申请id
+     * @return
+     * @throws Exception
+     */
+    public boolean greenChannel(BigDecimal applyId,int cardNum) throws Exception;
 }

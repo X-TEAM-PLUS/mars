@@ -70,4 +70,18 @@ public interface ApplyInfoDao {
      * @return List<ApplyInfo>
      */
     public Integer queryCount(ApplyInfo applyInfo) throws Exception;
+
+    /**
+     * 查询关联用户
+     * @param applyInfo
+     * @return List<ApplyInfo>
+     */
+    public List<ApplyInfo> queryForUserInfo(ApplyInfo applyInfo) throws Exception;
+
+    /**
+     * 查询记录数
+     * @param  applyInfo
+     * @return List<ApplyInfo>
+     */
+    public Integer queryForUserInfoCount(ApplyInfo applyInfo) throws Exception;
 }

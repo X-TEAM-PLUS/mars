@@ -14,6 +14,7 @@ public enum AccountDetailTypeEnum {
     STANDING_DIRECTOR_SERVICE_SUBSIDY(8, "常任理事服务补贴", 10, UserLevelEnum.SOCIAL),
     VIP_SUBSIDY(9, "会员提成", 0, UserLevelEnum.SOCIAL),
     USER_BUY(10, "用户买卡", 0, UserLevelEnum.SOCIAL),
+    USER_BUY_GREEN(11, "用户买卡绿色通道", 0, UserLevelEnum.SOCIAL),
     WITHDRAWALS(99, "提现", 0, UserLevelEnum.SOCIAL);
 
     private int code;

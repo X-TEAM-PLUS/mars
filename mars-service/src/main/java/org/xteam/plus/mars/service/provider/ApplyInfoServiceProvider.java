@@ -7,6 +7,7 @@ import org.xteam.plus.mars.domain.ApplyInfo;
 import org.xteam.plus.mars.manager.ApplyInfoManager;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -170,14 +171,100 @@ public class ApplyInfoServiceProvider extends AbstractServiceProvider {
     public JsonResult list(ApplyInfo applyinfo) throws Exception {
         JsonResult jsonResult = new JsonResult();
         try {
-            List<ApplyInfo> data = applyinfoManager.query(applyinfo);
+            List<ApplyInfo> data = applyinfoManager.queryForUserInfo(applyinfo);
             // 设置结果集
             jsonResult.put("list", data);
-            jsonResult.put("rowCount", applyinfoManager.queryCount(applyinfo));
+            jsonResult.put("rowCount", applyinfoManager.queryForUserInfoCount(applyinfo));
             jsonResult.setSuccess(true);
         } catch (Exception e) {
             logError("查询异常", e);
             jsonResult.setMessage("查询异常");
+            jsonResult.setSuccess(false);
+        }
+        return jsonResult;
+    }
+
+    /**
+     * 审批通过
+     *
+     * @param applyinfo
+     * @return int 记录数
+     */
+    @RequestMapping("/auditpass")
+    public JsonResult auditpass(ApplyInfo applyinfo) throws Exception {
+        JsonResult jsonResult = new JsonResult();
+        try {
+            //更新记录
+            boolean isSuccess = applyinfoManager.auditpass(applyinfo.getApplyId());
+            if (isSuccess) {
+                jsonResult.setSuccess(true);
+                jsonResult.setMessage("更新数据成功");
+            } else {
+                jsonResult.setSuccess(false);
+                jsonResult.setMessage("更新数据失败");
+            }
+            jsonResult.setSuccess(true);
+        } catch (Exception e) {
+            logError("更新数据异常", e);
+            jsonResult.setMessage("更新数据异常");
+            jsonResult.setSuccess(false);
+        }
+        return jsonResult;
+    }
+
+    /**
+     * 审批驳回
+     *
+     * @param applyinfo
+     * @return int 记录数
+     */
+    @RequestMapping("/dismissal")
+    public JsonResult dismissal(ApplyInfo applyinfo) throws Exception {
+        JsonResult jsonResult = new JsonResult();
+        try {
+            //更新记录
+            boolean isSuccess = applyinfoManager.dismissal(applyinfo.getApplyId());
+            if (isSuccess) {
+                jsonResult.setSuccess(true);
+                jsonResult.setMessage("更新数据成功");
+            } else {
+                jsonResult.setSuccess(false);
+                jsonResult.setMessage("更新数据失败");
+            }
+            jsonResult.setSuccess(true);
+        } catch (Exception e) {
+            logError("更新数据异常", e);
+            jsonResult.setMessage("更新数据异常");
+            jsonResult.setSuccess(false);
+        }
+        return jsonResult;
+    }
+
+
+    /**
+     * 绿色通道直接升级
+     * @param applyId       申请id
+     * @param cardNum       购买卡数
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/greenChannel")
+    public JsonResult greenChannel(BigDecimal applyId, Integer cardNum) throws Exception {
+        JsonResult jsonResult = new JsonResult();
+        try {
+            //更新记录
+            boolean isSuccess = applyinfoManager.greenChannel(applyId, cardNum);
+            if (isSuccess) {
+                jsonResult.setSuccess(true);
+                jsonResult.setMessage("更新数据成功");
+            } else {
+                jsonResult.setSuccess(false);
+                jsonResult.setMessage("更新数据失败");
+            }
+            jsonResult.setSuccess(true);
+        } catch (Exception e) {
+            logError(e.getMessage(), e);
+            jsonResult.setMessage(e.getMessage());
             jsonResult.setSuccess(false);
         }
         return jsonResult;
