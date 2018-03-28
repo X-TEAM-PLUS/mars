@@ -80,12 +80,14 @@ public class UserLevelApplyServiceDirectorImpl extends AbstractUserLevelApplySer
         applyInfo.setApplyWay(userApplyInfoReqVO.getWayType());
         applyInfo.setCreated(new Date());
         applyInfo.setUserId(userInfo.getUserId());
-
+        applyInfo.setStatus(0);
         // 获取用户直接推荐人
         int userRelationCount = userRelationManager.queryForUserCount(new UserRelation().setRefereeUserId(userInfo.getUserId()));
         if (userRelationCount >= ApplayTypeEnum.DIRECTOR.getLimit()) {
             logInfo("用户ID [" + userInfo.getUserId() + "] 直接推荐人满足条件，可以直接升级 [" + userRelationCount + "]");
             applyInfo.setStatus(1);
+            // 满足条件直接任务晋级
+            applyInfo.setApplyWay(1);
         }
         if (applyInfo.getStatus() != 1) {
             HashMap<String, Object> userRelationMap = userRelationManager.queryMyTeamCountAndNextLevelCount(userInfo.getUserId());
@@ -94,20 +96,24 @@ public class UserLevelApplyServiceDirectorImpl extends AbstractUserLevelApplySer
             if (userRelationList == null || userRelationList.size() == 0) {
                 logInfo("用户ID [" + userInfo.getUserId() + "] 申请为[" + ApplayTypeEnum.DIRECTOR.getInfo() + "] 时，不存在用户关系");
                 applyInfo.setStatus(0);
-            }
-            int userLimitCount = 0;
-            for (HashMap relationUser : userRelationList) {
-                logInfo("用户ID [" + userInfo.getUserId() + "] 的用户下线 [" + JsonUtils.toJSON(relationUser) + "]");
-                if (relationUser.get("userCount") != null) {
-                    if (Integer.parseInt(relationUser.get("userCount").toString()) >= ApplayTypeEnum.DIRECTOR.getLimit()) {
-                        userLimitCount++;
+            } else {
+                int userLimitCount = 0;
+                for (HashMap relationUser : userRelationList) {
+                    logInfo("用户ID [" + userInfo.getUserId() + "] 的用户下线 [" + JsonUtils.toJSON(relationUser) + "]");
+                    if (relationUser.get("userCount") != null) {
+                        if (Integer.parseInt(relationUser.get("userCount").toString()) >= ApplayTypeEnum.DIRECTOR.getLimit()) {
+                            userLimitCount++;
+                        }
                     }
                 }
+                // 如果满足条件的下线用户等于或超过2个，则自动申请设计
+                if (userLimitCount >= 2) {
+                    applyInfo.setStatus(1);
+                    // 满足条件直接任务晋级
+                    applyInfo.setApplyWay(1);
+                }
             }
-            // 如果满足条件的下线用户等于或超过2个，则自动申请设计
-            if (userLimitCount >= 2) {
-                applyInfo.setStatus(1);
-            }
+
         }
         int count = applyInfoManager.insert(applyInfo);
         if (count > 0) {

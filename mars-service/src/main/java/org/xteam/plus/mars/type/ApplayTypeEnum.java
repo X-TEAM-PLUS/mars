@@ -22,6 +22,7 @@ public enum ApplayTypeEnum {
     ApplayTypeEnum(Integer code, String info, int limit) {
         this.info = info;
         this.code = code;
+        this.limit = limit;
     }
 
     public String getInfo() {

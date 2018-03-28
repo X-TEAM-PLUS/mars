@@ -32,7 +32,13 @@ public class UserInfoTest {
     private GetSubsidyListServiceImpl getSubsidyListService;
 
     @Resource
-    private UserLevelApplyServiceImpl userLevelApplyService;
+    private UserLevelApplyServiceSocialImpl userLevelApplyServiceSocial;
+
+    @Resource
+    private UserLevelApplyServiceDirectorImpl userLevelApplyServiceDirector;
+
+    @Resource
+    private UserLevelApplyServiceStandingDirectorImpl userLevelApplyServiceStandingDirector;
 
     @Resource
     private UserActivatedHeartCardDetailServiceImpl userActivatedHeartCardInfoService;
@@ -356,27 +362,76 @@ public class UserInfoTest {
     }
 
     /**
-     * 申请升级，
+     * 申请升级，(社工)
      * userId
      * applayType 申请级别
      * reason 申请理由
      */
     @Test
-    public void userLevelApply() {
+    public void userLevelApplySocial() {
         UserApplyInfoReqVO userApplyInfoReqVO = new UserApplyInfoReqVO();
-        userApplyInfoReqVO.setApplayTypeEnum(ApplayTypeEnum.DIRECTOR);
         userApplyInfoReqVO.setReason("测试申请");
+        userApplyInfoReqVO.setWayType(0);
+        userApplyInfoReqVO.setRealName("测试申请");
+        userApplyInfoReqVO.setIdNumber("110106198403034818");
+        userApplyInfoReqVO.setInterests("asdfafasf");
         HttpRequestBody httpRequestBody = new HttpRequestBody();
-        httpRequestBody.setUserId("2000000");
+        httpRequestBody.setUserId("2000006");
         httpRequestBody.setBizContent(JsonUtils.toJSON(userApplyInfoReqVO));
         try {
-            HttpResponseBody httpResponseBody = userLevelApplyService.gateWay(httpRequestBody);
+            HttpResponseBody httpResponseBody = userLevelApplyServiceSocial.gateWay(httpRequestBody);
             System.out.println(JsonUtils.toJSON(httpResponseBody));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * 申请升级，(理事)
+     * userId
+     * applayType 申请级别
+     * reason 申请理由
+     */
+    @Test
+    public void userLevelApplyDirector() {
+        UserApplyInfoReqVO userApplyInfoReqVO = new UserApplyInfoReqVO();
+        userApplyInfoReqVO.setReason("测试申请");
+        userApplyInfoReqVO.setWayType(2);
+        userApplyInfoReqVO.setRealName("测试申请");
+        userApplyInfoReqVO.setIdNumber("110106198403034818");
+        userApplyInfoReqVO.setInterests("asdfafasf");
+        HttpRequestBody httpRequestBody = new HttpRequestBody();
+        httpRequestBody.setUserId("2000000");
+        httpRequestBody.setBizContent(JsonUtils.toJSON(userApplyInfoReqVO));
+        try {
+            HttpResponseBody httpResponseBody = userLevelApplyServiceDirector.gateWay(httpRequestBody);
+            System.out.println(JsonUtils.toJSON(httpResponseBody));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     *
+     */
+    @Test
+    public void userLevelApplyServiceStandingDirector(){
+        UserApplyInfoReqVO userApplyInfoReqVO = new UserApplyInfoReqVO();
+        userApplyInfoReqVO.setReason("测试申请");
+        userApplyInfoReqVO.setWayType(2);
+        userApplyInfoReqVO.setRealName("测试申请");
+        userApplyInfoReqVO.setIdNumber("1101061984030348181");
+        userApplyInfoReqVO.setInterests("asdfafasf");
+        HttpRequestBody httpRequestBody = new HttpRequestBody();
+        httpRequestBody.setUserId("2000000");
+        httpRequestBody.setBizContent(JsonUtils.toJSON(userApplyInfoReqVO));
+        try {
+            HttpResponseBody httpResponseBody = userLevelApplyServiceStandingDirector.gateWay(httpRequestBody);
+            System.out.println(JsonUtils.toJSON(httpResponseBody));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * 获取用户已激活的健康卡，包含产品信息
      */

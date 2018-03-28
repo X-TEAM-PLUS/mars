@@ -70,9 +70,11 @@ public class UserLevelApplyServiceSocialImpl extends AbstractUserLevelApplyServi
         applyInfo.setStatus(1);
         applyInfo.setApplyReason(userApplyInfoReqVO.getReason());
         applyInfo.setApplyType(ApplayTypeEnum.SOCIAL.getCode());
-        applyInfo.setApplyWay(0);
+        applyInfo.setApplyWay(userApplyInfoReqVO.getWayType());
         applyInfo.setCreated(new Date());
         applyInfo.setUserId(new BigDecimal(httpRequestBody.getUserId()));
+        applyInfo.setIdNumber(userApplyInfoReqVO.getIdNumber());
+        applyInfo.setRealName(userApplyInfoReqVO.getRealName());
         int count = applyInfoManager.insert(applyInfo);
         if (count > 0) {
             return new HttpResponseBody(GlobalErrorMessage.SUCCESS);

@@ -48,6 +48,8 @@ public class ApplyInfoManagerImpl extends Logging implements ApplyInfoManager {
             UserInfo userInfo = userInfoDao.get(new UserInfo().setUserId(applyInfo.getUserId()));
             if (applyInfo.getApplyType() == ApplayTypeEnum.SOCIAL.getCode()) {
                 userInfo.setUserLevel(UserLevelEnum.SOCIAL.getCode());
+                userInfo.setRealName(applyInfo.getRealName());
+                userInfo.setIdNumber(applyInfo.getIdNumber());
             }
             if (applyInfo.getApplyType() == ApplayTypeEnum.STANDING_DIRECTOR.getCode()) {
                 userInfo.setUserLevel(UserLevelEnum.STANDING_DIRECTOR.getCode());
@@ -55,11 +57,8 @@ public class ApplyInfoManagerImpl extends Logging implements ApplyInfoManager {
             if (applyInfo.getApplyType() == ApplayTypeEnum.DIRECTOR.getCode()) {
                 userInfo.setUserLevel(UserLevelEnum.DIRECTOR.getCode());
             }
-            userInfo.setRealName(applyInfo.getRealName());
-            userInfo.setIdNumber(applyInfo.getIdNumber());
             userInfoDao.update(userInfo);
         }
-
         return applyInfoDao.insert(applyInfo);
     }
 
