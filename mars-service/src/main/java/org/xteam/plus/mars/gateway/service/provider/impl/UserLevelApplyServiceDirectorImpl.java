@@ -56,11 +56,7 @@ public class UserLevelApplyServiceDirectorImpl extends Logging implements GateWa
         if (userApplyInfoReqVO.getWayType() == null) {
             return new HttpResponseBody(GlobalErrorMessage.USER_LEVEL_WAY_IS_NOT_NULL);
         }
-        if (StringUtils.isEmpty(userApplyInfoReqVO.getInterests())
-                || StringUtils.isEmpty(userApplyInfoReqVO.getIdNumber())
-                || StringUtils.isEmpty(userApplyInfoReqVO.getRealName())
-                || StringUtils.isEmpty(userApplyInfoReqVO.getReason())
-                || StringUtils.isEmpty(httpRequestBody.getUserId())) {
+        if (StringUtils.isEmpty(httpRequestBody.getUserId())) {
             return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
         }
 
@@ -77,8 +73,8 @@ public class UserLevelApplyServiceDirectorImpl extends Logging implements GateWa
         }
 
         ApplyInfo applyInfo = new ApplyInfo();
-        applyInfo.setApplyReason(userApplyInfoReqVO.getReason());
         applyInfo.setApplyType(ApplayTypeEnum.DIRECTOR.getCode());
+        applyInfo.setApplyReason("申请成为理事");
         applyInfo.setApplyWay(userApplyInfoReqVO.getWayType());
         applyInfo.setCreated(new Date());
         applyInfo.setUserId(userInfo.getUserId());

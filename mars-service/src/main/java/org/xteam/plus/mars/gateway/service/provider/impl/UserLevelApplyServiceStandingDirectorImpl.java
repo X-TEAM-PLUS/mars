@@ -56,11 +56,7 @@ public class UserLevelApplyServiceStandingDirectorImpl extends Logging implement
         if (userApplyInfoReqVO.getWayType() == null) {
             return new HttpResponseBody(GlobalErrorMessage.USER_LEVEL_WAY_IS_NOT_NULL);
         }
-        if (StringUtils.isEmpty(userApplyInfoReqVO.getInterests())
-                || StringUtils.isEmpty(userApplyInfoReqVO.getIdNumber())
-                || StringUtils.isEmpty(userApplyInfoReqVO.getRealName())
-                || StringUtils.isEmpty(userApplyInfoReqVO.getReason())
-                || StringUtils.isEmpty(httpRequestBody.getUserId())) {
+        if (StringUtils.isEmpty(httpRequestBody.getUserId())) {
             return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
         }
 
@@ -75,7 +71,7 @@ public class UserLevelApplyServiceStandingDirectorImpl extends Logging implement
             throw new Exception("用户当前不是理事，不能申请为常任理事!");
         }
         ApplyInfo applyInfo = new ApplyInfo();
-        applyInfo.setApplyReason(userApplyInfoReqVO.getReason());
+        applyInfo.setApplyReason("申请成为常任理事");
         applyInfo.setApplyType(ApplayTypeEnum.STANDING_DIRECTOR.getCode());
         applyInfo.setApplyWay(userApplyInfoReqVO.getWayType());
         applyInfo.setCreated(new Date());

@@ -47,11 +47,7 @@ public class UserLevelApplyServiceSocialImpl extends Logging implements GateWayS
         if (userApplyInfoReqVO == null) {
             return new HttpResponseBody(GlobalErrorMessage.OBJECT_ISNULL);
         }
-        if (userApplyInfoReqVO.getWayType() == null) {
-            return new HttpResponseBody(GlobalErrorMessage.USER_LEVEL_WAY_IS_NOT_NULL);
-        }
-        if (StringUtils.isEmpty(userApplyInfoReqVO.getInterests())
-                || StringUtils.isEmpty(userApplyInfoReqVO.getIdNumber())
+        if ( StringUtils.isEmpty(userApplyInfoReqVO.getIdNumber())
                 || StringUtils.isEmpty(userApplyInfoReqVO.getRealName())
                 || StringUtils.isEmpty(userApplyInfoReqVO.getReason())
                 || StringUtils.isEmpty(httpRequestBody.getUserId())) {
@@ -66,7 +62,7 @@ public class UserLevelApplyServiceSocialImpl extends Logging implements GateWayS
         UserLevelEnum userLevelEnum = UserLevelEnum.valueOf(userInfo.getUserLevel());
         // 用户申请为理事
         if (userLevelEnum.getCode() != UserLevelEnum.MEMBER.getCode()) {
-            throw new Exception("用户当前不是社工，不能申请为理事!");
+            throw new Exception("用户当前不是会员，不能申请为社工!");
         }
         ApplyInfo applyInfo = new ApplyInfo();
         applyInfo.setStatus(1);

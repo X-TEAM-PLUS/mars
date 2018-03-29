@@ -293,13 +293,13 @@ function zhuanzhangClick() {
 }
 
 /**
- * 申请升级
+ * 申请成为社工
  * @param form
  */
 function appLevel(form) {
     var bizContent = app.form.convertToData('#' + form);
     var params = {
-        method: InterFace.APPLY_LEVEL,
+        method: InterFace.APPLY_LEVEL_SOCIAL,
         userId: userInfo.userId,
         bizContent: JSON.stringify(bizContent)
     };
@@ -314,11 +314,71 @@ function appLevel(form) {
             });
 
         } else {
-            app.dialog.alert(getErrorMessage(response.code), '信息提示');
+            app.dialog.alert(response.msg, '信息提示');
         }
     });
 }
 
+/**
+ * 申请成为理事
+ */
+function appLevelDirector(wayType) {
+    var bizContent ={
+        wayType:wayType
+    };
+    var params = {
+        method: InterFace.APPLY_LEVEL_DIRECTOR,
+        userId: userInfo.userId,
+        bizContent: JSON.stringify(bizContent)
+    };
+    app.request.post(INTERFACE_URL, params, function (data) {
+        logInfo(data);
+        var response = JSON.parse(data);
+        if (ResponseCode.SUCCESS == response.code) {
+            app.dialog.alert('申请成功，请保持手机畅通,稍后客服会直接联系您。', '信息提示', function () {
+                if(2==wayType){
+                    app.popup.close('.lishi-popup',true);
+                }
+                memberView.router.navigate('/?userId=' + userInfo.userId, {
+                    history: true
+                });
+            });
+
+        } else {
+            app.dialog.alert(response.msg, '信息提示');
+        }
+    });
+}
+
+/**
+ * 申请成为常任理事
+ */
+function appLevelStandingDirector(wayType) {
+    var bizContent ={
+        wayType:wayType
+    };
+    var params = {
+        method: InterFace.APPLY_LEVEL_STANDING_DIRECTOR,
+        userId: userInfo.userId,
+        bizContent: JSON.stringify(bizContent)
+    };
+    app.request.post(INTERFACE_URL, params, function (data) {
+        logInfo(data);
+        var response = JSON.parse(data);
+        if (ResponseCode.SUCCESS == response.code) {
+            app.dialog.alert('申请成功，请等待审核', '信息提示', function () {
+                if(2==wayType){
+                    app.popup.close('.lishi-popup',true);
+                }
+                memberView.router.navigate('/?userId=' + userInfo.userId, {
+                    history: true
+                });
+            });
+        } else {
+            app.dialog.alert(response.msg, '信息提示');
+        }
+    });
+}
 /**
  * 保险详单
  */
@@ -356,7 +416,7 @@ function bindBankCard(form) {
             });
 
         } else {
-            app.dialog.alert(getErrorMessage(response.code), '信息提示');
+            app.dialog.alert(response.msg, '信息提示');
         }
     });
 }
@@ -382,7 +442,7 @@ function applyWithDraw(form) {
                 });
             });
         } else {
-            app.dialog.alert(getErrorMessage(response.code), '信息提示');
+            app.dialog.alert(response.msg, '信息提示');
         }
     });
 }
@@ -873,16 +933,7 @@ function obj2string(o) {
     return o.toString();
 }
 
-/**
- * 获取异常信息
- * @param code
- */
-function getErrorMessage(code) {
-    if (ErrorMessage.containsKey(code)) {
-        return ErrorMessage.get(code);
-    }
-    return "操作异常";
-}
+
 
 /**
  * 游客申请会员
@@ -940,7 +991,7 @@ function sendSmsCode(mobileNo) {
         if (ResponseCode.SUCCESS == response.code) {
             app.dialog.alert('短信验证码发送成功，请注意查收', '信息提示');
         } else {
-            app.dialog.alert(getErrorMessage(response.code), '信息提示');
+            app.dialog.alert(response.msg, '信息提示');
         }
     });
 }
@@ -987,13 +1038,22 @@ function doLogin(formData) {
                 });
             }
         } else {
-            app.dialog.alert(getErrorMessage(response.code), '信息提示');
+            app.dialog.alert(response.msg, '信息提示');
         }
     });
 }
 
 /**
- * 显示会员销售信息
+ * 任务达成
+ */
+function taskSuccess() {
+    document.getElementById("isDirectReach").innerText = "已达成";
+    $$('.buyCard-lishi').attr('style', 'visibility:hidden');
+    $$('.appy-lishi').attr('style', 'visibility: visible');
+}
+
+/**
+ * 显示社工销售信息
  * @param token
  */
 function viewMarketingInformation(token) {
@@ -1001,15 +1061,12 @@ function viewMarketingInformation(token) {
         method: InterFace.TEAM_COUNT, token: token
     };
     app.request.json(INTERFACE_URL, params, function (data) {
-        logInfo(bizContent);
         var bizContent = JSON.parse(data.bizContent);
         logInfo(bizContent);
         document.getElementById("userLevel").innerText = bizContent.userLevel;
         document.getElementById("directReachCount").innerText = bizContent.refereeUserCount + "/500";
         if (bizContent.refereeUserCount == 500) {
-            document.getElementById("isDirectReach").innerText = "已达成";
-        } else {
-            document.getElementById("isDirectReach").innerText = "未达成";
+            taskSuccess();
         }
         app.progressbar.set('#directReachProgressbar1', bizContent.refereeUserCount * 100 / 500.0);
 
@@ -1020,15 +1077,12 @@ function viewMarketingInformation(token) {
         if (bizContent.userTeamList.length > 1) {
             document.getElementById("indirectReachCount2").innerText = bizContent.userTeamList[1].userCount + "/500";
             if (bizContent.userTeamList[0].userCount == 500 && bizContent.userTeamList[1].userCount == 500) {
-                document.getElementById("isIndirectReach").innerText = "已达成";
-            } else {
-                document.getElementById("isIndirectReach").innerText = "未达成";
+                taskSuccess();
             }
             app.progressbar.set('#indirectReachProgressbar2', bizContent.userTeamList[1].userCount * 100 / 500.0);
         }
     });
 }
-
 
 /**
  * 显示理事销售信息
@@ -1039,15 +1093,12 @@ function viewMarketingInformationByLishi(token) {
         method: InterFace.TEAM_COUNT, token: token
     };
     app.request.json(INTERFACE_URL, params, function (data) {
-        logInfo(bizContent);
         var bizContent = JSON.parse(data.bizContent);
         logInfo(bizContent);
         document.getElementById("userLevel").innerText = bizContent.userLevel;
         document.getElementById("directReachCount").innerText = bizContent.refereeUserCount + "/1500";
-        if (bizContent.refereeUserCount == 500) {
-            document.getElementById("isDirectReach").innerText = "已达成";
-        } else {
-            document.getElementById("isDirectReach").innerText = "未达成";
+        if (bizContent.refereeUserCount == 1500) {
+            taskSuccess();
         }
         app.progressbar.set('#directReachProgressbar1', bizContent.refereeUserCount * 100 / 1500.0);
 
@@ -1058,9 +1109,7 @@ function viewMarketingInformationByLishi(token) {
         if (bizContent.userTeamList.length > 1) {
             document.getElementById("indirectReachCount2").innerText = bizContent.userTeamList[1].userCount + "/1500";
             if (bizContent.userTeamList[0].userCount == 1500 && bizContent.userTeamList[1].userCount == 1500) {
-                document.getElementById("isIndirectReach").innerText = "已达成";
-            } else {
-                document.getElementById("isIndirectReach").innerText = "未达成";
+                taskSuccess();
             }
             app.progressbar.set('#indirectReachProgressbar2', bizContent.userTeamList[1].userCount * 100 / 1500.0);
         }
