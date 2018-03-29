@@ -26,12 +26,12 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * 用户申请升级接口(社工)
+ * 用户申请升级接口(理事)
  */
 @Component
 public class UserLevelApplyServiceDirectorImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.zhaoanyun.gateway.user.userLevelApply.director";
+    private final String METHOD_NAME = "com.zaoangongcheng.gateway.user.userLevelApply.director";
 
     @Resource
     private UserInfoManager userInfoManager;

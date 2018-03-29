@@ -28,7 +28,7 @@ import java.util.Date;
 @Component
 public class UserLevelApplyServiceSocialImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.zhaoanyun.gateway.user.userLevelApply.social";
+    private final String METHOD_NAME = "com.zaoangongcheng.gateway.user.userLevelApply.social";
 
     @Resource
     private UserInfoManager userInfoManager;

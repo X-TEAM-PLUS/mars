@@ -69,7 +69,7 @@
         var bizContent = "{\"orderTypeEnum\":\"VIP_DISTRIBUTION\",\"userId\":2000003,\"cardNo\":200000004,\"number\":1,\"address\":\"北京市丰台区\",\"contactsMobile\":\"139912313\"}";
         var obj = eval("(" + bizContent + ")");
         $.ajax({
-            url: encodeURI("http://t.kuai-kaifa.com/api/gateway?channelCode=11&method=com.zhaoanyun.api.gateway.wx.pay.unifiedOrder&bizContent=" + bizContent),
+            url: encodeURI("http://t.kuai-kaifa.com/api/gateway?channelCode=11&method=com.zaoangongcheng.api.gateway.wx.pay.unifiedOrder&bizContent=" + bizContent),
             type: "GET",
             datatype: "JSON",
             success: function (data) {
@@ -111,7 +111,7 @@
         var bizContent = "{\"orderTypeEnum\":\"VIP_DISTRIBUTION\",\"userId\":2000003,\"cardNo\":200000004,\"address\":\"北京市丰台区\",\"contactsMobile\":\"139912313\"}";
         var obj = eval("(" + bizContent + ")");
         $.ajax({
-            url: encodeURI("http://t.kuai-kaifa.com/api/gateway?channelCode=11&method=com.zhaoanyun.api.gateway.wx.pay.unifiedOrder&bizContent=" + bizContent),
+            url: encodeURI("http://t.kuai-kaifa.com/api/gateway?channelCode=11&method=com.zaoangongcheng.api.gateway.wx.pay.unifiedOrder&bizContent=" + bizContent),
             type: "GET",
             datatype: "JSON",
             success: function (data) {

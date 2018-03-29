@@ -85,7 +85,7 @@
         var bizContent = "{\"orderTypeEnum\":\"PLATFORM_STRAIGHT\",\"userId\":" + userId + ",\"productId\":" + productId + ",\"number\":1,\"address\":\"北京市丰台区\",\"contactsMobile\":\"139912313\"}";
         var obj = eval("(" + bizContent + ")");
         $.ajax({
-            url: encodeURI(url + "/api/gateway?channelCode=11&method=com.zhaoanyun.api.gateway.wx.pay.unifiedOrder&bizContent=" + bizContent + "&userId=" + userId),
+            url: encodeURI(url + "/api/gateway?channelCode=11&method=com.zaoangongcheng.api.gateway.wx.pay.unifiedOrder&bizContent=" + bizContent + "&userId=" + userId),
             type: "GET",
             datatype: "JSON",
             success: function (data) {
@@ -126,7 +126,7 @@
         // var bizContent = "{\"orderTypeEnum\":\"PLATFORM_STRAIGHT\",\"userId\":2000003,\"productId\":10001,\"number\":1,\"address\":\"北京市丰台区\",\"contactsMobile\":\"139912313\"}";
         var obj = eval("(" + bizContent + ")");
         $.ajax({
-            url: encodeURI(url + "/api/gateway?channelCode=11&method=com.zhaoanyun.api.gateway.wx.pay.unifiedOrder&bizContent=" + bizContent + "&userId=" + userId),
+            url: encodeURI(url + "/api/gateway?channelCode=11&method=com.zaoangongcheng.api.gateway.wx.pay.unifiedOrder&bizContent=" + bizContent + "&userId=" + userId),
             type: "GET",
             datatype: "JSON",
             success: function (data) {

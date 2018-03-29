@@ -31,7 +31,7 @@ import java.util.List;
 @Component
 public class UserLevelApplyServiceStandingDirectorImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.zhaoanyun.gateway.user.userLevelApply.standing.director";
+    private final String METHOD_NAME = "com.zaoangongcheng.gateway.user.userLevelApply.standing.director";
 
     @Resource
     private UserInfoManager userInfoManager;

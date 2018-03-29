@@ -1,6 +1,6 @@
 //定义日志开关
 var LOG_SWITCH = true;
-var PORT = ""
+var PORT = ":8080"
 //定义接口地址
 var INTERFACE_URL = "http://" + document.domain + PORT + "/webservice/api/gateway";
 var TOKEN = "token";
@@ -50,11 +50,11 @@ var InterFace = {
     //提现申请
     , WITHDRAW_APPLY: 'cn.zaoangongcheng.api.gateway.user.withdraw.apply'
     //预下单接口
-    , PAY_UNIFIED_ORDER: 'com.zhaoanyun.api.gateway.wx.pay.unifiedOrder'
+    , PAY_UNIFIED_ORDER: 'com.zaoangongcheng.api.gateway.wx.pay.unifiedOrder'
     //微信全局设置
-    , WX_GLOBLE_CONFIG: 'com.zhaoanyun.api.gateway.wx.globle.config'
+    , WX_GLOBLE_CONFIG: 'com.zaoangongcheng.api.gateway.wx.globle.config'
     //申请升级
-    , APPLY_LEVEL: 'com.zhaoanyun.gateway.user.userLevelApply'
+    , APPLY_LEVEL: 'com.zaoangongcheng.gateway.user.userLevelApply'
     //理事申请升级展示用户发展会员情况页面
     , TEAM_COUNT: 'cn.zaoangongcheng.api.gateway.user.team.count'
     //获取短信验证码

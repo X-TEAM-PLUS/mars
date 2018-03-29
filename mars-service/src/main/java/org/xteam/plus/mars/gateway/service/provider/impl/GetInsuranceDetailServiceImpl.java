@@ -19,7 +19,7 @@ import javax.annotation.Resource;
 @Component
 public class GetInsuranceDetailServiceImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.zhaoanyun.gateway.insurance.getDetail";
+    private final String METHOD_NAME = "com.zaoangongcheng.gateway.insurance.getDetail";
 
     @Resource
     private InsuranceProductManager insuranceProductManager;

@@ -28,7 +28,7 @@ import java.util.HashMap;
 @Component
 public class WxConfigServiceInfoServiceImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.zhaoanyun.api.gateway.wx.globle.config";
+    private final String METHOD_NAME = "com.zaoangongcheng.api.gateway.wx.globle.config";
 
     @Resource
     private UserHealthCardManager userHealthCardManager;

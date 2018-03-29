@@ -32,7 +32,7 @@ import java.util.UUID;
 @Component
 public class WxPayServiceAppInfoServiceImpl extends Logging implements GateWayService {
 
-    private final String METHOD_NAME = "com.zhaoanyun.api.gateway.wx.pay.unifiedOrder";
+    private final String METHOD_NAME = "com.zaoangongcheng.api.gateway.wx.pay.unifiedOrder";
 
     public final static String REDIS_TEMP_OATH_KEY = "org.xteam.plus.mars.service.weixin.pay.parms";
 
