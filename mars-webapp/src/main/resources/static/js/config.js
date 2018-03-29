@@ -1,6 +1,6 @@
 //定义日志开关
 var LOG_SWITCH = true;
-var PORT = ":8080"
+var PORT = ""
 //定义接口地址
 var INTERFACE_URL = "http://" + document.domain + PORT + "/webservice/api/gateway";
 var TOKEN = "token";
@@ -58,7 +58,7 @@ var InterFace = {
     //升级理事
     ,APPLY_LEVEL_DIRECTOR:'com.zaoangongcheng.gateway.user.userLevelApply.director'
     //升级常任理事
-    ,APPLY_LEVEL_STANDING_SOCIAL:'com.zaoangongcheng.gateway.user.userLevelApply.standing.director'
+    ,APPLY_LEVEL_STANDING_DIRECTOR:'com.zaoangongcheng.gateway.user.userLevelApply.standing.director'
     //理事申请升级展示用户发展会员情况页面
     , TEAM_COUNT: 'cn.zaoangongcheng.api.gateway.user.team.count'
     //获取短信验证码
