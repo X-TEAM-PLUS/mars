@@ -53,8 +53,12 @@ var InterFace = {
     , PAY_UNIFIED_ORDER: 'com.zaoangongcheng.api.gateway.wx.pay.unifiedOrder'
     //微信全局设置
     , WX_GLOBLE_CONFIG: 'com.zaoangongcheng.api.gateway.wx.globle.config'
-    //申请升级
-    , APPLY_LEVEL: 'com.zaoangongcheng.gateway.user.userLevelApply'
+    //升级社工
+    ,APPLY_LEVEL_SOCIAL:'com.zaoangongcheng.gateway.user.userLevelApply.social'
+    //升级理事
+    ,APPLY_LEVEL_DIRECTOR:'com.zaoangongcheng.gateway.user.userLevelApply.director'
+    //升级常任理事
+    ,APPLY_LEVEL_STANDING_SOCIAL:'com.zaoangongcheng.gateway.user.userLevelApply.standing.director'
     //理事申请升级展示用户发展会员情况页面
     , TEAM_COUNT: 'cn.zaoangongcheng.api.gateway.user.team.count'
     //获取短信验证码
