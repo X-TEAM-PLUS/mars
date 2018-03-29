@@ -288,7 +288,7 @@
     </select>
 
 
-    <select id="queryForCouncil" resultMap="BaseResultMap" >
+    <select id="queryForCouncil" resultMap="BaseResultMap">
         SELECT
         <include refid="selectColumnsRf"></include>
         <include refid="selectColumnTmlcm"></include>
@@ -418,4 +418,87 @@
                 ))
         GROUP BY TUR.REFEREE_USER_ID ORDER BY COUNT(*) DESC
     </select>
+
+    <select id="queryAllLevelCount" resultType="java.util.HashMap">
+        SELECT
+            TUI.USER_LEVEL,COUNT(*) AS USER_COUNT
+        FROM
+            T_MARS_USER_RELATION TUR
+        LEFT JOIN T_MARS_USER_INFO TUI ON TUI.USER_ID = TUR.USER_ID
+        WHERE
+            FIND_IN_SET(
+                TUR.REFEREE_USER_ID ,
+                (
+                    SELECT
+                        GROUP_CONCAT(TMUR.USER_ID)
+                    FROM
+                        T_MARS_USER_INFO TMUI
+                    LEFT JOIN T_MARS_USER_RELATION TMUR ON TMUI.USER_ID = TMUR.USER_ID
+                    WHERE
+                        TMUR.REFEREE_USER_ID = #{userId,jdbcType=DECIMAL}
+
+                    GROUP BY
+                        TMUR.REFEREE_USER_ID
+                )
+            )
+        GROUP BY TUI.USER_LEVEL
+    </select>
+
+    <select id="queryNewUserWhereDate" resultType="int">
+        SELECT
+          COUNT(*)
+        FROM
+            T_MARS_USER_RELATION TUR
+            LEFT JOIN T_MARS_USER_INFO TUI ON TUI.USER_ID = TUR.USER_ID
+        WHERE
+            FIND_IN_SET(
+            TUR.REFEREE_USER_ID ,
+            (
+            SELECT
+            GROUP_CONCAT(TMUR.USER_ID)
+            FROM
+            T_MARS_USER_INFO TMUI
+            LEFT JOIN T_MARS_USER_RELATION TMUR ON TMUI.USER_ID = TMUR.USER_ID
+            WHERE
+            TMUR.REFEREE_USER_ID = #{userId,jdbcType=DECIMAL}
+
+            GROUP BY
+            TMUR.REFEREE_USER_ID
+            )
+            )
+            and TUI.REGISTER_TIME &gt;= str_to_date(CONCAT(date_format(#{beginDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), '
+            00:00:00'),'%Y-%m-%d %H:%i:%s')
+            and TUI.REGISTER_TIME &lt;= str_to_date(CONCAT(date_format(#{endDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), '
+            23:59:59'),'%Y-%m-%d %H:%i:%s')
+    </select>
+
+    <select id="queryNewUserVIPWhereDate" resultType="int">
+        SELECT
+        COUNT(*)
+        FROM
+        T_MARS_USER_RELATION TUR
+        LEFT JOIN T_MARS_USER_INFO TUI ON TUI.USER_ID = TUR.USER_ID
+        WHERE
+        FIND_IN_SET(
+        TUR.REFEREE_USER_ID ,
+        (
+        SELECT
+        GROUP_CONCAT(TMUR.USER_ID)
+        FROM
+        T_MARS_USER_INFO TMUI
+        LEFT JOIN T_MARS_USER_RELATION TMUR ON TMUI.USER_ID = TMUR.USER_ID
+        WHERE
+        TMUR.REFEREE_USER_ID = #{userId,jdbcType=DECIMAL}
+
+        GROUP BY
+        TMUR.REFEREE_USER_ID
+        )
+        )
+        and TUI.REGISTER_TIME &gt;= str_to_date(CONCAT(date_format(#{beginDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), '
+        00:00:00'),'%Y-%m-%d %H:%i:%s')
+        and TUI.REGISTER_TIME &lt;= str_to_date(CONCAT(date_format(#{endDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), '
+        23:59:59'),'%Y-%m-%d %H:%i:%s')
+        and TUI.USER_LEVEL > 0
+    </select>
+
 </mapper>

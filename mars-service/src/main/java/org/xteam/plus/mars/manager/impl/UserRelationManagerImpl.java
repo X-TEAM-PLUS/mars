@@ -15,6 +15,7 @@ import org.xteam.plus.mars.type.UserLevelEnum;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -111,7 +112,7 @@ public class UserRelationManagerImpl implements UserRelationManager {
         returnValue.put("userLevel", UserLevelEnum.valueOf(userInfoDao.get(new UserInfo().setUserId(userId)).getUserLevel()).getInfo());
 
         List<UserRelation> nextRefereeUser = userRelationDao.queryNextRefereeUserCount(userId);
-        returnValue.put("userSize",nextRefereeUser.size());
+        returnValue.put("userSize", nextRefereeUser.size());
         if (nextRefereeUser != null && !nextRefereeUser.isEmpty()) {
             List myTeamList = Lists.newArrayList();
             for (UserRelation userRelation : nextRefereeUser) {
@@ -125,4 +126,22 @@ public class UserRelationManagerImpl implements UserRelationManager {
         return returnValue;
     }
 
+    @Override
+    public HashMap<String, Object> queryMyTeamCountAndNewUserLevelCount(BigDecimal userId, Date beginDate, Date endDate) throws Exception {
+        HashMap returnValue = Maps.newHashMap();
+        UserInfo userInfo = userInfoDao.get(new UserInfo().setUserId(userId));
+        if (userInfo == null) {
+            throw new Exception("用户ID[" + userId + "] 不存在");
+        }
+        returnValue.put("userLevel", UserLevelEnum.valueOf(userInfo.getUserLevel()));
+        returnValue.put("userNewCount", userRelationDao.queryNewUserWhereDate(userId, beginDate, endDate));
+        returnValue.put("userVipNewCount",  userRelationDao.queryNewUserVIPWhereDate(userId, beginDate, endDate));
+        List<HashMap> userLevelCount = userRelationDao.queryAllLevelCount(userId);
+        returnValue.put("userLevelMap", userLevelCount);
+
+        return returnValue;
+    }
+
+
 }
+
