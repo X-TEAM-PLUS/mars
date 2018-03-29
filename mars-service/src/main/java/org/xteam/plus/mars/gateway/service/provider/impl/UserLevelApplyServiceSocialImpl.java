@@ -3,8 +3,10 @@ package org.xteam.plus.mars.gateway.service.provider.impl;
 
 import org.springframework.stereotype.Component;
 import org.xteam.plus.mars.common.JsonUtils;
+import org.xteam.plus.mars.common.Logging;
 import org.xteam.plus.mars.domain.ApplyInfo;
 import org.xteam.plus.mars.domain.UserInfo;
+import org.xteam.plus.mars.gateway.service.provider.GateWayService;
 import org.xteam.plus.mars.gateway.service.provider.GlobalErrorMessage;
 import org.xteam.plus.mars.gateway.service.provider.HttpRequestBody;
 import org.xteam.plus.mars.gateway.service.provider.HttpResponseBody;
@@ -24,7 +26,7 @@ import java.util.Date;
  * 用户申请升级接口(社工)
  */
 @Component
-public class UserLevelApplyServiceSocialImpl extends AbstractUserLevelApplyService {
+public class UserLevelApplyServiceSocialImpl extends Logging implements GateWayService {
 
     private final String METHOD_NAME = "com.zhaoanyun.gateway.user.userLevelApply.social";
 
