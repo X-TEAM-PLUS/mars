@@ -376,7 +376,7 @@ public class UserInfoTest {
         userApplyInfoReqVO.setIdNumber("110106198403034818");
         userApplyInfoReqVO.setInterests("asdfafasf");
         HttpRequestBody httpRequestBody = new HttpRequestBody();
-        httpRequestBody.setUserId("2000006");
+        httpRequestBody.setUserId("2000005");
         httpRequestBody.setBizContent(JsonUtils.toJSON(userApplyInfoReqVO));
         try {
             HttpResponseBody httpResponseBody = userLevelApplyServiceSocial.gateWay(httpRequestBody);
@@ -396,12 +396,12 @@ public class UserInfoTest {
     public void userLevelApplyDirector() {
         UserApplyInfoReqVO userApplyInfoReqVO = new UserApplyInfoReqVO();
         userApplyInfoReqVO.setReason("测试申请");
-        userApplyInfoReqVO.setWayType(2);
+        userApplyInfoReqVO.setWayType(0);
         userApplyInfoReqVO.setRealName("测试申请");
         userApplyInfoReqVO.setIdNumber("110106198403034818");
         userApplyInfoReqVO.setInterests("asdfafasf");
         HttpRequestBody httpRequestBody = new HttpRequestBody();
-        httpRequestBody.setUserId("2000000");
+        httpRequestBody.setUserId("2000005");
         httpRequestBody.setBizContent(JsonUtils.toJSON(userApplyInfoReqVO));
         try {
             HttpResponseBody httpResponseBody = userLevelApplyServiceDirector.gateWay(httpRequestBody);

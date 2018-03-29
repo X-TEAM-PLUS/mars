@@ -42,29 +42,64 @@
                 </div>
                 <div class="portlet-body" id="applyInfoTable">
                     <div class="table-toolbar">
-                        <div class="row">
-                            <div class="col-md-10">
-                                <div class="btn-group">
-                                    <button id="newApplyInfoButton" class="btn green" onclick="location.href = 'add';">
-                                        添加申请记录表 <i class="fa fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-md-2 pull-right">
-                                <form id="applyInfoTableForm" onsubmit="init();return false;">
-                                    <div class="input-group">
-                                        <div class="input-icon">
-                                            <i class="icon-magnifier"></i>
-                                            <input class="form-control" type="text" name="applyId" placeholder="申请流水号"/>
+
+                        <form id="ordersInfoTableForm" onsubmit="init();return false;">
+                            <div class="form-body pull-right ">
+                                <div class="row">
+                                    <div class="col-md-2 form-group">
+                                        <div class="form-group  date-picker input-daterange" data-date="2017-06-07"
+                                             data-date-format="yyyy-mm-dd">
+                                            <div class="input-icon">
+                                                <i class="fa fa-calendar "></i><#--icon-magnifier-->
+                                                <input type="text" name="created" class="form-control"
+                                                       placeholder="申请日期">
+                                            </div>
                                         </div>
-                                        <span class="input-group-btn">
-												<button class="btn btn-success" type="submit"><i
-                                                        class="fa fa-arrow-left fa-fw"/></i> 搜索</button>
-												</span>
                                     </div>
-                                </form>
+
+                                    <div class="input-icon col-md-2">
+                                        <select class=" bs-select form-control" id="applyType"
+                                                name="applyType">
+                                            <option value="" selected>申请类型</option>
+                                            <option value="1">社工</option>
+                                            <option value="2">理事</option>
+                                            <option value="3">常任理事</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2 form-group">
+                                        <div class="input-icon">
+                                            <select class=" bs-select form-control" id="ordersInfo.status"
+                                                    name="status">
+                                                <option value="" selected>审批状态</option>
+                                                <option value="-1">审批不通过</option>
+                                                <option value="0">未审批</option>
+                                                <option value="1">审批通过</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 form-group">
+                                        <div class="input-icon">
+                                            <select class=" bs-select form-control" id="applyWay"
+                                                    name="applyWay">
+                                                <option value="" selected>申请方式</option>
+                                                <option value="0">手动申请</option>
+                                                <option value="1">任务晋升</option>
+                                                <option value="2">绿色通道</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-2 text-right">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-success" type="submit"><i
+                                                    class="fa fa-arrow-left fa-fw"/></i> 搜索</button>
+                                        </span>
+                                    </div>
+                                </div>
+
                             </div>
-                        </div>
+                        </form>
+
+
                     </div>
                     <table class="table table-striped table-bordered table-hover ">
                         <thead>

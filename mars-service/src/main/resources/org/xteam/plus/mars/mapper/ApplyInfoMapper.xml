@@ -304,6 +304,11 @@
                   and TAI.APPLY_WAY = #{applyWay,jdbcType=INTEGER}
                 ]]>
             </if>
+            <if test="applyType != null">
+                <![CDATA[
+                  and TAI.APPLY_TYPE = #{applyType,jdbcType=INTEGER}
+                ]]>
+            </if>
         </where>
     </sql>
 
@@ -318,11 +323,9 @@
     </select>
 
     <select id="queryForUserInfoCount" resultType="int" parameterType="org.xteam.plus.mars.domain.ApplyInfo">
-        select
-       count(*)
+        select count(*)
         from T_MARS_APPLY_INFO TAI
         LEFT JOIN T_MARS_USER_INFO TUI ON TAI.USER_ID = TUI.USER_ID
         <include refid="queryWhereRf"></include>
-        limit #{start},#{limit}
     </select>
 </mapper>
