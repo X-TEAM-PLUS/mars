@@ -272,7 +272,25 @@ function jianKangKaClick() {
 
 }
 
+/**
+ * 我的TEAM
+ */
+function myTeam() {
+    if (isLogin()) {
+        if (userInfo.userLevel >= 1) {
+            memberView.router.navigate('/my_team/', {
+                history: true
+            });
+        } else {
+            memberView.router.navigate('/member_rk/', {
+                history: true
+            });
+        }
+    } else {
+        gotoLogin();
+    }
 
+}
 /**
  * 转账
  */

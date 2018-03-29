@@ -108,6 +108,15 @@ $$(document).on('page:init', '.page[data-name="account-info-page"]', function (e
     }, "account-info", "show-account-info");
 });
 
+// $$(document).on('page:init', '.page[data-name="show-my-team-page"]', function (e) {
+//     var params = {
+//         method: InterFace.USER_INFO,
+//         token: localStorage.getItem(TOKEN),
+//         bizContent:{beginDate:'2018-01-01',endDate:CurentTime()}
+//     };
+//     loadBizContent(INTERFACE_URL, params, "my-team-info", "show-my-team-page");
+// });
+
 $$(document).on('page:init', '.page[data-name="jiankangka-page"]', function (e) {
     loadBizContent(INTERFACE_URL, {
         method: InterFace.ME_HEART_CARD_INFO,
@@ -180,4 +189,35 @@ app.views.create('#view-college', {url: '/college/'});
 
 var memberView = app.views.create('#view-member', {url: '/'});
 
+
+function CurentTime() {
+    var now = new Date();
+
+    var year = now.getFullYear();       //年
+    var month = now.getMonth() + 1;     //月
+    var day = now.getDate();            //日
+
+    var hh = now.getHours();            //时
+    var mm = now.getMinutes();          //分
+
+    var clock = year + "-";
+
+    if(month < 10)
+        clock += "0";
+
+    clock += month + "-";
+
+    if(day < 10)
+        clock += "0";
+
+    clock += day + " ";
+
+    if(hh < 10)
+        clock += "0";
+
+    clock += hh + ":";
+    if (mm < 10) clock += '0';
+    clock += mm;
+    return(clock);
+}
 

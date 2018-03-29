@@ -324,10 +324,10 @@
                     </a>
                 </div>
                 <div class="col-33">
-                <a href="#" class="tab-link ">
-                <i class="icon fa fa-users fa-2x "></i>
-                <span class="tabbar-label ">我和TM</span>
-                </a>
+                    <a href="#" class="tab-link " onclick="myTeam()">
+                        <i class="icon fa fa-users fa-2x "></i>
+                        <span class="tabbar-label ">我的TM</span>
+                    </a>
                 </div>
                 <div class="col-33">
                     <a href="#" class="tab-link " onclick="xiaoKaBaoClick()">
@@ -419,10 +419,10 @@
                     </a>
                 </div>
                 <div class="col-33">
-                <a href="#" class="tab-link ">
-                <i class="icon fa fa-users fa-2x "></i>
-                <span class="tabbar-label ">我和TM</span>
-                </a>
+                    <a href="#" class="tab-link " onclick="myTeam()">
+                        <i class="icon fa fa-users fa-2x "></i>
+                        <span class="tabbar-label ">我的TM</span>
+                    </a>
                 </div>
                 <div class="col-33">
                     <a href="#" class="tab-link " onclick="xiaoKaBaoClick()">
@@ -514,16 +514,16 @@
                     </a>
                 </div>
                 <div class="col-33">
-                <a href="#" class="tab-link  ">
-                <i class="icon fa fa-paper-plane-o fa-2x "></i>
-                <span class="tabbar-label ">推广码</span>
-                </a>
+                    <a href="#" class="tab-link  ">
+                        <i class="icon fa fa-paper-plane-o fa-2x "></i>
+                        <span class="tabbar-label ">推广码</span>
+                    </a>
                 </div>
                 <div class="col-33">
-                <a href="#" class="tab-link ">
-                <i class="icon fa fa-users fa-2x "></i>
-                <span class="tabbar-label ">我和TM</span>
-                </a>
+                    <a href="#" class="tab-link " onclick="myTeam()">
+                        <i class="icon fa fa-users fa-2x "></i>
+                        <span class="tabbar-label ">我的TM</span>
+                    </a>
                 </div>
             </div>
             <br>
@@ -613,6 +613,27 @@
     <div class="col-100 center font-16">余额（元）</div>
     <div class="col-100 center color-red font-18"><b>{{balanceAmount}}.00 元</b></div>
 </script>
+<!-- ********************************** 我的TM ****************************** -->
+<script type="text/template" id="show-my-team-info">
+    {{#each userLevelMap}}
+
+    <li>
+        <a href="#" class="item-link item-content">
+            <div class="item-media"><i class="icon icon-f7"></i></div>
+            <div class="item-inner">
+                <div class="item-title">{{USER_LEVEL}}}</div>
+            </div>
+            <div class="item-inner">
+                <div class="item-title">{{USER_COUNT}}</div>
+            </div>
+        </a>
+    </li>
+
+    {{/each}}
+</script>
+<!-- ********************************** 我的TM ****************************** -->
+
+<!-- ********************************** 小卡包 ****************************** -->
 <script type="text/template" id="show-jiankangka-info">
     <div class="list">
         <ul>

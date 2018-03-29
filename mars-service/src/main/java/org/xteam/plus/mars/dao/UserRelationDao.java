@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Param;
 import org.xteam.plus.mars.domain.UserRelation;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -152,4 +153,31 @@ public interface UserRelationDao {
      * @throws Exception
      */
     public List<UserRelation> queryNextRefereeUserCount(@Param("userId") BigDecimal userId) throws Exception;
+
+
+    /**
+     * 查询所有下线人员，按照级别进行分数数量
+     * @param userId
+     * @return
+     * @throws Exception
+     */
+    public List<HashMap> queryAllLevelCount(@Param("userId") BigDecimal userId) throws Exception;
+
+
+    /**
+     * 查询用户所有下线用户某时间段的所有用户
+     * @param userId
+     * @param beginDate
+     * @param endDate
+     * @return
+     */
+    public int queryNewUserWhereDate(@Param("userId") BigDecimal userId, @Param("beginDate") Date beginDate,@Param("endDate") Date endDate);
+    /**
+     * 查询用户所有下线用户某时间段的所有VIP用户
+     * @param userId
+     * @param beginDate
+     * @param endDate
+     * @return
+     */
+    public int queryNewUserVIPWhereDate(@Param("userId") BigDecimal userId, @Param("beginDate") Date beginDate,@Param("endDate") Date endDate);
 }

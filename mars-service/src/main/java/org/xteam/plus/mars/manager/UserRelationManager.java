@@ -3,6 +3,7 @@ package org.xteam.plus.mars.manager;
 import org.xteam.plus.mars.domain.UserRelation;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -130,4 +131,13 @@ public interface UserRelationManager {
      * @return
      */
     public HashMap<String, Object> queryMyTeamCountAndNextLevelCount(BigDecimal userId) throws Exception;
+
+    /**
+     * 获取当前用户下所有下线人员等级分组人数，与某一时间内新增用户
+     *
+     * @param userId
+     * @return
+     * @throws Exception
+     */
+    public HashMap<String, Object> queryMyTeamCountAndNewUserLevelCount(BigDecimal userId, Date beginDate, Date endDate) throws Exception;
 }

@@ -146,7 +146,12 @@ var routes = [
         url: './pages/changrenlishiLevelView.html',
         name: 'changrenlishiLevelView',
     },
-
+    //我的TEAM
+    {
+        path: '/my_team',
+        url: './pages/my_team.html',
+        name: 'my_team',
+    },
 
 
   // Default route (404 page). MUST BE THE LAST
