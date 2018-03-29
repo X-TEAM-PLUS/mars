@@ -1133,3 +1133,10 @@ function viewMarketingInformationByLishi(token) {
         }
     });
 }
+
+/**
+ * 我的推广码
+ */
+function meTuiGuangMa() {
+    app.dialog.alert('开发建设中，敬请期待。', '信息提示');
+}

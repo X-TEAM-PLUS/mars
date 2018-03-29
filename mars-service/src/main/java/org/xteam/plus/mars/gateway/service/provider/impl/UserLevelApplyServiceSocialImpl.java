@@ -47,11 +47,24 @@ public class UserLevelApplyServiceSocialImpl extends Logging implements GateWayS
         if (userApplyInfoReqVO == null) {
             return new HttpResponseBody(GlobalErrorMessage.OBJECT_ISNULL);
         }
-        if ( StringUtils.isEmpty(userApplyInfoReqVO.getIdNumber())
-                || StringUtils.isEmpty(userApplyInfoReqVO.getRealName())
-                || StringUtils.isEmpty(userApplyInfoReqVO.getReason())
-                || StringUtils.isEmpty(httpRequestBody.getUserId())) {
+
+        if ( StringUtils.isEmpty(httpRequestBody.getUserId())) {
             return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
+        }
+
+        //真实姓名
+        if ( StringUtils.isEmpty(userApplyInfoReqVO.getRealName())) {
+            return new HttpResponseBody(GlobalErrorMessage.MISSING_REAL_NAME);
+        }
+        //身份证件号码
+        if ( StringUtils.isEmpty(userApplyInfoReqVO.getIdNumber()) ) {
+            return new HttpResponseBody(GlobalErrorMessage.MISSING_ID_NUMBER);
+        }
+
+
+        //申请原因
+        if (StringUtils.isEmpty(userApplyInfoReqVO.getReason())) {
+            return new HttpResponseBody(GlobalErrorMessage.MISSING_APPLY_REASON);
         }
 
         UserInfo userInfo = userInfoManager.get(new UserInfo().setUserId(new BigDecimal(httpRequestBody.getUserId())));
