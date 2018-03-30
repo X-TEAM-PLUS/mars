@@ -13,55 +13,44 @@
         <div class="page-content " style="padding-top: 8px">
             <div class="list" id="my-team-info">
                 <div class="item-content item-input">
-                    <div class="item-inner">
-                        <div class="item-input-wrap">
-                            <input type="text" placeholder="起始时间" readonly="" id="demo-calendar-default" class="">
+                    <div class="row">
+                        <div class="col">
                             <input type="text" placeholder="结束时间" readonly="" id="demo-calendar-default1" class="">
                         </div>
-
-                    </div>
-                </div>
-                <ul>
-                    <li>
-                        <div class="row height-44">
-                            <div class="col-40 left-16 color-gray"><i class="fa fa-thumb-tack "></i> 我的身份</div>
-                            <div class="col-60 right-16 color-gray">{{userLevel}}</div>
+                        <div class="col">
+                            <input type="text" placeholder="起始时间" readonly="" id="demo-calendar-default" class="">
                         </div>
-                    </li>
-                </ul>
-                {{#each userLevelMap}}
-                <div class="item-content">
-                    <div class="item-inner">
-                        <div class="item-title">{{USER_LEVEL}}</div>
-                        <div class="item-after"><span class="badge">{{USER_COUNT}}</span></div>
                     </div>
                 </div>
-                {{/each}}
+                <div class="vipUser">
+
+                </div>
+                <div class="">
+                    <div class="row no-gap">
+                        <div class="col" style="text-align:center"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">新增成员</font></font>
+                        </div>
+                        <div class="col" style="text-align:center"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">新增会员</font></font>
+                        </div>
+                    </div>
+                </div>
+                <ul class="meInfo">
+
+                </ul>
+
+                <ul class="memlevelMap">
+
+                </ul>
             </div>
         </div>
     </div>
 </template>
 <script>
 
-    function initList(){
-        var params = {method: InterFace.MY_TEAM, token: localStorage.getItem(TOKEN)};
-        var isSuccess = false;
-        var data = undefined;
-        app.request.json(INTERFACE_URL, params, function (data) {
-            data = JSON.parse(data.bizContent);
-            isSuccess = true;
-        });
-        while(isSuccess){
-            return data;
-        }
-    }
-
+    var data = undefined;
     return {
-        data: function () {
-
-        },
         on: {
             pageInit: function (e, page) {
+
                 var self = this;
                 var today = new Date();
                 var app = self.$app;
@@ -73,12 +62,50 @@
                 self.calendarDefault = app.calendar.create({
                     inputEl: '#demo-calendar-default1',
                 });
+                var self = this;
+                var $ = self.$$;
+                var params = {method: InterFace.MY_TEAM, token: localStorage.getItem(TOKEN)};
+                app.request.json(INTERFACE_URL, params, function (response) {
+                    logInfo("myteam : " + response.bizContent);
+                    var bizContent = JSON.parse(response.bizContent);
+
+                    if (ResponseCode.SUCCESS == response.code) {
+                        var vip = '' +
+                            '<div class="row no-gap">' +
+                            '<div class="col" style="text-align:center"><font style="vertical-align: inherit;color: #d2190b"><font style="vertical-align: inherit;">'+bizContent.userNewCount+'</font></font>' +
+                            '</div>' +
+                            '<div class="col" style="text-align:center"><font style="vertical-align: inherit;color: #d2190b"><font style="vertical-align: inherit;">'+bizContent.userVipNewCount+'</font></font>' +
+                            '</div>' +
+                            '</div>' ;
+                        $(self.$el).find('.list .vipUser').append(vip);
+                        var meInfo = '<li>' +
+                            '<div class="row height-44">' +
+                            '<div class="col-40 left-16 color-gray"><i class="fa fa-thumb-tack "></i> 我的身份</div>' +
+                            '<div class="col-60 right-16 color-gray">' + bizContent.userLevel + '</div>' +
+                            '</div>' +
+                            '</li>';
+                        $(self.$el).find('.list .meInfo').append(meInfo);
+                        //加载列表
+                        if (bizContent.userLevelMap != undefined) {
+                            var list = bizContent.userLevelMap;
+                            for (var obj in list) {
+                                var linkHTML = '<div class="item-content">' +
+                                    '<div class="item-inner">' +
+                                    '<div class="item-title">' + list[obj].USER_LEVEL + '</div>' +
+                                    '<div class="item-after"><span class="badge">' + list[obj].USER_COUNT + '</span></div>' +
+                                    '</div>' +
+                                    '</div>';
+                                $(self.$el).find('.list .memlevelMap').append(linkHTML);
+                            }
+                        }
+                    } else {
+                        app.dialog.alert(response.msg, '信息提示');
+                    }
+                });
 
             },
-            pageBeforeRemove() {
-                var self = this;
-                self.calendarDefault.destroy();
-            },
+
+
         },
     }
 </script>
