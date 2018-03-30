@@ -9,6 +9,7 @@ import org.xteam.plus.mars.domain.UserInfo;
 import org.xteam.plus.mars.manager.UserInfoManager;
 import org.xteam.plus.mars.type.UserLevelEnum;
 import org.xteam.plus.mars.wx.bean.WxUserList;
+import org.xteam.plus.mars.wx.util.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -130,7 +131,9 @@ public class UserInfoManagerImpl implements UserInfoManager {
     private List<UserInfo> convertRealName(List<UserInfo> userInfos) {
         for (UserInfo userInfo : userInfos) {
             try {
-                userInfo.setRealName(URLDecoder.decode(userInfo.getRealName(), "utf-8"));
+                if (!StringUtils.isEmpty(userInfo.getRealName())) {
+                    userInfo.setRealName(URLDecoder.decode(userInfo.getRealName(), "utf-8"));
+                }
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
@@ -144,8 +147,9 @@ public class UserInfoManagerImpl implements UserInfoManager {
             if (userInfos == null) {
                 return null;
             }
-            userInfos.setRealName(URLDecoder.decode(userInfos.getRealName(), "utf-8"));
-        } catch (UnsupportedEncodingException e) {
+            if (!StringUtils.isEmpty(userInfos.getRealName())) {
+                userInfos.setRealName(URLDecoder.decode(userInfos.getRealName(), "utf-8"));
+            }        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
 

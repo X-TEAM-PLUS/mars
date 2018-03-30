@@ -1,17 +1,84 @@
-<div class="page" data-name="show-my-team-page">
-    <div class="navbar">
-        <div class="navbar-inner">
-            <div class="left sliding">
-                <a href="#" class="link back color-theme-white">
-                    <i class="icon icon-back"></i>&nbsp;&nbsp;&nbsp;&nbsp;
-                </a>
+<template>
+    <div class="page" data-name="show-my-team-page">
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="left sliding">
+                    <a href="#" class="link back color-theme-white">
+                        <i class="icon icon-back"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+                    </a>
+                </div>
+                <div class="title">我的TM</div>
             </div>
-            <div class="title">我的TM</div>
         </div>
-    </div>
-    <div class="page-content "  style="padding-top: 8px">
-        <div class="list" id="my-team-info">
+        <div class="page-content " style="padding-top: 8px">
+            <div class="list" id="my-team-info">
+                <div class="item-content item-input">
+                    <div class="item-inner">
+                        <div class="item-input-wrap">
+                            <input type="text" placeholder="起始时间" readonly="" id="demo-calendar-default" class="">
+                            <input type="text" placeholder="结束时间" readonly="" id="demo-calendar-default1" class="">
+                        </div>
 
+                    </div>
+                </div>
+                <ul>
+                    <li>
+                        <div class="row height-44">
+                            <div class="col-40 left-16 color-gray"><i class="fa fa-thumb-tack "></i> 我的身份</div>
+                            <div class="col-60 right-16 color-gray">{{userLevel}}</div>
+                        </div>
+                    </li>
+                </ul>
+                {{#each userLevelMap}}
+                <div class="item-content">
+                    <div class="item-inner">
+                        <div class="item-title">{{USER_LEVEL}}</div>
+                        <div class="item-after"><span class="badge">{{USER_COUNT}}</span></div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
         </div>
     </div>
-</div>
+</template>
+<script>
+
+    function initList(){
+        var params = {method: InterFace.MY_TEAM, token: localStorage.getItem(TOKEN)};
+        var isSuccess = false;
+        var data = undefined;
+        app.request.json(INTERFACE_URL, params, function (data) {
+            data = JSON.parse(data.bizContent);
+            isSuccess = true;
+        });
+        while(isSuccess){
+            return data;
+        }
+    }
+
+    return {
+        data: function () {
+
+        },
+        on: {
+            pageInit: function (e, page) {
+                var self = this;
+                var today = new Date();
+                var app = self.$app;
+                var $ = self.$;
+                // Default
+                self.calendarDefault = app.calendar.create({
+                    inputEl: '#demo-calendar-default',
+                });
+                self.calendarDefault = app.calendar.create({
+                    inputEl: '#demo-calendar-default1',
+                });
+
+            },
+            pageBeforeRemove() {
+                var self = this;
+                self.calendarDefault.destroy();
+            },
+        },
+    }
+</script>

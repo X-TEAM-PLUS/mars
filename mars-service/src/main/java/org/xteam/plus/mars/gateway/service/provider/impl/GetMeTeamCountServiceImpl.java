@@ -37,16 +37,15 @@ public class GetMeTeamCountServiceImpl extends Logging implements GateWayService
     public HttpResponseBody gateWay(HttpRequestBody httpRequestBody) throws Exception {
         List<UserRelationRspVO> returnValue = Lists.newArrayList();
         MyTeamReqVO myTeamReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), MyTeamReqVO.class);
-        if (myTeamReqVO == null || myTeamReqVO.getBeginDate() == null || myTeamReqVO.getEndDate() == null
-                || StringUtils.isEmpty(httpRequestBody.getUserId())) {
+        if (StringUtils.isEmpty(httpRequestBody.getUserId())) {
             return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
         }
         return new HttpResponseBody(GlobalErrorMessage.SUCCESS).setBizContent(
                 JsonUtils.toJSON(
                         userRelationManager.queryMyTeamCountAndNewUserLevelCount(
                                 new BigDecimal(httpRequestBody.getUserId()),
-                                myTeamReqVO.getBeginDate(),
-                                myTeamReqVO.getEndDate()
+                                myTeamReqVO == null || myTeamReqVO.getBeginDate() == null ? null:myTeamReqVO.getBeginDate(),
+                                myTeamReqVO == null || myTeamReqVO.getEndDate() == null ? null:myTeamReqVO.getEndDate()
                         )
                 )
         );

@@ -148,9 +148,8 @@ var routes = [
     },
     //我的TEAM
     {
-        path: '/my_team',
-        url: './pages/my_team.html',
-        name: 'my_team',
+        path: '/my_team/',
+        componentUrl: './pages/my_team.html',
     },
 
     //体检

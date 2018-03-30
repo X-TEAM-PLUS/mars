@@ -133,10 +133,15 @@ public class UserRelationManagerImpl implements UserRelationManager {
         if (userInfo == null) {
             throw new Exception("用户ID[" + userId + "] 不存在");
         }
-        returnValue.put("userLevel", UserLevelEnum.valueOf(userInfo.getUserLevel()));
+        returnValue.put("userLevel", UserLevelEnum.valueOf(userInfo.getUserLevel()).getInfo());
         returnValue.put("userNewCount", userRelationDao.queryNewUserWhereDate(userId, beginDate, endDate));
-        returnValue.put("userVipNewCount",  userRelationDao.queryNewUserVIPWhereDate(userId, beginDate, endDate));
+        returnValue.put("userVipNewCount", userRelationDao.queryNewUserVIPWhereDate(userId, beginDate, endDate));
         List<HashMap> userLevelCount = userRelationDao.queryAllLevelCount(userId);
+        for (HashMap map : userLevelCount) {
+            Integer userLevel = (Integer) map.get("USER_LEVEL");
+            map.put("USER_LEVEL", UserLevelEnum.valueOf(userLevel).getInfo());
+
+        }
         returnValue.put("userLevelMap", userLevelCount);
 
         return returnValue;

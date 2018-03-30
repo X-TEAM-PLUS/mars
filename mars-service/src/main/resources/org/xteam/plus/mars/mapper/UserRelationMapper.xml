@@ -466,10 +466,14 @@
             TMUR.REFEREE_USER_ID
             )
             )
+            <if test="beginDate != null">
             and TUI.REGISTER_TIME &gt;= str_to_date(CONCAT(date_format(#{beginDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), '
             00:00:00'),'%Y-%m-%d %H:%i:%s')
+            </if>
+            <if test="endDate != null">
             and TUI.REGISTER_TIME &lt;= str_to_date(CONCAT(date_format(#{endDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), '
             23:59:59'),'%Y-%m-%d %H:%i:%s')
+            </if>
     </select>
 
     <select id="queryNewUserVIPWhereDate" resultType="int">
@@ -494,10 +498,14 @@
         TMUR.REFEREE_USER_ID
         )
         )
-        and TUI.REGISTER_TIME &gt;= str_to_date(CONCAT(date_format(#{beginDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), '
-        00:00:00'),'%Y-%m-%d %H:%i:%s')
-        and TUI.REGISTER_TIME &lt;= str_to_date(CONCAT(date_format(#{endDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), '
-        23:59:59'),'%Y-%m-%d %H:%i:%s')
+        <if test="beginDate != null">
+            and TUI.REGISTER_TIME &gt;= str_to_date(CONCAT(date_format(#{beginDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), '
+            00:00:00'),'%Y-%m-%d %H:%i:%s')
+        </if>
+        <if test="endDate != null">
+            and TUI.REGISTER_TIME &lt;= str_to_date(CONCAT(date_format(#{endDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), '
+            23:59:59'),'%Y-%m-%d %H:%i:%s')
+        </if>
         and TUI.USER_LEVEL > 0
     </select>
 

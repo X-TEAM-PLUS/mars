@@ -12,9 +12,11 @@ import org.xteam.plus.mars.type.AccountDetailTypeEnum;
 import org.xteam.plus.mars.type.ApplayTypeEnum;
 import org.xteam.plus.mars.type.CardStatusTypeEnum;
 import org.xteam.plus.mars.type.UserLevelEnum;
+import org.xteam.plus.mars.wx.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.net.URLDecoder;
 import java.util.Date;
 import java.util.List;
 
@@ -102,7 +104,14 @@ public class ApplyInfoManagerImpl extends Logging implements ApplyInfoManager {
 
     @Override
     public List<ApplyInfo> queryForUserInfo(ApplyInfo applyInfo) throws Exception {
-        return applyInfoDao.queryForUserInfo(applyInfo);
+        List<ApplyInfo> applyInfos = applyInfoDao.queryForUserInfo(applyInfo);
+        // 转换用户姓名
+        for (ApplyInfo applyInfoTemp : applyInfos) {
+            if (applyInfoTemp.getUserInfo() != null && !StringUtils.isEmpty(applyInfoTemp.getUserInfo().getRealName())) {
+                applyInfoTemp.getUserInfo().setRealName(URLDecoder.decode(applyInfoTemp.getUserInfo().getRealName(), "utf-8"));
+            }
+        }
+        return applyInfos;
     }
 
     @Override
