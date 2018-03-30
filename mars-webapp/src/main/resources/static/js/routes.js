@@ -154,8 +154,8 @@ var routes = [
 
     //体检
     {
-        path: '/tijian',
-        componentUrl: './pages/tijian.html',
+        path: '/tijian/',
+        url: './pages/tijian.html',
         name: 'tijian',
     },
   // Default route (404 page). MUST BE THE LAST

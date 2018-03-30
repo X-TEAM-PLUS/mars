@@ -1,5 +1,4 @@
-<template>
-    <div class="page no-toolbar" data-name="account-info-page">
+    <div class="page no-toolbar" data-name="tijian-page">
         <div class="navbar">
             <div class="navbar-inner">
                 <div class="left sliding">
@@ -11,7 +10,7 @@
             </div>
         </div>
         <div class="page-content   navbar-through toolbar-through ">
-            <form name="tijianForm" id="tijianForm">
+            <form name="tijianForm" id="tijianForm" method="post" enctype="multipart/form-data">
                 <div class="card">
                     <div class="card-header left "><span class="font-14"> <i class="fa fa-search"></i> 检测方法</span></div>
                     <div class="card-content">
@@ -27,7 +26,7 @@
                             <ul>
                                 <li>
                                     <label class="item-radio item-content">
-                                        <input type="radio" name="demo-radio" value="Books" checked/>
+                                        <input type="radio" name="selfCheckResult" value="1" checked/>
                                         <i class="icon icon-radio"></i>
                                         <div class="item-inner">
                                             <div class="item-title"><span class="font-12">阴性(-)</span></div>
@@ -36,7 +35,7 @@
                                 </li>
                                 <li>
                                     <label class="item-radio item-content">
-                                        <input type="radio" name="demo-radio" value="Movies"/>
+                                        <input type="radio" name="selfCheckResult" value="2"/>
                                         <i class="icon icon-radio"></i>
                                         <div class="item-inner">
                                             <div class="item-title"><span class="font-12">弱阳性(±)</span></div>
@@ -45,7 +44,7 @@
                                 </li>
                                 <li>
                                     <label class="item-radio item-content">
-                                        <input type="radio" name="demo-radio" value="Food"/>
+                                        <input type="radio" name="selfCheckResult" value="3"/>
                                         <i class="icon icon-radio"></i>
                                         <div class="item-inner">
                                             <div class="item-title"><span class="font-12">阳性(+)</span></div>
@@ -54,7 +53,7 @@
                                 </li>
                                 <li>
                                     <label class="item-radio item-content">
-                                        <input type="radio" name="demo-radio" value="Drinks"/>
+                                        <input type="radio" name="selfCheckResult" value="4"/>
                                         <i class="icon icon-radio"></i>
                                         <div class="item-inner">
                                             <div class="item-title"><span class="font-12">强阳性(++)</span></div>
@@ -67,12 +66,12 @@
                 </div>
                 <div class="card">
                     <div class="card-header left "><span class="font-14"><i class="fa fa-camera-retro"></i> 检测结果上传</span></div>
-                    <div class="card-content">
+                    <div class="card-content" id="checkResultFileDiv">
                         <div style="padding: 5px">
                             <label for="checkResultFile">
-                                <img src="images/addimg.png" width="60px" height="60px">
+                                <img src="images/addimg.png" width="60px" height="60px" id="previewPicBox" >
                             </label>
-                            <input id="checkResultFile" type="file" accept="image/*" capture="camera" style="visibility: hidden">
+                            <input id="checkResultFile" type="file" name="checkReport" accept="image/*" capture="camera" style="visibility: hidden"  class="uploadFile" onchange="previewPic('checkResultFile','previewPicBox','checkResultFileDiv');">
                         </div>
                     </div>
                 </div>
@@ -80,7 +79,7 @@
                     <div class="card-header left "><span class="font-14"><i class="fa fa-book"></i> 示例</span></div>
                     <div class="card-content">
                         <div class="left">
-                            <img src="images/pic.png" width="248px" height="137px">
+                            <img src="images/pic.png" width="248px" height="137px" >
                         </div>
                     </div>
                 </div>
@@ -94,4 +93,3 @@
             </div>
         </div>
     </div>
-</template>
