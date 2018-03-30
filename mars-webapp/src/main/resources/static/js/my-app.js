@@ -1140,3 +1140,29 @@ function viewMarketingInformationByLishi(token) {
 function meTuiGuangMa() {
     app.dialog.alert('开发建设中，敬请期待。', '信息提示');
 }
+
+/**
+ * 提交检查结果
+ * @param form
+ */
+function submitCheckResult(form) {
+    var bizContent = app.form.convertToData('#' + form);
+    var params = {
+        method: InterFace.WITHDRAW_APPLY,
+        userId: userInfo.userId,
+        bizContent: JSON.stringify(bizContent)
+    };
+    app.request.post(INTERFACE_URL, params, function (data) {
+        logInfo(data);
+        var response = JSON.parse(data);
+        if (ResponseCode.SUCCESS == response.code) {
+            app.dialog.alert('申请已提交成功，请等待后台审核，注意接收消息提醒。', '信息提示', function () {
+                memberView.router.navigate('/lovebutie/', {
+                    history: true
+                });
+            });
+        } else {
+            app.dialog.alert(response.msg, '信息提示');
+        }
+    });
+}

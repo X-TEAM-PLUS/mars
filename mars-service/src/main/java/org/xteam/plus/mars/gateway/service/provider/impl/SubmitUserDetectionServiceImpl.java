@@ -44,17 +44,11 @@ public class SubmitUserDetectionServiceImpl extends Logging implements GateWaySe
 
     @Override
     public HttpResponseBody gateWay(HttpRequestBody httpRequestBody) throws Exception {
-
-        long beginDate = System.currentTimeMillis();
-        this.logInfo(METHOD_NAME + " request  [" + httpRequestBody.toString() + "]");
-        HttpResponseBody httpResponseBody = new HttpResponseBody(GlobalErrorMessage.SUCCESS);
-        try {
             SubmitUserDetectionReqVO submitUserDetectionReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), SubmitUserDetectionReqVO.class);
             LinkedMultiValueMap<String, MultipartFile> linkedMultiValueMap = httpRequestBody.getMultipartFileHashMap();
             if (linkedMultiValueMap.isEmpty() || StringUtils.isEmpty(httpRequestBody.getUserId())
                     || StringUtils.isEmpty(submitUserDetectionReqVO.getCheckReport())) {
-                httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
-                return httpResponseBody;
+                return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
             }
             HealthCheckRecord healthCheckRecord = new HealthCheckRecord();
             healthCheckRecord.setUserId(new BigDecimal(httpRequestBody.getUserId()));
@@ -63,8 +57,7 @@ public class SubmitUserDetectionServiceImpl extends Logging implements GateWaySe
                 String key = keys.next();
                 List<MultipartFile> multipartFiles = linkedMultiValueMap.get(key);
                 if (multipartFiles.isEmpty()) {
-                    httpResponseBody = new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
-                    return httpResponseBody;
+                    return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
                 }
                 for (MultipartFile multipartFile : multipartFiles) {
                     ImageFileInfo imageFileInfo = dfsClient.uploadImageFile(multipartFile);
@@ -78,15 +71,8 @@ public class SubmitUserDetectionServiceImpl extends Logging implements GateWaySe
             int count = healthCheckRecordManager.insert(healthCheckRecord);
             if (count <= 0) {
                 logInfo("上传检测结果失败，插入数据库为0 userId[" + httpRequestBody.getUserId() + "]");
-                httpResponseBody = new HttpResponseBody(GlobalErrorMessage.BUSINESS_FAILED);
-                return httpResponseBody;
+                return  new HttpResponseBody(GlobalErrorMessage.BUSINESS_FAILED);
             }
-        } catch (Exception e) {
-            logInfo(METHOD_NAME + " error system_error ", e);
-            httpResponseBody = new HttpResponseBody(GlobalErrorMessage.BUSINESS_FAILED);
-        } finally {
-            logInfo(METHOD_NAME + " finish result[" + JsonUtils.toJSON(httpResponseBody) + "] longtime[" + (beginDate - System.currentTimeMillis()) + "]");
-        }
-        return httpResponseBody;
+        return new HttpResponseBody(GlobalErrorMessage.SUCCESS);
     }
 }

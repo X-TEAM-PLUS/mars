@@ -153,7 +153,12 @@ var routes = [
         name: 'my_team',
     },
 
-
+    //体检
+    {
+        path: '/tijian',
+        componentUrl: './pages/tijian.html',
+        name: 'tijian',
+    },
   // Default route (404 page). MUST BE THE LAST
   {
     path: '(.*)',
