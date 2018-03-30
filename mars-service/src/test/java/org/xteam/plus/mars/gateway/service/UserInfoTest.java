@@ -129,25 +129,25 @@ public class UserInfoTest {
         }
     }
 
-    /**
-     * 无法模拟提交
-     */
-    @Test
-    public void submitUserDetectionService() {
-        SubmitUserDetectionReqVO submitUserDetectionReqVO = new SubmitUserDetectionReqVO();
-        submitUserDetectionReqVO.setCheckReport("测试测试测试");
-        HttpRequestBody httpRequestBody = new HttpRequestBody();
-        httpRequestBody.setUserId("2000000");
-        httpRequestBody.setBizContent(JsonUtils.toJSON(submitUserDetectionReqVO));
-        System.out.println(JsonUtils.toJSON(httpRequestBody));
-//        try {
-//            HttpResponseBody httpResponseBody = submitUserDetectionService.gateWay(httpRequestBody);
-//            System.out.println("submitUserDetectionService :" + httpResponseBody.getMsg());
-//            System.out.println("submitUserDetectionService :" + httpResponseBody.getBizContent());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-    }
+//    /**
+//     * 无法模拟提交
+//     */
+//    @Test
+//    public void submitUserDetectionService() {
+//        SubmitUserDetectionReqVO submitUserDetectionReqVO = new SubmitUserDetectionReqVO();
+//        submitUserDetectionReqVO.setCheckReport("测试测试测试");
+//        HttpRequestBody httpRequestBody = new HttpRequestBody();
+//        httpRequestBody.setUserId("2000000");
+//        httpRequestBody.setBizContent(JsonUtils.toJSON(submitUserDetectionReqVO));
+//        System.out.println(JsonUtils.toJSON(httpRequestBody));
+////        try {
+////            HttpResponseBody httpResponseBody = submitUserDetectionService.gateWay(httpRequestBody);
+////            System.out.println("submitUserDetectionService :" + httpResponseBody.getMsg());
+////            System.out.println("submitUserDetectionService :" + httpResponseBody.getBizContent());
+////        } catch (Exception e) {
+////            e.printStackTrace();
+////        }
+//    }
 
     /**
      * 获取提现记录详情

@@ -13,16 +13,13 @@ import org.xteam.plus.mars.gateway.service.provider.GateWayService;
 import org.xteam.plus.mars.gateway.service.provider.GlobalErrorMessage;
 import org.xteam.plus.mars.gateway.service.provider.HttpRequestBody;
 import org.xteam.plus.mars.gateway.service.provider.HttpResponseBody;
-import org.xteam.plus.mars.gateway.service.provider.impl.body.req.SubmitUserDetectionReqVO;
 import org.xteam.plus.mars.manager.HealthCheckRecordManager;
 import org.xteam.plus.mars.type.HealthCheckRecordTypeEnum;
 import org.xteam.plus.mars.wx.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * 上传检测结果
@@ -44,35 +41,49 @@ public class SubmitUserDetectionServiceImpl extends Logging implements GateWaySe
 
     @Override
     public HttpResponseBody gateWay(HttpRequestBody httpRequestBody) throws Exception {
-            SubmitUserDetectionReqVO submitUserDetectionReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), SubmitUserDetectionReqVO.class);
-            LinkedMultiValueMap<String, MultipartFile> linkedMultiValueMap = httpRequestBody.getMultipartFileHashMap();
-            if (linkedMultiValueMap.isEmpty() || StringUtils.isEmpty(httpRequestBody.getUserId())
-                    || StringUtils.isEmpty(submitUserDetectionReqVO.getCheckReport())) {
+        //获取业务参数
+        Map<String, String> parmas = JsonUtils.fromJSON(httpRequestBody.getBizContent(), HashMap.class);
+        //获取上传的文件
+        LinkedMultiValueMap<String, MultipartFile> linkedMultiValueMap = httpRequestBody.getMultipartFileHashMap();
+        if(!parmas.containsKey("selfCheckResult")
+                || linkedMultiValueMap.isEmpty()){
+            return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
+        }
+        HealthCheckRecord healthCheckRecord = new HealthCheckRecord();
+        healthCheckRecord.setUserId(new BigDecimal(httpRequestBody.getUserId()));
+        Iterator<String> keys = linkedMultiValueMap.keySet().iterator();
+        while (keys.hasNext()) {
+            String key = keys.next();
+            List<MultipartFile> multipartFiles = linkedMultiValueMap.get(key);
+            if (multipartFiles.isEmpty()) {
                 return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
             }
-            HealthCheckRecord healthCheckRecord = new HealthCheckRecord();
-            healthCheckRecord.setUserId(new BigDecimal(httpRequestBody.getUserId()));
-            Iterator<String> keys = linkedMultiValueMap.keySet().iterator();
-            while (keys.hasNext()) {
-                String key = keys.next();
-                List<MultipartFile> multipartFiles = linkedMultiValueMap.get(key);
-                if (multipartFiles.isEmpty()) {
+            for (MultipartFile multipartFile : multipartFiles) {
+                if(multipartFile.isEmpty()){
                     return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
                 }
-                for (MultipartFile multipartFile : multipartFiles) {
-                    ImageFileInfo imageFileInfo = dfsClient.uploadImageFile(multipartFile);
+                ImageFileInfo imageFileInfo = dfsClient.uploadImageFile(multipartFile);
+                if(imageFileInfo!=null &&  imageFileInfo.getStoreAddress()!=null) {
                     healthCheckRecord.setCheckReport(imageFileInfo.getStoreAddress());
+                }else{
+                    return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
                 }
+                //healthCheckRecord.setCheckReport("images/pic.png");
+
             }
-            healthCheckRecord.setCheckStatus(HealthCheckRecordTypeEnum.UNDETECTED.getCode());
-            healthCheckRecord.setCreated(new Date());
-            healthCheckRecord.setUploadTime(new Date());
-            healthCheckRecord.setCheckResult(submitUserDetectionReqVO.getCheckReport());
-            int count = healthCheckRecordManager.insert(healthCheckRecord);
-            if (count <= 0) {
-                logInfo("上传检测结果失败，插入数据库为0 userId[" + httpRequestBody.getUserId() + "]");
-                return  new HttpResponseBody(GlobalErrorMessage.BUSINESS_FAILED);
-            }
+        }
+        healthCheckRecord.setCheckTime(new Date() );
+        healthCheckRecord.setCheckStatus(HealthCheckRecordTypeEnum.UNDETECTED.getCode());
+        healthCheckRecord.setCreated(new Date());
+        healthCheckRecord.setUploadTime(new Date());
+        healthCheckRecord.setSelfCheckResult(Integer.valueOf(parmas.get("selfCheckResult").toString()));
+        //TODO 根据自测结果，匹配对应的检查结果
+//        healthCheckRecord.setCheckResult("");
+        int count = healthCheckRecordManager.insert(healthCheckRecord);
+        if (count <= 0) {
+            logInfo("上传检测结果失败，插入数据库为0 userId[" + httpRequestBody.getUserId() + "]");
+            return new HttpResponseBody(GlobalErrorMessage.BUSINESS_FAILED);
+        }
         return new HttpResponseBody(GlobalErrorMessage.SUCCESS);
     }
 }

@@ -68,6 +68,11 @@ public class HealthCheckRecord implements Serializable {
      */
     private java.util.Date checkTime;
 
+    /**
+     * 自测结果 1阴性 2弱阳性 3阳性 4强阳性
+     */
+    private Integer selfCheckResult;
+
 
     /**
      * 设置   userId
@@ -277,6 +282,24 @@ public class HealthCheckRecord implements Serializable {
      */
     public HealthCheckRecord setLimit(Integer limit) {
         this.limit = limit;
+        return this;
+    }
+
+    /**
+     * 获取自测结果
+     * @return  自测结果 1阴性 2弱阳性 3阳性 4强阳性
+     */
+    public Integer getSelfCheckResult() {
+        return selfCheckResult;
+    }
+
+    /**
+     * 设置自测结果
+     * @param selfCheckResult  自测结果 1阴性 2弱阳性 3阳性 4强阳性
+     * @return
+     */
+    public HealthCheckRecord setSelfCheckResult(Integer selfCheckResult) {
+        this.selfCheckResult = selfCheckResult;
         return this;
     }
 }

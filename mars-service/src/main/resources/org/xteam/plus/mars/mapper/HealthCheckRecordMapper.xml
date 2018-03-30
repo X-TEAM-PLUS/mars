@@ -12,6 +12,7 @@
         <result column="CHECK_STATUS" property="checkStatus" jdbcType="INTEGER"/>
         <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
         <result column="CHECK_TIME" property="checkTime" jdbcType="TIMESTAMP"/>
+        <result column="SELF_CHECK_RESULT" property="selfCheckResult" jdbcType="INTEGER"/>
     </resultMap>
 
     <!--公用选择列-->
@@ -25,6 +26,7 @@
         ,CHECK_STATUS
         ,CREATED
         ,CHECK_TIME
+        ,SELF_CHECK_RESULT
     </sql>
 
     <!--公用查询条件-->
@@ -99,6 +101,7 @@
         ,CHECK_STATUS
         ,CREATED
         ,CHECK_TIME
+        ,SELF_CHECK_RESULT
         )values(
         #{userId,jdbcType=DECIMAL}
         ,#{uploadTime,jdbcType=TIMESTAMP}
@@ -108,6 +111,7 @@
         ,#{checkStatus,jdbcType=INTEGER}
         ,#{created,jdbcType=TIMESTAMP}
         ,#{checkTime,jdbcType=TIMESTAMP}
+        ,#{selfCheckResult,jdbcType=INTEGER}
         )
     </insert>
 
@@ -122,6 +126,7 @@
         ,CHECK_STATUS
         ,CREATED
         ,CHECK_TIME
+        ,SELF_CHECK_RESULT
         )values
         <foreach collection="list" item="item" index="index" separator=",">
             (
@@ -133,6 +138,7 @@
             ,#{item.checkStatus,jdbcType=INTEGER}
             ,#{item.created,jdbcType=TIMESTAMP}
             ,#{item.checkTime,jdbcType=TIMESTAMP}
+            ,#{selfCheckResult,jdbcType=INTEGER}
             )
         </foreach>
     </insert>
@@ -183,6 +189,7 @@
         ,CHECK_STATUS
         ,CREATED
         ,CHECK_TIME
+        ,SELF_CHECK_RESULT
         from T_MARS_HEALTH_CHECK_RECORD
         where CHECK_RECORD_ID= #{checkRecordId,jdbcType=DECIMAL}
     </select>

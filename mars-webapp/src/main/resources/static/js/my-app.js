@@ -1046,9 +1046,9 @@ function doLogin(formData) {
             // 微信端内进行跳转
             if (typeof WeixinJSBridge != "undefined") {
                 if (cardNo != undefined && cardNo != "") {
-                    location.href = "http://" + document.domain + "/weixin/goOauth?backUrl=shard_sell.html&cipherTxt=" + bizContent.token + "&cardNo=" + cardNo;
+                    location.href = "http://" + document.domain +PORT+ "/weixin/goOauth?backUrl=shard_sell.html&cipherTxt=" + bizContent.token + "&cardNo=" + cardNo;
                 } else {
-                    location.href = "http://" + document.domain + "/weixin/goOauth?backUrl=index.html&cipherTxt=" + bizContent.token;
+                    location.href = "http://" + document.domain +PORT+ "/weixin/goOauth?backUrl=index.html&cipherTxt=" + bizContent.token;
                 }
             } else {
                 memberView.router.navigate('/', {
@@ -1146,23 +1146,46 @@ function meTuiGuangMa() {
  * @param form
  */
 function submitCheckResult(form) {
+    var formData = new FormData(document.forms.namedItem(form));
+    formData.append("method",InterFace.SUBMIT_CHECK_RESULT);
+    formData.append("userId",userInfo.userId);
     var bizContent = app.form.convertToData('#' + form);
-    var params = {
-        method: InterFace.WITHDRAW_APPLY,
-        userId: userInfo.userId,
-        bizContent: JSON.stringify(bizContent)
-    };
-    app.request.post(INTERFACE_URL, params, function (data) {
-        logInfo(data);
-        var response = JSON.parse(data);
-        if (ResponseCode.SUCCESS == response.code) {
-            app.dialog.alert('申请已提交成功，请等待后台审核，注意接收消息提醒。', '信息提示', function () {
-                memberView.router.navigate('/lovebutie/', {
-                    history: true
-                });
-            });
-        } else {
-            app.dialog.alert(response.msg, '信息提示');
+    formData.append("bizContent",JSON.stringify(bizContent));
+    var xmlHttpRequest = new XMLHttpRequest();
+    xmlHttpRequest.open("POST",INTERFACE_URL,true);
+    xmlHttpRequest.onreadystatechange = function () {
+        if (xmlHttpRequest.readyState == 4) {
+            if (xmlHttpRequest.status == 200) {
+                var responseText = JSON.parse(xmlHttpRequest.responseText);
+                if(ResponseCode.SUCCESS==responseText.code){
+                    app.dialog.alert('检查结果上传成功。', '信息提示',function () {
+                        heartCheckView.router.navigate('/heart_check/', {
+                            history: true
+                        });
+                    });
+                }else{
+                    app.dialog.alert('检查结果上传失败。', '信息提示');
+                }
+            } else {
+                // 错误处理
+                app.dialog.alert('检查结果上传失败。', '信息提示');
+            }
         }
-    });
+    }
+    xmlHttpRequest.send(formData);
+}
+
+/**
+ * 预览图片
+ */
+function previewPic(checkResultFile,previewPicBox){
+    var  picFile = $$('#'+checkResultFile)[0].files[0];
+    var reader = new FileReader();
+    reader.onload = function (e) {
+        $$('#'+previewPicBox)[0].src = e.target.result;
+    }
+    if(picFile){
+        reader.readAsDataURL(picFile);
+        $$('#'+previewPicBox).attr('style', 'visibility: visible;height: 137px;width: 248px');
+    }
 }
