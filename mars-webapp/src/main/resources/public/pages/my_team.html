@@ -12,24 +12,26 @@
         </div>
         <div class="page-content " style="padding-top: 8px">
             <div class="list" id="my-team-info">
-                <div class="item-content item-input">
-                    <div class="row">
-                        <div class="col">
-                            <input type="text" placeholder="结束时间" readonly="" id="demo-calendar-default1" class="">
-                        </div>
-                        <div class="col">
-                            <input type="text" placeholder="起始时间" readonly="" id="demo-calendar-default" class="">
+
+                <div class="item-content item-input item-input-with-value">
+                    <div class="item-inner">
+                        <div class="item-input-wrap">
+                            <input type="text" placeholder="请选择时间范围" readonly="" id="demo-calendar-range"
+                                   class="input-with-value">
                         </div>
                     </div>
                 </div>
+
                 <div class="vipUser">
 
                 </div>
                 <div class="">
                     <div class="row no-gap">
-                        <div class="col" style="text-align:center"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">新增成员</font></font>
+                        <div class="col" style="text-align:center"><font style="vertical-align: inherit;"><font
+                                style="vertical-align: inherit;">新增成员</font></font>
                         </div>
-                        <div class="col" style="text-align:center"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">新增会员</font></font>
+                        <div class="col" style="text-align:center"><font style="vertical-align: inherit;"><font
+                                style="vertical-align: inherit;">新增会员</font></font>
                         </div>
                     </div>
                 </div>
@@ -46,25 +48,79 @@
 </template>
 <script>
 
-    var data = undefined;
+    Date.prototype.format = function (format) {
+        var date = {
+            "M+": this.getMonth() + 1,
+            "d+": this.getDate(),
+            "h+": this.getHours(),
+            "m+": this.getMinutes(),
+            "s+": this.getSeconds(),
+            "q+": Math.floor((this.getMonth() + 3) / 3),
+            "S+": this.getMilliseconds()
+        };
+        if (/(y+)/i.test(format)) {
+            format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
+        }
+        for (var k in date) {
+            if (new RegExp("(" + k + ")").test(format)) {
+                format = format.replace(RegExp.$1, RegExp.$1.length == 1
+                    ? date[k] : ("00" + date[k]).substr(("" + date[k]).length));
+            }
+        }
+        return format;
+    }
+
+    function init(bDate, eDate) {
+        localStorage.setItem("my_team.beginDate", bDate);
+        localStorage.setItem("my_team.endDate", eDate);
+        memberView.router.refreshPage();
+    }
+
+    function dataFormat(dateTime) {
+        var newDate = new Date();
+        newDate.setTime(dateTime);
+        return newDate.format('yyyy-MM-dd hh:mm:ss');
+    }
+
     return {
         on: {
             pageInit: function (e, page) {
-
+                var beginDate = localStorage.getItem("my_team.beginDate");
+                var endDate = localStorage.getItem("my_team.endDate");
                 var self = this;
                 var today = new Date();
                 var app = self.$app;
                 var $ = self.$;
+                logInfo(page);
+                logInfo(e);
                 // Default
-                self.calendarDefault = app.calendar.create({
-                    inputEl: '#demo-calendar-default',
+                var calendarRange = app.calendar.create({
+                    inputEl: '#demo-calendar-range',
+                    header: true,
+                    footer: true,
+                    rangePicker: true,
+                    on: {
+                        calendarClose: function (calendar) {
+                            if (calendar.value[0] == undefined || calendar.value[1] == undefined) {
+                                app.dialog.alert("请选择一个时间范围");
+                                return;
+                            }
+
+                            var beginDate = calendar.value[0].getTime();
+                            var endDate = calendar.value[1].getTime();
+                            init(dataFormat(beginDate), dataFormat(endDate));
+                        },
+                    }
                 });
-                self.calendarDefault = app.calendar.create({
-                    inputEl: '#demo-calendar-default1',
-                });
-                var self = this;
-                var $ = self.$$;
-                var params = {method: InterFace.MY_TEAM, token: localStorage.getItem(TOKEN)};
+                var bizContent = undefined;
+                if (beginDate != undefined && endDate != undefined) {
+                    bizContent = {beginDate: beginDate, endDate: endDate};
+                }
+                var params = {
+                    method: InterFace.MY_TEAM,
+                    token: localStorage.getItem(TOKEN),
+                    bizContent: JSON.stringify(bizContent)
+                };
                 app.request.json(INTERFACE_URL, params, function (response) {
                     logInfo("myteam : " + response.bizContent);
                     var bizContent = JSON.parse(response.bizContent);
@@ -72,11 +128,11 @@
                     if (ResponseCode.SUCCESS == response.code) {
                         var vip = '' +
                             '<div class="row no-gap">' +
-                            '<div class="col" style="text-align:center"><font style="vertical-align: inherit;color: #d2190b"><font style="vertical-align: inherit;">'+bizContent.userNewCount+'</font></font>' +
+                            '<div class="col" style="text-align:center"><font style="vertical-align: inherit;color: #d2190b"><font style="vertical-align: inherit;">' + bizContent.userNewCount + '</font></font>' +
                             '</div>' +
-                            '<div class="col" style="text-align:center"><font style="vertical-align: inherit;color: #d2190b"><font style="vertical-align: inherit;">'+bizContent.userVipNewCount+'</font></font>' +
+                            '<div class="col" style="text-align:center"><font style="vertical-align: inherit;color: #d2190b"><font style="vertical-align: inherit;">' + bizContent.userVipNewCount + '</font></font>' +
                             '</div>' +
-                            '</div>' ;
+                            '</div>';
                         $(self.$el).find('.list .vipUser').append(vip);
                         var meInfo = '<li>' +
                             '<div class="row height-44">' +
@@ -102,7 +158,6 @@
                         app.dialog.alert(response.msg, '信息提示');
                     }
                 });
-
             },
 
 
