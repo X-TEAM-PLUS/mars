@@ -1213,8 +1213,10 @@ function getLastCheckInfo(token) {
         method: InterFace.GET_LAST_CHECK_RECORD, token: token
     };
     app.request.json(INTERFACE_URL, params, function (data) {
-        var bizContent = JSON.parse(data.bizContent);
-        logInfo(bizContent);
-        document.getElementById("lastCheckTime").innerText ="您于"+ bizContent.updated + "进行体检";
+        if(data.bizContent){
+            var bizContent = JSON.parse(data.bizContent);
+            logInfo(bizContent);
+            document.getElementById("lastCheckTime").innerText ="您于"+ bizContent.uploadTime + "进行体检";
+        }
     });
 }

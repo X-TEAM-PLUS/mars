@@ -167,6 +167,11 @@ $$(document).on('page:init', '.page[data-name="heartcheck-page"]', function (e) 
         getLastCheckInfo(localStorage.getItem(TOKEN));
     }
 });
+$$(document).on('page:reinit', '.page[data-name="heartcheck-page"]', function (e) {
+    if (localStorage.hasOwnProperty(TOKEN)) {
+        getLastCheckInfo(localStorage.getItem(TOKEN));
+    }
+});
 app.views.create('#view-college', {url: '/college/'});
 var memberView = app.views.create('#view-member', {url: '/'});
 var heartCheckView = app.views.create('#view-heart_check', {url: '/heart_check/'});

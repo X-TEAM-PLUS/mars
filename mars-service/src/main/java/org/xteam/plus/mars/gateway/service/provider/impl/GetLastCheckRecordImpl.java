@@ -8,11 +8,13 @@ import org.xteam.plus.mars.gateway.service.provider.GateWayService;
 import org.xteam.plus.mars.gateway.service.provider.GlobalErrorMessage;
 import org.xteam.plus.mars.gateway.service.provider.HttpRequestBody;
 import org.xteam.plus.mars.gateway.service.provider.HttpResponseBody;
+import org.xteam.plus.mars.manager.HealthCheckRecordManager;
 import org.xteam.plus.mars.manager.UserHealthCardManager;
 import org.xteam.plus.mars.wx.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Component
 public class GetLastCheckRecordImpl  implements GateWayService {
@@ -20,6 +22,8 @@ public class GetLastCheckRecordImpl  implements GateWayService {
 
     @Resource
     private UserHealthCardManager userHealthCardManager;
+    @Resource
+    private HealthCheckRecordManager healthCheckRecordManager;
 
     @Override
     public String getMethodName() {
@@ -39,7 +43,17 @@ public class GetLastCheckRecordImpl  implements GateWayService {
         if (userHealthCard == null) {
             return new HttpResponseBody(GlobalErrorMessage.OBJECT_ISNULL);
         }
-        //返回
-        return new HttpResponseBody(GlobalErrorMessage.SUCCESS).setBizContent(JsonUtils.toJSON(userHealthCard));
+
+        List<HealthCheckRecord> healthCheckRecords = healthCheckRecordManager.query(new HealthCheckRecord()
+                .setUserId(userId)
+                .setStart(0)
+                .setLimit(1)
+        );
+
+        if(!healthCheckRecords.isEmpty()){
+            //返回
+            return new HttpResponseBody(GlobalErrorMessage.SUCCESS).setBizContent(JsonUtils.toJSON(healthCheckRecords.get(0)));
+        }
+        return new HttpResponseBody(GlobalErrorMessage.SUCCESS);
     }
 }
