@@ -70,6 +70,8 @@ var InterFace = {
     ,SUBMIT_CHECK_RESULT:'com.zaoangongcheng.gateway.user.submitUserDetection'
     //查看检查结果
     ,VIEW_CHECK_RESULT:'com.zaoangongcheng.gateway.user.submitUserDetection'
+    //获取最后检查记录信息
+    ,GET_LAST_CHECK_RECORD:'com.zaoangongcheng.gateway.user.UserDetection.getlast'
 }
 
 /**

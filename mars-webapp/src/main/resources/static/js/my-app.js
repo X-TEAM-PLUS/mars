@@ -1189,3 +1189,32 @@ function previewPic(checkResultFile,previewPicBox){
         $$('#'+previewPicBox).attr('style', 'visibility: visible;height: 137px;width: 248px');
     }
 }
+
+/**
+ * 查询检查结果
+ */
+function queryCheckResult() {
+    if (isLogin()) {
+        if (userInfo.userLevel >= 1) {
+            heartCheckView.router.navigate('/jiankangka/', {
+                history: true
+            });
+        }
+    } else {
+        gotoLogin();
+    }
+}
+
+/**
+ * 获取最后检查的记录信息
+ */
+function getLastCheckInfo(token) {
+    var params = {
+        method: InterFace.GET_LAST_CHECK_RECORD, token: token
+    };
+    app.request.json(INTERFACE_URL, params, function (data) {
+        var bizContent = JSON.parse(data.bizContent);
+        logInfo(bizContent);
+        document.getElementById("lastCheckTime").innerText ="您于"+ bizContent.updated + "进行体检";
+    });
+}

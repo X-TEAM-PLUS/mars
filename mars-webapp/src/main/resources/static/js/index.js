@@ -14,19 +14,16 @@ var app = new Framework7({
     }
 });
 
-
 $$(document).on('page:init popupOpen', '.page[data-name="home"]', function (e) {
-    //获取用户信
+    //获取用户信息
     if (localStorage.hasOwnProperty(TOKEN)) {
         loadUserView(localStorage.getItem(TOKEN));
     } else {
         app.dialog.alert("您还没有登录，等先进行登录!", function () {
             gotoLogin();
         });
-
     }
 });
-
 $$(document).on('page:init', '.page[data-name="sellCard-page"]', function (e) {
 
     var page = e.detail.route;
@@ -76,7 +73,6 @@ $$(document).on('page:init', '.page[data-name="sellCard-page"]', function (e) {
 
     }
 });
-
 $$(document).on('page:reinit', '.page[data-name="home"]', function (e) {
     //获取用户信
     if (localStorage.hasOwnProperty(TOKEN)) {
@@ -100,94 +96,39 @@ $$(document).on('page:init', '.page[data-name="message-page"]', function (e) {
         }, "message-list", "show-message-list");
     }
 });
-
 $$(document).on('page:init', '.page[data-name="account-info-page"]', function (e) {
     loadBizContent(INTERFACE_URL, {
         method: InterFace.ACCOUNT_INFO,
         token: localStorage.getItem(TOKEN)
     }, "account-info", "show-account-info");
 });
-
-// $$(document).on('page:init', '.page[data-name="show-my-team-page"]', function (e) {
-//     var params = {
-//         method: InterFace.MY_TEAM,
-//         token: localStorage.getItem(TOKEN)
-//     };
-//     loadBizContent(INTERFACE_URL, params, "my-team-info", "show-my-team-info");
-//     var self = this;
-//     var $ = self.$;
-//     // Default
-//     self.calendarDefault = app.calendar.create({
-//         inputEl: '#demo-calendar-default',
-//     });
-//
-//     var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August' , 'September' , 'October', 'November', 'December'];
-//     var des = self.$app;
-//     self.calendarInline = app.calendar.create({
-//         containerEl: '#demo-calendar-inline-container',
-//         value: [new Date()],
-//         renderToolbar: function () {
-//             return '<div class="toolbar calendar-custom-toolbar no-shadow">' +
-//                 '<div class="toolbar-inner">' +
-//                 '<div class="left">' +
-//                 '<a href="#" class="link icon-only"><i class="icon icon-back ' + (self.$theme.md ? 'color-black' : '') + '"></i></a>' +
-//                 '</div>' +
-//                 '<div class="center"></div>' +
-//                 '<div class="right">' +
-//                 '<a href="#" class="link icon-only"><i class="icon icon-forward ' + (self.$theme.md ? 'color-black' : '') + '"></i></a>' +
-//                 '</div>' +
-//                 '</div>' +
-//                 '</div>';
-//         },
-//         on: {
-//             init: function (c) {
-//                 $('.calendar-custom-toolbar .center').text(monthNames[c.currentMonth] +', ' + c.currentYear);
-//                 $('.calendar-custom-toolbar .left .link').on('click', function () {
-//                     self.calendarInline.prevMonth();
-//                 });
-//                 $('.calendar-custom-toolbar .right .link').on('click', function () {
-//                     self.calendarInline.nextMonth();
-//                 });
-//             },
-//             monthYearChangeStart: function (c) {
-//                 $('.calendar-custom-toolbar .center').text(monthNames[c.currentMonth] +', ' + c.currentYear);
-//             }
-//         }
-//     });
-// });
-
 $$(document).on('page:init', '.page[data-name="jiankangka-page"]', function (e) {
     loadBizContent(INTERFACE_URL, {
         method: InterFace.ME_HEART_CARD_INFO,
         token: localStorage.getItem(TOKEN)
     }, "jiankangka-info", "show-jiankangka-info");
 });
-
 $$(document).on('page:init', '.page[data-name="insurance-product-list-page"]', function (e) {
     loadBizContent(INTERFACE_URL, {method: InterFace.INSURANCE_LIST}, "insurance-product-list", "show-insurance-product-list");
 });
-
 $$(document).on('page:init', '.page[data-name="heart-card-list-page"]', function (e) {
     loadBizContent(INTERFACE_URL, {
         method: InterFace.USER_HEALTH_CARD_LIST,
         token: localStorage.getItem(TOKEN)
     }, "heart-card-list", "show-heart-card-list");
 });
-
 $$(document).on('page:init', '.page[data-name="lishi-level-user-view"]', function (e) {
     viewMarketingInformation(localStorage.getItem(TOKEN));
 });
 $$(document).on('page:init', '.page[data-name="changrenlishi-level-user-view"]', function (e) {
     viewMarketingInformationByLishi(localStorage.getItem(TOKEN));
 });
-
 $$(document).on('page:init', '.page[data-name="wode-baoxian-list-page"]', function (e) {
     loadBizContent(INTERFACE_URL, {
         method: InterFace.USER_INSURANCE_LIST,
         token: localStorage.getItem(TOKEN)
     }, "wode-baoxian-list", "show-wode-baoxian-list");
 });
-
 $$(document).on('page:init', '.page[data-name="wode-baoxian-detail-page"]', function (e) {
     var bizContent = {insuranceOrderId: e.detail.route.query.insuranceOrderId};
     loadBizContent(INTERFACE_URL, {
@@ -199,21 +140,18 @@ $$(document).on('page:init', '.page[data-name="wode-baoxian-detail-page"]', func
 $$(document).on('page:init', '.page[data-name="bankcard-page"]', function (e) {
     loadBizContent(INTERFACE_URL, {method: InterFace.BANK_LIST}, "bank-list", "show-bank-list");
 });
-
 $$(document).on('page:init', '.page[data-name="zhuanzhang-list-page"]', function (e) {
     loadBizContent(INTERFACE_URL, {
         method: InterFace.USER_WITHDRAW_RECORD_LIST,
         token: localStorage.getItem(TOKEN)
     }, "zhuanzhang-list", "show-zhuanzhang-list");
 });
-
 $$(document).on('page:init', '.page[data-name="butiemingxi-list-page"]', function (e) {
     loadBizContent(INTERFACE_URL, {
         method: InterFace.USER_SUBSIDY_LIST,
         token: localStorage.getItem(TOKEN)
     }, "butiemingxi-list", "show-butiemingxi-list");
 });
-
 $$(document).on('page:init', '.page[data-name="zhuanzhang-form-page"]', function (e) {
     loadBizContent(INTERFACE_URL, {
         method: InterFace.ACCOUNT_AND_BANK_CARD,
@@ -222,6 +160,12 @@ $$(document).on('page:init', '.page[data-name="zhuanzhang-form-page"]', function
 });
 $$(document).on('page:init', '.page[data-name="show-me-page"]', function (e) {
     loadBizContent(userInfo, "show-me", "show-me-view");
+});
+
+$$(document).on('page:init', '.page[data-name="heartcheck-page"]', function (e) {
+    if (localStorage.hasOwnProperty(TOKEN)) {
+        getLastCheckInfo(localStorage.getItem(TOKEN));
+    }
 });
 app.views.create('#view-college', {url: '/college/'});
 var memberView = app.views.create('#view-member', {url: '/'});
