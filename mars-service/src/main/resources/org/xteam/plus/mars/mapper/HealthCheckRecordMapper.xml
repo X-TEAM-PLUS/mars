@@ -13,6 +13,8 @@
         <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
         <result column="CHECK_TIME" property="checkTime" jdbcType="TIMESTAMP"/>
         <result column="SELF_CHECK_RESULT" property="selfCheckResult" jdbcType="INTEGER"/>
+        <result column="CARD_NO" property="cardNo" jdbcType="DECIMAL"/>
+
     </resultMap>
 
     <!--公用选择列-->
@@ -27,6 +29,7 @@
         ,CREATED
         ,CHECK_TIME
         ,SELF_CHECK_RESULT
+        ,CARD_NO
     </sql>
 
     <!--公用查询条件-->
@@ -35,6 +38,11 @@
             <if test="userId!=null ">
                 <![CDATA[
                     and USER_ID=#{userId,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+            <if test="cardNo!=null ">
+                <![CDATA[
+                    and CARD_NO=#{cardNo,jdbcType=DECIMAL}
                     ]]>
             </if>
             <if test="uploadTime!=null ">
@@ -102,6 +110,7 @@
         ,CREATED
         ,CHECK_TIME
         ,SELF_CHECK_RESULT
+        ,CARD_NO
         )values(
         #{userId,jdbcType=DECIMAL}
         ,#{uploadTime,jdbcType=TIMESTAMP}
@@ -112,6 +121,7 @@
         ,#{created,jdbcType=TIMESTAMP}
         ,#{checkTime,jdbcType=TIMESTAMP}
         ,#{selfCheckResult,jdbcType=INTEGER}
+        ,#{cardNo,jdbcType=DECIMAL}
         )
     </insert>
 
@@ -127,6 +137,7 @@
         ,CREATED
         ,CHECK_TIME
         ,SELF_CHECK_RESULT
+        ,CARD_NO
         )values
         <foreach collection="list" item="item" index="index" separator=",">
             (
@@ -139,6 +150,7 @@
             ,#{item.created,jdbcType=TIMESTAMP}
             ,#{item.checkTime,jdbcType=TIMESTAMP}
             ,#{selfCheckResult,jdbcType=INTEGER}
+            ,#{cardNo,jdbcType=DECIMAL}
             )
         </foreach>
     </insert>
@@ -190,6 +202,7 @@
         ,CREATED
         ,CHECK_TIME
         ,SELF_CHECK_RESULT
+        ,CARD_NO
         from T_MARS_HEALTH_CHECK_RECORD
         where CHECK_RECORD_ID= #{checkRecordId,jdbcType=DECIMAL}
     </select>
@@ -201,6 +214,7 @@
         <include refid="selectColumns"></include>
         from T_MARS_HEALTH_CHECK_RECORD
         <include refid="queryWhere"></include>
+        ORDER BY CHECK_RECORD_ID DESC
         limit #{start},#{limit}
     </select>
 

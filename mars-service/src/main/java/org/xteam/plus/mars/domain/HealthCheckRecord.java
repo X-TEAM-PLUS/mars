@@ -1,6 +1,7 @@
 package org.xteam.plus.mars.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 
 /**
@@ -73,6 +74,10 @@ public class HealthCheckRecord implements Serializable {
      */
     private Integer selfCheckResult;
 
+    /**
+     * 健康卡号
+     */
+    private java.math.BigDecimal cardNo;
 
     /**
      * 设置   userId
@@ -300,6 +305,25 @@ public class HealthCheckRecord implements Serializable {
      */
     public HealthCheckRecord setSelfCheckResult(Integer selfCheckResult) {
         this.selfCheckResult = selfCheckResult;
+        return this;
+    }
+
+    /**
+     * 获取卡号
+     * @return
+     */
+    public BigDecimal getCardNo() {
+        return cardNo;
+    }
+
+
+    /**
+     * 设置卡号
+     * @param cardNo
+     * @return
+     */
+    public HealthCheckRecord setCardNo(BigDecimal cardNo) {
+        this.cardNo = cardNo;
         return this;
     }
 }

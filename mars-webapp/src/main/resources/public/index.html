@@ -619,7 +619,6 @@
 </script>
 <!-- ********************************** 我的TM ****************************** -->
 
-<!-- ********************************** 小卡包 ****************************** -->
 <script type="text/template" id="show-jiankangka-info">
     <div class="list">
         <ul>
@@ -671,25 +670,17 @@
             </li>
         </ul>
         <ul>
+            {{#each list}}
             <li>
                 <a href="#" class="item-link item-content">
                     <div class="item-media"><i class="f7-icons">graph_round</i></div>
                     <div class="item-inner">
-                        <div class="item-title">2018-02-03 10:10:10</div>
-                        <div class="item-after">检测中</div>
+                        <div class="item-title">{{created}}</div>
+                        <div class="item-after">{{#if checkResult}}检测完成{{else}}检测中{{/if}}</div>
                     </div>
                 </a>
             </li>
-            <li>
-                <a href="#" class="item-link item-content">
-                    <div class="item-media"><i class="f7-icons">graph_round</i></div>
-                    <div class="item-inner">
-                        <div class="item-title">2018-02-03 10:10:10</div>
-                        <div class="item-after">已检测</div>
-                    </div>
-                </a>
-            </li>
-
+            {{/each}}
         </ul>
     </div>
 </script>
@@ -744,7 +735,6 @@
             <div class="col-50">
             </div>
             <div class="col-50 center font-12">
-                购买时间:2018-02-03 10:10:10
             </div>
         </div>
 

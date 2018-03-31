@@ -5,9 +5,12 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.xteam.plus.mars.dao.HealthCheckRecordDao;
+import org.xteam.plus.mars.dao.UserHealthCardDao;
 import org.xteam.plus.mars.domain.HealthCheckRecord;
+import org.xteam.plus.mars.domain.UserHealthCard;
 import org.xteam.plus.mars.manager.HealthCheckRecordManager;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,6 +26,8 @@ public class HealthCheckRecordManagerImpl implements HealthCheckRecordManager {
     private static final Log log = LogFactory.getLog(HealthCheckRecordManagerImpl.class);
     @javax.annotation.Resource
     private HealthCheckRecordDao healthCheckRecordDao;
+    @javax.annotation.Resource
+    private UserHealthCardDao healthCardDao;
 
 
     @Override
@@ -33,6 +38,13 @@ public class HealthCheckRecordManagerImpl implements HealthCheckRecordManager {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int insert(HealthCheckRecord healthCheckRecord) throws Exception {
+        //次数减一
+        UserHealthCard userHealthCard = healthCardDao.queryForProductByActive(
+                new UserHealthCard().setActivateUserId( healthCheckRecord.getUserId())
+               );
+        userHealthCard.setSendCount(userHealthCard.getSendCount()+1);
+        userHealthCard.setUpdated(new Date());
+        healthCardDao.update(userHealthCard);
         return healthCheckRecordDao.insert(healthCheckRecord);
     }
 

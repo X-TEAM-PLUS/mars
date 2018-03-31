@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.xteam.plus.mars.common.JsonUtils;
 import org.xteam.plus.mars.common.Logging;
 import org.xteam.plus.mars.domain.HealthCheckRecord;
+import org.xteam.plus.mars.domain.UserHealthCard;
 import org.xteam.plus.mars.fdfs.DfsClient;
 import org.xteam.plus.mars.fdfs.ImageFileInfo;
 import org.xteam.plus.mars.fdfs.impl.DfsClientImpl;
@@ -14,6 +15,7 @@ import org.xteam.plus.mars.gateway.service.provider.GlobalErrorMessage;
 import org.xteam.plus.mars.gateway.service.provider.HttpRequestBody;
 import org.xteam.plus.mars.gateway.service.provider.HttpResponseBody;
 import org.xteam.plus.mars.manager.HealthCheckRecordManager;
+import org.xteam.plus.mars.manager.UserHealthCardManager;
 import org.xteam.plus.mars.type.HealthCheckRecordTypeEnum;
 import org.xteam.plus.mars.wx.util.StringUtils;
 
@@ -33,6 +35,9 @@ public class SubmitUserDetectionServiceImpl extends Logging implements GateWaySe
 
     @Resource
     private HealthCheckRecordManager healthCheckRecordManager;
+
+    @Resource
+    private UserHealthCardManager userHealthCardManager;
 
     @Override
     public String getMethodName() {
@@ -62,20 +67,37 @@ public class SubmitUserDetectionServiceImpl extends Logging implements GateWaySe
                 if(multipartFile.isEmpty()){
                     return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
                 }
-                ImageFileInfo imageFileInfo = dfsClient.uploadImageFile(multipartFile);
-                if(imageFileInfo!=null &&  imageFileInfo.getStoreAddress()!=null) {
-                    healthCheckRecord.setCheckReport(imageFileInfo.getStoreAddress());
-                }else{
-                    return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
-                }
-                //healthCheckRecord.setCheckReport("images/pic.png");
+//                ImageFileInfo imageFileInfo = dfsClient.uploadImageFile(multipartFile);
+//                if(imageFileInfo!=null &&  imageFileInfo.getStoreAddress()!=null) {
+//                    healthCheckRecord.setCheckReport(imageFileInfo.getStoreAddress());
+//                }else{
+//                    return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
+//                }
+                healthCheckRecord.setCheckReport("images/pic.png");
 
             }
         }
+
+        //查询当前用户卡号的次数
+        BigDecimal userId = new BigDecimal(httpRequestBody.getUserId());
+        UserHealthCard userHealthCard = userHealthCardManager.queryForProductByActive(
+                new UserHealthCard().setActivateUserId(userId)
+        );
+        //无有效卡
+        if(userHealthCard==null){
+            return new HttpResponseBody(GlobalErrorMessage.OBJECT_ISNULL);
+        }
+        //检测次数已满
+        if(userHealthCard.getSendTotalCount()<=userHealthCard.getSendCount()){
+            return new HttpResponseBody(GlobalErrorMessage.CHECK_TIMES_DEPLETE);
+        }
+
+        //保存检测记录
         healthCheckRecord.setCheckTime(new Date() );
         healthCheckRecord.setCheckStatus(HealthCheckRecordTypeEnum.UNDETECTED.getCode());
         healthCheckRecord.setCreated(new Date());
         healthCheckRecord.setUploadTime(new Date());
+        healthCheckRecord.setCardNo(userHealthCard.getCardNo());
         healthCheckRecord.setSelfCheckResult(Integer.valueOf(parmas.get("selfCheckResult").toString()));
         //TODO 根据自测结果，匹配对应的检查结果
 //        healthCheckRecord.setCheckResult("");
