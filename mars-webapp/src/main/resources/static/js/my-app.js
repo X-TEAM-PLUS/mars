@@ -1082,22 +1082,22 @@ function viewMarketingInformation(token) {
         var bizContent = JSON.parse(data.bizContent);
         logInfo(bizContent);
         document.getElementById("userLevel").innerText = bizContent.userLevel;
-        document.getElementById("directReachCount").innerText = bizContent.refereeUserCount + "/500";
-        if (bizContent.refereeUserCount == 500) {
+        document.getElementById("directReachCount").innerText = bizContent.refereeUserCount + "/"+PerformanceIndex.DIRECTOR;
+        if (bizContent.refereeUserCount == PerformanceIndex.DIRECTOR) {
             taskSuccess();
         }
-        app.progressbar.set('#directReachProgressbar1', bizContent.refereeUserCount * 100 / 500.0);
+        app.progressbar.set('#directReachProgressbar1', bizContent.refereeUserCount * 100.0 / PerformanceIndex.DIRECTOR);
 
         if (bizContent.userTeamList.length > 0) {
-            document.getElementById("indirectReachCount1").innerText = bizContent.userTeamList[0].userCount + "/500";
-            app.progressbar.set('#indirectReachProgressbar1', bizContent.userTeamList[0].userCount * 100 / 500.0);
+            document.getElementById("indirectReachCount1").innerText = bizContent.userTeamList[0].userCount + "/"+PerformanceIndex.DIRECTOR;
+            app.progressbar.set('#indirectReachProgressbar1', bizContent.userTeamList[0].userCount * 100.0 / PerformanceIndex.DIRECTOR);
         }
         if (bizContent.userTeamList.length > 1) {
             document.getElementById("indirectReachCount2").innerText = bizContent.userTeamList[1].userCount + "/500";
-            if (bizContent.userTeamList[0].userCount == 500 && bizContent.userTeamList[1].userCount == 500) {
+            if (bizContent.userTeamList[0].userCount == PerformanceIndex.DIRECTOR && bizContent.userTeamList[1].userCount == PerformanceIndex.DIRECTOR) {
                 taskSuccess();
             }
-            app.progressbar.set('#indirectReachProgressbar2', bizContent.userTeamList[1].userCount * 100 / 500.0);
+            app.progressbar.set('#indirectReachProgressbar2', bizContent.userTeamList[1].userCount * 100.0 / PerformanceIndex.DIRECTOR);
         }
     });
 }
@@ -1114,22 +1114,22 @@ function viewMarketingInformationByLishi(token) {
         var bizContent = JSON.parse(data.bizContent);
         logInfo(bizContent);
         document.getElementById("userLevel").innerText = bizContent.userLevel;
-        document.getElementById("directReachCount").innerText = bizContent.refereeUserCount + "/1500";
-        if (bizContent.refereeUserCount == 1500) {
+        document.getElementById("directReachCount").innerText = bizContent.refereeUserCount + "/"+PerformanceIndex.STANDING_DIRECTOR;
+        if (bizContent.refereeUserCount == PerformanceIndex.STANDING_DIRECTOR) {
             taskSuccess();
         }
-        app.progressbar.set('#directReachProgressbar1', bizContent.refereeUserCount * 100 / 1500.0);
+        app.progressbar.set('#directReachProgressbar1', bizContent.refereeUserCount * 100.0 / PerformanceIndex.STANDING_DIRECTOR);
 
         if (bizContent.userTeamList.length > 0) {
-            document.getElementById("indirectReachCount1").innerText = bizContent.userTeamList[0].userCount + "/1500";
-            app.progressbar.set('#indirectReachProgressbar1', bizContent.userTeamList[0].userCount * 100 / 1500.0);
+            document.getElementById("indirectReachCount1").innerText = bizContent.userTeamList[0].userCount + "/"+PerformanceIndex.STANDING_DIRECTOR;
+            app.progressbar.set('#indirectReachProgressbar1', bizContent.userTeamList[0].userCount * 100.0 / PerformanceIndex.STANDING_DIRECTOR);
         }
         if (bizContent.userTeamList.length > 1) {
-            document.getElementById("indirectReachCount2").innerText = bizContent.userTeamList[1].userCount + "/1500";
-            if (bizContent.userTeamList[0].userCount == 1500 && bizContent.userTeamList[1].userCount == 1500) {
+            document.getElementById("indirectReachCount2").innerText = bizContent.userTeamList[1].userCount + "/"+PerformanceIndex.STANDING_DIRECTOR;
+            if (bizContent.userTeamList[0].userCount == PerformanceIndex.STANDING_DIRECTOR && bizContent.userTeamList[1].userCount == PerformanceIndex.STANDING_DIRECTOR) {
                 taskSuccess();
             }
-            app.progressbar.set('#indirectReachProgressbar2', bizContent.userTeamList[1].userCount * 100 / 1500.0);
+            app.progressbar.set('#indirectReachProgressbar2', bizContent.userTeamList[1].userCount * 100.0 /PerformanceIndex.STANDING_DIRECTOR);
         }
     });
 }

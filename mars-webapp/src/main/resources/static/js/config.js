@@ -100,6 +100,15 @@ var ResponseCode = {
 };
 
 /**
+ * 业绩指标
+ * @type {{DIRECTOR: number, STANDING_DIRECTOR: number}}
+ */
+var PerformanceIndex ={
+    DIRECTOR:500
+    ,STANDING_DIRECTOR:1500
+};
+
+/**
  * 用户级别
  * @type {{VISITOR: number, MEMBER: number, WORKER: number, DIRECTOR: number, STANDING_DIRECTOR: number}}
  */
