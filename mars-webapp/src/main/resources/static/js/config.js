@@ -1,8 +1,7 @@
 //定义日志开关
 var LOG_SWITCH = true;
-var PORT = ":8080";
 //定义接口地址
-var INTERFACE_URL = "http://" + document.domain + PORT + "/webservice/api/gateway";
+var INTERFACE_URL = "/webservice/api/gateway";
 var TOKEN = "token";
 var userInfo;
 var cardNo = undefined;
@@ -67,6 +66,10 @@ var InterFace = {
     , SMS_LOGIN: 'cn.zaoangongcheng.api.gateway.smscode.login'
     //我的TM
     , MY_TEAM: 'com.zaoangongcheng.gateway.user.getMeTeamCount'
+    //上传体检结果
+    ,SUBMIT_CHECK_RESULT:'com.zaoangongcheng.gateway.user.submitUserDetection'
+    //查看检查结果
+    ,VIEW_CHECK_RESULT:'com.zaoangongcheng.gateway.user.submitUserDetection'
 }
 
 /**

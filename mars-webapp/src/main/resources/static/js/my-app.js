@@ -1046,9 +1046,9 @@ function doLogin(formData) {
             // 微信端内进行跳转
             if (typeof WeixinJSBridge != "undefined") {
                 if (cardNo != undefined && cardNo != "") {
-                    location.href = "http://" + document.domain +PORT+ "/weixin/goOauth?backUrl=shard_sell.html&cipherTxt=" + bizContent.token + "&cardNo=" + cardNo;
+                    location.href =  "/weixin/goOauth?backUrl=shard_sell.html&cipherTxt=" + bizContent.token + "&cardNo=" + cardNo;
                 } else {
-                    location.href = "http://" + document.domain +PORT+ "/weixin/goOauth?backUrl=index.html&cipherTxt=" + bizContent.token;
+                    location.href =  "/weixin/goOauth?backUrl=index.html&cipherTxt=" + bizContent.token;
                 }
             } else {
                 memberView.router.navigate('/', {
