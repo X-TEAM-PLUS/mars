@@ -17,7 +17,6 @@ import org.xteam.plus.mars.gateway.service.provider.HttpResponseBody;
 import org.xteam.plus.mars.manager.HealthCheckRecordManager;
 import org.xteam.plus.mars.manager.UserHealthCardManager;
 import org.xteam.plus.mars.type.HealthCheckRecordTypeEnum;
-import org.xteam.plus.mars.wx.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -67,13 +66,13 @@ public class SubmitUserDetectionServiceImpl extends Logging implements GateWaySe
                 if(multipartFile.isEmpty()){
                     return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
                 }
-//                ImageFileInfo imageFileInfo = dfsClient.uploadImageFile(multipartFile);
-//                if(imageFileInfo!=null &&  imageFileInfo.getStoreAddress()!=null) {
-//                    healthCheckRecord.setCheckReport(imageFileInfo.getStoreAddress());
-//                }else{
-//                    return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
-//                }
-                healthCheckRecord.setCheckReport("images/pic.png");
+                ImageFileInfo imageFileInfo = dfsClient.uploadImageFile(multipartFile);
+                if(imageFileInfo!=null &&  imageFileInfo.getStoreAddress()!=null) {
+                    healthCheckRecord.setCheckReport(imageFileInfo.getStoreAddress());
+                }else{
+                    return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
+                }
+//                healthCheckRecord.setCheckReport("images/pic.png");
 
             }
         }
