@@ -240,6 +240,7 @@ public class InsuranceCompany implements Serializable {
 
     /**
      * 获取手机号
+     *
      * @return
      */
     public String getMobileNo() {
@@ -248,6 +249,7 @@ public class InsuranceCompany implements Serializable {
 
     /**
      * 设置手机号
+     *
      * @param mobileNo
      */
     public void setMobileNo(String mobileNo) {

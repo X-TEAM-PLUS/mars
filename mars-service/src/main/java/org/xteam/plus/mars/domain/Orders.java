@@ -518,6 +518,7 @@ public class Orders implements Serializable {
 
     /**
      * 获取用户手机号
+     *
      * @return
      */
     public String getMobileNo() {
@@ -525,7 +526,8 @@ public class Orders implements Serializable {
     }
 
     /**
-     *  设置用户手机号
+     * 设置用户手机号
+     *
      * @param mobileNo
      */
     public void setMobileNo(String mobileNo) {
@@ -534,6 +536,7 @@ public class Orders implements Serializable {
 
     /**
      * 获取用户姓名
+     *
      * @return
      */
     public String getRealName() {
@@ -543,6 +546,7 @@ public class Orders implements Serializable {
 
     /**
      * 设置用户姓名
+     *
      * @param realName
      */
     public void setRealName(String realName) {

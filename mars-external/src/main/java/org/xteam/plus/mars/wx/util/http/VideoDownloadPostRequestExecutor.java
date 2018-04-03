@@ -66,7 +66,7 @@ public class VideoDownloadPostRequestExecutor implements RequestExecutor<WxVideo
 		//下载Video
 		HttpGet httpGet = new HttpGet(result.getDown_url());
 		try (CloseableHttpResponse response = httpclient.execute(httpGet)) {
-			Header[] contentTypeHeader = response.getHeaders("Content-Type");
+			Header[] contentTypeHeader = response.getHeaders("Drawing-Type");
 			if (contentTypeHeader != null && contentTypeHeader.length > 0) {
 				// 下载媒体文件出错
 				if (ContentType.TEXT_PLAIN.getMimeType().equals(contentTypeHeader[0].getValue())) {
@@ -88,7 +88,7 @@ public class VideoDownloadPostRequestExecutor implements RequestExecutor<WxVideo
 	}
 
 	protected String getFileName(CloseableHttpResponse response) {
-		Header[] contentDispositionHeader = response.getHeaders("Content-Disposition");
+		Header[] contentDispositionHeader = response.getHeaders("Drawing-Disposition");
 		Pattern p = Pattern.compile(".*filename=(.*)");
 		Matcher m = p.matcher(contentDispositionHeader[0].getValue());
 		m.matches();

@@ -38,6 +38,8 @@
         <result column="PAY_TIMES" property="payTimes" jdbcType="INTEGER"/>
         <result column="WX_HEAD_PORTRAIT" property="wxHeadPortrait" jdbcType="VARCHAR"/>
         <result column="WX_OPENID" property="wxOpenid" jdbcType="VARCHAR"/>
+        <result column="EMPLOYEE_CARD" property="employeeCard" jdbcType="VARCHAR"/>
+
         <association property="userSalesInfo" column="USER_ID"
                      javaType="org.xteam.plus.mars.domain.UserSalesInfo">
             <id column="USER_ID" property="userId" jdbcType="DECIMAL"/>
@@ -59,6 +61,7 @@
             <result column="APPLY_WAY" property="applyWay" jdbcType="INTEGER"/>
             <result column="APPLY_TYPE" property="applyType" jdbcType="INTEGER"/>
         </association>
+
     </resultMap>
 
     <!--公用选择列-->
@@ -93,6 +96,7 @@
         ,PAY_TIMES
         ,WX_HEAD_PORTRAIT
         ,WX_OPENID
+        ,EMPLOYEE_CARD
     </sql>
 
     <!--公用查询条件-->
@@ -260,6 +264,7 @@
         ,COUNTY_NAME
         ,WX_HEAD_PORTRAIT
         ,WX_OPENID
+        ,EMPLOYEE_CARD
         )values(
         #{cardNo,jdbcType=DECIMAL}
         ,#{idNumber,jdbcType=VARCHAR}
@@ -289,6 +294,7 @@
         ,#{countyName,jdbcType=VARCHAR}
         ,#{wxHeadPortrait,jdbcType=VARCHAR}
         ,#{wxOpenid,jdbcType=VARCHAR}
+          ,#{employeeCard,jdbcType=VARCHAR}
         )
     </insert>
 
@@ -323,6 +329,7 @@
         ,COUNTY_NAME
         ,WX_HEAD_PORTRAIT
         ,WX_OPENID
+        ,EMPLOYEE_CARD
         )values
         <foreach collection="list" item="item" index="index" separator=",">
             (
@@ -354,6 +361,7 @@
             ,#{item.countyName,jdbcType=VARCHAR}
             ,#{item.wxHeadPortrait,jdbcType=VARCHAR}
             ,#{item.wxOpenid,jdbcType=VARCHAR}
+            ,#{employeeCard,jdbcType=VARCHAR}
             )
         </foreach>
     </insert>
@@ -447,6 +455,9 @@
                 <if test="wxOpenid!=null">
                     WX_OPENID=#{wxOpenid,jdbcType=VARCHAR},
                 </if>
+                <if test="employeeCard!=null">
+                    EMPLOYEE_CARD=#{employeeCard,jdbcType=VARCHAR},
+                </if>
             </trim>
         </set>
         where USER_ID= #{userId,jdbcType=DECIMAL}
@@ -485,6 +496,7 @@
         ,PAY_TIMES
         ,WX_HEAD_PORTRAIT
         ,WX_OPENID
+        ,EMPLOYEE_CARD
         from T_MARS_USER_INFO
         where USER_ID= #{userId,jdbcType=DECIMAL}
     </select>
@@ -522,6 +534,7 @@
         ,PAY_TIMES
         ,WX_HEAD_PORTRAIT
         ,WX_OPENID
+        ,EMPLOYEE_CARD
         from T_MARS_USER_INFO
         where MOBILE_NO=#{mobileNo,jdbcType=VARCHAR}
     </select>

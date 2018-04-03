@@ -74,7 +74,6 @@ public class AccountDetail implements Serializable {
     private String wxHeadPortrait;
 
 
-
     /**
      * 设置   created
      *

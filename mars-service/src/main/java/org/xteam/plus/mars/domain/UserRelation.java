@@ -1,7 +1,5 @@
 package org.xteam.plus.mars.domain;
 
-import org.apache.commons.collections4.IterableGet;
-
 import java.io.Serializable;
 
 
@@ -64,6 +62,7 @@ public class UserRelation implements Serializable {
      * 查询相关成员职务信息
      */
     private LocalCouncilMember localCouncilMember;
+
     /**
      * 设置   relationId
      *

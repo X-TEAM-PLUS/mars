@@ -292,7 +292,8 @@ public class HealthCheckRecord implements Serializable {
 
     /**
      * 获取自测结果
-     * @return  自测结果 1阴性 2弱阳性 3阳性 4强阳性
+     *
+     * @return 自测结果 1阴性 2弱阳性 3阳性 4强阳性
      */
     public Integer getSelfCheckResult() {
         return selfCheckResult;
@@ -300,7 +301,8 @@ public class HealthCheckRecord implements Serializable {
 
     /**
      * 设置自测结果
-     * @param selfCheckResult  自测结果 1阴性 2弱阳性 3阳性 4强阳性
+     *
+     * @param selfCheckResult 自测结果 1阴性 2弱阳性 3阳性 4强阳性
      * @return
      */
     public HealthCheckRecord setSelfCheckResult(Integer selfCheckResult) {
@@ -310,6 +312,7 @@ public class HealthCheckRecord implements Serializable {
 
     /**
      * 获取卡号
+     *
      * @return
      */
     public BigDecimal getCardNo() {
@@ -319,6 +322,7 @@ public class HealthCheckRecord implements Serializable {
 
     /**
      * 设置卡号
+     *
      * @param cardNo
      * @return
      */

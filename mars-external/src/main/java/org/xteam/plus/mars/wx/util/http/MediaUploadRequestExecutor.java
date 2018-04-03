@@ -52,7 +52,7 @@ public class MediaUploadRequestExecutor implements RequestExecutor<WxMediaUpload
 				entity = MultipartEntityBuilder.create().addBinaryBody("media", file).setMode(HttpMultipartMode.RFC6532).build();
 			}
 			httpPost.setEntity(entity);
-			httpPost.setHeader("Content-Type", ContentType.MULTIPART_FORM_DATA.toString());
+			httpPost.setHeader("Drawing-Type", ContentType.MULTIPART_FORM_DATA.toString());
 		}
 		try (CloseableHttpResponse response = httpclient.execute(httpPost)) {
 			String responseContent = Utf8ResponseHandler.INSTANCE.handleResponse(response);

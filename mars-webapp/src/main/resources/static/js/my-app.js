@@ -596,7 +596,7 @@ function buyCard(form) {
         '<div class="block-title">请填写您的收获地址与联系方式</div>\n' +
         '<div class="list inset">\n' +
         '  <ul>\n' +
-        '    <li class="item-content item-input">\n' +
+        '    <li class="item-drawing item-input">\n' +
         '      <div class="item-inner">\n' +
         '        <div class="item-input-wrap">\n' +
         '          <input type="text" name="mobile" placeholder="您的手机号码" maxlength="20">\n' +
@@ -604,7 +604,7 @@ function buyCard(form) {
         '        </div>\n' +
         '      </div>\n' +
         '    </li>\n' +
-        '    <li class="item-content item-input">\n' +
+        '    <li class="item-drawing item-input">\n' +
         '      <div class="item-inner">\n' +
         '        <div class="item-input-wrap">\n' +
         '          <input type="text" name="address" placeholder="收获地址" maxlength="120">\n' +
@@ -652,7 +652,7 @@ function sellCard(form) {
         '<div class="block-title">请填写您的收获地址与联系方式</div>\n' +
         '<div class="list inset">\n' +
         '  <ul>\n' +
-        '    <li class="item-content item-input">\n' +
+        '    <li class="item-drawing item-input">\n' +
         '      <div class="item-inner">\n' +
         '        <div class="item-input-wrap">\n' +
         '          <input type="text" name="mobile" placeholder="您的手机号码" maxlength="20">\n' +
@@ -660,7 +660,7 @@ function sellCard(form) {
         '        </div>\n' +
         '      </div>\n' +
         '    </li>\n' +
-        '    <li class="item-content item-input">\n' +
+        '    <li class="item-drawing item-input">\n' +
         '      <div class="item-inner">\n' +
         '        <div class="item-input-wrap">\n' +
         '          <input type="text" name="address" placeholder="收获地址" maxlength="120">\n' +
@@ -1144,7 +1144,65 @@ function viewMarketingInformationByLishi(token) {
  * 我的推广码
  */
 function meTuiGuangMa() {
-    app.dialog.alert('开发建设中，敬请期待。', '信息提示');
+    if (isLogin()) {
+        if (userInfo.userLevel >= 1) {
+            memberView.router.navigate('/employeeCard/', {
+                history: true
+            });
+        }
+    } else {
+        gotoLogin();
+    }
+}
+
+
+/**
+ * 获取社工证信息
+ * @param token
+ */
+function getEmployeeCard(token) {
+    let params = {
+        method: InterFace.GET_QR_CODE, token: token
+    };
+    app.request.json(INTERFACE_URL, params, function (data) {
+        logInfo(data);
+        if(data.bizContent){
+            let bizContent = JSON.parse(data.bizContent);
+            logInfo(bizContent);
+            if(bizContent.employeeCard){
+                $$('#employeeCard')[0].src = bizContent.employeeCard;
+            }
+
+        }
+    });
+}
+
+/**
+ * 保存社工证
+ */
+function saveEmployeeCard() {
+    if (isLogin()) {
+        if (userInfo.userLevel >= 1) {
+           //TODO 下载图片
+            logInfo("保存社工证");
+        }
+    } else {
+        gotoLogin();
+    }
+}
+
+/**
+ * 分享社工证
+ */
+function shareEmployeeCard(){
+    if (isLogin()) {
+        if (userInfo.userLevel >= 1) {
+            //TODO 分享图片
+            logInfo("分享图片");
+        }
+    } else {
+        gotoLogin();
+    }
 }
 
 /**

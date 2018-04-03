@@ -49,7 +49,7 @@ public class WxXmlMessage {
 	@XStreamConverter(value = XStreamCDataConverter.class)
 	private String msgType;
 
-	@XStreamAlias("Content")
+	@XStreamAlias("Drawing")
 	@XStreamConverter(value = XStreamCDataConverter.class)
 	private String content;
 
@@ -573,7 +573,7 @@ public class WxXmlMessage {
 	@Override
 	public String toString() {
 		return "WxXmlMessage [toUserName=" + toUserName + ", fromUserName=" + fromUserName + ", createTime="
-				+ createTime + ", msgType=" + msgType + ", content=" + content + ", msgId=" + msgId + ", picUrl="
+				+ createTime + ", msgType=" + msgType + ", drawing=" + content + ", msgId=" + msgId + ", picUrl="
 				+ picUrl + ", mediaId=" + mediaId + ", format=" + format + ", thumbMediaId=" + thumbMediaId
 				+ ", locationX=" + locationX + ", locationY=" + locationY + ", scale=" + scale + ", label=" + label
 				+ ", title=" + title + ", description=" + description + ", url=" + url + ", event=" + event

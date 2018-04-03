@@ -1,8 +1,6 @@
 package org.xteam.plus.mars.fdfs.impl;
 
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.csource.fastdfs.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.xteam.plus.mars.common.Logging;
@@ -12,16 +10,15 @@ import org.xteam.plus.mars.fdfs.DfsClient;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 public class DfsClientImpl extends Logging implements DfsClient {
 
     @Override
-    public ImageFileInfo uploadImageFile(MultipartFile multipartFile) throws IOException {
+    public ImageFileInfo uploadImageFile(MultipartFile multipartFile) throws Exception {
         ImageFileInfo imageFileInfo = null;
         InputStream inputStream = null;
-        try {
+        try{
             ClientGlobal.initByProperties("fastdfs-client.properties");
             inputStream = multipartFile.getInputStream();
             BufferedImage image = ImageIO.read(inputStream);
@@ -47,8 +44,6 @@ public class DfsClientImpl extends Logging implements DfsClient {
                 imageFileInfo.setStoreAddress(fileAddress);
                logInfo("上传文件到服务器:" + imageFileInfo);
             }
-        } catch (Exception e) {
-            logError("上传文件到服务器异常", e);
         } finally {
             if (inputStream != null) {
                 inputStream.close();
@@ -59,9 +54,8 @@ public class DfsClientImpl extends Logging implements DfsClient {
     }
 
     @Override
-    public FileInfo uploadFile(MultipartFile multipartFile) throws IOException {
+    public FileInfo uploadFile(MultipartFile multipartFile) throws Exception  {
         FileInfo fileInfo = null;
-        try {
             ClientGlobal.initByProperties("fastdfs-client.properties");
             if (multipartFile.getInputStream() != null) {
                 fileInfo = new FileInfo();
@@ -80,9 +74,52 @@ public class DfsClientImpl extends Logging implements DfsClient {
                 fileInfo.setStoreAddress(fileAddress);
                 logInfo("上传文件到服务器:" + fileInfo);
             }
-        } catch (Exception e) {
-            logError("上传文件到服务器异常", e);
-        }
+
         return fileInfo;
+    }
+
+    @Override
+    public FileInfo upload(File file) throws Exception {
+        FileInfo fileInfo = null;
+            ClientGlobal.initByProperties("fastdfs-client.properties");
+            if (file != null) {
+                fileInfo = new FileInfo();
+                //大小
+                fileInfo.setSize(file.getTotalSpace());
+                // 建立连接
+                TrackerClient tracker = new TrackerClient();
+                TrackerServer trackerServer = tracker.getConnection();
+                StorageServer storageServer = null;
+                StorageClient1 client = new StorageClient1(trackerServer, storageServer);
+                //上传上到图片服务器
+                String fileAddress = client.upload_file1(getBytes(file), null, null);
+                //设置服务器存放地址
+                fileInfo.setStoreAddress(fileAddress);
+                logInfo("上传文件到服务器:" + fileInfo);
+            }
+
+        return fileInfo;
+    }
+
+    /**
+     * 获得指定文件的byte数组
+     */
+    private byte[] getBytes(File file){
+        byte[] buffer = null;
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream(1000);
+            byte[] b = new byte[1000];
+            int n;
+            while ((n = fis.read(b)) != -1) {
+                bos.write(b, 0, n);
+            }
+            fis.close();
+            bos.close();
+            buffer = bos.toByteArray();
+        } catch (Exception e) {
+        logError("获取byte[]异常",e);
+        }
+        return buffer;
     }
 }

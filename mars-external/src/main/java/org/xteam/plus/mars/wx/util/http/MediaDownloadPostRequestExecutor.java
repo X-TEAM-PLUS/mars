@@ -47,7 +47,7 @@ public class MediaDownloadPostRequestExecutor implements RequestExecutor<File, S
 		}
 
 		try (CloseableHttpResponse response = httpclient.execute(httpPost)) {
-			Header[] contentTypeHeader = response.getHeaders("Content-Type");
+			Header[] contentTypeHeader = response.getHeaders("Drawing-Type");
 			if (contentTypeHeader != null && contentTypeHeader.length > 0) {
 				// 下载媒体文件出错
 				if (ContentType.TEXT_PLAIN.getMimeType().equals(contentTypeHeader[0].getValue())) {
@@ -68,7 +68,7 @@ public class MediaDownloadPostRequestExecutor implements RequestExecutor<File, S
 	}
 
 	protected String getFileName(CloseableHttpResponse response) {
-		Header[] contentDispositionHeader = response.getHeaders("Content-disposition");
+		Header[] contentDispositionHeader = response.getHeaders("Drawing-disposition");
 		Pattern p = Pattern.compile(".*filename=\"(.*)\"");
 		Matcher m = p.matcher(contentDispositionHeader[0].getValue());
 		m.matches();

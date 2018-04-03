@@ -158,6 +158,13 @@ var routes = [
         url: './pages/tijian.html',
         name: 'tijian',
     },
+    //工作证
+    {
+        path: '/employeeCard/',
+        url: './pages/employee_card.html',
+        name: 'employeeCard',
+    },
+
   // Default route (404 page). MUST BE THE LAST
   {
     path: '(.*)',

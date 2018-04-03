@@ -2,6 +2,7 @@ package org.xteam.plus.mars.fdfs;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -18,7 +19,7 @@ public interface DfsClient {
      * @return   ImageFileInfo
      * @throws IOException
      */
-    public ImageFileInfo uploadImageFile(MultipartFile multipartFile) throws IOException;
+    public ImageFileInfo uploadImageFile(MultipartFile multipartFile) throws Exception;
 
     /**
      * 上传文件
@@ -26,6 +27,16 @@ public interface DfsClient {
      * @return
      * @throws IOException
      */
-    public FileInfo uploadFile(MultipartFile multipartFile) throws IOException;
+    public FileInfo uploadFile(MultipartFile multipartFile) throws Exception;
+
+
+    /**
+     * 上传文件
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    public FileInfo upload(File file)throws Exception;
+
 
 }

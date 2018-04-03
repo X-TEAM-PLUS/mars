@@ -51,7 +51,7 @@ public class QrCodeDownloadGetRequestExecutor implements RequestExecutor<File, M
 		HttpGet httpGet = new HttpGet(uri);
 
 		try (CloseableHttpResponse response = httpclient.execute(httpGet)) {
-			Header[] contentTypeHeader = response.getHeaders("Content-Type");
+			Header[] contentTypeHeader = response.getHeaders("Drawing-Type");
 			if (contentTypeHeader != null && contentTypeHeader.length > 0) {
 				// 下载媒体文件出错
 				if (ContentType.TEXT_PLAIN.getMimeType().equals(contentTypeHeader[0].getValue())) {
@@ -79,7 +79,7 @@ public class QrCodeDownloadGetRequestExecutor implements RequestExecutor<File, M
 		m.matches();
 		String maxage = m.group(m.groupCount());
 		//获取二维码类型
-		contentDispositionHeader = response.getHeaders("Content-Type");
+		contentDispositionHeader = response.getHeaders("Drawing-Type");
 		p = Pattern.compile(".*image/(.*)");
 		m = p.matcher(contentDispositionHeader[0].getValue());
 		m.matches();

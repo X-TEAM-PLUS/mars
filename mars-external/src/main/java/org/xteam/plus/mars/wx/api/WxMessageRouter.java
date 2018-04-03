@@ -19,7 +19,7 @@ import java.util.List;
  * WxMessageRouter router = new WxMessageRouter(wxService);
  * router
  *   .rule()
- *       .msgType("MSG_TYPE").event("EVENT").eventKey("EVENT_KEY").content("CONTENT")
+ *       .msgType("MSG_TYPE").event("EVENT").eventKey("EVENT_KEY").drawing("CONTENT")
  *       .interceptor(interceptor, ...).handler(handler, ...)
  *   .end()
  *   .rule()

@@ -8,7 +8,7 @@ import org.xteam.plus.mars.wx.bean.WxMessage;
  * 文本消息builder
  * 
  * <pre>
- * 用法: WxCustomMessage m = WxCustomMessage.TEXT().content(...).toUser(...).build();
+ * 用法: WxCustomMessage m = WxCustomMessage.TEXT().drawing(...).toUser(...).build();
  * </pre>
  * 
  * @author antgan

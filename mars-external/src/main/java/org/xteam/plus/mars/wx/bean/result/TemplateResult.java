@@ -75,7 +75,7 @@ public class TemplateResult extends WxError{
 	@Override
 	public String toString() {
 		return "TemplateResult [template_id=" + template_id + ", title=" + title + ", primary_industry="
-				+ primary_industry + ", deputy_industry=" + deputy_industry + ", content=" + content + ", example="
+				+ primary_industry + ", deputy_industry=" + deputy_industry + ", drawing=" + content + ", example="
 				+ example + "]";
 	}
 

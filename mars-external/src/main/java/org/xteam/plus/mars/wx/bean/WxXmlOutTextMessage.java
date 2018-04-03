@@ -18,7 +18,7 @@ import org.xteam.plus.mars.wx.util.xml.XStreamCDataConverter;
 @XStreamAlias("xml")
 public class WxXmlOutTextMessage extends WxXmlOutMessage {
 
-	@XStreamAlias("Content")
+	@XStreamAlias("Drawing")
 	@XStreamConverter(value = XStreamCDataConverter.class)
 	private String content;
 
@@ -36,7 +36,7 @@ public class WxXmlOutTextMessage extends WxXmlOutMessage {
 
 	@Override
 	public String toString() {
-		return "WxXmlOutTextMessage [content=" + content + "]";
+		return "WxXmlOutTextMessage [drawing=" + content + "]";
 	}
 
 	

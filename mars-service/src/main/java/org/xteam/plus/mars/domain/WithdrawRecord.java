@@ -106,6 +106,7 @@ public class WithdrawRecord implements Serializable {
      * 错误信息(第三方)
      */
     private String errorInfo;
+
     /**
      * 设置   bankAccountNo
      *
@@ -377,6 +378,7 @@ public class WithdrawRecord implements Serializable {
 
     /**
      * 获取账户余额
+     *
      * @return
      */
     public BigDecimal getBalanceAmount() {
@@ -385,6 +387,7 @@ public class WithdrawRecord implements Serializable {
 
     /**
      * 设置账户余额
+     *
      * @param balanceAmount
      */
     public void setBalanceAmount(BigDecimal balanceAmount) {
@@ -393,6 +396,7 @@ public class WithdrawRecord implements Serializable {
 
     /**
      * 获取手机号
+     *
      * @return
      */
     public String getMobileNo() {
@@ -401,6 +405,7 @@ public class WithdrawRecord implements Serializable {
 
     /**
      * 设置手机号
+     *
      * @param mobileNo
      */
     public void setMobileNo(String mobileNo) {

@@ -110,7 +110,7 @@ public class WxBatchGetMaterialResult {
 		}
 		@Override
 		public String toString() {
-			return "MaterialItem [media_id=" + media_id + ", content=" + content + ", update_time=" + update_time
+			return "MaterialItem [media_id=" + media_id + ", drawing=" + content + ", update_time=" + update_time
 					+ ", name=" + name + ", url=" + url + "]";
 		}
 		

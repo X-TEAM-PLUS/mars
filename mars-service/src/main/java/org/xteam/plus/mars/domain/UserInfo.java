@@ -1,11 +1,7 @@
 package org.xteam.plus.mars.domain;
 
-import org.xteam.plus.mars.wx.util.StringUtils;
-
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.net.URLDecoder;
 
 
 /**
@@ -197,6 +193,12 @@ public class UserInfo implements Serializable {
      * 微信openid，唯一标示
      */
     private String wxOpenid;
+
+
+    /**
+     * 工作证
+     */
+    private String employeeCard;
 
     /**
      * 设置   cardNo
@@ -740,6 +742,15 @@ public class UserInfo implements Serializable {
 
     public UserInfo setWxOpenid(String wxOpenid) {
         this.wxOpenid = wxOpenid;
+        return this;
+    }
+
+    public String getEmployeeCard() {
+        return employeeCard;
+    }
+
+    public UserInfo setEmployeeCard(String employeeCard) {
+        this.employeeCard = employeeCard;
         return this;
     }
 }

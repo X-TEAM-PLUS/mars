@@ -108,7 +108,7 @@ public class WxNewsInfo {
 	@Override
 	public String toString() {
 		return "WxNewsInfo [title=" + title + ", thumb_media_id=" + thumb_media_id + ", thumb_url=" + thumb_url
-				+ ", show_cover_pic=" + show_cover_pic + ", author=" + author + ", digest=" + digest + ", content="
+				+ ", show_cover_pic=" + show_cover_pic + ", author=" + author + ", digest=" + digest + ", drawing="
 				+ content + ", url=" + url + ", content_source_url=" + content_source_url + "]";
 	}
 }

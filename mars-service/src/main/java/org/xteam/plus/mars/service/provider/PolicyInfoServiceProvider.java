@@ -84,7 +84,7 @@ public class PolicyInfoServiceProvider extends AbstractServiceProvider {
             // 设置响应参数
             response.setCharacterEncoding(CHARSET);
             response.setContentType("application/msexcel; charset=" + CHARSET);
-            response.setHeader("Content-disposition", "attachment; filename=" + new String(fileName.getBytes(CHARSET), "ISO8859-1"));
+            response.setHeader("Drawing-disposition", "attachment; filename=" + new String(fileName.getBytes(CHARSET), "ISO8859-1"));
             out = response.getOutputStream();
             //表头
             String[] header = {

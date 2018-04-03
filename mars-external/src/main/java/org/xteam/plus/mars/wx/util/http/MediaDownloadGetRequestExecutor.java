@@ -53,7 +53,7 @@ public class MediaDownloadGetRequestExecutor implements RequestExecutor<File, Ma
 
 		try (CloseableHttpResponse response = httpclient.execute(httpGet)) {
 			System.out.println(response);
-			Header[] contentTypeHeader = response.getHeaders("Content-Type");
+			Header[] contentTypeHeader = response.getHeaders("Drawing-Type");
 			for(Header h : contentTypeHeader)
 				System.out.println(h);
 			if (contentTypeHeader != null && contentTypeHeader.length > 0) {
@@ -76,7 +76,7 @@ public class MediaDownloadGetRequestExecutor implements RequestExecutor<File, Ma
 	}
 
 	protected String getFileName(CloseableHttpResponse response) {
-		Header[] contentDispositionHeader = response.getHeaders("Content-disposition");
+		Header[] contentDispositionHeader = response.getHeaders("Drawing-disposition");
 		Pattern p = Pattern.compile(".*filename=\"(.*)\"");
 		Matcher m = p.matcher(contentDispositionHeader[0].getValue());
 		m.matches();
