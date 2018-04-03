@@ -128,6 +128,7 @@ public class GetQrCodeServiceImpl implements GateWayService {
         qrCodeBuilder.draw(tempFile);
         //上传文件到文件服务器
         FileInfo fileInfo = dfsClient.upload(tempFile);
+        tempFile.deleteOnExit();
         //删除临时文件
         tempFile.delete();
         return fileInfo.getStoreAddress();
