@@ -61,5 +61,5 @@ mars:
     mobileNos: 13701312791,18810863866
     password: 888888
   employeeCard:
-    backGround: /backgroud.jpg
+    backGround: backgroud.jpg
     url: http://113.209.111.211:8080/index.html?employeeCardNo=

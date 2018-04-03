@@ -61,5 +61,5 @@ mars:
     mobileNos: 13701312791,18810863866
     password: 888888
   employeeCard:
-    backGround: /backgroud.jpg
+    backGround: backgroud.jpg
     url: http://t.kuai-kaifa.com/index.html?employeeCardNo=

@@ -1,6 +1,7 @@
 package org.xteam.plus.mars.common.qrcode;
 
 
+import org.xteam.plus.mars.common.Logging;
 import org.xteam.plus.mars.common.qrcode.drawing.*;
 
 
@@ -11,7 +12,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QRCodeBuilder {
+public class QRCodeBuilder extends Logging {
     private BufferedImage bufferedImage = null;
     private List<Drawing> drawingList = new ArrayList<Drawing>();
 
@@ -24,7 +25,8 @@ public class QRCodeBuilder {
      */
     public QRCodeBuilder setBackGround(String file) throws Exception {
         // 获取底图
-        this.bufferedImage = ImageIO.read(FileReader.class.getResource(file));
+        logInfo("setBackGround['file']:" + file);
+        this.bufferedImage = ImageIO.read(getClass().getClassLoader().getResourceAsStream(file));
         return this;
     }
 
