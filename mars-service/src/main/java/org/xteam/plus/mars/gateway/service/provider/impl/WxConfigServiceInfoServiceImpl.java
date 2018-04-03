@@ -59,7 +59,7 @@ public class WxConfigServiceInfoServiceImpl extends Logging implements GateWaySe
         String timeStamp = Long.toString(System.currentTimeMillis()).substring(0, 10);
         String ticket = iService.getJsapiTicket();
         String nonceStr = StringUtils.randomStr(32).toUpperCase();
-        String url = WxConfig.getInstance().getShardUrl() + "/index.html";
+        String url = httpRequestBody.getRequestUrl();
 //        String shardUrl = "jsapi_ticket=" + ticket + "&noncestr=" + nonceStr + "&timestamp=" + timeStamp + "&url=" + WxConfig.getInstance().getShardUrl() + "/index.html?cardNo="+userHealthCard.getCardNo();
         String shardUrl = "jsapi_ticket=" + ticket + "&noncestr=" + nonceStr + "&timestamp=" + timeStamp + "&url=" + url;
         logInfo("shardUrl  [" + shardUrl + "]");

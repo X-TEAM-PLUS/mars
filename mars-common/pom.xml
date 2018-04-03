@@ -14,6 +14,7 @@
 
     <properties>
         <mvn.org.apache.poi.version>3.17</mvn.org.apache.poi.version>
+        <mvn.com.google.zxing.version>3.3.2</mvn.com.google.zxing.version>
     </properties>
 
     <dependencies>
@@ -99,5 +100,33 @@
             </exclusions>
         </dependency>
 
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>${mvn.com.google.zxing.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>${mvn.com.google.zxing.version}</version>
+        </dependency>
     </dependencies>
+    <build>
+        <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>${mvn.maven.compiler.plugin.version}</version>
+            <configuration>
+                <source>${java.version}</source>
+                <target>${java.version}</target>
+                <encoding>${project.build.sourceEncoding}</encoding>
+                <compilerArguments>
+                    <verbose />
+                    <bootclasspath>${java.home}/lib/rt.jar</bootclasspath>
+                </compilerArguments>
+            </configuration>
+        </plugin>
+        </plugins>
+    </build>
 </project>

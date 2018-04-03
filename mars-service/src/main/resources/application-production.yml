@@ -24,6 +24,9 @@ spring:
       preferred-json-mapper: jackson
     encoding:
       charset: UTF-8
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
   jackson:
     locale: zh_CN
     date-format: yyyy-MM-dd HH:mm:ss

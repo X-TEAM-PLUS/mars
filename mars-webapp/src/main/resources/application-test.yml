@@ -8,6 +8,10 @@ eureka:
 spring:
   application:
     name: mars-webapp
+  http:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
 zuul:
   routes:
     mars-webapp:

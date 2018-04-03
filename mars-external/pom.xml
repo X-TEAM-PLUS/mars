@@ -125,7 +125,7 @@
             <id>production</id>
             <properties>
                 <!-- tracker地址-->
-                <mvn.tracker.server>pic-01:22122,pic-02:22122</mvn.tracker.server>
+                <mvn.tracker.server>172.31.204.16:22122</mvn.tracker.server>
                 <mvn.wx.appId>wxc95f0fd3337bd769</mvn.wx.appId>
                 <mvn.wx.appSecret>b221f9f515d4b3afab9da790bac4877a</mvn.wx.appSecret>
                 <mvn.wx.token>tEKYyweO</mvn.wx.token>

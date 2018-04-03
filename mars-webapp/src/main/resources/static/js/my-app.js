@@ -821,6 +821,7 @@ function shardWeixin(cardNo) {
     var params = {
         method: InterFace.WX_GLOBLE_CONFIG,
         userId: userInfo.userId,
+        requestUrl:window.location.href,
         bizContent: JSON.stringify(bizContent)
     };
 
@@ -1043,12 +1044,17 @@ function doLogin(formData) {
         if (ResponseCode.SUCCESS == response.code) {
             var bizContent = JSON.parse(response.bizContent);
             localStorage.setItem(TOKEN, bizContent.token);
+
+            logInfo("url"+window.location.href);
+            logInfo("protocol:"+window.location.protocol);
+            logInfo("host:"+window.location.host);
+
             // 微信端内进行跳转
             if (typeof WeixinJSBridge != "undefined") {
                 if (cardNo != undefined && cardNo != "") {
-                    location.href =  "/weixin/goOauth?backUrl=shard_sell.html&cipherTxt=" + bizContent.token + "&cardNo=" + cardNo;
+                    location.href =   "/webservice/weixin/goOauth?backUrl=shard_sell.html&cipherTxt=" + bizContent.token + "&cardNo=" + cardNo;
                 } else {
-                    location.href =  "/weixin/goOauth?backUrl=index.html&cipherTxt=" + bizContent.token;
+                    location.href =  "/webservice/weixin/goOauth?backUrl=index.html&cipherTxt=" + bizContent.token;
                 }
             } else {
                 memberView.router.navigate('/', {
