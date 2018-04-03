@@ -8,7 +8,6 @@ import org.xteam.plus.mars.common.qrcode.drawing.*;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 

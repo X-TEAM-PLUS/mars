@@ -46,9 +46,8 @@ public class TextDrawingImpl extends Drawing {
     @Override
     public void draw(BufferedImage bufferedImage) throws Exception {
         Graphics g = bufferedImage.createGraphics();
-        //g.drawImage(image, 0, 0, imageW, imageH, null);
         g.setColor(color);
-        g.setFont(new Font("粗体", Font.BOLD, 30));
+        g.setFont(new Font("宋体", Font.BOLD, 30));
         g.drawString(text, position.x, position.y);
         g.dispose();
     }
