@@ -74,6 +74,8 @@ var InterFace = {
     ,GET_LAST_CHECK_RECORD:'com.zaoangongcheng.gateway.user.UserDetection.getlast'
     //获取用户检查记录详情
     ,GET_CHECK_RECORD_DETAIL:'cn.zaoangongcheng.api.gateway.security.user.checkRecord.detail'
+    //获取用户二维码工作证
+    ,GET_QR_CODE:'cn.zaoangongcheng.api.gateway.user.qrcode.get'
 }
 
 /**
