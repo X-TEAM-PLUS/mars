@@ -8,6 +8,7 @@ import org.xteam.plus.mars.common.qrcode.drawing.*;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,5 +43,11 @@ public class QRCodeBuilder extends Logging {
         ImageIO.write(bufferedImage, "png", file);
     }
 
+    public void draw( OutputStream output) throws Exception {
+        for (Drawing drawing : drawingList) {
+            drawing.draw(bufferedImage);
+        }
+        ImageIO.write(bufferedImage, "png", output);
+    }
 
 }
