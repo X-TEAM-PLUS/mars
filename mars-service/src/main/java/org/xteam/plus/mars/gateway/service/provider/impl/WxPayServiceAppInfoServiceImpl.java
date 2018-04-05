@@ -77,15 +77,18 @@ public class WxPayServiceAppInfoServiceImpl extends Logging implements GateWaySe
             if (userInfo == null || StringUtils.isEmpty(userInfo.getWxOpenid())) {
                 return new HttpResponseBody(GlobalErrorMessage.USER_ID_NOT_HIVE);
             }
+            PayOrderInfo payOrderInfo;
+            // 平台直销
+            if (wxPayJsApiReqVO.getOrderTypeEnum().getCode() == OrderTypeEnum.PLATFORM_STRAIGHT.getCode()) {
+                payOrderInfo = ordersManager.createStraightPinOrder(
+                        userInfo.getUserId(), wxPayJsApiReqVO.getProductId(), wxPayJsApiReqVO.getNumber(), wxPayJsApiReqVO.getAddress(),
+                        wxPayJsApiReqVO.getContactsMobile());
+            } else {
+                payOrderInfo = ordersManager.createDistributionOrder(
+                        userInfo.getUserId(), wxPayJsApiReqVO.getAddress(),
+                        wxPayJsApiReqVO.getCardNo(), wxPayJsApiReqVO.getCertificateOf(), wxPayJsApiReqVO.getUserRealName());
+            }
 
-
-            PayOrderInfo payOrderInfo = ordersManager.createStraightPinOrder(userInfo.getUserId(),
-                    wxPayJsApiReqVO.getProductId(),
-                    wxPayJsApiReqVO.getNumber(),
-                    wxPayJsApiReqVO.getAddress(),
-                    wxPayJsApiReqVO.getContactsMobile(),
-                    wxPayJsApiReqVO.getOrderTypeEnum(),
-                    wxPayJsApiReqVO.getCardNo());
             payOrderInfo.setTradeType("JSAPI");
             logInfo("预下单接口生成订单 [" + JsonUtils.toJSON(payOrderInfo) + "]");
             InvokePay invokePay = iService.unifiedOrder(payOrderInfo, WxConfig.getInstance().getPayNotifyPath(), userInfo.getWxOpenid());

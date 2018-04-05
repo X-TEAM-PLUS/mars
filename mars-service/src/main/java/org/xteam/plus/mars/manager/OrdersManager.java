@@ -96,7 +96,19 @@ public interface OrdersManager {
      * @return
      * @throws Exception
      */
-    public PayOrderInfo createStraightPinOrder(BigDecimal userId, BigDecimal productId, BigDecimal number, String address, String contactsMobile,OrderTypeEnum orderTypeEnum,BigDecimal cardNo) throws Exception;
+    public PayOrderInfo createStraightPinOrder(BigDecimal userId, BigDecimal productId, BigDecimal number, String address, String contactsMobile) throws Exception;
+
+    /**
+     * 用户分销生成订单
+     * @param userId            用户iD
+     * @param address           收获地址
+     * @param cardNo            卡号
+     * @param certificateOf     身份证号
+     * @param userRealName      真实姓名
+     * @return
+     * @throws Exception
+     */
+    public PayOrderInfo createDistributionOrder(BigDecimal userId, String address,BigDecimal cardNo,String certificateOf,String userRealName) throws Exception;
 
     /**
      * 支付回调后进行更新订单

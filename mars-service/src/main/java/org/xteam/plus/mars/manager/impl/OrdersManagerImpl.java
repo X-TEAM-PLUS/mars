@@ -99,67 +99,98 @@ public class OrdersManagerImpl extends Logging implements OrdersManager {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public PayOrderInfo createStraightPinOrder(BigDecimal userId, BigDecimal productId, BigDecimal number, String address, String contactsMobile, OrderTypeEnum orderTypeEnum, BigDecimal cardNo) throws Exception {
-        UserInfo userInfo = userInfoDao.get(new UserInfo().setUserId(userId));
+    public PayOrderInfo createStraightPinOrder(BigDecimal userId, BigDecimal productId, BigDecimal number, String address, String contactsMobile) throws Exception {
         Orders orders = new Orders();
         if (userId == null) {
             throw new Exception("用户id不存在，不能生成订单!");
         }
-        boolean isInsert = false;
-        // 如果是会员分销
-        if (orderTypeEnum.getCode() == OrderTypeEnum.VIP_DISTRIBUTION.getCode()) {
-            List<Orders> ordersList = ordersDao.queryEffective(new Orders().setCardNo(cardNo));
-            if (ordersList != null && ordersList.size() > 0) {
-                orders = ordersList.get(0);
-                isInsert = true;
-                if (orders.getStatus() == 1) {
-                    throw new Exception("此卡已经被卖掉，无法进行购买!");
-                }
-            }
-            UserHealthCard userHealthCard = userHealthCardDao.get(new UserHealthCard().setCardNo(cardNo));
-            if (userHealthCard == null) {
-                throw new Exception("用户健康卡为空，不能进行支付!");
-            }
-            Product product = productDao.get(new Product().setProductId(userHealthCard.getProductId()));
-            if (product == null && orderTypeEnum.getCode() == OrderTypeEnum.PLATFORM_STRAIGHT.getCode()) {
-                throw new Exception("产品不存在，不能生成订单!");
-            }
-            orders.setProductNum(1);
-            orders.setProductPrice(product.getAmount());
-            orders.setSellerUserId(userHealthCard.getBuyerUserId());
-            orders.setProductName(product.getProductName());
-            orders.setProductId(product.getProductId());
-        } else {
-            Product product = productDao.get(new Product().setProductId(productId));
-            if (product == null && orderTypeEnum.getCode() == OrderTypeEnum.PLATFORM_STRAIGHT.getCode()) {
-                throw new Exception("产品不存在，不能生成订单!");
-            }
-            orders.setProductNum(number.intValue());
-            orders.setProductPrice(product.getAmount().multiply(number));
-            orders.setProductName(product.getProductName());
-            orders.setProductId(product.getProductId());
+        Product product = productDao.get(new Product().setProductId(productId));
+        if (product == null) {
+            throw new Exception("产品不存在，不能生成订单!");
         }
-        orders.setOrderType(orderTypeEnum.getCode());
+        orders.setProductNum(number.intValue());
+        orders.setProductPrice(product.getAmount().multiply(number));
+        orders.setProductName(product.getProductName());
+        orders.setProductId(product.getProductId());
+        orders.setOrderType(OrderTypeEnum.PLATFORM_STRAIGHT.getCode());
         orders.setBuyerUserId(userId);
-
         orders.setCardType(0);
-        orders.setCardNo(cardNo);
+//        orders.setCardNo(cardNo);
         orders.setAddress(address);
         orders.setContactsMobile(contactsMobile);
         orders.setStatus(0);
         orders.setPayWay(1);
         orders.setOrderTime(new Date());
-        if (!isInsert) {
-            orders.setCreated(new Date());
-            int count = ordersDao.insert(orders);
-            if (count <= 0) {
-                throw new Exception("订单生成插入数据库异常!");
-            }
-        } else {
-            orders.setUpdated(new Date());
-            ordersDao.update(orders);
+        orders.setCreated(new Date());
+        int count = ordersDao.insert(orders);
+        if (count <= 0) {
+            throw new Exception("订单生成插入数据库异常!");
         }
+        PayOrderInfo payOrderInfo = new PayOrderInfo();
+        payOrderInfo.setOrderId(String.valueOf(orders.getOrderNo()));
+        payOrderInfo.setOrderName(orders.getProductName());
+        payOrderInfo.setTotalFee(String.valueOf(orders.getProductPrice()));
+        payOrderInfo.setTradeType("NATIVE");
+        payOrderInfo.setProductId(orders.getProductId().toString());
+        payOrderInfo.setUserIp("124.193.184.90");
+        payOrderInfo.setTimeExpire(getWaitDate());
+        payOrderInfo.setTimeStart(getDate());
+        return payOrderInfo;
+    }
+
+    @Override
+    public PayOrderInfo createDistributionOrder(BigDecimal userId, String address, BigDecimal cardNo, String certificateOf, String userRealName) throws Exception {
+        Orders orders = new Orders();
+        List<Orders> ordersList = ordersDao.queryEffective(new Orders().setCardNo(cardNo));
+        if (ordersList != null && ordersList.size() > 0) {
+            orders = ordersList.get(0);
+            if (orders.getStatus() == 1) {
+                throw new Exception("此卡已经被卖掉，无法进行购买!");
+            }
+        }
+        int userHealthCardCount = userHealthCardDao.queryCount(new UserHealthCard().setActivateUserId(userId));
+        if (userHealthCardCount > 0) {
+            throw new Exception("您已经有一张正在激活的健康卡，无法进行再次购买");
+        }
+
+        UserHealthCard userHealthCard = userHealthCardDao.get(new UserHealthCard().setCardNo(cardNo));
+        if (userHealthCard.getBuyerUserId() == userId) {
+            throw new Exception("不能自己进行激活!");
+        }
+        if (userHealthCard == null) {
+            throw new Exception("用户健康卡为空，不能进行支付!");
+        }
+        Product product = productDao.get(new Product().setProductId(userHealthCard.getProductId()));
+        if (product == null) {
+            throw new Exception("产品不存在，不能生成订单!");
+        }
+        UserInfo userInfo = userInfoDao.get(new UserInfo().setUserId(userId));
+        if (userInfo == null) {
+            throw new Exception("用户不存在!");
+        }
+        userInfo.setRealName(userRealName);
+        userInfo.setIdNumber(certificateOf);
+        // 回写用户数据
+        userInfoDao.update(userInfo);
+        orders.setProductNum(1);
+        orders.setProductPrice(product.getAmount());
+        orders.setSellerUserId(userHealthCard.getBuyerUserId());
+        orders.setProductName(product.getProductName());
+        orders.setProductId(product.getProductId());
+
+        orders.setOrderType(OrderTypeEnum.PLATFORM_STRAIGHT.getCode());
+        orders.setBuyerUserId(userId);
+        orders.setCardType(0);
+        orders.setCardNo(cardNo);
+        orders.setAddress(address);
+        orders.setContactsMobile(userInfo.getMobileNo());
+        orders.setStatus(0);
+        orders.setPayWay(1);
+        orders.setOrderTime(new Date());
+        orders.setCreated(new Date());
+        ordersDao.update(orders);
+
+
         PayOrderInfo payOrderInfo = new PayOrderInfo();
         payOrderInfo.setOrderId(String.valueOf(orders.getOrderNo()));
         payOrderInfo.setOrderName(orders.getProductName());

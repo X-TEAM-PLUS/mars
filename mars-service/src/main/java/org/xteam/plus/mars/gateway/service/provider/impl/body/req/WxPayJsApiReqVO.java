@@ -18,6 +18,10 @@ public class WxPayJsApiReqVO implements Serializable {
     private OrderTypeEnum orderTypeEnum;
     // 卡号
     private BigDecimal cardNo;
+    // 身份证号
+    String certificateOf;
+    // 用户真实姓名
+    String userRealName;
 
     public BigDecimal getProductId() {
         return productId;
@@ -65,5 +69,22 @@ public class WxPayJsApiReqVO implements Serializable {
 
     public void setCardNo(BigDecimal cardNo) {
         this.cardNo = cardNo;
+    }
+
+
+    public String getCertificateOf() {
+        return certificateOf;
+    }
+
+    public void setCertificateOf(String certificateOf) {
+        this.certificateOf = certificateOf;
+    }
+
+    public String getUserRealName() {
+        return userRealName;
+    }
+
+    public void setUserRealName(String userRealName) {
+        this.userRealName = userRealName;
     }
 }
