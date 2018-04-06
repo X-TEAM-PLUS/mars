@@ -5,7 +5,9 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.xteam.plus.mars.dao.UserInfoDao;
+import org.xteam.plus.mars.dao.UserRelationDao;
 import org.xteam.plus.mars.domain.UserInfo;
+import org.xteam.plus.mars.domain.UserRelation;
 import org.xteam.plus.mars.manager.UserInfoManager;
 import org.xteam.plus.mars.type.UserLevelEnum;
 import org.xteam.plus.mars.wx.bean.WxUserList;
@@ -30,7 +32,8 @@ public class UserInfoManagerImpl implements UserInfoManager {
     private static final Log log = LogFactory.getLog(UserInfoManagerImpl.class);
     @javax.annotation.Resource
     private UserInfoDao userInfoDao;
-
+    @javax.annotation.Resource
+    private UserRelationDao userRelationDao;
 
     @Override
     public UserInfo get(UserInfo userInfo) throws Exception {
@@ -92,6 +95,7 @@ public class UserInfoManagerImpl implements UserInfoManager {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public UserInfo registerWxUserInfo(WxUserList.WxUser wxUser, BigDecimal userId) throws Exception {
         UserInfo userInfo = null;
         if (userId != null) {
@@ -126,6 +130,24 @@ public class UserInfoManagerImpl implements UserInfoManager {
     @Override
     public UserInfo getByMobileNo(String mobileNo) {
         return userInfoDao.getByMobileNo(mobileNo);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int insert(UserInfo userInfo, String employeeCardNo)throws Exception {
+        //写入用户表
+        int rowCont =  userInfoDao.insert(userInfo);
+
+        //写关系表
+        UserRelation userRelation =  new UserRelation();
+        userRelation.setUserId(userInfo.getUserId());
+        userRelation.setCreated(new Date());
+        userRelation.setUpdated(new Date());
+        userRelation.setRefereeUserId(BigDecimal.valueOf(Long.valueOf(employeeCardNo)));
+        userRelationDao.insert(userRelation);
+
+        //返回
+        return rowCont;
     }
 
     private List<UserInfo> convertRealName(List<UserInfo> userInfos) {

@@ -15,6 +15,11 @@ var app = new Framework7({
 });
 
 $$(document).on('page:init reinit popupOpen', '.page[data-name="home"]', function (e) {
+    let pageParams = e.detail.route.query;
+    if(pageParams.employeeCardNo){
+        logInfo("推荐人:"+pageParams.employeeCardNo);
+        localStorage.setItem("employeeCardNo",pageParams.employeeCardNo);
+    }
     //获取用户信息
     if (localStorage.hasOwnProperty(TOKEN)) {
         loadUserView(localStorage.getItem(TOKEN));
@@ -122,7 +127,7 @@ $$(document).on('page:init reinit', '.page[data-name="wode-baoxian-list-page"]',
     }, "wode-baoxian-list", "show-wode-baoxian-list");
 });
 $$(document).on('page:init reinit', '.page[data-name="wode-baoxian-detail-page"]', function (e) {
-    var bizContent = {insuranceOrderId: e.detail.route.query.insuranceOrderId};
+    let bizContent = {insuranceOrderId: e.detail.route.query.insuranceOrderId};
     loadBizContent(INTERFACE_URL, {
         method: InterFace.USER_INSURANCE_DETAIL,
         token: localStorage.getItem(TOKEN),

@@ -1006,8 +1006,8 @@ function sendSmsCode(mobileNo) {
     };
     app.request.post(INTERFACE_URL, params, function (data) {
         logInfo(data);
-        var response = JSON.parse(data);
-        if (ResponseCode.SUCCESS == response.code) {
+        let response = JSON.parse(data);
+        if (ResponseCode.SUCCESS === response.code) {
             app.dialog.alert('短信验证码发送成功，请注意查收', '信息提示');
         } else {
             app.dialog.alert(response.msg, '信息提示');
@@ -1021,6 +1021,9 @@ function sendSmsCode(mobileNo) {
  */
 function goLogin(form) {
     let bizContent = app.form.convertToData('#' + form);
+    if (localStorage.hasOwnProperty('employeeCardNo')) {
+        bizContent["employeeCardNo"]= localStorage.getItem("employeeCardNo");
+    }
     if (typeof(bizContent) === "undefined" || typeof(bizContent.mobileNo) === "undefined" || typeof(bizContent.smsCode) === "undefined") {
         app.dialog.alert("请输入手机号和短信验证码", '信息提示');
     } else if (isPoneAvailable(bizContent.mobileNo)) {
@@ -1034,20 +1037,18 @@ function goLogin(form) {
  * 登录
  */
 function doLogin(formData) {
-    var params = {
+    let params = {
         method: InterFace.SMS_LOGIN,
         bizContent: JSON.stringify(formData)
     };
+    logInfo(params);
     app.request.post(INTERFACE_URL, params, function (data) {
-        logInfo(data);
-        var response = JSON.parse(data);
+        let response = JSON.parse(data);
         if (ResponseCode.SUCCESS == response.code) {
-            var bizContent = JSON.parse(response.bizContent);
+            let bizContent = JSON.parse(response.bizContent);
             localStorage.setItem(TOKEN, bizContent.token);
-
-            logInfo("url"+window.location.href);
-            logInfo("protocol:"+window.location.protocol);
-            logInfo("host:"+window.location.host);
+            //移除推荐人
+            localStorage.removeItem("employeeCardNo");
 
             // 微信端内进行跳转
             if (typeof WeixinJSBridge != "undefined") {

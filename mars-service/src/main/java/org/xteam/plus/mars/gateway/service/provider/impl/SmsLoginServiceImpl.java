@@ -72,7 +72,12 @@ public class SmsLoginServiceImpl extends Logging implements GateWayService {
                         userInfo.setUserLevel(UserLevelEnum.TOURIST.getCode());
                         userInfo.setRegisterTime(new Date());
                         //注册用户
-                        userInfoManager.insert(userInfo);
+                        if(StringUtils.isNotEmpty(parmas.get("employeeCardNo"))){
+                            userInfoManager.insert(userInfo,parmas.get("employeeCardNo") );
+                        }else{
+                            userInfoManager.insert(userInfo);
+                        }
+
                     }
                     //删除短信验证码
                     cacheUtils.removeSmsVerificationCode(mobileNo);

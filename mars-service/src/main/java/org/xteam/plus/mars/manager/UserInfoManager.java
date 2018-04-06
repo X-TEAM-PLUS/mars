@@ -124,4 +124,11 @@ public interface UserInfoManager {
      * @return
      */
     UserInfo getByMobileNo(String mobileNo);
+
+    /**
+     * 注册新用户
+     * @param userInfo
+     * @param employeeCardNo
+     */
+    public int  insert(UserInfo userInfo, String employeeCardNo)throws Exception;
 }
