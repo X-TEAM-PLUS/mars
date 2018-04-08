@@ -591,6 +591,19 @@ function buyCard(form) {
         app.dialog.alert("请在微信端内进行操作!", '信息提示');
         return false;
     }
+
+    if (isLogin()) {
+        if (userInfo.userLevel >= 1) {
+            memberView.router.navigate('/employeeCard/', {
+                history: true
+            });
+        }
+    } else {
+        gotoLogin();
+    }
+
+
+
     dynamicPopup = app.popup.create({
         content: '<div class="popup" style="height: 50%">' +
         '<div class="block-title">请填写您的收获地址与联系方式</div>\n' +
@@ -701,6 +714,7 @@ function sellCard(form) {
  */
 function submitSellCard(form) {
     var mobile = "";
+    var mobile = "";
     var address = "";
     $$(dynamicPopup.el).find('input[type=text]').each(function (index, element) {
         if (element.name == "mobile") {
@@ -720,6 +734,9 @@ function submitSellCard(form) {
         'cardNo': cardNo
     })
     var bizContent = app.form.convertToData('#' + form);
+
+
+
     var params = {
         method: InterFace.PAY_UNIFIED_ORDER,
         userId: userInfo.userId,
@@ -816,115 +833,20 @@ var _system = {
  * @param cardNo
  */
 function shardWeixin(cardNo) {
-    var bizContent = {cardNo: cardNo};
-
-    var params = {
-        method: InterFace.WX_GLOBLE_CONFIG,
-        userId: userInfo.userId,
-        requestUrl:window.location.href,
-        bizContent: JSON.stringify(bizContent)
-    };
-
-    app.request.post(INTERFACE_URL, params, function (data) {
-        logInfo(data)
-        var response = JSON.parse(data);
-        if (ResponseCode.SUCCESS == response.code) {
-            var bizContent = JSON.parse(response.bizContent);
-            var sellUserInfo = bizContent.sellUser;
-
-            wx.config({
-                debug: false,
-                appId: bizContent.appId, // 必填，公众号的唯一标识
-                timestamp: bizContent.timeStamp, // 必填，生成签名的时间戳
-                nonceStr: bizContent.nonceStr, // 必填，生成签名的随机串
-                signature: bizContent.signature,// 必填，签名，见附录1
-                jsApiList: [
-                    'checkJsApi',
-                    'onMenuShareTimeline',
-                    'onMenuShareAppMessage',
-                    'onMenuShareQQ',
-                    'onMenuShareWeibo',
-                    'onMenuShareQZone',
-                    'hideMenuItems',
-                    'showMenuItems',
-                    'hideAllNonBaseMenuItem',
-                    'showAllNonBaseMenuItem',
-                    'translateVoice',
-                    'startRecord',
-                    'stopRecord',
-                    'onVoiceRecordEnd',
-                    'playVoice',
-                    'onVoicePlayEnd',
-                    'pauseVoice',
-                    'stopVoice',
-                    'uploadVoice',
-                    'downloadVoice',
-                    'chooseImage',
-                    'previewImage',
-                    'uploadImage',
-                    'downloadImage',
-                    'getNetworkType',
-                    'openLocation',
-                    'getLocation',
-                    'hideOptionMenu',
-                    'showOptionMenu',
-                    'closeWindow',
-                    'scanQRCode',
-                    'chooseWXPay',
-                    'openProductSpecificView',
-                    'addCard',
-                    'chooseCard',
-                    'openCard'
-                ]
-            });
-
-
-            wx.ready(function () {
-                wx.onMenuShareAppMessage({
-                    title: '健康卡购买', // 分享标题
-                    desc: '用户给您分享了他的健康卡', // 分享描述
-                    link: bizContent.shardLink, // 分享链接
-                    imgUrl: sellUserInfo.wxHeadPortrait, // 分享图标
-                    type: '', // 分享类型,music、video或link，不填默认为link
-                    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-                    success: function () {
-                        // 用户确认分享后执行的回调函数
-                        app.dialog.alert("分享成功");
-                    },
-                    cancel: function () {
-                        // 用户取消分享后执行的回调函数
-                    }
-                });
-
-                wx.onMenuShareQQ({
-                    title: '健康卡购买', // 分享标题
-                    desc: '用户给您分享了他的健康卡', // 分享描述
-                    link: bizContent.shardLink, // 分享链接
-                    imgUrl: sellUserInfo.wxHeadPortrait, // 分享图标
-                    type: '', // 分享类型,music、video或link，不填默认为link
-                    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-                    success: function () {
-                        // 用户确认分享后执行的回调函数
-                        app.dialog.alert("分享成功");
-                    },
-                    cancel: function () {
-                        // 用户取消分享后执行的回调函数
-                    }
-                });
-                _system._guide(true);
-            });
-
-            wx.error(function (res) {
-                app.dialog.alert("res : " + obj2string(res));
-
-            });
-
-        } else {
-            app.dialog.alert(data.msg, function () {
-                location.href = goIndex();
-            });
+    if (isLogin()) {
+        if (userInfo.userLevel >= 1) {
+            shardContentApi(
+                window.location.protocol+"//"+window.location.host+"/shard_sell.html?cardNo="+cardNo
+                ,userInfo.wxHeadPortrait
+                ,"健康卡购买"
+                ,userInfo.realName  +"给您分享了他的健康卡"
+            );
+            logInfo("分享微信售卡链接");
         }
-    });
+    } else {
+        gotoLogin();
+    }
+
 }
 
 function obj2string(o) {
@@ -986,10 +908,28 @@ function getSmsCode(form) {
     if (typeof(bizContent) === "undefined" || typeof(bizContent.mobileNo) === "undefined") {
         app.dialog.alert("请输入手机号", '信息提示');
     } else if (isPoneAvailable(bizContent.mobileNo)) {
-        //发送短信验证码
-        sendSmsCode(bizContent.mobileNo);
+        if (SMS_BUTTON_WAIT == 60) {
+            time();
+            //发送短信验证码
+            sendSmsCode(bizContent.mobileNo);
+        }
     } else {
         app.dialog.alert("手机号输入不正确", '信息提示');
+    }
+}
+
+function time() {
+    logInfo(SMS_BUTTON_WAIT);
+    if (SMS_BUTTON_WAIT == 0) {
+        $$(".getSmsCodeButton").html("获取验证码");
+        SMS_BUTTON_WAIT = 60;
+    } else {
+        $$(".getSmsCodeButton").html(SMS_BUTTON_WAIT+"秒后可以重新发送");
+        SMS_BUTTON_WAIT--;
+        setTimeout(function() {
+                time()
+            },
+            1000)
     }
 }
 
@@ -1198,8 +1138,13 @@ function saveEmployeeCard() {
 function shareEmployeeCard(){
     if (isLogin()) {
         if (userInfo.userLevel >= 1) {
-            //TODO 分享图片
-            logInfo("分享图片");
+            shardContentApi(
+                window.location.protocol+"//"+window.location.host+"/index.html?employeeCardNo="+userInfo.userId
+            ,window.location.protocol+"//"+window.location.host+"/"+userInfo.employeeCard
+            ,"我的推广码"
+            ,userInfo.realName  +"分享了早安工程社工证"
+            );
+            logInfo("分享社工证");
         }
     } else {
         gotoLogin();
@@ -1282,6 +1227,106 @@ function getLastCheckInfo(token) {
             var bizContent = JSON.parse(data.bizContent);
             logInfo(bizContent);
             document.getElementById("lastCheckTime").innerText ="您于"+ bizContent.uploadTime + "进行体检";
+        }
+    });
+}
+
+
+/**
+ * 分享微信链接
+ * @param cardNo
+ */
+function shardContentApi(url,icon,title,desc) {
+    var bizContent = {cardNo: cardNo};
+
+    var params = {
+        method: InterFace.WX_GLOBLE_CONFIG,
+        userId: userInfo.userId,
+        requestUrl:window.location.href,
+        bizContent: JSON.stringify(bizContent)
+    };
+
+    app.request.post(INTERFACE_URL, params, function (data) {
+        logInfo(data)
+        var response = JSON.parse(data);
+        if (ResponseCode.SUCCESS == response.code) {
+            var bizContent = JSON.parse(response.bizContent);
+            wx.config({
+                debug: false,
+                appId: bizContent.appId, // 必填，公众号的唯一标识
+                timestamp: bizContent.timeStamp, // 必填，生成签名的时间戳
+                nonceStr: bizContent.nonceStr, // 必填，生成签名的随机串
+                signature: bizContent.signature,// 必填，签名，见附录1
+                jsApiList: [
+                    'checkJsApi',
+                    'onMenuShareTimeline',
+                    'onMenuShareAppMessage',
+                    'onMenuShareQQ',
+                    'onMenuShareWeibo',
+                    'onMenuShareQZone',
+                    'hideMenuItems',
+                    'showMenuItems',
+                    'hideAllNonBaseMenuItem',
+                    'showAllNonBaseMenuItem',
+                    'translateVoice',
+                    'startRecord',
+                    'stopRecord',
+                    'onVoiceRecordEnd',
+                    'playVoice',
+                    'onVoicePlayEnd',
+                    'pauseVoice',
+                    'stopVoice',
+                    'uploadVoice',
+                    'downloadVoice',
+                    'chooseImage',
+                    'previewImage',
+                    'uploadImage',
+                    'downloadImage',
+                    'getNetworkType',
+                    'openLocation',
+                    'getLocation',
+                    'hideOptionMenu',
+                    'showOptionMenu',
+                    'closeWindow',
+                    'scanQRCode',
+                    'chooseWXPay',
+                    'openProductSpecificView',
+                    'addCard',
+                    'chooseCard',
+                    'openCard'
+                ]
+            });
+
+
+            wx.ready(function () {
+                wx.onMenuShareAppMessage({
+                    title: title, // 分享标题
+                    desc:desc, // 分享描述
+                    link: url, // 分享链接
+                    imgUrl: icon, // 分享图标
+                    type: '', // 分享类型,music、video或link，不填默认为link
+                    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                    success: function () {
+                        // 用户确认分享后执行的回调函数
+                        app.dialog.alert("分享成功");
+                    },
+                    cancel: function () {
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+
+                _system._guide(true);
+            });
+
+            wx.error(function (res) {
+                app.dialog.alert("res : " + obj2string(res));
+
+            });
+
+        } else {
+            app.dialog.alert(data.msg, function () {
+                location.href = goIndex();
+            });
         }
     });
 }

@@ -1,11 +1,13 @@
 //定义日志开关
-var LOG_SWITCH = true;
+let LOG_SWITCH = true;
 //定义接口地址
-var INTERFACE_URL = "/webservice/api/gateway";
-var TOKEN = "token";
-var userInfo;
-var cardNo = undefined;
-var InterFace = {
+let INTERFACE_URL = "/webservice/api/gateway";
+let TOKEN = "token";
+let userInfo;
+//sms延时
+let SMS_BUTTON_WAIT=60;
+let cardNo = undefined;
+let InterFace = {
     //用户信息
     USER_INFO: 'cn.zaoangongcheng.api.gateway.user.detail'
     //常见问题
@@ -82,7 +84,7 @@ var InterFace = {
  * 定义返回状态码
  * @type {{SUCCESS: number, UNKNOW: number, UNAUTHORIZED: number, MISSING_PARAMETERS: number, ILLEGAL_PARAMETERS: number, USER_ID_NOT_HIVE: number}}
  */
-var ResponseCode = {
+let ResponseCode = {
     SUCCESS: 10000
     , UNKNOW: 20000
     , UNAUTHORIZED: 20001
@@ -109,7 +111,7 @@ var ResponseCode = {
  * 业绩指标
  * @type {{DIRECTOR: number, STANDING_DIRECTOR: number}}
  */
-var PerformanceIndex ={
+let PerformanceIndex ={
     DIRECTOR:500
     ,STANDING_DIRECTOR:1500
 };
@@ -118,13 +120,13 @@ var PerformanceIndex ={
  * 用户级别
  * @type {{VISITOR: number, MEMBER: number, WORKER: number, DIRECTOR: number, STANDING_DIRECTOR: number}}
  */
-var UserLeve = {
+let UserLeve = {
     VISITOR: 0
     , MEMBER: 1
     , WORKER: 2
     , DIRECTOR: 3
     , STANDING_DIRECTOR: 4
-}
+};
 
 /**
  * 跳回首页地址

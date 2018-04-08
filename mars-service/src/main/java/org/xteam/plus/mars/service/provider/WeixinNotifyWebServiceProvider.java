@@ -113,7 +113,7 @@ public class WeixinNotifyWebServiceProvider extends Logging {
 
     @RequestMapping("/getImage")
     public void getImage(BigDecimal userId, BigDecimal productId, BigDecimal number, String address, String contactsMobile, HttpServletResponse response, HttpSession session) throws Exception {
-        PayOrderInfo payOrderInfo = ordersManager.createStraightPinOrder(userId, productId, number, address, contactsMobile, OrderTypeEnum.PLATFORM_STRAIGHT, null);
+        PayOrderInfo payOrderInfo = ordersManager.createStraightPinOrder(userId, productId, number, address, contactsMobile);
         InvokePay invokePay = iService.unifiedOrder(payOrderInfo, WxConfig.getInstance().getPayNotifyPath(), "");
         String code_url = invokePay.getCodeUrl();
         if (code_url == null || "".equals(code_url))

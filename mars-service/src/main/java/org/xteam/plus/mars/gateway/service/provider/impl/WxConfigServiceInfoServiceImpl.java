@@ -48,14 +48,6 @@ public class WxConfigServiceInfoServiceImpl extends Logging implements GateWaySe
         HttpResponseBody httpResponseBody = new HttpResponseBody(GlobalErrorMessage.SUCCESS);
         HashMap params = Maps.newHashMap();
         HashMap hashMap = JsonUtils.fromJSON(httpRequestBody.getBizContent(), HashMap.class);
-        // 取消必填参数
-        if (hashMap == null || hashMap.isEmpty() || hashMap.get("cardNo") == null) {
-            return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
-        }
-        UserHealthCard userHealthCard = userHealthCardManager.get(new UserHealthCard().setCardNo(new BigDecimal(hashMap.get("cardNo").toString())));
-        if (userHealthCard == null) {
-            return new HttpResponseBody(GlobalErrorMessage.OBJECT_ISNULL);
-        }
         String timeStamp = Long.toString(System.currentTimeMillis()).substring(0, 10);
         String ticket = iService.getJsapiTicket();
         String nonceStr = StringUtils.randomStr(32).toUpperCase();
@@ -71,13 +63,13 @@ public class WxConfigServiceInfoServiceImpl extends Logging implements GateWaySe
         crypt.update(shardUrl.getBytes("UTF-8"));
         String signature = byteToHex(crypt.digest());
         params.put("signature", signature); // paySign的生成规则和Sign的生成规则一致
-//        params.put("shardLink",WxConfig.getInstance().getShardUrl() + "/index.html?cardNo="+userHealthCard.getCardNo());
-        params.put("shardLink", WxConfig.getInstance().getShardUrl()+"/shard_sell.html?cardNo=" + userHealthCard.getCardNo());
-        UserInfo userInfo = userInfoManager.get(new UserInfo().setUserId(userHealthCard.getBuyerUserId()));
-        if (userInfo == null) {
-            return new HttpResponseBody(GlobalErrorMessage.SELL_USER_NOT_FIND);
-        }
-        params.put("sellUser", userInfo);
+////        params.put("shardLink",WxConfig.getInstance().getShardUrl() + "/index.html?cardNo="+userHealthCard.getCardNo());
+//        params.put("shardLink", WxConfig.getInstance().getShardUrl()+"/shard_sell.html?cardNo=" + userHealthCard.getCardNo());
+//        UserInfo userInfo = userInfoManager.get(new UserInfo().setUserId(userHealthCard.getBuyerUserId()));
+//        if (userInfo == null) {
+//            return new HttpResponseBody(GlobalErrorMessage.SELL_USER_NOT_FIND);
+//        }
+//        params.put("sellUser", userInfo);
         httpResponseBody.setBizContent(JsonUtils.toJSON(params));
         return httpResponseBody;
     }

@@ -1,5 +1,6 @@
 package org.xteam.plus.mars.gateway.service.provider.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +28,7 @@ import java.util.*;
  */
 @Component
 public class SubmitUserDetectionServiceImpl extends Logging implements GateWayService {
+    private static final ResourceBundle resourceBundle = ResourceBundle.getBundle("heartcheck");
 
     private final String METHOD_NAME = "com.zaoangongcheng.gateway.user.submitUserDetection";
 
@@ -72,8 +74,6 @@ public class SubmitUserDetectionServiceImpl extends Logging implements GateWaySe
                 }else{
                     return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
                 }
-//                healthCheckRecord.setCheckReport("images/pic.png");
-
             }
         }
 
@@ -93,13 +93,16 @@ public class SubmitUserDetectionServiceImpl extends Logging implements GateWaySe
 
         //保存检测记录
         healthCheckRecord.setCheckTime(new Date() );
-        healthCheckRecord.setCheckStatus(HealthCheckRecordTypeEnum.UNDETECTED.getCode());
         healthCheckRecord.setCreated(new Date());
+        healthCheckRecord.setCheckStatus(HealthCheckRecordTypeEnum.UNDETECTED.getCode());
         healthCheckRecord.setUploadTime(new Date());
         healthCheckRecord.setCardNo(userHealthCard.getCardNo());
         healthCheckRecord.setSelfCheckResult(Integer.valueOf(parmas.get("selfCheckResult").toString()));
-        //TODO 根据自测结果，匹配对应的检查结果
-//        healthCheckRecord.setCheckResult("");
+        //根据自测结果，匹配对应的检查结果
+        if(StringUtils.isNotEmpty(resourceBundle.getString(parmas.get("selfCheckResult")))){
+            healthCheckRecord.setCheckResult(resourceBundle.getString(parmas.get("selfCheckResult")));
+            healthCheckRecord.setCheckStatus(HealthCheckRecordTypeEnum.DETECTED.getCode());
+        }
         int count = healthCheckRecordManager.insert(healthCheckRecord);
         if (count <= 0) {
             logInfo("上传检测结果失败，插入数据库为0 userId[" + httpRequestBody.getUserId() + "]");

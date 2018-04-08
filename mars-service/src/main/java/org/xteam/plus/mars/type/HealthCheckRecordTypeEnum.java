@@ -2,8 +2,8 @@ package org.xteam.plus.mars.type;
 
 public enum HealthCheckRecordTypeEnum {
 
-    UNDETECTED(0, "未检测");
-
+    UNDETECTED(0, "未检测"),
+    DETECTED(1, "检测完成");
     private int code;
 
     private String info;
