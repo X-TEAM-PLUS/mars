@@ -7,8 +7,10 @@ import org.springframework.stereotype.Component;
 import org.xteam.plus.mars.common.JsonUtils;
 import org.xteam.plus.mars.common.Logging;
 import org.xteam.plus.mars.dao.UserInfoDao;
+import org.xteam.plus.mars.dao.UserRelationDao;
 import org.xteam.plus.mars.domain.Orders;
 import org.xteam.plus.mars.domain.UserInfo;
+import org.xteam.plus.mars.domain.UserRelation;
 import org.xteam.plus.mars.manager.SubsidyManager;
 import org.xteam.plus.mars.type.OrderTypeEnum;
 import org.xteam.plus.mars.type.UserLevelEnum;
@@ -26,6 +28,9 @@ public class SubsidyManagerFactory extends Logging implements ApplicationContext
 
     @Resource
     private UserInfoDao userInfoDao;
+
+    @Resource
+    private UserRelationDao userRelationDao;
 
     protected void init() {
         try {
@@ -61,23 +66,27 @@ public class SubsidyManagerFactory extends Logging implements ApplicationContext
             logInfo("orders [" + JsonUtils.toJSON(orders) + "] 不存在销售人员id，不进行补贴");
             return true;
         }
-        if (OrderTypeEnum.valueOf(orders.getOrderType()) != OrderTypeEnum.VIP_DISTRIBUTION) {
-            logInfo("订单ID [" + orders.getOrderNo() + "] 不是会员分销订单，不能进行发放补贴");
+        if (OrderTypeEnum.valueOf(orders.getOrderType()) != OrderTypeEnum.PLATFORM_STRAIGHT) {
+            logInfo("订单ID [" + orders.getOrderNo() + "] 不是平台直销的订单，不能进行发放补贴");
             return true;
         }
         if (orders.getStatus() != 1) {
             logInfo("订单ID [" + orders.getOrderNo() + "] 支付状态 [" + orders.getStatus() + "] 支付状态错误，不能进行补贴!");
             return true;
         }
-        UserInfo sellerUserInfo = userInfoDao.get(new UserInfo().setUserId(orders.getSellerUserId()));
 
-        SubsidyManager subsidyManager = subsidyManagerMap.get(sellerUserInfo.getUserLevel());
+        //查找关系发放补贴
+        UserRelation userRelation = userRelationDao.getByUserId(new UserRelation().setUserId(orders.getBuyerUserId()));
+        //如果上级不为空
+        if(userRelation!=null){
+            UserInfo sellerUserInfo = userInfoDao.get(new UserInfo().setUserId(userRelation.getRefereeUserId()));
+            SubsidyManager subsidyManager = subsidyManagerMap.get(sellerUserInfo.getUserLevel());
+            if (subsidyManager != null) {
+                return subsidyManager.doExecute(orders);
+            }
+            logInfo("用户等级为 UserLevel[" + UserLevelEnum.valueOf(sellerUserInfo.getUserLevel()).getInfo() + "] 不能进行补贴");
 
-        if (subsidyManager != null) {
-            return subsidyManager.doExecute(orders);
         }
-        logInfo("用户等级为 UserLevel[" + UserLevelEnum.valueOf(sellerUserInfo.getUserLevel()).getInfo() + "] 不能进行补贴");
-
         return true;
     }
 

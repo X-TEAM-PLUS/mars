@@ -11,74 +11,45 @@ var app = new Framework7({
         title: '信息提示',
         // change default "OK" button text
         buttonOk: '确定',
+        buttonCancel:'取消'
     }
 });
 
 $$(document).on('page:init reinit popupOpen', '.page[data-name="home"]', function (e) {
     let pageParams = e.detail.route.query;
-    if(pageParams.employeeCardNo){
-        logInfo("推荐人:"+pageParams.employeeCardNo);
-        localStorage.setItem("employeeCardNo",pageParams.employeeCardNo);
+    if(pageParams.cardNo){
+        logInfo("准备购买分享的健康卡的卡号为::"+pageParams.cardNo);
+        sessionStorage.setItem("cardNo",pageParams.cardNo);
     }
     //获取用户信息
     if (localStorage.hasOwnProperty(TOKEN)) {
         loadUserView(localStorage.getItem(TOKEN));
     } else {
-        app.dialog.alert("您还没有登录，等先进行登录!", function () {
-            gotoLogin();
-        });
-    }
-});
-$$(document).on('page:init reinit', '.page[data-name="sellCard-page"]', function (e) {
-
-    var page = e.detail.route;
-    if (page != undefined && page.query != undefined && page.query.cardNo != undefined) {
-        cardNo = page.query.cardNo;
-    }
-    if (localStorage.hasOwnProperty(TOKEN)) {
-        var params = {
-            method: InterFace.USER_INFO, token: localStorage.getItem(TOKEN)
-        };
-        //获取用户信息
-        app.request.json(INTERFACE_URL, params, function (data) {
-            logInfo(data);
-            if (ResponseCode.SUCCESS == data.code) {
-                logInfo("获取用户信息成功.")
-                var bizContent = JSON.parse(data.bizContent);
-                setUserInfo(bizContent);
-                loadData(userInfo, "sell-userinfo", "show-sell-userinfo");
-                // 获取用户健康卡详情与购卡人信息
-                var bizContent = {cardNo: cardNo};
-                params = {
-                    method: InterFace.USER_HEALTH_CARD_DETAIL,
-                    bizContent: JSON.stringify(bizContent), token: localStorage.getItem(TOKEN)
+        if(pageParams.employeeCardNo){
+            //获取用户信息
+            app.request.json(INTERFACE_URL, {
+                method: InterFace.USER_INFO, userId: pageParams.employeeCardNo
+            }, function (data) {
+                logInfo(data);
+                if (ResponseCode.SUCCESS == data.code) {
+                    logInfo("获取用户信息成功.")
+                    var employeeUserInfo = JSON.parse(data.bizContent);
+                    app.dialog.confirm("您确认接 【"+ employeeUserInfo.realName +"】的邀请加入早安工程吗", "信息提示", function () {
+                        logInfo("接收推荐人:"+pageParams.employeeCardNo);
+                        sessionStorage.setItem("employeeCardNo",pageParams.employeeCardNo);
+                    }, function () {
+                        logInfo("未接收推荐人:"+pageParams.employeeCardNo);
+                    });
+                }else{
+                    logInfo("无效推荐人:"+pageParams.employeeCardNo);
                 }
-                app.request.json(INTERFACE_URL, params, function (dataHealth) {
-                    logInfo(dataHealth);
-                    if (ResponseCode.SUCCESS == dataHealth.code) {
-                        logInfo("获取用户健康卡详情与购卡人信息成功")
-                        var bizContentHealth = JSON.parse(dataHealth.bizContent);
-                        loadData(bizContentHealth, "card-userinfo", "show-card-userinfo");
-                    } else {
-                        app.dialog.alert(dataHealth.msg, function () {
-                            gotoLogin();
-                        });
-                    }
-                });
-            } else {
-                app.dialog.alert(data.msg, function () {
-                    gotoLogin();
-                });
-            }
-        });
-    } else {
-        app.dialog.alert("您还没有登录，等先进行登录!", function () {
-            gotoLogin();
-        });
-
+            });
+            app.dialog.alert("您还没有登录，等先进行登录!", function () {
+                gotoLogin();
+            });
+        }
     }
 });
-
 $$(document).on('page:init reinit', '.page[data-name="buyCard-page"]', function (e) {
     loadData(userInfo, "buy-userinfo", "show-buy-userinfo");
 });

@@ -169,6 +169,17 @@
         where RELATION_ID= #{relationId,jdbcType=DECIMAL}
     </select>
 
+    <!--查询单条记录-->
+    <select id="getByUserId" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.UserRelation">
+        select
+        RELATION_ID
+        ,REFEREE_USER_ID
+        ,USER_ID
+        ,UPDATED
+        ,CREATED
+        from T_MARS_USER_RELATION
+        where USER_ID= #{userId,jdbcType=DECIMAL}
+    </select>
 
     <!--分页查询记录-->
     <select id="query" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.UserRelation">

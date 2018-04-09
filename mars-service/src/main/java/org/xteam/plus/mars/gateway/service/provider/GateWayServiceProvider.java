@@ -47,15 +47,6 @@ public class GateWayServiceProvider extends AbstractServiceProvider {
             MultiValueMap<String, MultipartFile> multipartFileMultiValueMap = multipartHttpServletRequest.getMultiFileMap();
             httpRequestBody.setMultipartFileHashMap((LinkedMultiValueMap<String, MultipartFile>) multipartFileMultiValueMap);
         }
-
-//        String url = request.getScheme() + "://";
-//        url += request.getHeader("host");
-//        url += request.getRequestURI();
-//        if (request.getQueryString() != null) {
-//            url += "?" + request.getQueryString();
-//        }
-//        httpRequestBody.setRequestUrl(url);
-
         return gateWayServiceProxy.gateWay(httpRequestBody);
     }
 

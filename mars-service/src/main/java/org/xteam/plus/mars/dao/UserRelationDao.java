@@ -34,6 +34,16 @@ public interface UserRelationDao {
      */
     public UserRelation get(UserRelation userRelation) throws Exception;
 
+
+    /**
+     * 获取 （根据用户ID）
+     *
+     * @param userRelation
+     * @return int
+     */
+    public UserRelation getByUserId(UserRelation userRelation) throws Exception;
+
+
     /**
      * 新增
      *

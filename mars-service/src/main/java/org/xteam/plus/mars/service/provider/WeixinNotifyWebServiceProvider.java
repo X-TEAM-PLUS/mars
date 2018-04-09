@@ -95,6 +95,7 @@ public class WeixinNotifyWebServiceProvider extends Logging {
                 return returnValue;
             }
             if (reqMap.get("result_code").toString().equalsIgnoreCase("SUCCESS")) {
+
                 ordersManager.updateStraightPinOrder(reqMap);
                 Orders orders = ordersManager.get(new Orders().setOrderNo(new BigDecimal(reqMap.get("out_trade_no").toString())));
                 // 发放补贴
@@ -111,32 +112,32 @@ public class WeixinNotifyWebServiceProvider extends Logging {
         }
     }
 
-    @RequestMapping("/getImage")
-    public void getImage(BigDecimal userId, BigDecimal productId, BigDecimal number, String address, String contactsMobile, HttpServletResponse response, HttpSession session) throws Exception {
-        PayOrderInfo payOrderInfo = ordersManager.createStraightPinOrder(userId, productId, number, address, contactsMobile);
-        InvokePay invokePay = iService.unifiedOrder(payOrderInfo, WxConfig.getInstance().getPayNotifyPath(), "");
-        String code_url = invokePay.getCodeUrl();
-        if (code_url == null || "".equals(code_url))
-            return;
-        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-        Map hints = new HashMap();
-        hints.put(EncodeHintType.CHARACTER_SET, "UTF-8"); //设置字符集编码类型
-        BitMatrix bitMatrix = null;
-        try {
-            bitMatrix = multiFormatWriter.encode(code_url, BarcodeFormat.QR_CODE, 300, 300, hints);
-            BufferedImage image = toBufferedImage(bitMatrix);
-            //输出二维码图片流
-            try {
-                ImageIO.write(image, "png", response.getOutputStream());
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        } catch (WriterException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
-    }
+//    @RequestMapping("/getImage")
+//    public void getImage(BigDecimal userId, BigDecimal productId, BigDecimal number, String address, String contactsMobile, HttpServletResponse response, HttpSession session) throws Exception {
+//        PayOrderInfo payOrderInfo = ordersManager.createStraightPinOrder(userId, productId, number, address, contactsMobile);
+//        InvokePay invokePay = iService.unifiedOrder(payOrderInfo, WxConfig.getInstance().getPayNotifyPath(), "");
+//        String code_url = invokePay.getCodeUrl();
+//        if (code_url == null || "".equals(code_url))
+//            return;
+//        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+//        Map hints = new HashMap();
+//        hints.put(EncodeHintType.CHARACTER_SET, "UTF-8"); //设置字符集编码类型
+//        BitMatrix bitMatrix = null;
+//        try {
+//            bitMatrix = multiFormatWriter.encode(code_url, BarcodeFormat.QR_CODE, 300, 300, hints);
+//            BufferedImage image = toBufferedImage(bitMatrix);
+//            //输出二维码图片流
+//            try {
+//                ImageIO.write(image, "png", response.getOutputStream());
+//            } catch (IOException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            }
+//        } catch (WriterException e1) {
+//            // TODO Auto-generated catch block
+//            e1.printStackTrace();
+//        }
+//    }
 
     private static final int WHITE = 0xFFFFFFFF;
     private static final int BLACK = 0xFF000000;

@@ -54,12 +54,10 @@ public class WxPayServiceAppInfoServiceImpl extends Logging implements GateWaySe
 
     @Override
     public HttpResponseBody gateWay(HttpRequestBody httpRequestBody) throws Exception {
-
-        long beginDate = System.currentTimeMillis();
-        this.logInfo(METHOD_NAME + " request  [" + httpRequestBody.toString() + "]");
         HttpResponseBody httpResponseBody = new HttpResponseBody(GlobalErrorMessage.SUCCESS);
         try {
             WxPayJsApiReqVO wxPayJsApiReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), WxPayJsApiReqVO.class);
+
             if (wxPayJsApiReqVO == null || httpRequestBody.getUserId() == null || wxPayJsApiReqVO.getOrderTypeEnum() == null) {
                 return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
             }
@@ -81,8 +79,8 @@ public class WxPayServiceAppInfoServiceImpl extends Logging implements GateWaySe
             // 平台直销
             if (wxPayJsApiReqVO.getOrderTypeEnum().getCode() == OrderTypeEnum.PLATFORM_STRAIGHT.getCode()) {
                 payOrderInfo = ordersManager.createStraightPinOrder(
-                        userInfo.getUserId(), wxPayJsApiReqVO.getProductId(), wxPayJsApiReqVO.getNumber(), wxPayJsApiReqVO.getAddress(),
-                        wxPayJsApiReqVO.getContactsMobile());
+                        userInfo.getUserId(), wxPayJsApiReqVO.getProductId(), BigDecimal.ONE, wxPayJsApiReqVO.getAddress(),
+                        wxPayJsApiReqVO.getContactsMobile(), wxPayJsApiReqVO.getCertificateOf(), wxPayJsApiReqVO.getUserRealName());
             } else {
                 payOrderInfo = ordersManager.createDistributionOrder(
                         userInfo.getUserId(), wxPayJsApiReqVO.getAddress(),
@@ -113,8 +111,6 @@ public class WxPayServiceAppInfoServiceImpl extends Logging implements GateWaySe
         } catch (Exception e) {
             logInfo(METHOD_NAME + " error system_error ", e);
             httpResponseBody = new HttpResponseBody("999912", e.getMessage());
-        } finally {
-            logInfo(METHOD_NAME + " finish result[" + JsonUtils.toJSON(httpResponseBody.getBizContent()) + "] longtime[" + (beginDate - System.currentTimeMillis()) + "]");
         }
         return httpResponseBody;
     }

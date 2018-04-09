@@ -99,8 +99,8 @@ public class SubmitUserDetectionServiceImpl extends Logging implements GateWaySe
         healthCheckRecord.setCardNo(userHealthCard.getCardNo());
         healthCheckRecord.setSelfCheckResult(Integer.valueOf(parmas.get("selfCheckResult").toString()));
         //根据自测结果，匹配对应的检查结果
-        if(StringUtils.isNotEmpty(resourceBundle.getString(parmas.get("selfCheckResult")))){
-            healthCheckRecord.setCheckResult(resourceBundle.getString(parmas.get("selfCheckResult")));
+        if(StringUtils.isNotEmpty(resourceBundle.getString("heart.result.select."+parmas.get("selfCheckResult")))){
+            healthCheckRecord.setCheckResult(resourceBundle.getString("heart.result.select."+parmas.get("selfCheckResult")));
             healthCheckRecord.setCheckStatus(HealthCheckRecordTypeEnum.DETECTED.getCode());
         }
         int count = healthCheckRecordManager.insert(healthCheckRecord);

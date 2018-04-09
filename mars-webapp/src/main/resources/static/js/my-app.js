@@ -465,55 +465,49 @@ function applyWithDraw(form) {
     });
 }
 
-/** 支付弹出层 */
-var dynamicPopup = undefined;
-
-function closeDynamicPopup() {
-    dynamicPopup.close();
-}
 
 /**
  * 增加购买个数
  */
 function addNumber(lableName) {
-    var totalNumber = 50;
-    var number = document.getElementById(lableName).innerText;
-    number = parseInt(number);
-    if (number >= totalNumber) {
-        app.dialog.alert("购买数量不能超过" + totalNumber, '信息提示');
-        return false;
-    }
-    number++;
-    document.getElementById(lableName).innerText = " " + number + " ";
-    // 总计
-    document.getElementById(lableName + "_all").innerText = " " + (number * 365) + " ";
-
-    // 总计
-    var numberTotal = document.getElementById(lableName + "_total").innerText;
-    numberTotal = parseInt(numberTotal);
-    document.getElementById(lableName + "_total").innerText = " " + (number * 365) + " ";
+    // var totalNumber = 50;
+    // var number = document.getElementById(lableName).innerText;
+    // number = parseInt(number);
+    // if (number >= totalNumber) {
+    //     app.dialog.alert("购买数量不能超过" + totalNumber, '信息提示');
+    //     return false;
+    // }
+    // number++;
+    // document.getElementById(lableName).innerText = " " + number + " ";
+    // // 总计
+    // document.getElementById(lableName + "_all").innerText = " " + (number * 365) + " ";
+    //
+    // // 总计
+    // var numberTotal = document.getElementById(lableName + "_total").innerText;
+    // numberTotal = parseInt(numberTotal);
+    // document.getElementById(lableName + "_total").innerText = " " + (number * 365) + " ";
 }
 
 /**
  * 减购买个数
  */
 function delNumber(lableName) {
-    var number = document.getElementById(lableName).innerText;
-    number = parseInt(number);
-    if (number <= 1) {
-        app.dialog.alert("购买数量不能低于1", '信息提示');
-        return false;
-    }
-    number--;
-    document.getElementById(lableName).innerText = " " + number + " ";
-    // 总计
-    var numberAll = document.getElementById(lableName + "_all").innerText;
-    document.getElementById(lableName + "_all").innerText = " " + (number * 365) + " ";
-
-    // 总计
-    var numberTotal = document.getElementById(lableName + "_total").innerText;
-    numberTotal = parseInt(numberTotal);
-    document.getElementById(lableName + "_total").innerText = " " + (number * 365) + " ";
+    // var number = document.getElementById(lableName).innerText;
+    // number = parseInt(number);
+    // if (number <= 1) {
+    //     app.dialog.alert("购买数量不能低于1", '信息提示');
+    //     return false;
+    // }
+    // number--;
+    // document.getElementById(lableName).innerText = " " + number + " ";
+    // // 总计
+    // var numberAll = document.getElementById(lableName + "_all").innerText;
+    // document.getElementById(lableName + "_all").innerText = " " + (number * 365) + " ";
+    //
+    // // 总计
+    // var numberTotal = document.getElementById(lableName + "_total").innerText;
+    // numberTotal = parseInt(numberTotal);
+    // document.getElementById(lableName + "_total").innerText = " " + (number * 365) + " ";
 }
 
 /**
@@ -522,34 +516,38 @@ function delNumber(lableName) {
  * @param lableName
  * @returns {boolean}
  */
-function submitBuyCard(form, lableName) {
-    var mobile = "";
-    var address = "";
-    $$(dynamicPopup.el).find('input[type=text]').each(function (index, element) {
-        if (element.name == "mobile") {
-            mobile = element.value;
+function submitBuyCard(form) {
+    let bizContent = app.form.convertToData('#' + form);
+    logInfo(bizContent);
+    if (userInfo.userLevel == 0) {
+        if (!bizContent.userRealName) {
+            app.dialog.alert('请输入您的真实姓名', '信息提示');
+            return false;
         }
-        if (element.name == "address") {
-            address = element.value;
+        if (!bizContent.certificateOf) {
+            app.dialog.alert('请输入您的身份证号', '信息提示');
+            return false;
         }
-    });
-    if (mobile == "" || address == "" || mobile.length < 11) {
-        app.dialog.alert("输入信息有误，请从新输入", '信息提示');
-        return false;
+        if (!bizContent.address) {
+            app.dialog.alert('请输入您的收货地址', '信息提示');
+            return false;
+        }
+        //如果有指定的卡号
+        if (sessionStorage.hasOwnProperty("cardNo")){
+            bizContent["cardNo"] = sessionStorage.getItem("cardNo");
+            bizContent["orderTypeEnum"]="VIP_DISTRIBUTION";
+        }else{
+            bizContent["orderTypeEnum"]="PLATFORM_STRAIGHT";
+        }
+    }else{
+        bizContent["orderTypeEnum"]="PLATFORM_STRAIGHT";
     }
-    var number = document.getElementById(lableName).innerText;
-    app.form.fillFromData('#' + form, {
-        'number': number,
-        'contactsMobile': mobile,
-        'address': address
-    })
-    var bizContent = app.form.convertToData('#' + form);
-    var params = {
+
+    let  params = {
         method: InterFace.PAY_UNIFIED_ORDER,
         userId: userInfo.userId,
         bizContent: JSON.stringify(bizContent)
     };
-
     app.request.post(INTERFACE_URL, params, function (data) {
         logInfo(data);
         var response = JSON.parse(data);
@@ -565,13 +563,13 @@ function submitBuyCard(form, lableName) {
                 //微信签名
             }, function (res) {
                 if (res.err_msg == "get_brand_wcpay_request:ok") {
-                    closeDynamicPopup();
-                    memberView.router.navigate('/?userId=' + userInfo.userId, {
+                    app.popup.close('.orderFormPopup', true);
+                    memberView.router.navigate('/', {
                         history: true
                     });
                 } // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
                 else {
-                    $api.rmStorage('orderData');
+                    //$api.rmStorage('orderData');
                     history.back(-1);
                 }
             });
@@ -586,192 +584,20 @@ function submitBuyCard(form, lableName) {
  * 预下单
  * @param form
  */
-function buyCard(form) {
+function buyCard() {
     if (typeof WeixinJSBridge == "undefined") {
         app.dialog.alert("请在微信端内进行操作!", '信息提示');
         return false;
     }
-
     if (isLogin()) {
-        if (userInfo.userLevel >= 1) {
-            memberView.router.navigate('/employeeCard/', {
-                history: true
-            });
+        if (userInfo.userLevel == 0) {
+            app.popup.open('.orderFormPopup', true);
+        }else{
+            submitBuyCard('orderForm');
         }
     } else {
         gotoLogin();
     }
-
-
-
-    dynamicPopup = app.popup.create({
-        content: '<div class="popup" style="height: 50%">' +
-        '<div class="block-title">请填写您的收获地址与联系方式</div>\n' +
-        '<div class="list inset">\n' +
-        '  <ul>\n' +
-        '    <li class="item-drawing item-input">\n' +
-        '      <div class="item-inner">\n' +
-        '        <div class="item-input-wrap">\n' +
-        '          <input type="text" name="mobile" placeholder="您的手机号码" maxlength="20">\n' +
-        '          <span class="input-clear-button"></span>\n' +
-        '        </div>\n' +
-        '      </div>\n' +
-        '    </li>\n' +
-        '    <li class="item-drawing item-input">\n' +
-        '      <div class="item-inner">\n' +
-        '        <div class="item-input-wrap">\n' +
-        '          <input type="text" name="address" placeholder="收获地址" maxlength="120">\n' +
-        '          <span class="input-clear-button"></span>\n' +
-        '        </div>\n' +
-        '      </div>\n' +
-        '    </li>\n' +
-        '  </ul>\n' +
-        '<div class="row">\n' +
-        '  <div class="col-50">\n' +
-        '    <a href="#" class="button button-big button-fill button-raised active" onclick="closeDynamicPopup()">取消</a>\n' +
-        '  </div>\n' +
-        '  <div class="col-50">\n' +
-        '    <a href="#" class="button button-big button-fill button-raised active" onclick="submitBuyCard(\'submitForm\',\'numberLabel\')">确定</a>\n' +
-        '  </div>\n' +
-        '</div>    ' +
-        '</div>' +
-
-        '</div>',
-        // Events
-        on: {
-            open: function (popup) {
-                console.log('Popup open');
-            },
-            opened: function (popup) {
-                console.log('Popup opened');
-            },
-        }
-    });
-    dynamicPopup.open();
-}
-
-/**
- * 卖卡弹出收件信息
- * @param form
- * @returns {boolean}
- */
-function sellCard(form) {
-    if (typeof WeixinJSBridge == "undefined") {
-        app.dialog.alert("请在微信端内进行操作!", '信息提示');
-        return false;
-    }
-    dynamicPopup = app.popup.create({
-        content: '<div class="popup" style="height: 50%">' +
-        '<div class="block-title">请填写您的收获地址与联系方式</div>\n' +
-        '<div class="list inset">\n' +
-        '  <ul>\n' +
-        '    <li class="item-drawing item-input">\n' +
-        '      <div class="item-inner">\n' +
-        '        <div class="item-input-wrap">\n' +
-        '          <input type="text" name="mobile" placeholder="您的手机号码" maxlength="20">\n' +
-        '          <span class="input-clear-button"></span>\n' +
-        '        </div>\n' +
-        '      </div>\n' +
-        '    </li>\n' +
-        '    <li class="item-drawing item-input">\n' +
-        '      <div class="item-inner">\n' +
-        '        <div class="item-input-wrap">\n' +
-        '          <input type="text" name="address" placeholder="收获地址" maxlength="120">\n' +
-        '          <span class="input-clear-button"></span>\n' +
-        '        </div>\n' +
-        '      </div>\n' +
-        '    </li>\n' +
-        '  </ul>\n' +
-        '<div class="row">\n' +
-        '  <div class="col-50">\n' +
-        '    <a href="#" class="button button-big button-fill button-raised active" onclick="closeDynamicPopup()">取消</a>\n' +
-        '  </div>\n' +
-        '  <div class="col-50">\n' +
-        '    <a href="#" class="button button-big button-fill button-raised active" onclick="submitSellCard(\'sellSubmitForm\')">确定</a>\n' +
-        '  </div>\n' +
-        '</div>    ' +
-        '</div>' +
-
-        '</div>',
-        // Events
-        on: {
-            open: function (popup) {
-                console.log('Popup open');
-            },
-            opened: function (popup) {
-                console.log('Popup opened');
-            },
-        }
-    });
-    dynamicPopup.open();
-}
-
-/**
- * 提交卖卡数据
- * @param form
- * @param lableName
- * @returns {boolean}
- */
-function submitSellCard(form) {
-    var mobile = "";
-    var mobile = "";
-    var address = "";
-    $$(dynamicPopup.el).find('input[type=text]').each(function (index, element) {
-        if (element.name == "mobile") {
-            mobile = element.value;
-        }
-        if (element.name == "address") {
-            address = element.value;
-        }
-    });
-    if (mobile == "" || address == "" || mobile.length < 11) {
-        app.dialog.alert("输入信息有误，请从新输入", '信息提示');
-        return false;
-    }
-    app.form.fillFromData('#' + form, {
-        'contactsMobile': mobile,
-        'address': address,
-        'cardNo': cardNo
-    })
-    var bizContent = app.form.convertToData('#' + form);
-
-
-
-    var params = {
-        method: InterFace.PAY_UNIFIED_ORDER,
-        userId: userInfo.userId,
-        bizContent: JSON.stringify(bizContent)
-    };
-
-    app.request.post(INTERFACE_URL, params, function (data) {
-        logInfo(data);
-        var response = JSON.parse(data);
-        if (ResponseCode.SUCCESS == response.code) {
-            var bizContent = JSON.parse(response.bizContent);
-            WeixinJSBridge.invoke('getBrandWCPayRequest', {
-                "appId": bizContent.appId, //公众号名称，由商户传入
-                "timeStamp": bizContent.timeStamp, //时间戳，自1970年以来的秒数
-                "nonceStr": bizContent.nonceStr, //随机串
-                "package": "prepay_id=" + bizContent.packageValue,
-                "signType": bizContent.signType, //微信签名方式：
-                "paySign": bizContent.paySign
-                //微信签名
-            }, function (res) {
-                if (res.err_msg == "get_brand_wcpay_request:ok") {
-                    closeDynamicPopup();
-                    memberView.router.navigate('/?userId=' + userInfo.userId, {
-                        history: true
-                    });
-                } // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
-                else {
-                    $api.rmStorage('orderData');
-                    history.back(-1);
-                }
-            });
-        } else {
-            app.dialog.alert(response.msg, '信息提示');
-        }
-    });
 }
 
 /**
@@ -1330,3 +1156,4 @@ function shardContentApi(url,icon,title,desc) {
         }
     });
 }
+

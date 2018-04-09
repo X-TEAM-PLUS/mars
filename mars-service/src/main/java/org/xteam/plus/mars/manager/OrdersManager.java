@@ -96,7 +96,7 @@ public interface OrdersManager {
      * @return
      * @throws Exception
      */
-    public PayOrderInfo createStraightPinOrder(BigDecimal userId, BigDecimal productId, BigDecimal number, String address, String contactsMobile) throws Exception;
+    public PayOrderInfo createStraightPinOrder(BigDecimal userId, BigDecimal productId, BigDecimal number, String address, String contactsMobile,String certificateOf, String userRealName) throws Exception;
 
     /**
      * 用户分销生成订单
