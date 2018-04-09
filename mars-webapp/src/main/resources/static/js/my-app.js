@@ -662,7 +662,7 @@ function shardWeixin(cardNo) {
     if (isLogin()) {
         if (userInfo.userLevel >= 1) {
             shardContentApi(
-                window.location.protocol+"//"+window.location.host+"/shard_sell.html?cardNo="+cardNo
+                window.location.protocol+"//"+window.location.host+"/index.html?cardNo="+cardNo
                 ,userInfo.wxHeadPortrait
                 ,"健康卡购买"
                 ,userInfo.realName  +"给您分享了他的健康卡"
@@ -938,6 +938,7 @@ function getEmployeeCard(token) {
             logInfo(bizContent);
             if(bizContent.employeeCard){
                 $$('#employeeCard')[0].src = bizContent.employeeCard;
+                $$('#downloadPic')[0].href = bizContent.employeeCard;
             }
 
         }
