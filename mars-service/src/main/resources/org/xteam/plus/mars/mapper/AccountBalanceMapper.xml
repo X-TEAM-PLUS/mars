@@ -59,14 +59,16 @@
     </delete>
 
     <!--插入记录-->
-    <insert id="insert" parameterType="org.xteam.plus.mars.domain.AccountBalance" useGeneratedKeys="true" keyProperty="userId">
+    <insert id="insert" parameterType="org.xteam.plus.mars.domain.AccountBalance">
         insert into T_MARS_ACCOUNT_BALANCE (
-        STATUS
+        USER_ID
+        ,STATUS
         ,CREATED
         ,UPDATED
         ,BALANCE_AMOUNT
         )values(
-        #{status,jdbcType=INTEGER}
+         #{userId,jdbcType=DECIMAL}
+        ,#{status,jdbcType=INTEGER}
         ,#{created,jdbcType=TIMESTAMP}
         ,#{updated,jdbcType=TIMESTAMP}
         ,#{balanceAmount,jdbcType=DECIMAL}
@@ -74,16 +76,18 @@
     </insert>
 
     <!--批量插入记录-->
-    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="userId">
+    <insert id="batchInsert" parameterType="java.util.List">
         insert into T_MARS_ACCOUNT_BALANCE (
-        STATUS
+        USER_ID
+        ,STATUS
         ,CREATED
         ,UPDATED
         ,BALANCE_AMOUNT
         )values
         <foreach collection="list" item="item" index="index" separator=",">
             (
-            #{item.status,jdbcType=INTEGER}
+            #{userId,jdbcType=DECIMAL}
+           , #{item.status,jdbcType=INTEGER}
             ,#{item.created,jdbcType=TIMESTAMP}
             ,#{item.updated,jdbcType=TIMESTAMP}
             ,#{item.balanceAmount,jdbcType=DECIMAL}

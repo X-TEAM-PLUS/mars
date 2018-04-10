@@ -53,8 +53,8 @@ public class CouncilInfoManagerImpl implements CouncilInfoManager {
     public int insertUser(CouncilInfo councilInfo) throws Exception {
         List<LocalCouncilMember> alreadLocalCouncils = localCouncilMemberDao.query(new LocalCouncilMember().setCouncilId(councilInfo.getCouncilId()));
         List<LocalCouncilMember> localCouncilMembers = userToRepeat(alreadLocalCouncils, councilInfo.getUserInfo(), councilInfo);
-        if (localCouncilMembers.isEmpty()){
-            throw new Exception("没有可以添加的用户，目前已添加的用户为 "+ alreadLocalCouncils.size());
+        if (localCouncilMembers.isEmpty()) {
+            throw new Exception("没有可以添加的用户，目前已添加的用户为 " + alreadLocalCouncils.size());
         }
         return localCouncilMemberDao.batchInsert(localCouncilMembers);
     }
@@ -118,8 +118,8 @@ public class CouncilInfoManagerImpl implements CouncilInfoManager {
     }
 
     @Override
-    public List<CouncilInfoList> queryTotal(int start,int limit) throws Exception {
-        return councilInfoDao.queryTotal(start,limit);
+    public List<CouncilInfoList> queryTotal(int start, int limit) throws Exception {
+        return councilInfoDao.queryTotal(start, limit);
     }
 
     /**

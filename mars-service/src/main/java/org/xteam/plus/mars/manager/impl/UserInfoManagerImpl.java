@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.xteam.plus.mars.common.JsonUtils;
 import org.xteam.plus.mars.dao.UserInfoDao;
 import org.xteam.plus.mars.dao.UserRelationDao;
 import org.xteam.plus.mars.domain.UserInfo;
@@ -11,11 +12,8 @@ import org.xteam.plus.mars.domain.UserRelation;
 import org.xteam.plus.mars.manager.UserInfoManager;
 import org.xteam.plus.mars.type.UserLevelEnum;
 import org.xteam.plus.mars.wx.bean.WxUserList;
-import org.xteam.plus.mars.wx.util.StringUtils;
 
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.net.URLDecoder;
 import java.util.Date;
 import java.util.List;
 
@@ -37,12 +35,12 @@ public class UserInfoManagerImpl implements UserInfoManager {
 
     @Override
     public UserInfo get(UserInfo userInfo) throws Exception {
-        return convertRealName(userInfoDao.get(userInfo));
+        return userInfoDao.get(userInfo);
     }
 
     @Override
     public UserInfo getWorker(UserInfo userInfo) throws Exception {
-        return convertRealName(userInfoDao.getWorker(userInfo));
+        return userInfoDao.getWorker(userInfo);
     }
 
     @Override
@@ -71,7 +69,7 @@ public class UserInfoManagerImpl implements UserInfoManager {
 
     @Override
     public List<UserInfo> query(UserInfo userInfo) throws Exception {
-        return convertRealName(userInfoDao.query(userInfo));
+        return userInfoDao.query(userInfo);
     }
 
     @Override
@@ -81,7 +79,7 @@ public class UserInfoManagerImpl implements UserInfoManager {
 
     @Override
     public List<UserInfo> queryWorker(UserInfo userInfo, Integer applyType) throws Exception {
-        return convertRealName(userInfoDao.queryWorker(userInfo, applyType));
+        return userInfoDao.queryWorker(userInfo, applyType);
     }
 
     @Override
@@ -134,12 +132,12 @@ public class UserInfoManagerImpl implements UserInfoManager {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int insert(UserInfo userInfo, String employeeCardNo)throws Exception {
+    public int insert(UserInfo userInfo, String employeeCardNo) throws Exception {
         //写入用户表
-        int rowCont =  userInfoDao.insert(userInfo);
+        int rowCont = userInfoDao.insert(userInfo);
 
         //写关系表
-        UserRelation userRelation =  new UserRelation();
+        UserRelation userRelation = new UserRelation();
         userRelation.setUserId(userInfo.getUserId());
         userRelation.setCreated(new Date());
         userRelation.setUpdated(new Date());
@@ -150,36 +148,9 @@ public class UserInfoManagerImpl implements UserInfoManager {
         return rowCont;
     }
 
-    private List<UserInfo> convertRealName(List<UserInfo> userInfos) {
-        for (UserInfo userInfo : userInfos) {
-            try {
-                if (!StringUtils.isEmpty(userInfo.getRealName())) {
-                    userInfo.setRealName(URLDecoder.decode(userInfo.getRealName(), "utf-8"));
-                }
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        }
-        return userInfos;
-    }
-
-    private UserInfo convertRealName(UserInfo userInfos) {
-
-        try {
-            if (userInfos == null) {
-                return null;
-            }
-            if (!StringUtils.isEmpty(userInfos.getRealName())) {
-                userInfos.setRealName(URLDecoder.decode(userInfos.getRealName(), "utf-8"));
-            }        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        return userInfos;
-    }
-
     private boolean updateWxUser(WxUserList.WxUser wxUser, UserInfo userInfo) throws Exception {
-        userInfo.setRealName(wxUser.getNickname());
+        log.info("更新用户信息: from [" +JsonUtils.toJSON(wxUser)+"] to ["+JsonUtils.toJSON(userInfo)+" ]");
+
         userInfo.setWxHeadPortrait(wxUser.getHeadimgurl());
         userInfo.setWxOpenid(wxUser.getOpenid());
         if (userInfoDao.update(userInfo) > 0) {
@@ -189,7 +160,7 @@ public class UserInfoManagerImpl implements UserInfoManager {
     }
 
     private boolean insertWxUser(WxUserList.WxUser wxUser, UserInfo userInfo) throws Exception {
-        userInfo.setRealName(wxUser.getNickname());
+        log.info("插入用户信息: from [" +JsonUtils.toJSON(wxUser)+"]");
         userInfo.setWxHeadPortrait(wxUser.getHeadimgurl());
         userInfo.setWxOpenid(wxUser.getOpenid());
         userInfo.setRegisterTime(new Date());

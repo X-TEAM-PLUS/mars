@@ -43,6 +43,6 @@ ribbon:
     ReadTimeout: 30000
     ConnectTimeout: 30000
 logging:
-  path: /var/log/mars
-  level: debug
+  path: /data/log/mars
+  level: INFO
   config: classpath:admin-logback.xml

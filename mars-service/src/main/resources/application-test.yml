@@ -56,7 +56,7 @@ logging:
 mars:
   cache:
     verifycode-life: 2
-    verifycode-limit: 10
+    verifycode-limit: 1000
   test:
     mobileNos: 13701312791,18810863866
     password: 888888

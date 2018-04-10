@@ -50,13 +50,13 @@ mybatis:
 
 logging:
   path: /data/log/mars
-  level: debug
+  level: INFO
   config: classpath:service-logback.xml
 
 mars:
   cache:
     verifycode-life: 2
-    verifycode-limit: 10
+    verifycode-limit: 30
   test:
     mobileNos: 13701312791,18810863866
     password: 888888

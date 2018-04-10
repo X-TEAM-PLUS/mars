@@ -25,7 +25,7 @@ function logInfo(data) {
  * @param url
  * @param params
  */
-function loadUserView(token) {
+function loadUserView(token,pageParams) {
     var params = {
         method: InterFace.USER_INFO, token: token
     };
@@ -40,6 +40,14 @@ function loadUserView(token) {
             switch (bizContent.userLevel) {
                 case UserLeve.VISITOR:
                     loadData(bizContent, userViewDomId, "show-member-view");
+                    if(pageParams.gotoPage){
+                        if(!sessionStorage.hasOwnProperty(pageParams.gotoPage)){
+                            sessionStorage.setItem(pageParams.gotoPage,"disable");
+                            memberView.router.navigate('/'+pageParams.gotoPage +'/', {
+                                history: true
+                            });
+                        }
+                    }
                     break;
                 case UserLeve.MEMBER:
                     loadData(bizContent, userViewDomId, "show-gongyi-view");
@@ -56,6 +64,9 @@ function loadUserView(token) {
                 default:
                     break;
             }
+
+
+
         } else {
             gotoLogin();
         }
@@ -572,6 +583,7 @@ function submitBuyCard(form) {
                 //微信签名
             }, function (res) {
                 if (res.err_msg == "get_brand_wcpay_request:ok") {
+                    sessionStorage.removeItem("cardNo");
                     app.popup.close('.orderFormPopup', true);
                     memberView.router.navigate('/', {
                         history: true
@@ -823,11 +835,10 @@ function doLogin(formData) {
             sessionStorage.setItem(TOKEN, bizContent.token);
             //移除推荐人
             sessionStorage.removeItem("employeeCardNo");
-
             // 微信端内进行跳转
             if (typeof WeixinJSBridge != "undefined") {
-                if (cardNo != undefined && cardNo != "") {
-                    location.href =   "/webservice/weixin/goOauth?backUrl=shard_sell.html&cipherTxt=" + bizContent.token + "&cardNo=" + cardNo;
+                if (sessionStorage.hasOwnProperty("cardNo")) {
+                    location.href =   "/webservice/weixin/goOauth?backUrl=index.html&cipherTxt=" + bizContent.token + "&cardNo=" + sessionStorage.getItem("cardNo")+"&gotoPage=buyCard";
                 } else {
                     location.href =  "/webservice/weixin/goOauth?backUrl=index.html&cipherTxt=" + bizContent.token;
                 }

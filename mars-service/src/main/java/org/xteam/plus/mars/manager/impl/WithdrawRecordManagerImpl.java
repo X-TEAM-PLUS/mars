@@ -121,7 +121,7 @@ public class WithdrawRecordManagerImpl extends Logging implements WithdrawRecord
                     accountDetailDao.insert(accountDetail);
 
                     return withdrawRecordDao.update(withdrawrecord);
-                }else {
+                } else {
                     withdrawrecord.setErrorInfo(payPocketMoneyResult.getErrCodeDes());
                     withdrawrecord.setStatus(WithDrawStatusName.PayError.getCode());
                     return withdrawRecordDao.update(withdrawrecord);

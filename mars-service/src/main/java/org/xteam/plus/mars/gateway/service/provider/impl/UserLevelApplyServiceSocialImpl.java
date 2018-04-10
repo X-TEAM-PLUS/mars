@@ -73,7 +73,7 @@ public class UserLevelApplyServiceSocialImpl extends Logging implements GateWayS
         }
         // 用户身份校验
         UserLevelEnum userLevelEnum = UserLevelEnum.valueOf(userInfo.getUserLevel());
-        // 用户申请为理事
+        // 用户申请
         if (userLevelEnum.getCode() != UserLevelEnum.MEMBER.getCode()) {
             throw new Exception("用户当前不是会员，不能申请为社工!");
         }

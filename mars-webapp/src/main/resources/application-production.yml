@@ -22,5 +22,5 @@ ribbon:
     ConnectTimeout: 30000
 logging:
   path: /data/log/mars
-  level: debug
+  level: INFO
   config: classpath:webapp-logback.xml

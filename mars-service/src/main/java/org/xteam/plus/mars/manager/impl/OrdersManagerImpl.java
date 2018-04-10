@@ -118,7 +118,7 @@ public class OrdersManagerImpl extends Logging implements OrdersManager {
         if (userInfo == null) {
             throw new Exception("用户不存在!");
         }
-        if(userInfo.getUserLevel()==0) {
+        if (userInfo.getUserLevel() == 0) {
             userInfo.setRealName(userRealName);
             userInfo.setIdNumber(certificateOf);
             userInfo.setUpdated(new Date());
@@ -161,18 +161,18 @@ public class OrdersManagerImpl extends Logging implements OrdersManager {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public PayOrderInfo createDistributionOrder(BigDecimal userId, String address, BigDecimal cardNo, String certificateOf, String userRealName) throws Exception {
-        String buyCardNoLockKey =WxPayServiceAppInfoServiceImpl.REDIS_TEMP_OATH_KEY + cardNo.toString();
-        if(stringRedisTemplate.opsForValue().get(buyCardNoLockKey)!=null){
+        String buyCardNoLockKey = WxPayServiceAppInfoServiceImpl.REDIS_TEMP_OATH_KEY + cardNo.toString();
+        if (stringRedisTemplate.opsForValue().get(buyCardNoLockKey) != null) {
             throw new Exception("该卡已被锁定，可能是已被购买或其它用户正在购买中.!");
-        }else{
+        } else {
             //加锁 10分钟
-            stringRedisTemplate.opsForValue().set(buyCardNoLockKey,"buyNow",10,TimeUnit.MINUTES);
+            stringRedisTemplate.opsForValue().set(buyCardNoLockKey, "buyNow", 10, TimeUnit.MINUTES);
         }
         //查询该卡是否存在和状态
         UserHealthCard userHealthCard = userHealthCardDao.get(new UserHealthCard().setCardNo(cardNo));
-        if(userHealthCard==null){
+        if (userHealthCard == null) {
             throw new Exception("不存的健康卡号.!");
-        }else if(userHealthCard.getStatus() !=0){
+        } else if (userHealthCard.getStatus() != 0) {
             throw new Exception("该卡已被激活过.!");
         }
 
@@ -181,7 +181,7 @@ public class OrdersManagerImpl extends Logging implements OrdersManager {
         if (userHealthCardCount > 0) {
             throw new Exception("您已经有一张正在激活的健康卡，无法进行再次购买");
         }
-        if (userHealthCard.getBuyerUserId().compareTo(userId)==0) {
+        if (userHealthCard.getBuyerUserId().compareTo(userId) == 0) {
             throw new Exception("自己购买的健康卡无法分享给自己");
         }
 
@@ -193,7 +193,7 @@ public class OrdersManagerImpl extends Logging implements OrdersManager {
         if (userInfo == null) {
             throw new Exception("用户不存在!");
         }
-        if(userInfo.getUserLevel()==0) {
+        if (userInfo.getUserLevel() == 0) {
             userInfo.setRealName(userRealName);
             userInfo.setIdNumber(certificateOf);
             userInfo.setUpdated(new Date());
@@ -286,7 +286,7 @@ public class OrdersManagerImpl extends Logging implements OrdersManager {
         }
 
         //更新订单状态
-        updateSuccessOrderInfo(orders,reqMap);
+        updateSuccessOrderInfo(orders, reqMap);
 
         //返回
         return true;
@@ -301,11 +301,12 @@ public class OrdersManagerImpl extends Logging implements OrdersManager {
      * @throws Exception
      */
     private void processVipDistributionOrder(Orders orders, UserInfo buyerUser, Product product) throws Exception {
+        logInfo("分销订单:" + JsonUtils.toJSON(orders) + "::buyerUser::" + JsonUtils.toJSON(buyerUser));
         //查询购买的健康卡
         UserHealthCard userHealthCard = userHealthCardDao.get(new UserHealthCard().setCardNo(orders.getCardNo()));
         if (userHealthCard == null) {
             throw new Exception("支付时，用户健康卡不存在，错误的地方，严重!");
-        }else {
+        } else {
             userHealthCard.setUpdated(new Date());
             userHealthCard.setStatus(CardStatusTypeEnum.ATIVE.getCode());
             userHealthCard.setActivateUserId(orders.getBuyerUserId());
@@ -323,7 +324,7 @@ public class OrdersManagerImpl extends Logging implements OrdersManager {
             buyerUser.setUpdated(new Date());
             buyerUser.setStatus(1);
 
-            if(buyerUser.getUserLevel().intValue() == UserLevelEnum.TOURIST.getCode()){
+            if (buyerUser.getUserLevel().intValue() == UserLevelEnum.TOURIST.getCode()) {
                 buyerUser.setUserLevel(UserLevelEnum.MEMBER.getCode());
                 logInfo("用户ID [" + buyerUser.getUserId() + "] 开始升级为会员 ");
             }
@@ -353,16 +354,17 @@ public class OrdersManagerImpl extends Logging implements OrdersManager {
         }
 
         //写账户余额
-        AccountBalance accountBalance = accountBalanceDao.get(new AccountBalance().setUserId(orders.getSellerUserId()) );
-        if(accountBalance==null){
+        AccountBalance accountBalance = accountBalanceDao.get(new AccountBalance().setUserId(orders.getSellerUserId()));
+        if (accountBalance == null) {
             accountBalance = new AccountBalance();
             accountBalance.setBalanceAmount(orders.getOrderPrice());
             accountBalance.setUserId(orders.getSellerUserId());
             accountBalance.setCreated(new Date());
             accountBalance.setUpdated(new Date());
+            accountBalance.setStatus(0);
             //插入
             accountBalanceDao.insert(accountBalance);
-        }else{
+        } else {
             //更新
             accountBalance.setBalanceAmount(accountBalance.getBalanceAmount().add(orders.getOrderPrice()));
             accountBalance.setUpdated(new Date());
@@ -395,7 +397,7 @@ public class OrdersManagerImpl extends Logging implements OrdersManager {
         userHealthCard.setSendCount(0);
         userHealthCard.setOrderNo(orders.getOrderNo());
         //如果用户是游客或或是未激活健康卡的用户 则直接激活
-         if (userHealthCards==null || userHealthCards.isEmpty() || buyerUser.getUserLevel() == UserLevelEnum.TOURIST.getCode()) {
+        if (userHealthCards == null || userHealthCards.isEmpty() || buyerUser.getUserLevel() == UserLevelEnum.TOURIST.getCode()) {
             //设置激活用户ID
             userHealthCard.setActivateUserId(buyerUser.getUserId());
             //设置激活时间
@@ -403,17 +405,17 @@ public class OrdersManagerImpl extends Logging implements OrdersManager {
             //设置有效期限
             userHealthCard.setCardDeadline(computationalValidity(product));
             //已激活
-             userHealthCard.setStatus(CardStatusTypeEnum.ATIVE.getCode());
-             //是否激活卡
-             isActiveHeartCard  = true;
-         }else{
-             //未激活状态
-             userHealthCard.setStatus(CardStatusTypeEnum.NOT_ATIVE.getCode());
-         }
+            userHealthCard.setStatus(CardStatusTypeEnum.ATIVE.getCode());
+            //是否激活卡
+            isActiveHeartCard = true;
+        } else {
+            //未激活状态
+            userHealthCard.setStatus(CardStatusTypeEnum.NOT_ATIVE.getCode());
+        }
         userHealthCardDao.insert(userHealthCard);
 
-         //更新用户信息
-        if(isActiveHeartCard) {
+        //更新用户信息
+        if (isActiveHeartCard) {
             buyerUser.setCardActivateMode(2);
             buyerUser.setCardNo(userHealthCard.getCardNo());
             buyerUser.setCardActivateTime(userHealthCard.getCardActivateTime());
@@ -421,7 +423,7 @@ public class OrdersManagerImpl extends Logging implements OrdersManager {
             buyerUser.setUpdated(new Date());
             buyerUser.setStatus(1);
 
-            if(buyerUser.getUserLevel().intValue() == UserLevelEnum.TOURIST.getCode()){
+            if (buyerUser.getUserLevel().intValue() == UserLevelEnum.TOURIST.getCode()) {
                 buyerUser.setUserLevel(UserLevelEnum.MEMBER.getCode());
                 logInfo("用户ID [" + buyerUser.getUserId() + "] 开始升级为会员 ");
             }

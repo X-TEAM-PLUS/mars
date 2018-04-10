@@ -24,7 +24,7 @@ $$(document).on('page:init reinit popupOpen', '.page[data-name="home"]', functio
     }
     //获取用户信息
     if (sessionStorage.hasOwnProperty(TOKEN)) {
-        loadUserView(sessionStorage.getItem(TOKEN));
+        loadUserView(sessionStorage.getItem(TOKEN),pageParams);
     } else {
             if(pageParams.employeeCardNo){
                 //获取用户信息
@@ -155,8 +155,8 @@ $$(document).on('page:init reinit', '.page[data-name="tijian-result-page"]', fun
         showTijianResult(pageParams.isMember,pageParams.checkRecordId);
     }
 });
-
 app.views.create('#view-college', {url: '/college/'});
 var memberView = app.views.create('#view-member', {url: '/'});
 var heartCheckView = app.views.create('#view-heart_check', {url: '/heart_check/'});
+
 

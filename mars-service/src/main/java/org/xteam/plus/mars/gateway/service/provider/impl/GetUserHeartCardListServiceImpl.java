@@ -40,7 +40,7 @@ public class GetUserHeartCardListServiceImpl extends Logging implements GateWayS
         if (StringUtils.isEmpty(httpRequestBody.getUserId())) {
             return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);
         }
-        Integer  status = params.containsKey("status")?Integer.valueOf(params.get("status").toString()):null;
+        Integer  status =(params!=null &&  params.containsKey("status"))?Integer.valueOf(params.get("status").toString()):null;
         List<UserHealthCard> userHealthCards = userHealthCardManager.queryForActiveUser(
                 new UserHealthCard().setBuyerUserId(new BigDecimal(httpRequestBody.getUserId()))
                         .setStart(params != null && params.containsKey("start") ? Integer.valueOf(params.get("start").toString()) : 0)

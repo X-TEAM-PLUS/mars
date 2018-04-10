@@ -40,9 +40,9 @@ public class HealthCheckRecordManagerImpl implements HealthCheckRecordManager {
     public int insert(HealthCheckRecord healthCheckRecord) throws Exception {
         //次数减一
         UserHealthCard userHealthCard = healthCardDao.queryForProductByActive(
-                new UserHealthCard().setActivateUserId( healthCheckRecord.getUserId())
-               );
-        userHealthCard.setSendCount(userHealthCard.getSendCount()+1);
+                new UserHealthCard().setActivateUserId(healthCheckRecord.getUserId())
+        );
+        userHealthCard.setSendCount(userHealthCard.getSendCount() + 1);
         userHealthCard.setUpdated(new Date());
         healthCardDao.update(userHealthCard);
         return healthCheckRecordDao.insert(healthCheckRecord);

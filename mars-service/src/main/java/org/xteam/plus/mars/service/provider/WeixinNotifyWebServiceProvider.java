@@ -86,7 +86,7 @@ public class WeixinNotifyWebServiceProvider extends Logging {
             inputStream.close();
             //解析xml成map
             Map<Object, Object> reqMap = new HashMap<Object, Object>();
-            System.out.println("收到微信支付通知接口回复:" + sb.toString());
+            logInfo("收到微信支付通知接口回复:" + sb.toString());
             reqMap = com.xteam.tourismpay.web.controller.util.XMLUtil4jdom.doXMLParse(sb.toString());
 
             boolean checkResult = iService.verifyWeixinNotify(reqMap);
@@ -95,7 +95,6 @@ public class WeixinNotifyWebServiceProvider extends Logging {
                 return returnValue;
             }
             if (reqMap.get("result_code").toString().equalsIgnoreCase("SUCCESS")) {
-
                 ordersManager.updateStraightPinOrder(reqMap);
                 Orders orders = ordersManager.get(new Orders().setOrderNo(new BigDecimal(reqMap.get("out_trade_no").toString())));
                 // 发放补贴
@@ -106,52 +105,9 @@ public class WeixinNotifyWebServiceProvider extends Logging {
                 return returnValue;
             }
         } catch (Exception e) {
-            logInfo("微信支付通知接口失败 ", e);
-        } finally {
-            return returnValue;
+            logError("微信支付通知接口失败 ", e);
         }
-    }
-
-//    @RequestMapping("/getImage")
-//    public void getImage(BigDecimal userId, BigDecimal productId, BigDecimal number, String address, String contactsMobile, HttpServletResponse response, HttpSession session) throws Exception {
-//        PayOrderInfo payOrderInfo = ordersManager.createStraightPinOrder(userId, productId, number, address, contactsMobile);
-//        InvokePay invokePay = iService.unifiedOrder(payOrderInfo, WxConfig.getInstance().getPayNotifyPath(), "");
-//        String code_url = invokePay.getCodeUrl();
-//        if (code_url == null || "".equals(code_url))
-//            return;
-//        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-//        Map hints = new HashMap();
-//        hints.put(EncodeHintType.CHARACTER_SET, "UTF-8"); //设置字符集编码类型
-//        BitMatrix bitMatrix = null;
-//        try {
-//            bitMatrix = multiFormatWriter.encode(code_url, BarcodeFormat.QR_CODE, 300, 300, hints);
-//            BufferedImage image = toBufferedImage(bitMatrix);
-//            //输出二维码图片流
-//            try {
-//                ImageIO.write(image, "png", response.getOutputStream());
-//            } catch (IOException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//            }
-//        } catch (WriterException e1) {
-//            // TODO Auto-generated catch block
-//            e1.printStackTrace();
-//        }
-//    }
-
-    private static final int WHITE = 0xFFFFFFFF;
-    private static final int BLACK = 0xFF000000;
-
-    private static BufferedImage toBufferedImage(BitMatrix matrix) {
-        int width = matrix.getWidth();
-        int height = matrix.getHeight();
-        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                image.setRGB(x, y, matrix.get(x, y) ? BLACK : WHITE);
-            }
-        }
-        return image;
+        return returnValue;
     }
 
     /**
@@ -167,12 +123,9 @@ public class WeixinNotifyWebServiceProvider extends Logging {
         String timestamp = request.getParameter("timestamp");
         String nonce = request.getParameter("nonce");
         String echostr = request.getParameter("echostr");
-        getMap(request);
         if (iService.checkSignature(signature, timestamp, nonce, echostr)) {
             String result = iService.oauth2buildAuthorizationUrl(WxConfig.getInstance().getOauth2RedirectUri(), "snsapi_userinfo", "123");
             logInfo("调用微信获取用户信息，返回结果[" + result + "]");
-//            return new ModelAndView("redirect:" + result);
-
             iService.post(result, "");
             out.print(echostr);
         }
@@ -188,21 +141,17 @@ public class WeixinNotifyWebServiceProvider extends Logging {
      * @throws IOException
      */
     @RequestMapping(value = "/goOauth")
-    public ModelAndView goOauth(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public ModelAndView goOauth(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String backUrl = request.getParameter("backUrl");
         String cipherTxt = request.getParameter("cipherTxt");
         if(cipherTxt == null || org.apache.commons.lang.StringUtils.isEmpty(cipherTxt)){
-            return new ModelAndView("redirect:www.baidu.com");
+            throw new Exception("cipherTxt 为空");
         }
         Token token = cacheUtils.getToken(cipherTxt);
         if (token == null){
-            return new ModelAndView("redirect:www.baidu.com");
+            throw new Exception("获到缓存token信息为空");
         }
-        String cardNo = request.getParameter("cardNo");
-        HashMap parms = Maps.newHashMap();
-        parms.put("backUrl", backUrl);
-        parms.put("userId", token.getUserId());
-        parms.put("cardNo", cardNo);
+        Map<String,String > parms = getRequestMap(request);
         Long incrementKey = stringRedisTemplate.boundValueOps(REDIS_TEMP_OATH_KEY).increment(1);
         String redisKey = REDIS_TEMP_OATH_KEY + "." + incrementKey;
         logInfo("缓存Key [" + redisKey + "] [" + JsonUtils.toJSON(parms) + "]");
@@ -219,7 +168,7 @@ public class WeixinNotifyWebServiceProvider extends Logging {
      * @throws IOException
      */
     @RequestMapping(value = "/oauth")
-    public ModelAndView oauth(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public ModelAndView oauth(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String code = request.getParameter("code");
         String state = request.getParameter("state");
         WxOAuth2AccessTokenResult result = null;
@@ -228,87 +177,58 @@ public class WeixinNotifyWebServiceProvider extends Logging {
             String json = stringRedisTemplate.opsForValue().get(REDIS_TEMP_OATH_KEY + "." + state);
             logInfo("回调获取json [" + json + "]");
             if (org.apache.commons.lang.StringUtils.isEmpty(json)) {
-                response.sendRedirect("www.baidu.com");
-                return new ModelAndView("redirect:" + "www.baidu.com");
+                throw new Exception("获到缓存回调获取json信息为空");
             }
             logInfo("微信授权返回code [" + code + "]");
             result = iService.oauth2ToGetAccessToken(code);
             WxUserList.WxUser user = iService.oauth2ToGetUserInfo(result.getAccess_token(), new WxUserList.WxUser.WxUserGet(result.getOpenid(), WxConsts.LANG_CHINA));
-            HashMap map = JsonUtils.fromJSON(json, HashMap.class);
-            logInfo("支付授权回调请求参数 [" + map + "] 微信返回内容[" + JsonUtils.toJSON(user) + "]");
-            UserInfo userInfo = null;
-            user.setNickname(URLEncoder.encode(user.getNickname(), "utf-8"));
+            HashMap<String,String>  map = JsonUtils.fromJSON(json, HashMap.class);
+            logInfo("微信公众号授权请求参数 [" + map + "] 微信返回内容[" + JsonUtils.toJSON(user) + "]");
+            //user.setNickname(URLEncoder.encode(user.getNickname(), "utf-8"));
             if (map.get("userId") != null) {
-                userInfo = userInfoManager.registerWxUserInfo(user, new BigDecimal(map.get("userId").toString()));
+                 userInfoManager.registerWxUserInfo(user, new BigDecimal(map.get("userId")));
             } else {
-                userInfo = userInfoManager.registerWxUserInfo(user, null);
+                 userInfoManager.registerWxUserInfo(user, null);
             }
-            // 卖卡地址
-            if (map.get("cardNo") != null && !map.get("cardNo").equals("")) {
-                return new ModelAndView("redirect:/" + map.get("backUrl").toString() + "?cardNo=" + map.get("cardNo").toString());
-            }
-            return new ModelAndView("redirect:/" + map.get("backUrl").toString());
-
-        } catch (WxErrorException e) {
-            logInfo("微信回调注册用户失败 失败原因 e[" + e.getMessage() + "]", e);
-
+            //跳转地址
+            return new ModelAndView(getUrl(map));
         } catch (Exception e) {
-            logInfo("微信回调注册用户失败 失败原因 e[" + e.getMessage() + "]", e);
+            logError("微信回调注册用户失败", e);
+            throw new Exception("微信回调注册用户失败");
         }
-        return new ModelAndView("redirect:/" + "www.baidu.com");
     }
-
 
     /**
-     * 获取公众号关注二维码
-     *
-     * @param request
-     * @param response
+     * 跳转地址
+     * @param map
      * @return
      */
-    @RequestMapping(value = "/getQrcode")
-    public String createQrCode(HttpServletRequest request, HttpServletResponse response) {
-        WxQrcode code = new WxQrcode();
-        code.setAction_name("QR_SCENE");
-        code.setExpire_seconds(99999999);
-        WxQrcode.WxQrActionInfo.WxScene wxScene = new WxQrcode.WxQrActionInfo.WxScene(1);
-        if (request.getParameter("refUserId") != null) {
-            wxScene.setScene_id(Integer.parseInt(request.getParameter("refUserId")));
-        }
-//        wxScene.setScene_str("ceshi");
-        code.setAction_info(new WxQrcode.WxQrActionInfo(wxScene));
-        try {
-            QrCodeResult result = iService.createQrCode(code);
-            return result.getUrl();
-        } catch (WxErrorException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
-    public Map getMap(HttpServletRequest request) {
-        Map<String, String> params = new HashMap<String, String>();
-        try {
-            Map requestParams = request.getParameterMap();
-            for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext(); ) {
-                String name = (String) iter.next();
-                String[] values = (String[]) requestParams.get(name);
-                String valueStr = "";
-                for (int i = 0; i < values.length; i++) {
-                    valueStr = (i == values.length - 1) ? valueStr + values[i]
-                            : valueStr + values[i] + ",";
-                }
-                //乱码解决，这段代码在出现乱码时使用。如果mysign和sign不相等也可以使用这段代码转化
-//                valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
-                logInfo("参数 key[" + name + "] value[" + valueStr + "]");
-                params.put(name, valueStr);
+    private String getUrl(HashMap<String,String> map) {
+        String urlKey = "backUrl";
+        StringBuilder url = new StringBuilder("redirect:/");
+        url.append(map.get(urlKey) ).append("?");
+        for (String key : map.keySet()) {
+            if(!urlKey.equalsIgnoreCase(key)){
+                url.append(key).append("=").append(map.get(key)).append("&");
             }
-        } catch (Exception e) {
-            logInfo("获取参数异常 ", e);
         }
-        return params;
+        url.append("dt").append("=").append(System.currentTimeMillis());
+        return url.toString();
+
     }
 
+    /**
+     * 获取请求参数
+     * @param request
+     * @return
+     */
+    private  Map<String,String > getRequestMap(HttpServletRequest request){
+        Map<String, String> target = new HashMap<>();
+        if (request.getParameterMap() != null && !request.getParameterMap().isEmpty()) {
+            for (Map.Entry<String, String[]> entry : request.getParameterMap().entrySet()) {
+                target.put(entry.getKey(), org.apache.commons.lang.StringUtils.join(entry.getValue(), ","));
+            }
+        }
+        return target;
+    }
 }
