@@ -23,8 +23,8 @@ $$(document).on('page:init reinit popupOpen', '.page[data-name="home"]', functio
         sessionStorage.setItem("cardNo",pageParams.cardNo);
     }
     //获取用户信息
-    if (localStorage.hasOwnProperty(TOKEN)) {
-        loadUserView(localStorage.getItem(TOKEN));
+    if (sessionStorage.hasOwnProperty(TOKEN)) {
+        loadUserView(sessionStorage.getItem(TOKEN));
     } else {
             if(pageParams.employeeCardNo){
                 //获取用户信息
@@ -64,23 +64,23 @@ $$(document).on('page:init reinit', '.page[data-name="question-page"]', function
     loadBizContent(INTERFACE_URL, {method: InterFace.QUESTION_LIST}, "question-list", "show-question-list");
 });
 $$(document).on('page:init  reinit', '.page[data-name="message-page"]', function (e) {
-    if (localStorage.hasOwnProperty(TOKEN)) {
+    if (sessionStorage.hasOwnProperty(TOKEN)) {
         loadBizContent(INTERFACE_URL, {
             method: InterFace.MESSAGE_LIST,
-            token: localStorage.getItem(TOKEN)
+            token: sessionStorage.getItem(TOKEN)
         }, "message-list", "show-message-list");
     }
 });
 $$(document).on('page:init  reinit', '.page[data-name="account-info-page"]', function (e) {
     loadBizContent(INTERFACE_URL, {
         method: InterFace.ACCOUNT_INFO,
-        token: localStorage.getItem(TOKEN)
+        token: sessionStorage.getItem(TOKEN)
     }, "account-info", "show-account-info");
 });
 $$(document).on('page:init reinit', '.page[data-name="jiankangka-page"]', function (e) {
     loadBizContent(INTERFACE_URL, {
         method: InterFace.ME_HEART_CARD_INFO,
-        token: localStorage.getItem(TOKEN)
+        token: sessionStorage.getItem(TOKEN)
     }, "jiankangka-info", "show-jiankangka-info");
 });
 $$(document).on('page:init', '.page[data-name="insurance-product-list-page"]', function (e) {
@@ -89,26 +89,26 @@ $$(document).on('page:init', '.page[data-name="insurance-product-list-page"]', f
 $$(document).on('page:init reinit', '.page[data-name="heart-card-list-page"]', function (e) {
     loadBizContent(INTERFACE_URL, {
         method: InterFace.USER_HEALTH_CARD_LIST,
-        token: localStorage.getItem(TOKEN)
+        token: sessionStorage.getItem(TOKEN)
     }, "heart-card-list", "show-heart-card-list");
 });
 $$(document).on('page:init reinit', '.page[data-name="lishi-level-user-view"]', function (e) {
-    viewMarketingInformation(localStorage.getItem(TOKEN));
+    viewMarketingInformation(sessionStorage.getItem(TOKEN));
 });
 $$(document).on('page:init reinit', '.page[data-name="changrenlishi-level-user-view"]', function (e) {
-    viewMarketingInformationByLishi(localStorage.getItem(TOKEN));
+    viewMarketingInformationByLishi(sessionStorage.getItem(TOKEN));
 });
 $$(document).on('page:init reinit', '.page[data-name="wode-baoxian-list-page"]', function (e) {
     loadBizContent(INTERFACE_URL, {
         method: InterFace.USER_INSURANCE_LIST,
-        token: localStorage.getItem(TOKEN)
+        token: sessionStorage.getItem(TOKEN)
     }, "wode-baoxian-list", "show-wode-baoxian-list");
 });
 $$(document).on('page:init reinit', '.page[data-name="wode-baoxian-detail-page"]', function (e) {
     let bizContent = {insuranceOrderId: e.detail.route.query.insuranceOrderId};
     loadBizContent(INTERFACE_URL, {
         method: InterFace.USER_INSURANCE_DETAIL,
-        token: localStorage.getItem(TOKEN),
+        token: sessionStorage.getItem(TOKEN),
         bizContent: JSON.stringify(bizContent)
     }, "wode-baoxian-detail", "show-wode-baoxian-detail");
 });
@@ -118,19 +118,19 @@ $$(document).on('page:init reinit', '.page[data-name="bankcard-page"]', function
 $$(document).on('page:init reinit', '.page[data-name="zhuanzhang-list-page"]', function (e) {
     loadBizContent(INTERFACE_URL, {
         method: InterFace.USER_WITHDRAW_RECORD_LIST,
-        token: localStorage.getItem(TOKEN)
+        token: sessionStorage.getItem(TOKEN)
     }, "zhuanzhang-list", "show-zhuanzhang-list");
 });
 $$(document).on('page:init reinit', '.page[data-name="butiemingxi-list-page"]', function (e) {
     loadBizContent(INTERFACE_URL, {
         method: InterFace.USER_SUBSIDY_LIST,
-        token: localStorage.getItem(TOKEN)
+        token: sessionStorage.getItem(TOKEN)
     }, "butiemingxi-list", "show-butiemingxi-list");
 });
 $$(document).on('page:init reinit', '.page[data-name="zhuanzhang-form-page"]', function (e) {
     loadBizContent(INTERFACE_URL, {
         method: InterFace.ACCOUNT_AND_BANK_CARD,
-        token: localStorage.getItem(TOKEN)
+        token: sessionStorage.getItem(TOKEN)
     }, "zhuanzhang-form", "show-zhuanzhang-form");
 });
 $$(document).on('page:init reinit', '.page[data-name="show-me-page"]', function (e) {
@@ -138,14 +138,14 @@ $$(document).on('page:init reinit', '.page[data-name="show-me-page"]', function 
 });
 
 $$(document).on('page:init reinit', '.page[data-name="heartcheck-page"]', function (e) {
-    if (localStorage.hasOwnProperty(TOKEN)) {
-        getLastCheckInfo(localStorage.getItem(TOKEN));
+    if (sessionStorage.hasOwnProperty(TOKEN)) {
+        getLastCheckInfo(sessionStorage.getItem(TOKEN));
     }
 });
 
 $$(document).on('page:init reinit', '.page[data-name="employeeCard-page"]', function (e) {
-    if (localStorage.hasOwnProperty(TOKEN)) {
-        getEmployeeCard(localStorage.getItem(TOKEN));
+    if (sessionStorage.hasOwnProperty(TOKEN)) {
+        getEmployeeCard(sessionStorage.getItem(TOKEN));
     }
 });
 

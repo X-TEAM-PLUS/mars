@@ -71,8 +71,8 @@
     }
 
     function init(bDate, eDate) {
-        localStorage.setItem("my_team.beginDate", bDate);
-        localStorage.setItem("my_team.endDate", eDate);
+        sessionStorage.setItem("my_team.beginDate", bDate);
+        sessionStorage.setItem("my_team.endDate", eDate);
         memberView.router.refreshPage();
     }
 
@@ -85,8 +85,8 @@
     return {
         on: {
             pageInit: function (e, page) {
-                var beginDate = localStorage.getItem("my_team.beginDate");
-                var endDate = localStorage.getItem("my_team.endDate");
+                var beginDate = sessionStorage.getItem("my_team.beginDate");
+                var endDate = sessionStorage.getItem("my_team.endDate");
                 var self = this;
                 var today = new Date();
                 var app = self.$app;
@@ -118,7 +118,7 @@
                 }
                 var params = {
                     method: InterFace.MY_TEAM,
-                    token: localStorage.getItem(TOKEN),
+                    token: sessionStorage.getItem(TOKEN),
                     bizContent: JSON.stringify(bizContent)
                 };
                 app.request.json(INTERFACE_URL, params, function (response) {

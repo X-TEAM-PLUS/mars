@@ -153,7 +153,7 @@ function gotoLogin() {
  * @returns {boolean}
  */
 function isLogin() {
-    if (localStorage.hasOwnProperty(TOKEN)) {
+    if (sessionStorage.hasOwnProperty(TOKEN)) {
         return true;
     } else {
         return false;
@@ -298,7 +298,7 @@ function zhuanzhangClick() {
     if (isLogin()) {
         //获取用户信息
         app.request.json(INTERFACE_URL, {
-            method: InterFace.USER_INFO, token:   localStorage.getItem(TOKEN)}, function (data) {
+            method: InterFace.USER_INFO, token:   sessionStorage.getItem(TOKEN)}, function (data) {
             logInfo(data);
             if (ResponseCode.SUCCESS == data.code) {
                 setUserInfo( JSON.parse(data.bizContent));
@@ -754,7 +754,6 @@ function getSmsCode(form) {
 }
 
 function time() {
-    logInfo(SMS_BUTTON_WAIT);
     if (SMS_BUTTON_WAIT == 0) {
         $$(".getSmsCodeButton").html("获取验证码");
         SMS_BUTTON_WAIT = 60;
@@ -796,8 +795,8 @@ function sendSmsCode(mobileNo) {
  */
 function goLogin(form) {
     let bizContent = app.form.convertToData('#' + form);
-    if (localStorage.hasOwnProperty('employeeCardNo')) {
-        bizContent["employeeCardNo"]= localStorage.getItem("employeeCardNo");
+    if (sessionStorage.hasOwnProperty('employeeCardNo')) {
+        bizContent["employeeCardNo"]= sessionStorage.getItem("employeeCardNo");
     }
     if (typeof(bizContent) === "undefined" || typeof(bizContent.mobileNo) === "undefined" || typeof(bizContent.smsCode) === "undefined") {
         app.dialog.alert("请输入手机号和短信验证码", '信息提示');
@@ -821,9 +820,9 @@ function doLogin(formData) {
         let response = JSON.parse(data);
         if (ResponseCode.SUCCESS == response.code) {
             let bizContent = JSON.parse(response.bizContent);
-            localStorage.setItem(TOKEN, bizContent.token);
+            sessionStorage.setItem(TOKEN, bizContent.token);
             //移除推荐人
-            localStorage.removeItem("employeeCardNo");
+            sessionStorage.removeItem("employeeCardNo");
 
             // 微信端内进行跳转
             if (typeof WeixinJSBridge != "undefined") {
@@ -1200,7 +1199,7 @@ function showTijianResult(isMember,checkRecordId) {
     let bizContent = {checkRecordId: checkRecordId};
     let params = {
         method: InterFace.GET_CHECK_RECORD_DETAIL
-        , token: localStorage.getItem(TOKEN)
+        , token: sessionStorage.getItem(TOKEN)
        ,bizContent: JSON.stringify(bizContent)
     };
     app.request.json(INTERFACE_URL, params, function (data) {
@@ -1225,4 +1224,28 @@ function showTijianResult(isMember,checkRecordId) {
         }
     });
     logInfo("显示检测结果");
+}
+
+/**
+ * 健康卡状态改变事件处理
+ * @param status
+ */
+function heartCardStatusChange(status) {
+    logInfo("选中的状态：" + status);
+    let bizContent = {};
+    if(status!='查看全部'){
+            bizContent['status'] = status;
+    }
+    if (isLogin()) {
+        if (userInfo.userLevel >= 1) {
+            loadBizContent(INTERFACE_URL, {
+                method: InterFace.USER_HEALTH_CARD_LIST
+                ,token: sessionStorage.getItem(TOKEN)
+                ,bizContent: JSON.stringify(bizContent)
+            }, "heart-card-list", "show-heart-card-list");
+        }
+    } else {
+        gotoLogin();
+    }
+
 }

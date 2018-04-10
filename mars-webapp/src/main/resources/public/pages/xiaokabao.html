@@ -14,7 +14,7 @@
             <div class="row">
                 <div class="col-50 font-18"><b>医养通健康卡</b></div>
                 <div class="col-50" style="text-align: center;">
-                    <select placeholder="Please choose..."  style="border: 1px; font-size: 18px">
+                    <select placeholder="Please choose..."  style="border: 1px; font-size: 18px" onchange="heartCardStatusChange(this.value)">
                         <option>查看全部</option>
                         <option value="0">未激活</option>
                         <option value="1">已激活</option>

@@ -130,12 +130,6 @@ var routes = [
         url: './pages/butiemingxi.html',
         name: 'butiemingxi',
     },
-    //卖卡
-    {
-        path: '/sellCard/',
-        url: './pages/sell_card.html',
-        name: 'sellCard',
-    },
     {
         path: '/lishiLevelView',
         url: './pages/lishiLevelView.html',
