@@ -142,7 +142,6 @@ public class WeixinNotifyWebServiceProvider extends Logging {
      */
     @RequestMapping(value = "/goOauth")
     public ModelAndView goOauth(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String backUrl = request.getParameter("backUrl");
         String cipherTxt = request.getParameter("cipherTxt");
         if(cipherTxt == null || org.apache.commons.lang.StringUtils.isEmpty(cipherTxt)){
             throw new Exception("cipherTxt 为空");
@@ -152,6 +151,7 @@ public class WeixinNotifyWebServiceProvider extends Logging {
             throw new Exception("获到缓存token信息为空");
         }
         Map<String,String > parms = getRequestMap(request);
+        parms.put("userId", token.getUserId());
         Long incrementKey = stringRedisTemplate.boundValueOps(REDIS_TEMP_OATH_KEY).increment(1);
         String redisKey = REDIS_TEMP_OATH_KEY + "." + incrementKey;
         logInfo("缓存Key [" + redisKey + "] [" + JsonUtils.toJSON(parms) + "]");
@@ -184,7 +184,6 @@ public class WeixinNotifyWebServiceProvider extends Logging {
             WxUserList.WxUser user = iService.oauth2ToGetUserInfo(result.getAccess_token(), new WxUserList.WxUser.WxUserGet(result.getOpenid(), WxConsts.LANG_CHINA));
             HashMap<String,String>  map = JsonUtils.fromJSON(json, HashMap.class);
             logInfo("微信公众号授权请求参数 [" + map + "] 微信返回内容[" + JsonUtils.toJSON(user) + "]");
-            //user.setNickname(URLEncoder.encode(user.getNickname(), "utf-8"));
             if (map.get("userId") != null) {
                  userInfoManager.registerWxUserInfo(user, new BigDecimal(map.get("userId")));
             } else {
