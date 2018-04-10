@@ -41,7 +41,7 @@ public class CheckRecordDetailServiceImpl implements GateWayService {
         //用户iD
         BigDecimal userId = new BigDecimal(httpRequestBody.getUserId());
         //检查记录ID
-        BigDecimal checkRecordId = new BigDecimal(httpRequestBody.getUserId());
+        BigDecimal checkRecordId = new BigDecimal(parmas.get("checkRecordId"));
         //查询检测记录
         HealthCheckRecord healthCheckRecord = healthCheckRecordManager.get(new HealthCheckRecord()
                 .setUserId(userId)

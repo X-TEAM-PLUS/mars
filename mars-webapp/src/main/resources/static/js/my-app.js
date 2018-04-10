@@ -296,15 +296,24 @@ function myTeam() {
  */
 function zhuanzhangClick() {
     if (isLogin()) {
-        if (userInfo.card && userInfo.userLevel >= 1) {
-            memberView.router.navigate('/zhuanzhang/', {
-                history: true
-            });
-        } else {
-            memberView.router.navigate('/bankcard/', {
-                history: true
-            });
-        }
+        //获取用户信息
+        app.request.json(INTERFACE_URL, {
+            method: InterFace.USER_INFO, token:   localStorage.getItem(TOKEN)}, function (data) {
+            logInfo(data);
+            if (ResponseCode.SUCCESS == data.code) {
+                setUserInfo( JSON.parse(data.bizContent));
+                logInfo("刷新用户信息成功.");
+                if (userInfo.card && userInfo.userLevel >= 1) {
+                    memberView.router.navigate('/zhuanzhang/', {
+                        history: true
+                    });
+                } else {
+                    memberView.router.navigate('/bankcard/', {
+                        history: true
+                    });
+                }
+            }
+        });
     } else {
         gotoLogin();
     }
@@ -1033,9 +1042,11 @@ function previewPic(checkResultFile,previewPicBox){
 function queryCheckResult() {
     if (isLogin()) {
         if (userInfo.userLevel >= 1) {
-            heartCheckView.router.navigate('/jiankangka/', {
-                history: true
-            });
+            if(sessionStorage.hasOwnProperty("lastCheckRecordId")){
+                toShowTijianResult(false,sessionStorage.getItem("lastCheckRecordId"));
+            }else{
+                app.dialog.alert('您还会未上传检测报告', '信息提示');
+            }
         }
     } else {
         gotoLogin();
@@ -1053,6 +1064,7 @@ function getLastCheckInfo(token) {
         if(data.bizContent){
             var bizContent = JSON.parse(data.bizContent);
             logInfo(bizContent);
+            sessionStorage.setItem("lastCheckRecordId",bizContent.checkRecordId);
             document.getElementById("lastCheckTime").innerText ="您于"+ bizContent.uploadTime + "进行体检";
         }
     });
@@ -1158,3 +1170,59 @@ function shardContentApi(url,icon,title,desc) {
     });
 }
 
+/**
+ * 显示检测结果
+ * @param checkRecordId
+ */
+function  toShowTijianResult(isMember,checkRecordId) {
+    if (isLogin()) {
+        if (userInfo.userLevel >= 1) {
+            if(isMember) {
+                memberView.router.navigate('/tijian_result/?isMember='+ isMember +'&checkRecordId=' + checkRecordId, {
+                    history: true
+                });
+            }else{
+                heartCheckView.router.navigate('/tijian_result/?isMember='+ isMember +'&checkRecordId=' + checkRecordId, {
+                    history: true
+                });
+            }
+        }
+    } else {
+        gotoLogin();
+    }
+}
+
+/**
+ * 显示检测结果
+ * @param checkRecordId
+ */
+function showTijianResult(isMember,checkRecordId) {
+    let bizContent = {checkRecordId: checkRecordId};
+    let params = {
+        method: InterFace.GET_CHECK_RECORD_DETAIL
+        , token: localStorage.getItem(TOKEN)
+       ,bizContent: JSON.stringify(bizContent)
+    };
+    app.request.json(INTERFACE_URL, params, function (data) {
+        if(ResponseCode.SUCCESS==data.code) {
+           if(data.bizContent){
+            let respnoseContent = JSON.parse(data.bizContent);
+            logInfo(respnoseContent);
+                $$("#checkrecord_realName").text(userInfo.realName);
+                $$("#checkrecord_cardNo").text(userInfo.cardNo);
+                $$("#checkrecord_created").text(respnoseContent.created);
+                $$("#checkrecord_checkResult").val(respnoseContent.checkResult);
+                $$("#checkrecord_checkReport")[0].src = respnoseContent.checkReport;
+            }
+        }else{
+            app.dialog.alert(data.msg, '信息提示',function () {
+                if(isMember){
+                    memberView.router.back();
+                }else{
+                    heartCheckView.router.back();
+                }
+            });
+        }
+    });
+    logInfo("显示检测结果");
+}

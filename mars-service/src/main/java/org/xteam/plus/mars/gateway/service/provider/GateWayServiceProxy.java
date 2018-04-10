@@ -73,7 +73,6 @@ public class GateWayServiceProxy extends Logging implements ApplicationContextAw
                 logWarning("未获取相应的接口["+method+"]");
                 httpResponseBody = new HttpResponseBody(GlobalErrorMessage.UNKNOW);
             } else {
-
                 //如果带token
                 if (!StringUtils.isEmpty(httpRequestBody.getToken())) {
                     //获取取缓存

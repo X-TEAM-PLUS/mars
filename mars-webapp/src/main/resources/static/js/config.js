@@ -70,8 +70,6 @@ let InterFace = {
     , MY_TEAM: 'com.zaoangongcheng.gateway.user.getMeTeamCount'
     //上传体检结果
     ,SUBMIT_CHECK_RESULT:'com.zaoangongcheng.gateway.user.submitUserDetection'
-    //查看检查结果
-    ,VIEW_CHECK_RESULT:'com.zaoangongcheng.gateway.user.submitUserDetection'
     //获取最后检查记录信息
     ,GET_LAST_CHECK_RECORD:'com.zaoangongcheng.gateway.user.UserDetection.getlast'
     //获取用户检查记录详情

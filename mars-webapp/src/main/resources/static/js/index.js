@@ -18,27 +18,6 @@ var app = new Framework7({
 $$(document).on('page:init reinit popupOpen', '.page[data-name="home"]', function (e) {
     let pageParams = e.detail.route.query;
 
-    if(pageParams.employeeCardNo){
-        //获取用户信息
-        app.request.json(INTERFACE_URL, {
-            method: InterFace.USER_INFO, userId: pageParams.employeeCardNo
-        }, function (data) {
-            logInfo(data);
-            if (ResponseCode.SUCCESS == data.code) {
-                logInfo("获取用户信息成功.")
-                var employeeUserInfo = JSON.parse(data.bizContent);
-                app.dialog.confirm("您确认接受 【"+ employeeUserInfo.realName +"】的邀请加入早安工程吗", "信息提示", function () {
-                    logInfo("接收推荐人:"+pageParams.employeeCardNo);
-                    sessionStorage.setItem("employeeCardNo",pageParams.employeeCardNo);
-                }, function () {
-                    logInfo("未接收推荐人:"+pageParams.employeeCardNo);
-                });
-            }else{
-                logInfo("无效推荐人:"+pageParams.employeeCardNo);
-            }
-        });
-    }
-
     if(pageParams.cardNo){
         logInfo("准备购买分享的健康卡的卡号为::"+pageParams.cardNo);
         sessionStorage.setItem("cardNo",pageParams.cardNo);
@@ -47,9 +26,35 @@ $$(document).on('page:init reinit popupOpen', '.page[data-name="home"]', functio
     if (localStorage.hasOwnProperty(TOKEN)) {
         loadUserView(localStorage.getItem(TOKEN));
     } else {
-        app.dialog.alert("您还没有登录，等先进行登录!", function () {
-            gotoLogin();
-        });
+            if(pageParams.employeeCardNo){
+                //获取用户信息
+                app.request.json(INTERFACE_URL, {
+                    method: InterFace.USER_INFO, userId: pageParams.employeeCardNo
+                }, function (data) {
+                    logInfo(data);
+                    if (ResponseCode.SUCCESS == data.code) {
+                        logInfo("获取用户信息成功.")
+                        var employeeUserInfo = JSON.parse(data.bizContent);
+                        if(sessionStorage.hasOwnProperty("employeeCardNo") && sessionStorage.getItem("employeeCardNo")==pageParams.employeeCardNo){
+                            logInfo("已设置相同推存人："+pageParams.employeeCardNo);
+                        }else{
+                            app.dialog.confirm("您确认接受 【"+ employeeUserInfo.realName +"】的邀请加入早安工程吗", "信息提示", function () {
+                                logInfo("接收推荐人:"+pageParams.employeeCardNo);
+                                sessionStorage.setItem("employeeCardNo",pageParams.employeeCardNo);
+                            }, function () {
+                                logInfo("未接收推荐人:"+pageParams.employeeCardNo);
+                            });
+                        }
+                    }else{
+                        logInfo("无效推荐人:"+pageParams.employeeCardNo);
+                    }
+                    gotoLogin();
+                });
+            }else{
+                app.dialog.alert("您还没有登录，等先进行登录!", function () {
+                    gotoLogin();
+                });
+            }
     }
 });
 $$(document).on('page:init reinit', '.page[data-name="buyCard-page"]', function (e) {
@@ -139,9 +144,15 @@ $$(document).on('page:init reinit', '.page[data-name="heartcheck-page"]', functi
 });
 
 $$(document).on('page:init reinit', '.page[data-name="employeeCard-page"]', function (e) {
-    logInfo("employeeCard-page");
     if (localStorage.hasOwnProperty(TOKEN)) {
         getEmployeeCard(localStorage.getItem(TOKEN));
+    }
+});
+
+$$(document).on('page:init reinit', '.page[data-name="tijian-result-page"]', function (e) {
+    let pageParams = e.detail.route.query;
+    if (pageParams.checkRecordId) {
+        showTijianResult(pageParams.isMember,pageParams.checkRecordId);
     }
 });
 

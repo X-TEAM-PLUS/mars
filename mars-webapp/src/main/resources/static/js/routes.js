@@ -158,6 +158,13 @@ var routes = [
         url: './pages/tijian.html',
         name: 'tijian',
     },
+
+    //体检结果
+    {
+        path: '/tijian_result/',
+        url: './pages/tijian_result.html',
+        name: 'tijian_result',
+    },
     //工作证
     {
         path: '/employeeCard/',
