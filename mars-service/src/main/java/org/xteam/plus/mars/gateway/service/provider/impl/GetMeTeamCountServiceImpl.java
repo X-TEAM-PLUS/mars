@@ -35,7 +35,6 @@ public class GetMeTeamCountServiceImpl extends Logging implements GateWayService
 
     @Override
     public HttpResponseBody gateWay(HttpRequestBody httpRequestBody) throws Exception {
-        List<UserRelationRspVO> returnValue = Lists.newArrayList();
         MyTeamReqVO myTeamReqVO = JsonUtils.fromJSON(httpRequestBody.getBizContent(), MyTeamReqVO.class);
         if (StringUtils.isEmpty(httpRequestBody.getUserId())) {
             return new HttpResponseBody(GlobalErrorMessage.MISSING_PARAMETERS);

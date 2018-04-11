@@ -140,7 +140,6 @@ public class UserRelationManagerImpl implements UserRelationManager {
         for (HashMap map : userLevelCount) {
             Integer userLevel = (Integer) map.get("USER_LEVEL");
             map.put("USER_LEVEL", UserLevelEnum.valueOf(userLevel).getInfo());
-
         }
         returnValue.put("userLevelMap", userLevelCount);
 
