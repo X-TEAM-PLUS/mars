@@ -10,6 +10,7 @@ import org.xteam.plus.mars.domain.UserInfo;
 import org.xteam.plus.mars.manager.SubsidyAbstractManager;
 import org.xteam.plus.mars.manager.SubsidyManager;
 import org.xteam.plus.mars.type.AccountDetailTypeEnum;
+import org.xteam.plus.mars.type.UserLevelEnum;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -22,6 +23,11 @@ public class SocialWorkerManagerImpl extends SubsidyAbstractManager {
 
     @Resource
     private OrdersDao ordersDao;
+
+    @Override
+    public UserLevelEnum getUserLevelEnum() {
+        return UserLevelEnum.SOCIAL;
+    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -53,7 +59,7 @@ public class SocialWorkerManagerImpl extends SubsidyAbstractManager {
 
             return grantSubsidyList(accountDetailTypeEnumList, orders.getSellerUserId(),  orders.getOrderNo());
         } catch (Exception e) {
-            logInfo("发放社工补贴与社工管理补贴失败，失败原因", e);
+            logError("发放社工补贴与社工管理补贴失败，失败原因", e);
         } finally {
             logInfo("发放社工补贴与社工管理补贴 [" + JsonUtils.toJSON(orders) + "] 结束");
         }

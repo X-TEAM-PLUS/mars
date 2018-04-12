@@ -8,6 +8,7 @@ import org.xteam.plus.mars.domain.Orders;
 import org.xteam.plus.mars.manager.SubsidyAbstractManager;
 import org.xteam.plus.mars.manager.SubsidyManager;
 import org.xteam.plus.mars.type.AccountDetailTypeEnum;
+import org.xteam.plus.mars.type.UserLevelEnum;
 
 import java.util.List;
 
@@ -16,6 +17,11 @@ import java.util.List;
  */
 @Component
 public class DirectorManagerImpl extends SubsidyAbstractManager {
+
+    @Override
+    public UserLevelEnum getUserLevelEnum() {
+        return UserLevelEnum.DIRECTOR;
+    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)

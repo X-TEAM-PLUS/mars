@@ -1,8 +1,10 @@
 package org.xteam.plus.mars.manager;
 
 import org.xteam.plus.mars.domain.Orders;
+import org.xteam.plus.mars.type.UserLevelEnum;
 
 public interface SubsidyManager {
+    public UserLevelEnum getUserLevelEnum();
 
     /**
      * 执行发放补贴方法

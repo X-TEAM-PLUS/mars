@@ -10,6 +10,7 @@ import org.xteam.plus.mars.domain.UserInfo;
 import org.xteam.plus.mars.manager.SubsidyAbstractManager;
 import org.xteam.plus.mars.manager.SubsidyManager;
 import org.xteam.plus.mars.type.AccountDetailTypeEnum;
+import org.xteam.plus.mars.type.UserLevelEnum;
 
 import javax.annotation.Resource;
 
@@ -22,6 +23,11 @@ import java.util.List;
 public class StandingDirectorManagerImpl extends SubsidyAbstractManager {
     @Resource
     private OrdersDao ordersDao;
+
+    @Override
+    public UserLevelEnum getUserLevelEnum() {
+        return UserLevelEnum.STANDING_DIRECTOR;
+    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)

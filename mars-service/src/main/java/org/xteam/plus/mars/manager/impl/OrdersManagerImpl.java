@@ -279,6 +279,9 @@ public class OrdersManagerImpl extends Logging implements OrdersManager {
         if (product == null) {
             throw new Exception("产品不存在，不能生成订单!");
         }
+        //更新订单状态
+        updateSuccessOrderInfo(orders, reqMap);
+
         //查询购买用户信息
         UserInfo buyerUser = userInfoDao.get(new UserInfo().setUserId(orders.getBuyerUserId()));
         //按订单类型分别处理
@@ -289,8 +292,7 @@ public class OrdersManagerImpl extends Logging implements OrdersManager {
             //会员分销
             processVipDistributionOrder(orders, buyerUser, product);
         }
-        //更新订单状态
-        updateSuccessOrderInfo(orders, reqMap);
+
         //返回
         return true;
     }

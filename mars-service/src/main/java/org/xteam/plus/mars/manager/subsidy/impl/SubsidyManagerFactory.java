@@ -22,7 +22,7 @@ import java.util.Map;
 @Component
 public class SubsidyManagerFactory extends Logging implements ApplicationContextAware {
 
-    private static Map<Integer, SubsidyManager> subsidyManagerMap = new HashMap<Integer, SubsidyManager>();
+    private static Map<UserLevelEnum, SubsidyManager> subsidyManagerMap = new HashMap<UserLevelEnum, SubsidyManager>();
 
     private ApplicationContext applicationContext;
 
@@ -37,17 +37,7 @@ public class SubsidyManagerFactory extends Logging implements ApplicationContext
             String[] beanNames = applicationContext.getBeanNamesForType(SubsidyManager.class);
             for (String beanName : beanNames) {
                 SubsidyManager subsidyManager = (SubsidyManager) applicationContext.getBean(beanName);
-                // 如果订单用户为社工
-                if (subsidyManager instanceof SocialWorkerManagerImpl) {
-                    subsidyManagerMap.put(UserLevelEnum.SOCIAL.getCode(), subsidyManager);
-                }
-                // 如果订单用户为理事
-                if (subsidyManager instanceof DirectorManagerImpl) {
-                    subsidyManagerMap.put(UserLevelEnum.DIRECTOR.getCode(), subsidyManager);
-                }
-                if (subsidyManager instanceof StandingDirectorManagerImpl) {
-                    subsidyManagerMap.put(UserLevelEnum.STANDING_DIRECTOR.getCode(), subsidyManager);
-                }
+                subsidyManagerMap.put(subsidyManager.getUserLevelEnum(),subsidyManager);
             }
         } catch (Exception e) {
             logError("加载补贴实例异常", e);
@@ -71,18 +61,21 @@ public class SubsidyManagerFactory extends Logging implements ApplicationContext
             logInfo("订单ID [" + orders.getOrderNo() + "] 支付状态 [" + orders.getStatus() + "] 支付状态错误，不能进行补贴!");
             return true;
         }
-
         //查找关系发放补贴
         UserRelation userRelation = userRelationDao.getByUserId(new UserRelation().setUserId(orders.getBuyerUserId()));
         //如果上级不为空
         if(userRelation!=null){
             UserInfo sellerUserInfo = userInfoDao.get(new UserInfo().setUserId(userRelation.getRefereeUserId()));
-            SubsidyManager subsidyManager = subsidyManagerMap.get(sellerUserInfo.getUserLevel());
-            if (subsidyManager != null) {
-                return subsidyManager.doExecute(orders);
-            }
-            logInfo("用户等级为 UserLevel[" + UserLevelEnum.valueOf(sellerUserInfo.getUserLevel()).getInfo() + "] 不能进行补贴");
+            logInfo("获取补贴的用户为:"+ JsonUtils.toJSON(sellerUserInfo));
 
+            UserLevelEnum userLevelEnum = UserLevelEnum.valueOf(sellerUserInfo.getUserLevel());
+            SubsidyManager subsidyManager = subsidyManagerMap.get(userLevelEnum);
+            if (subsidyManager != null) {
+                logInfo("获取到补贴接口进行补贴:");
+                return subsidyManager.doExecute(orders);
+            }else{
+                logWarning("用户等级为 UserLevel[" +sellerUserInfo.getUserLevel()+":"+ userLevelEnum.getInfo() + "] ,未找到对应的补接口，无法补贴 .");
+            }
         }
         return true;
     }
