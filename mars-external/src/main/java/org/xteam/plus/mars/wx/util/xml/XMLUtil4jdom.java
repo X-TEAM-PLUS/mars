@@ -1,4 +1,4 @@
-package com.xteam.tourismpay.web.controller.util;
+package org.xteam.plus.mars.wx.util.xml;
 
 
 import java.io.ByteArrayInputStream;

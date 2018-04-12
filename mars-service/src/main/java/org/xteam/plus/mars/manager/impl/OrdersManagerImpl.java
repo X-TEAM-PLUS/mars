@@ -11,7 +11,7 @@ import org.xteam.plus.mars.dao.*;
 import org.xteam.plus.mars.domain.*;
 import org.xteam.plus.mars.gateway.service.provider.impl.WxPayServiceAppInfoServiceImpl;
 import org.xteam.plus.mars.manager.OrdersManager;
-import org.xteam.plus.mars.manager.subsidy.impl.SubsidyManagerFactory;
+import org.xteam.plus.mars.manager.subsidy.SubsidyManagerFactory;
 import org.xteam.plus.mars.type.AccountDetailTypeEnum;
 import org.xteam.plus.mars.type.CardStatusTypeEnum;
 import org.xteam.plus.mars.type.OrderTypeEnum;

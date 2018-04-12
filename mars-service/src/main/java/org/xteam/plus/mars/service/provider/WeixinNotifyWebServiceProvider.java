@@ -7,7 +7,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.xteam.plus.mars.cache.CacheUtils;
 import org.xteam.plus.mars.common.JsonUtils;
 import org.xteam.plus.mars.common.Logging;
-import org.xteam.plus.mars.domain.Orders;
 import org.xteam.plus.mars.gateway.token.Token;
 import org.xteam.plus.mars.manager.OrdersManager;
 import org.xteam.plus.mars.manager.UserInfoManager;
@@ -17,6 +16,7 @@ import org.xteam.plus.mars.wx.api.WxService;
 import org.xteam.plus.mars.wx.bean.WxUserList;
 import org.xteam.plus.mars.wx.bean.result.WxOAuth2AccessTokenResult;
 import org.xteam.plus.mars.wx.exception.WxErrorException;
+import org.xteam.plus.mars.wx.util.xml.XMLUtil4jdom;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -62,22 +62,22 @@ public class WeixinNotifyWebServiceProvider extends Logging {
             }
             in.close();
             inputStream.close();
-            //解析xml成map
-            Map<Object, Object> reqMap = new HashMap<Object, Object>();
-            logInfo("收到微信支付通知接口回复:" + sb.toString());
-            reqMap = com.xteam.tourismpay.web.controller.util.XMLUtil4jdom.doXMLParse(sb.toString());
 
+            logInfo("收到微信支付通知接口回复:" + sb.toString());
+            //解析xml成map
+            Map<Object, Object> reqMap =  XMLUtil4jdom.doXMLParse(sb.toString());
             boolean checkResult = iService.verifyWeixinNotify(reqMap);
             if (!checkResult) {
                 logInfo("微信支付通知接口验签失败 reqMap[" + reqMap + "]");
                 return returnValue;
             }
             if (reqMap.get("result_code").toString().equalsIgnoreCase("SUCCESS")) {
-                ordersManager.proccessOrder(reqMap);
-                returnValue = "SUCCESS";
+                //订单处理成功
+                if(ordersManager.proccessOrder(reqMap)){
+                    returnValue = "SUCCESS";
+                }
             } else {
                 logInfo("微信支付通知接口返回失败 reqMap[" + reqMap + "]");
-                return returnValue;
             }
         } catch (Exception e) {
             logError("微信支付通知接口失败 ", e);

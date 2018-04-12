@@ -44,16 +44,16 @@ public class GetSubsidyListServiceImpl extends Logging implements GateWayService
 
     static {
 
-        accountDetailTypeEnumList.add(AccountDetailTypeEnum.DIRECTOR_WORK_SUBSIDY);
-        accountDetailTypeEnumList.add(AccountDetailTypeEnum.SOCIAL_WORK_SUBSIDY);
-        accountDetailTypeEnumList.add(AccountDetailTypeEnum.STANDING_DIRECTOR_SUBSIDY);
+        accountDetailTypeEnumList.add(AccountDetailTypeEnum.SOCIAL_EXTEND);
+        accountDetailTypeEnumList.add(AccountDetailTypeEnum.DIRECTOR_EXTEND);
+        accountDetailTypeEnumList.add(AccountDetailTypeEnum.DIRECTOR_SOCIAL_MANAGER);
 
-        accountDetailTypeEnumList.add(AccountDetailTypeEnum.STANDING_DIRECTOR_SERVICE_SUBSIDY);
-        accountDetailTypeEnumList.add(AccountDetailTypeEnum.DIRECTOR_SERVICE_SUBSIDY);
+        accountDetailTypeEnumList.add(AccountDetailTypeEnum.DIRECTOR_SERVICE);
+        accountDetailTypeEnumList.add(AccountDetailTypeEnum.STANDING_DIRECTOR_EXTEND);
 
-        accountDetailTypeEnumList.add(AccountDetailTypeEnum.SOCIAL_EXTENSION_SUBSIDY);
-        accountDetailTypeEnumList.add(AccountDetailTypeEnum.DIRECTOR_EXTENSION_SUBSIDY);
-        accountDetailTypeEnumList.add(AccountDetailTypeEnum.STANDING_DIRECTOR_EXTENSION_SUBSIDY);
+        accountDetailTypeEnumList.add(AccountDetailTypeEnum.STANDING_DIRECTOR_SOCIAL_MANAGER);
+        accountDetailTypeEnumList.add(AccountDetailTypeEnum.STANDING_DIRECTOR_DIRECTOR_MANAGER);
+        accountDetailTypeEnumList.add(AccountDetailTypeEnum.STANDING_DIRECTOR_SERVICE);
     }
 
     @Override

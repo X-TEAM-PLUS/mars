@@ -1,21 +1,18 @@
 package org.xteam.plus.mars.manager.subsidy.impl;
 
-import com.google.common.collect.Lists;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.xteam.plus.mars.common.JsonUtils;
-import org.xteam.plus.mars.dao.OrdersDao;
+import org.xteam.plus.mars.dao.UserInfoDao;
 import org.xteam.plus.mars.dao.UserRelationDao;
 import org.xteam.plus.mars.domain.Orders;
 import org.xteam.plus.mars.domain.UserInfo;
 import org.xteam.plus.mars.domain.UserRelation;
-import org.xteam.plus.mars.manager.SubsidyAbstractManager;
-import org.xteam.plus.mars.manager.SubsidyManager;
+import org.xteam.plus.mars.manager.subsidy.SubsidyAbstractManager;
 import org.xteam.plus.mars.type.AccountDetailTypeEnum;
 import org.xteam.plus.mars.type.UserLevelEnum;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * 社工补贴与社工管理补贴发放
@@ -24,7 +21,7 @@ import java.util.List;
 public class SocialWorkerManagerImpl extends SubsidyAbstractManager {
 
     @Resource
-    private OrdersDao ordersDao;
+    private UserInfoDao userInfoDao;
 
     @Resource
     private UserRelationDao userRelationDao;
@@ -36,41 +33,29 @@ public class SocialWorkerManagerImpl extends SubsidyAbstractManager {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean doExecute( Orders orders) throws Exception {
-        try {
-            logInfo("开始社工补贴与社工管理补贴 [" + JsonUtils.toJSON(orders) + "]");
-            if (orders == null) {
-                logInfo("获取的订单错误，不存在的订单ID，无法进行补贴[" + JsonUtils.toJSON(orders) + "]");
-                return false;
+    public void doExecute(Orders orders, UserInfo upUserInfo) throws Exception {
+        //社工推广补贴
+        grantSubsidy(AccountDetailTypeEnum.SOCIAL_EXTEND, upUserInfo, orders.getOrderNo());
+        //查找关系发放补贴
+        UserRelation userRelation = userRelationDao.getByUserId(new UserRelation().setUserId(upUserInfo.getUserId()));
+        if (userRelation != null) {
+            //查找上级
+            UserInfo userInfo = userInfoDao.get(new UserInfo().setUserId(userRelation.getRefereeUserId()));
+            //上级用户级别
+            UserLevelEnum userLevel = UserLevelEnum.valueOf(userInfo.getUserLevel());
+            switch (userLevel) {
+                //理事
+                case DIRECTOR:
+                    //理事社工管理补贴
+                    grantSubsidy(AccountDetailTypeEnum.DIRECTOR_SOCIAL_MANAGER, userInfo, orders.getOrderNo());
+                    break;
+                //常任理事
+                case STANDING_DIRECTOR:
+                    //常务理事社工管理补贴
+                    grantSubsidy(AccountDetailTypeEnum.STANDING_DIRECTOR_SOCIAL_MANAGER, userInfo, orders.getOrderNo());
+                    break;
             }
-
-            //查找关系发放补贴
-            UserRelation userRelation = userRelationDao.getByUserId(new UserRelation().setUserId(orders.getBuyerUserId()));
-            if(userRelation!=null) {
-                // 推广补贴
-                logInfo("开始社工推广补贴[" + JsonUtils.toJSON(orders) + "] 推广人[" + userRelation.getRefereeUserId() + "]");
-                boolean success = grantSubsidy(AccountDetailTypeEnum.SOCIAL_EXTENSION_SUBSIDY,userRelation.getRefereeUserId(), orders.getOrderNo());
-                if (!success) {
-                    throw new Exception("发放userId[" + userRelation.getRefereeUserId() + "] 推广补贴失败,失败原因返回false");
-                }
-                // 服务补贴
-                List<AccountDetailTypeEnum> accountDetailTypeEnumList = Lists.newArrayList();
-                // 增加社工管理补贴
-                accountDetailTypeEnumList.add(AccountDetailTypeEnum.SOCIAL_WORK_SUBSIDY);
-                // 增加理事管理补贴
-                accountDetailTypeEnumList.add(AccountDetailTypeEnum.DIRECTOR_WORK_SUBSIDY);
-                // 增加常务理事管理补贴
-                accountDetailTypeEnumList.add(AccountDetailTypeEnum.STANDING_DIRECTOR_SUBSIDY);
-
-                return grantSubsidyList(accountDetailTypeEnumList, orders.getSellerUserId(), orders.getOrderNo());
-            }else{
-                logInfo("未找到用户["+orders.getBuyerUserId()+"]的上级关系");
-            }
-        } catch (Exception e) {
-            logError("发放社工补贴与社工管理补贴失败，失败原因", e);
-        } finally {
-            logInfo("发放社工补贴与社工管理补贴 [" + JsonUtils.toJSON(orders) + "] 结束");
         }
-        return true;
+
     }
 }
