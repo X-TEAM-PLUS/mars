@@ -62,10 +62,7 @@ public class SubsidyManagerFactory extends Logging implements ApplicationContext
 
     public boolean execute(Orders orders) throws Exception {
         logInfo("开始发放补贴 SubsidyManagerFactory orders [" + JsonUtils.toJSON(orders) + "]");
-        if (orders.getSellerUserId() == null) {
-            logInfo("orders [" + JsonUtils.toJSON(orders) + "] 不存在销售人员id，不进行补贴");
-            return true;
-        }
+
         if (OrderTypeEnum.valueOf(orders.getOrderType()) != OrderTypeEnum.PLATFORM_STRAIGHT) {
             logInfo("订单ID [" + orders.getOrderNo() + "] 不是平台直销的订单，不能进行发放补贴");
             return true;

@@ -116,5 +116,5 @@ public interface OrdersManager {
      * @return
      * @throws Exception
      */
-    public boolean updateStraightPinOrder(Map<Object, Object> reqMap) throws Exception;
+    public boolean proccessOrder(Map<Object, Object> reqMap) throws Exception;
 }

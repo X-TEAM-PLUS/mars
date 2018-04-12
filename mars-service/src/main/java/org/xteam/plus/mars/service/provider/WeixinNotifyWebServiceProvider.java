@@ -1,12 +1,5 @@
 package org.xteam.plus.mars.service.provider;
 
-import com.google.common.collect.Maps;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.common.StringUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,34 +8,22 @@ import org.xteam.plus.mars.cache.CacheUtils;
 import org.xteam.plus.mars.common.JsonUtils;
 import org.xteam.plus.mars.common.Logging;
 import org.xteam.plus.mars.domain.Orders;
-import org.xteam.plus.mars.domain.UserInfo;
 import org.xteam.plus.mars.gateway.token.Token;
 import org.xteam.plus.mars.manager.OrdersManager;
 import org.xteam.plus.mars.manager.UserInfoManager;
-import org.xteam.plus.mars.manager.subsidy.impl.SubsidyManagerFactory;
-import org.xteam.plus.mars.type.OrderTypeEnum;
 import org.xteam.plus.mars.wx.api.WxConfig;
 import org.xteam.plus.mars.wx.api.WxConsts;
 import org.xteam.plus.mars.wx.api.WxService;
-import org.xteam.plus.mars.wx.bean.InvokePay;
-import org.xteam.plus.mars.wx.bean.PayOrderInfo;
-import org.xteam.plus.mars.wx.bean.WxQrcode;
 import org.xteam.plus.mars.wx.bean.WxUserList;
-import org.xteam.plus.mars.wx.bean.result.QrCodeResult;
 import org.xteam.plus.mars.wx.bean.result.WxOAuth2AccessTokenResult;
 import org.xteam.plus.mars.wx.exception.WxErrorException;
 
 import javax.annotation.Resource;
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.math.BigDecimal;
-import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -58,9 +39,6 @@ public class WeixinNotifyWebServiceProvider extends Logging {
 
     @Resource
     private StringRedisTemplate stringRedisTemplate;
-
-    @Resource
-    private SubsidyManagerFactory subsidyManagerFactory;
 
     @Resource
     private CacheUtils cacheUtils;
@@ -95,10 +73,7 @@ public class WeixinNotifyWebServiceProvider extends Logging {
                 return returnValue;
             }
             if (reqMap.get("result_code").toString().equalsIgnoreCase("SUCCESS")) {
-                ordersManager.updateStraightPinOrder(reqMap);
-                Orders orders = ordersManager.get(new Orders().setOrderNo(new BigDecimal(reqMap.get("out_trade_no").toString())));
-                // 发放补贴
-                subsidyManagerFactory.execute(orders);
+                ordersManager.proccessOrder(reqMap);
                 returnValue = "SUCCESS";
             } else {
                 logInfo("微信支付通知接口返回失败 reqMap[" + reqMap + "]");

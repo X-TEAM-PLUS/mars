@@ -11,6 +11,7 @@ import org.xteam.plus.mars.dao.*;
 import org.xteam.plus.mars.domain.*;
 import org.xteam.plus.mars.gateway.service.provider.impl.WxPayServiceAppInfoServiceImpl;
 import org.xteam.plus.mars.manager.OrdersManager;
+import org.xteam.plus.mars.manager.subsidy.impl.SubsidyManagerFactory;
 import org.xteam.plus.mars.type.AccountDetailTypeEnum;
 import org.xteam.plus.mars.type.CardStatusTypeEnum;
 import org.xteam.plus.mars.type.OrderTypeEnum;
@@ -57,6 +58,10 @@ public class OrdersManagerImpl extends Logging implements OrdersManager {
 
     @Resource
     private StringRedisTemplate stringRedisTemplate;
+
+    @Resource
+    private SubsidyManagerFactory subsidyManagerFactory;
+
 
     @Override
     public Orders get(Orders orders) throws Exception {
@@ -263,7 +268,7 @@ public class OrdersManagerImpl extends Logging implements OrdersManager {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean updateStraightPinOrder(Map<Object, Object> reqMap) throws Exception {
+    public boolean proccessOrder(Map<Object, Object> reqMap) throws Exception {
         //查询订单
         Orders orders = ordersDao.get(new Orders().setOrderNo(new BigDecimal((String) reqMap.get("out_trade_no"))));
         if (orders == null) {
@@ -284,10 +289,8 @@ public class OrdersManagerImpl extends Logging implements OrdersManager {
             //会员分销
             processVipDistributionOrder(orders, buyerUser, product);
         }
-
         //更新订单状态
         updateSuccessOrderInfo(orders, reqMap);
-
         //返回
         return true;
     }
@@ -430,6 +433,9 @@ public class OrdersManagerImpl extends Logging implements OrdersManager {
             userInfoDao.update(buyerUser);
             logInfo("用户购买卡自己激活 [" + JsonUtils.toJSON(userHealthCard) + "]");
         }
+
+        // 发放补贴
+        subsidyManagerFactory.execute(orders);
     }
 
     private String getDate() {
