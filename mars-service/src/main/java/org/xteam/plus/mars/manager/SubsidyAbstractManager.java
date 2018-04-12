@@ -80,14 +80,15 @@ public abstract class SubsidyAbstractManager extends Logging implements SubsidyM
         AccountBalance accountBalance;
         boolean insert = false;
         // 初始化账户数据
-        if (list == null || list.size() == 0) {
-            accountBalance = new AccountBalance().setBalanceAmount(new BigDecimal(0));
-            insert = true;
-        }
         if (list.size() > 1) {
             throw new Exception("用户账户错误，用户不能存在多个账户!");
+        }else if (list == null || list.size() == 0) {
+            accountBalance = new AccountBalance().setBalanceAmount(new BigDecimal(0)).setUserId(userId);
+            insert = true;
+        }else{
+            accountBalance = list.get(0);
         }
-        accountBalance = list.get(0);
+
         accountBalance.getBalanceAmount().add(new BigDecimal(accountDetailTypeEnum.getAmount()));
         if (insert) {
             accountBalance.setStatus(0);
@@ -98,6 +99,7 @@ public abstract class SubsidyAbstractManager extends Logging implements SubsidyM
             accountBalanceDao.update(accountBalance);
         }
         AccountDetail accountDetail = new AccountDetail();
+        accountDetail.setUserId(userId);
         accountDetail.setOperationDirection(1);
         accountDetail.setBusinesseType(accountDetailTypeEnum.getCode());
         accountDetail.setAmount(new BigDecimal(accountDetailTypeEnum.getAmount()));
