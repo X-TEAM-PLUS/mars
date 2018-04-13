@@ -58,7 +58,7 @@ mars:
     verifycode-life: 2
     verifycode-limit: 30
   test:
-    mobileNos: 13701312791,18810863866
+    mobileNos: 13701312791,18810863866,13806770481,17319227081
     password: 888888
   employeeCard:
     backGround: backgroud.jpg
