@@ -3,8 +3,10 @@ package org.xteam.plus.mars.manager.subsidy;
 import org.xteam.plus.mars.common.Logging;
 import org.xteam.plus.mars.dao.AccountBalanceDao;
 import org.xteam.plus.mars.dao.AccountDetailDao;
+import org.xteam.plus.mars.dao.MessageDao;
 import org.xteam.plus.mars.domain.AccountBalance;
 import org.xteam.plus.mars.domain.AccountDetail;
+import org.xteam.plus.mars.domain.Message;
 import org.xteam.plus.mars.domain.UserInfo;
 import org.xteam.plus.mars.type.AccountDetailTypeEnum;
 import org.xteam.plus.mars.type.UserLevelEnum;
@@ -20,6 +22,8 @@ public abstract class SubsidyAbstractManager extends Logging implements SubsidyM
     @Resource
     protected AccountBalanceDao accountBalanceDao;
 
+    @javax.annotation.Resource
+    private MessageDao messageDao;
 
     /**
      * 发放补贴
@@ -30,7 +34,16 @@ public abstract class SubsidyAbstractManager extends Logging implements SubsidyM
      * @return
      */
     protected void grantSubsidy(AccountDetailTypeEnum accountDetailTypeEnum, UserInfo userInfo, BigDecimal orderNo) throws Exception {
-        logInfo("发放补贴::账户id[" + userInfo + "]::用户级别["+ UserLevelEnum.valueOf(userInfo.getUserLevel()).getInfo()+"]::补贴类型[" + accountDetailTypeEnum.getInfo() + "]::补贴金额[" + accountDetailTypeEnum.getAmount() + "]::订单号[" + orderNo + "]");
+        logInfo("发放补贴::账户id[" + userInfo.getUserId() + "]::用户级别["+ UserLevelEnum.valueOf(userInfo.getUserLevel()).getInfo()+"]::补贴类型[" + accountDetailTypeEnum.getInfo() + "]::补贴金额[" + accountDetailTypeEnum.getAmount() + "]::订单号[" + orderNo + "]");
+        //发送消息
+        messageDao.insert(new Message()
+                .setUserId(userInfo.getUserId())
+                .setMessageTitle("补贴已发放")
+                .setMessageContent("补贴类型:"+accountDetailTypeEnum.getInfo()+",补贴金额:"+accountDetailTypeEnum.getAmount())
+                .setStatus(0)
+                .setCreated(new Date())
+        );
+
         AccountBalance accountBalance = accountBalanceDao.get(new AccountBalance().setUserId(userInfo.getUserId()));
         // 初始化账户数据
         if (accountBalance == null) {

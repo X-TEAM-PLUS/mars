@@ -8,6 +8,8 @@ import org.xteam.plus.mars.dao.MessageDao;
 import org.xteam.plus.mars.domain.Message;
 import org.xteam.plus.mars.manager.MessageManager;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -62,6 +64,18 @@ public class MessageManagerImpl implements MessageManager {
     @Override
     public Integer queryCount(Message message) throws Exception {
         return messageDao.queryCount(message);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int sendMessage(BigDecimal userId, String title, String message) throws Exception {
+        return messageDao.insert(new Message()
+                .setUserId(userId)
+                .setMessageTitle(title)
+                .setMessageContent(message)
+                .setStatus(0)
+                .setCreated(new Date())
+        );
     }
 
 }

@@ -12,6 +12,7 @@ import org.xteam.plus.mars.gateway.service.provider.HttpRequestBody;
 import org.xteam.plus.mars.gateway.service.provider.HttpResponseBody;
 import org.xteam.plus.mars.gateway.service.provider.impl.body.req.UserApplyInfoReqVO;
 import org.xteam.plus.mars.manager.ApplyInfoManager;
+import org.xteam.plus.mars.manager.MessageManager;
 import org.xteam.plus.mars.manager.UserInfoManager;
 import org.xteam.plus.mars.type.ApplayTypeEnum;
 import org.xteam.plus.mars.type.UserLevelEnum;
@@ -35,6 +36,9 @@ public class UserLevelApplyServiceSocialImpl extends Logging implements GateWayS
 
     @Resource
     private ApplyInfoManager applyInfoManager;
+
+    @Resource
+    private MessageManager  messageManager;
 
     @Override
     public String getMethodName() {
@@ -88,6 +92,8 @@ public class UserLevelApplyServiceSocialImpl extends Logging implements GateWayS
         applyInfo.setRealName(userApplyInfoReqVO.getRealName());
         int count = applyInfoManager.insert(applyInfo);
         if (count > 0) {
+            //发送消息
+            messageManager.sendMessage(applyInfo.getUserId(),"社工申请审批通过","恭喜您，你的已成功升级为早安工程的社工。");
             return new HttpResponseBody(GlobalErrorMessage.SUCCESS);
         } else {
             return new HttpResponseBody(GlobalErrorMessage.BUSINESS_FAILED);

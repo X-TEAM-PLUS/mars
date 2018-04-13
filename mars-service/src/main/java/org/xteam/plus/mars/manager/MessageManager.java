@@ -2,6 +2,7 @@ package org.xteam.plus.mars.manager;
 
 import org.xteam.plus.mars.domain.Message;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -69,4 +70,13 @@ public interface MessageManager {
      * @return List<Message>
      */
     public Integer queryCount(Message message) throws Exception;
+
+    /**
+     * 给用户发送消息
+     * @param userId
+     * @param title
+     * @param message
+     * @throws Exception
+     */
+    public int sendMessage(BigDecimal userId, String title,String message)throws Exception;
 }
