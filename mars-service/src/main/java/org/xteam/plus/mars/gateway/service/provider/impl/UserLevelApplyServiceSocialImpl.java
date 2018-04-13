@@ -93,7 +93,7 @@ public class UserLevelApplyServiceSocialImpl extends Logging implements GateWayS
         int count = applyInfoManager.insert(applyInfo);
         if (count > 0) {
             //发送消息
-            messageManager.sendMessage(applyInfo.getUserId(),"社工申请审批通过","恭喜您，你的已成功升级为早安工程的社工。");
+            messageManager.sendMessage(applyInfo.getUserId(),"社工申请审批通过","恭喜您，你已成功升级为早安工程的社工。");
             return new HttpResponseBody(GlobalErrorMessage.SUCCESS);
         } else {
             return new HttpResponseBody(GlobalErrorMessage.BUSINESS_FAILED);

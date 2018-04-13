@@ -8,6 +8,7 @@ import org.xteam.plus.mars.common.Logging;
 import org.xteam.plus.mars.dao.*;
 import org.xteam.plus.mars.domain.*;
 import org.xteam.plus.mars.manager.ApplyInfoManager;
+import org.xteam.plus.mars.manager.MessageManager;
 import org.xteam.plus.mars.type.AccountDetailTypeEnum;
 import org.xteam.plus.mars.type.ApplayTypeEnum;
 import org.xteam.plus.mars.type.CardStatusTypeEnum;
@@ -46,6 +47,9 @@ public class ApplyInfoManagerImpl extends Logging implements ApplyInfoManager {
 
     @Resource
     private AccountDetailDao accountDetailDao;
+
+    @Resource
+    private MessageManager messageManager;
 
     @Override
     public ApplyInfo get(ApplyInfo applyInfo) throws Exception {
@@ -139,6 +143,11 @@ public class ApplyInfoManagerImpl extends Logging implements ApplyInfoManager {
             userInfo.setUserLevel(UserLevelEnum.STANDING_DIRECTOR.getCode());
             userInfoDao.update(userInfo);
         }
+        //发送消息
+        messageManager.sendMessage(applyInfo.getUserId(),
+                ApplayTypeEnum.valueOf(applyInfo.getApplyType()).getInfo() + "申请审批通过",
+                "恭喜您，你已成功升级为早安工程的" + ApplayTypeEnum.valueOf(applyInfo.getApplyType()).getInfo() + "。");
+
         applyInfo.setStatus(1);
         applyInfo.setUpdated(new Date());
         int count = applyInfoDao.update(applyInfo);
@@ -179,6 +188,10 @@ public class ApplyInfoManagerImpl extends Logging implements ApplyInfoManager {
         for (int i = 0; i < cardNum; i++) {
             createUserHealthCard(applyInfo, product);
         }
+        //发送消息
+        messageManager.sendMessage(applyInfo.getUserId(),
+                ApplayTypeEnum.valueOf(applyInfo.getApplyType()).getInfo() + "申请审批通过",
+                "恭喜您，你已成功升级为早安工程的" + ApplayTypeEnum.valueOf(applyInfo.getApplyType()).getInfo() + "。");
         applyInfo.setStatus(1);
         int count = applyInfoDao.update(applyInfo);
         if (count > 0) {

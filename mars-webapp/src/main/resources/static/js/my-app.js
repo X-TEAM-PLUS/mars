@@ -1009,6 +1009,8 @@ function submitCheckResult(form) {
     formData.append("bizContent",JSON.stringify(bizContent));
     var xmlHttpRequest = new XMLHttpRequest();
     xmlHttpRequest.open("POST",INTERFACE_URL,true);
+    // 弹出覆层
+    app.preloader.show();
     xmlHttpRequest.onreadystatechange = function () {
         if (xmlHttpRequest.readyState == 4) {
             if (xmlHttpRequest.status == 200) {
@@ -1027,6 +1029,8 @@ function submitCheckResult(form) {
                 app.dialog.alert('检查结果上传失败。', '信息提示');
             }
         }
+        // 关闭覆层
+        app.preloader.hide();
     }
     xmlHttpRequest.send(formData);
 }
