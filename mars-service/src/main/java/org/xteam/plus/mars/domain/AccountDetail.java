@@ -34,7 +34,19 @@ public class AccountDetail implements Serializable {
     private java.util.Date updated;
 
     /**
-     * 业务类型
+     * 业务类型:
+     * 1 社工推广补贴
+     * 2 理事推广补贴
+     * 3 理事社工管理补贴
+     * 4 理事服务补贴
+     * 5常务理事推广补贴
+     * 6常务理事社工管理补贴
+     * 7常务理事理事管理补贴
+     * 8常务理事服务补贴
+     * 9会员提成
+     * 10用户买卡
+     * 11用户买卡绿色通道
+     * 99 提现
      */
     private Integer businesseType;
 

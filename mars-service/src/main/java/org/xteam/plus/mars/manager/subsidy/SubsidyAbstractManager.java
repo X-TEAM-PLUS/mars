@@ -37,6 +37,7 @@ public abstract class SubsidyAbstractManager extends Logging implements SubsidyM
             accountBalance = new AccountBalance()
                     .setUserId(userInfo.getUserId())
                     .setBalanceAmount(new BigDecimal(accountDetailTypeEnum.getAmount()))
+                    .setStatus(0)
                     .setCreated(new Date())
                     .setUpdated(new Date())
             ;

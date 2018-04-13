@@ -26,7 +26,7 @@ public class GateWayServiceProxy extends Logging implements ApplicationContextAw
 
     private ApplicationContext applicationContext;
 
-    protected void init() {
+    private void init() {
         try {
             String[] beanNames = applicationContext.getBeanNamesForType(GateWayService.class);
             for (String beanName : beanNames) {
@@ -54,7 +54,7 @@ public class GateWayServiceProxy extends Logging implements ApplicationContextAw
      * @param method
      * @return
      */
-    protected GateWayService getGateWayService(String method) {
+    private GateWayService getGateWayService(String method) {
         return gateWayServiceHashMap.get(method);
     }
 
