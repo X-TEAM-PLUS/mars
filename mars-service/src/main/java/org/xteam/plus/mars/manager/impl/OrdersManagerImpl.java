@@ -12,10 +12,7 @@ import org.xteam.plus.mars.domain.*;
 import org.xteam.plus.mars.gateway.service.provider.impl.WxPayServiceAppInfoServiceImpl;
 import org.xteam.plus.mars.manager.OrdersManager;
 import org.xteam.plus.mars.manager.subsidy.SubsidyManagerFactory;
-import org.xteam.plus.mars.type.AccountDetailTypeEnum;
-import org.xteam.plus.mars.type.CardStatusTypeEnum;
-import org.xteam.plus.mars.type.OrderTypeEnum;
-import org.xteam.plus.mars.type.UserLevelEnum;
+import org.xteam.plus.mars.type.*;
 import org.xteam.plus.mars.wx.bean.PayOrderInfo;
 
 import javax.annotation.Resource;
@@ -61,6 +58,9 @@ public class OrdersManagerImpl extends Logging implements OrdersManager {
 
     @Resource
     private SubsidyManagerFactory subsidyManagerFactory;
+
+    @Resource
+    private CommissionDetailDao commissionDetailDao;
 
 
     @Override
@@ -438,6 +438,17 @@ public class OrdersManagerImpl extends Logging implements OrdersManager {
 
         // 发放补贴
         subsidyManagerFactory.execute(orders);
+
+        //记录平台佣金明细
+        commissionDetailDao.insert(new CommissionDetail()
+        .setCommissionAmount(CommissionDetailTypeEnum.SALE_HEART_CARD.getAmount())
+                .setCardNo(userHealthCard.getCardNo())
+                .setOrdreNo(userHealthCard.getCardNo())
+                .setCommissionType(CommissionDetailTypeEnum.SALE_HEART_CARD.getCode())
+                .setCreated(new Date())
+                .setStatus(0)
+        )
+        ;
     }
 
     private String getDate() {
