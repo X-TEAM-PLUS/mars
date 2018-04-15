@@ -68,15 +68,14 @@
                     <table class="table table-striped table-bordered table-hover ">
                         <thead>
                         <tr>
-                            <th column="id" type="checkbox" style="width: 50px"><input type="checkbox" id="allCheckBox" class="allCheckBox"></th>
-                            <th column="created">创建时间</th>
-                            <th column="updated">更新时间</th>
+                            <th column="id">流水号</th>
                             <th column="ordreNo">订单号</th>
                             <th column="cardNo">健康卡号</th>
+                            <th column="commissionType">佣金类型</th>
                             <th column="commissionAmount">佣金金额</th>
                             <th column="status">状态</th>
-                            <th column="id">流水号</th>
-                            <th column="commissionType">佣金类型</th>
+                            <th column="created">创建时间</th>
+                            <th column="updated">更新时间</th>
                             <th type="action" style="width: 200px">操作</th>
                         </tr>
                         </thead>
