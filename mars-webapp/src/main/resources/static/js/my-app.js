@@ -141,9 +141,9 @@ function setUserInfo(json) {
  */
 function meClick() {
     if (isLogin()) {
-        // memberView.router.navigate('/me/', {
-        //     history: true
-        // });
+        memberView.router.navigate('/me/', {
+            history: true
+        });
     } else {
         //去登录
         gotoLogin();

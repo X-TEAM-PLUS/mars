@@ -134,7 +134,7 @@ $$(document).on('page:init reinit', '.page[data-name="zhuanzhang-form-page"]', f
     }, "zhuanzhang-form", "show-zhuanzhang-form");
 });
 $$(document).on('page:init reinit', '.page[data-name="show-me-page"]', function (e) {
-    loadBizContent(userInfo, "show-me", "show-me-view");
+    loadData(userInfo, "show-me", "show-me-view");
 });
 
 $$(document).on('page:init reinit', '.page[data-name="heartcheck-page"]', function (e) {
