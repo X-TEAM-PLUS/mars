@@ -214,16 +214,7 @@ public class ApplyInfoManagerImpl extends Logging implements ApplyInfoManager {
         userHealthCard.setSendCount(0);
         userHealthCard.setStatus(CardStatusTypeEnum.NOT_ATIVE.getCode());
         userHealthCard.setOrderNo(applyInfo.getApplyId());
-        userHealthCardDao.insert(userHealthCard);
-        // 插入账户明细表
-        AccountDetail accountDetail = new AccountDetail();
-        accountDetail.setAmount(product.getAmount());
-        accountDetail.setServiceNo(applyInfo.getApplyId());
-        accountDetail.setCreated(new Date());
-        accountDetail.setUserId(applyInfo.getUserId());
-        accountDetail.setBusinesseType(AccountDetailTypeEnum.USER_BUY_GREEN.getCode());
-        accountDetail.setOperationDirection(1);
-        int count = accountDetailDao.insert(accountDetail);
+        int count = userHealthCardDao.insert(userHealthCard);
         if (count <= 0) {
             throw new Exception("更新订单数据失败");
         }

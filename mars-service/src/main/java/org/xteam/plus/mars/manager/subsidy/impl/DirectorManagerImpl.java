@@ -37,20 +37,21 @@ public class DirectorManagerImpl extends SubsidyAbstractManager {
             if(userRelation!=null) {
                 //查找上级
                 UserInfo userInfo = userInfoDao.get(new UserInfo().setUserId(userRelation.getRefereeUserId()));
-                //上级用户级别
-                UserLevelEnum userLevel = UserLevelEnum.valueOf(userInfo.getUserLevel());
-                switch ( userLevel){
-                    //理事
-                    case DIRECTOR:
-                        //理事服务补贴
-                        grantSubsidy(AccountDetailTypeEnum.DIRECTOR_SERVICE,userInfo, orders.getOrderNo());
-                        break;
-                    //常任理事
-                    case STANDING_DIRECTOR:
-                        grantSubsidy(AccountDetailTypeEnum.STANDING_DIRECTOR_DIRECTOR_MANAGER,userInfo, orders.getOrderNo());
-                        break;
+                if(userInfo.getUserLevel() >= upUserInfo.getUserLevel()){
+                    //上级用户级别
+                    UserLevelEnum userLevel = UserLevelEnum.valueOf(userInfo.getUserLevel());
+                    switch (userLevel){
+                        //理事
+                        case DIRECTOR:
+                            //理事服务补贴
+                            grantSubsidy(AccountDetailTypeEnum.DIRECTOR_SERVICE,userInfo, orders.getOrderNo());
+                            break;
+                        //常任理事
+                        case STANDING_DIRECTOR:
+                            grantSubsidy(AccountDetailTypeEnum.STANDING_DIRECTOR_DIRECTOR_MANAGER,userInfo, orders.getOrderNo());
+                            break;
+                    }
                 }
             }
-
     }
 }

@@ -12,13 +12,6 @@
     <artifactId>mars-service</artifactId>
     <name>service::服务提供</name>
 
-    <properties>
-        <maven.spring.boot.starter.data.redis.version>1.5.9.RELEASE</maven.spring.boot.starter.data.redis.version>
-        <maven.mybatis.spring.boot.version>1.3.1</maven.mybatis.spring.boot.version>
-        <maven.mysql.driver.version>5.1.30</maven.mysql.driver.version>
-        <maven.oracle.driver.version>11.2.0.1.0</maven.oracle.driver.version>
-        <maven.druid.version>1.0.14</maven.druid.version>
-    </properties>
     <dependencies>
         <dependency>
             <groupId>org.xteam.plus</groupId>
@@ -69,7 +62,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
-            <version>${maven.spring.boot.starter.data.redis.version}</version>
         </dependency>
         <!--druid-->
         <dependency>
@@ -92,66 +84,6 @@
         </dependency>
 
     </dependencies>
-
-    <dependencyManagement>
-        <dependencies>
-            <!-- Spring Cloud Netflix 依赖 -->
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-netflix</artifactId>
-                <version>1.3.1.RELEASE</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
-
-    <profiles>
-        <profile>
-            <id>develop</id>
-            <properties>
-                <!-- euerka注册中心地址-->
-                <mvn.spring.cloud.euerka.server>http://localhost:8888/eureka/</mvn.spring.cloud.euerka.server>
-                <!--数据库连接-->
-                <mvn.jdbc.url><![CDATA[jdbc:mysql://localhost:3306/mars?useUnicode=true&characterEncoding=utf-8]]></mvn.jdbc.url>
-                <mvn.jdbc.user>mars</mvn.jdbc.user>
-                <mvn.jdbc.pwd>mars</mvn.jdbc.pwd>
-                <!--日志输出目录-->
-                <mvn.log.path>d:/logs</mvn.log.path>
-                <mvn.log.level>DEBUG</mvn.log.level>
-            </properties>
-        </profile>
-        <profile>
-            <id>test</id>
-            <properties>
-                <!-- euerka注册中心地址-->
-                <mvn.spring.cloud.euerka.server>http://localhost:8888/eureka/</mvn.spring.cloud.euerka.server>
-                <!--数据库连接-->
-                <mvn.jdbc.url><![CDATA[jdbc:mysql://localhost:3306/mars?useUnicode=true&characterEncoding=utf-8]]></mvn.jdbc.url>
-                <mvn.jdbc.user>mars</mvn.jdbc.user>
-                <mvn.jdbc.pwd>mars</mvn.jdbc.pwd>
-                <!--日志输出目录-->
-                <mvn.log.path>/export/Logs/mars.local</mvn.log.path>
-                <mvn.log.level>DEBUG</mvn.log.level>
-            </properties>
-        </profile>
-        <profile>
-            <id>production</id>
-            <properties>
-                <!-- euerka注册中心地址-->
-                <mvn.spring.cloud.euerka.server>http://172.31.204.15:8888/eureka/</mvn.spring.cloud.euerka.server>
-                <!--数据库连接-->
-                <mvn.jdbc.url><![CDATA[jdbc:mysql://172.31.204.16:3306/mars?useUnicode=true&characterEncoding=utf-8]]></mvn.jdbc.url>
-                <mvn.jdbc.user>root</mvn.jdbc.user>
-                <mvn.jdbc.pwd>uuZd2xlHeWJorTkC</mvn.jdbc.pwd>
-                <!--日志输出目录-->
-                <mvn.log.path>/export/Logs/mars.local</mvn.log.path>
-                <mvn.log.level>INFO</mvn.log.level>
-            </properties>
-        </profile>
-    </profiles>
-
 
     <build>
         <plugins>
