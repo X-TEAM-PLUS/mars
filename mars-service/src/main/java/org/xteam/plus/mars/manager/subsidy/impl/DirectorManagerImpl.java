@@ -37,7 +37,6 @@ public class DirectorManagerImpl extends SubsidyAbstractManager {
             if(userRelation!=null) {
                 //查找上级
                 UserInfo userInfo = userInfoDao.get(new UserInfo().setUserId(userRelation.getRefereeUserId()));
-                if(userInfo.getUserLevel() >= upUserInfo.getUserLevel()){
                     //上级用户级别
                     UserLevelEnum userLevel = UserLevelEnum.valueOf(userInfo.getUserLevel());
                     switch (userLevel){
@@ -52,6 +51,5 @@ public class DirectorManagerImpl extends SubsidyAbstractManager {
                             break;
                     }
                 }
-            }
     }
 }
