@@ -47,21 +47,21 @@ public class SocialWorkerManagerImpl extends SubsidyAbstractManager {
                 case DIRECTOR:
                     //理事社工管理补贴
                     grantSubsidy(AccountDetailTypeEnum.DIRECTOR_SOCIAL_MANAGER, userInfo, orders.getOrderNo());
-                    //查找更上级
-                    UserRelation superUserRelation = userRelationDao.getByUserId(new UserRelation().setUserId(userInfo.getUserId()));
-                    if(superUserRelation!=null){
-                        UserInfo superUserInfo = userInfoDao.get(new UserInfo().setUserId(superUserRelation.getRefereeUserId()));
-                        switch (UserLevelEnum.valueOf(superUserInfo.getUserLevel())){
-                            case DIRECTOR:
-                                //理事服务补贴
-                                grantSubsidy(AccountDetailTypeEnum.DIRECTOR_SERVICE, superUserInfo, orders.getOrderNo());
-                                break;
-                            case STANDING_DIRECTOR:
-                                //常务理事服务补贴
-                                grantSubsidy(AccountDetailTypeEnum.STANDING_DIRECTOR_SERVICE, superUserInfo, orders.getOrderNo());
-                                break;
-                        }
-                    }
+//                    //查找更上级
+//                    UserRelation superUserRelation = userRelationDao.getByUserId(new UserRelation().setUserId(userInfo.getUserId()));
+//                    if(superUserRelation!=null){
+//                        UserInfo superUserInfo = userInfoDao.get(new UserInfo().setUserId(superUserRelation.getRefereeUserId()));
+//                        switch (UserLevelEnum.valueOf(superUserInfo.getUserLevel())){
+//                            case DIRECTOR:
+//                                //理事服务补贴
+//                                grantSubsidy(AccountDetailTypeEnum.DIRECTOR_SERVICE, superUserInfo, orders.getOrderNo());
+//                                break;
+//                            case STANDING_DIRECTOR:
+//                                //常务理事服务补贴
+//                                grantSubsidy(AccountDetailTypeEnum.STANDING_DIRECTOR_SERVICE, superUserInfo, orders.getOrderNo());
+//                                break;
+//                        }
+//                    }
                     break;
                 //常任理事
                 case STANDING_DIRECTOR:
