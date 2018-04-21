@@ -93,6 +93,16 @@
                     and tmo.PRODUCT_NAME=#{productName,jdbcType=VARCHAR}
                     ]]>
             </if>
+            <if test="realName!=null and  realName!=''">
+                <![CDATA[
+                    and tmui.REAL_NAME LIKE CONCAT('%',#{realName,jdbcType=VARCHAR},'%')
+                    ]]>
+            </if>
+            <if test="mobileNo!=null and mobileNo!=''">
+                <![CDATA[
+                    and tmui.MOBILE_NO = #{mobileNo,jdbcType=VARCHAR}
+                    ]]>
+            </if>
             <if test="created!=null ">
                 <![CDATA[
                         and tmo.CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')

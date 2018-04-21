@@ -617,7 +617,12 @@
         </if>
         <if test="userinfo.nickName!=null and  userinfo.nickName!=''">
             <![CDATA[
-                    and TUI.NICK_NAME=#{userinfo.nickName,jdbcType=VARCHAR}
+                    and TUI.NICK_NAME LIKE CONCAT('%',#{userinfo.nickName,jdbcType=VARCHAR},'%')
+                    ]]>
+        </if>
+        <if test="userinfo.realName!=null and  userinfo.realName!=''">
+            <![CDATA[
+                    and TUI.REAL_NAME LIKE CONCAT('%',#{userinfo.realName,jdbcType=VARCHAR},'%')
                     ]]>
         </if>
         <if test="userinfo.registerSource!=null and userinfo.registerSource!=''">

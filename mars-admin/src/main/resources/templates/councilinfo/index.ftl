@@ -50,19 +50,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="col-md-2 pull-right">
-                                <form id="councilInfoTableForm" onsubmit="init();return false;">
-                                    <div class="input-group">
-                                        <div class="input-icon">
-                                            <i class="icon-magnifier"></i>
-                                            <input class="form-control" type="text" name="councilId" placeholder="理事会ID"/>
-                                        </div>
-                                        <span class="input-group-btn">
-												<button class="btn btn-success" type="submit"><i class="fa fa-arrow-left fa-fw"/></i> 搜索</button>
-												</span>
-                                    </div>
-                                </form>
-                            </div>
+
                         </div>
                     </div>
                     <table class="table table-striped table-bordered table-hover ">
