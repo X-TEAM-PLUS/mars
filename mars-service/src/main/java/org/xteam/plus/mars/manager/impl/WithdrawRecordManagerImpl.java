@@ -6,9 +6,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.xteam.plus.mars.common.JsonUtils;
 import org.xteam.plus.mars.common.Logging;
+import org.xteam.plus.mars.dao.AccountBalanceDao;
 import org.xteam.plus.mars.dao.AccountDetailDao;
 import org.xteam.plus.mars.dao.UserInfoDao;
 import org.xteam.plus.mars.dao.WithdrawRecordDao;
+import org.xteam.plus.mars.domain.AccountBalance;
 import org.xteam.plus.mars.domain.AccountDetail;
 import org.xteam.plus.mars.domain.UserInfo;
 import org.xteam.plus.mars.domain.WithdrawRecord;
@@ -41,6 +43,9 @@ public class WithdrawRecordManagerImpl extends Logging implements WithdrawRecord
 
     @Resource
     private AccountDetailDao accountDetailDao;
+
+    @Resource
+    private AccountBalanceDao accountBalanceDao;
 
     @Resource
     public UserInfoDao userInfoDao;
@@ -110,17 +115,29 @@ public class WithdrawRecordManagerImpl extends Logging implements WithdrawRecord
                     withdrawrecord.setPayTime(new Date());
                     withdrawrecord.setUpdated(new Date());
                     withdrawrecord.setStatus(WithDrawStatusName.Pay.getCode());
-                    // 插入账户明细表
-                    AccountDetail accountDetail = new AccountDetail();
-                    accountDetail.setAmount(withdrawrecord.getAmount());
-                    accountDetail.setServiceNo(withdrawrecord.getId());
-                    accountDetail.setCreated(new Date());
-                    accountDetail.setUserId(withdrawrecord.getUserId());
-                    accountDetail.setBusinesseType(AccountDetailTypeEnum.WITHDRAWALS.getCode());
-                    accountDetail.setOperationDirection(1);
-                    accountDetailDao.insert(accountDetail);
 
-                    return withdrawRecordDao.update(withdrawrecord);
+                    //查询账户余额
+                    AccountBalance  accountBalance = accountBalanceDao.get(new AccountBalance().setUserId(withdrawrecord.getUserId()));
+                    //查余额
+                    if(accountBalance!=null &&
+                            withdrawrecord.getAmount().compareTo(accountBalance.getBalanceAmount())!=1 ){
+                        //更新余额
+                        accountBalance.setBalanceAmount(accountBalance.getBalanceAmount().subtract(withdrawrecord.getAmount()));
+                        accountBalance.setUpdated(new Date());
+
+                        // 插入账户明细表
+                        AccountDetail accountDetail = new AccountDetail();
+                        accountDetail.setAmount(withdrawrecord.getAmount());
+                        accountDetail.setServiceNo(withdrawrecord.getId());
+                        accountDetail.setCreated(new Date());
+                        accountDetail.setUserId(withdrawrecord.getUserId());
+                        accountDetail.setBusinesseType(AccountDetailTypeEnum.WITHDRAWALS.getCode());
+                        accountDetail.setOperationDirection(2);
+                        accountDetailDao.insert(accountDetail);
+                        return withdrawRecordDao.update(withdrawrecord);
+                    }else{
+                        throw new Exception("账户余额记录不存在!");
+                    }
                 } else {
                     withdrawrecord.setErrorInfo(payPocketMoneyResult.getErrCodeDes());
                     withdrawrecord.setStatus(WithDrawStatusName.PayError.getCode());
