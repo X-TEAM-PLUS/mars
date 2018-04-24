@@ -6,14 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.xteam.plus.mars.common.JsonUtils;
 import org.xteam.plus.mars.common.Logging;
-import org.xteam.plus.mars.dao.AccountBalanceDao;
-import org.xteam.plus.mars.dao.AccountDetailDao;
-import org.xteam.plus.mars.dao.UserInfoDao;
-import org.xteam.plus.mars.dao.WithdrawRecordDao;
-import org.xteam.plus.mars.domain.AccountBalance;
-import org.xteam.plus.mars.domain.AccountDetail;
-import org.xteam.plus.mars.domain.UserInfo;
-import org.xteam.plus.mars.domain.WithdrawRecord;
+import org.xteam.plus.mars.dao.*;
+import org.xteam.plus.mars.domain.*;
 import org.xteam.plus.mars.manager.WithdrawRecordManager;
 import org.xteam.plus.mars.type.AccountDetailTypeEnum;
 import org.xteam.plus.mars.type.WithDrawStatusName;
@@ -53,6 +47,8 @@ public class WithdrawRecordManagerImpl extends Logging implements WithdrawRecord
     @javax.annotation.Resource
     private WithdrawRecordDao withdrawRecordDao;
 
+    @Resource
+    private MessageDao messageDao;
 
     @Override
     public WithdrawRecord get(WithdrawRecord withdrawRecord) throws Exception {
@@ -108,22 +104,24 @@ public class WithdrawRecordManagerImpl extends Logging implements WithdrawRecord
             throw new Exception("不存在的用户进行申请!");
         } else {
             try {
-                PayPocketMoneyResult payPocketMoneyResult = wxService.payForAnotherPocketMoney(userInfo.getWxOpenid(), "FORCE_CHECK", withdrawrecord.getBankAccountName(), String.valueOf(withdrawrecord.getAmount().intValue()), "早安工程发放补贴");
-                logInfo("代付返回结果:" + JsonUtils.toJSON(payPocketMoneyResult));
-                if (payPocketMoneyResult.getResultCode().equals("SUCCESS")) {
-                    withdrawrecord.setTransactionNo(payPocketMoneyResult.getPaymentNo());
-                    withdrawrecord.setPayTime(new Date());
-                    withdrawrecord.setUpdated(new Date());
-                    withdrawrecord.setStatus(WithDrawStatusName.Pay.getCode());
+                //查询账户余额
+                AccountBalance accountBalance = accountBalanceDao.get(new AccountBalance().setUserId(withdrawrecord.getUserId()));
+                //查余额
+                if (accountBalance != null &&
+                        withdrawrecord.getAmount().compareTo(accountBalance.getBalanceAmount()) != 1) {
 
-                    //查询账户余额
-                    AccountBalance  accountBalance = accountBalanceDao.get(new AccountBalance().setUserId(withdrawrecord.getUserId()));
-                    //查余额
-                    if(accountBalance!=null &&
-                            withdrawrecord.getAmount().compareTo(accountBalance.getBalanceAmount())!=1 ){
+                    PayPocketMoneyResult payPocketMoneyResult = wxService.payForAnotherPocketMoney(userInfo.getWxOpenid(), "FORCE_CHECK", withdrawrecord.getBankAccountName(), String.valueOf(withdrawrecord.getAmount().intValue()), "早安工程发放补贴");
+                    logInfo("代付返回结果:" + JsonUtils.toJSON(payPocketMoneyResult));
+                    if (payPocketMoneyResult.getResultCode().equals("SUCCESS")) {
+                        withdrawrecord.setTransactionNo(payPocketMoneyResult.getPaymentNo());
+                        withdrawrecord.setPayTime(new Date());
+                        withdrawrecord.setUpdated(new Date());
+                        withdrawrecord.setStatus(WithDrawStatusName.Pay.getCode());
+
                         //更新余额
                         accountBalance.setBalanceAmount(accountBalance.getBalanceAmount().subtract(withdrawrecord.getAmount()));
                         accountBalance.setUpdated(new Date());
+                        accountBalanceDao.update(accountBalance);
 
                         // 插入账户明细表
                         AccountDetail accountDetail = new AccountDetail();
@@ -134,18 +132,30 @@ public class WithdrawRecordManagerImpl extends Logging implements WithdrawRecord
                         accountDetail.setBusinesseType(AccountDetailTypeEnum.WITHDRAWALS.getCode());
                         accountDetail.setOperationDirection(2);
                         accountDetailDao.insert(accountDetail);
+
+                        //发送消息
+                        Message message =  new Message()
+                                .setUserId(withdrawrecord.getUserId())
+                                .setCreated(new Date())
+                                .setStatus(0)
+                                .setMessageTitle("提现成功。")
+                                .setMessageContent("已提现到您的微信钱包,提现金额是:"+withdrawrecord.getAmount())
+                                .setUpdated(new Date())
+                        ;
+                        messageDao.insert(message);
+
                         return withdrawRecordDao.update(withdrawrecord);
-                    }else{
-                        throw new Exception("账户余额记录不存在!");
+                    } else {
+                        withdrawrecord.setErrorInfo(payPocketMoneyResult.getErrCodeDes());
+                        withdrawrecord.setStatus(WithDrawStatusName.PayError.getCode());
+                        return withdrawRecordDao.update(withdrawrecord);
                     }
                 } else {
-                    withdrawrecord.setErrorInfo(payPocketMoneyResult.getErrCodeDes());
-                    withdrawrecord.setStatus(WithDrawStatusName.PayError.getCode());
-                    return withdrawRecordDao.update(withdrawrecord);
+                    throw new Exception("账户余额不足，打款失败!");
                 }
             } catch (WxErrorException wxError) {
                 withdrawrecord.setStatus(WithDrawStatusName.PayError.getCode());
-                logInfo("代付调用微信企业到零钱接口失败 失败原因 [" + wxError.getMessage() + "]", wxError);
+                logError("代付调用微信企业到零钱接口失败 失败原因 [" + wxError.getMessage() + "]", wxError);
                 return withdrawRecordDao.update(withdrawrecord);
             }
         }
