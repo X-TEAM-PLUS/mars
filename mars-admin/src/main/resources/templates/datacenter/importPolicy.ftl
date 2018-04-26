@@ -3,6 +3,10 @@
 <head>
 <#import '/common/common.ftl' as commonMacro>
 <@commonMacro.commonStyle />
+    <link href="${request.contextPath}/static/assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css"
+          rel="stylesheet" type="text/css"/>
+    <link href="${request.contextPath}/static/assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css"
+          rel="stylesheet" type="text/css"/>
 </head>
 <body class="page-content">
 <!-- BEGIN PAGE HEADER-->
@@ -52,27 +56,38 @@
                                 <form id="ordersTableForm" onsubmit="init();return false;">
                                     <div class="input-group">
                                         <div class="input-icon col-md-2">
-                                            <select id="cardType" name="status" class="form-control selectpicker" data-live-search="false" placeholder="订单状态" >
-                                                <option value="" >全部</option>
-                                                <option value="0"  >已失效</option>
-                                                <option value="0"  >未支付</option>
+                                            <select id="cardType" name="status" class="form-control selectpicker"
+                                                    data-live-search="false" placeholder="订单状态">
+                                                <option value="">全部</option>
+                                                <option value="0">已失效</option>
+                                                <option value="0">未支付</option>
                                                 <option value="1">已支付</option>
                                             </select>
                                         </div>
-                                        <div class="input-icon date-picker input-daterange col-md-2 " data-date-format="yyyy-mm-dd">
+                                        <div class="input-icon date-picker input-daterange col-md-2 "
+                                             data-date-format="yyyy-mm-dd">
                                             <i class="fa fa-calendar "></i>
-                                            <input type="text" name="payTime" class="form-control " readonly="" placeholder="支付开始日期">
+                                            <input type="text" name="payTime" class="form-control " readonly=""
+                                                   placeholder="支付开始日期">
                                         </div>
-                                        <div class="input-icon date-picker input-daterange col-md-2 " data-date-format="yyyy-mm-dd">
+                                        <div class="input-icon date-picker input-daterange col-md-2 "
+                                             data-date-format="yyyy-mm-dd">
                                             <i class="fa fa-calendar "></i>
-                                            <input type="text" name="payTime" class="form-control " readonly="" placeholder="支付截止日期">
+                                            <input type="text" name="payTime" class="form-control " readonly=""
+                                                   placeholder="支付截止日期">
                                         </div>
-                                        <div class="input-icon col-md-1" >
-                                            <button class="btn btn-success" type="submit"><i class="glyphicon glyphicon-search"/></i> 搜索</button>
+                                        <div class="input-icon col-md-1">
+                                            <button class="btn btn-success" type="submit"><i
+                                                    class="glyphicon glyphicon-search"/></i> 搜索
+                                            </button>
                                         </div>
-                                        <span class="input-group-btn">
-												<button class="btn btn-success" type="submit"><i class="glyphicon glyphicon-open"/></i> 保险导入</button>
-												</span>
+                                        <div class="input-icon col-md-1">
+                                        <span class="btn btn-success fileinput-button">
+                                            <i class="fa fa-plus"></i>
+                                            <span>保险导入</span>
+                                            <input name="files[]" multiple="" type="file"> </span>
+                                        </div>
+
                                     </div>
                                 </form>
                             </div>
@@ -101,7 +116,21 @@
         </div>
     </div>
 </div>
+
 <@commonMacro.commonScript />
+<script src="${request.contextPath}/static/assets/global/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js" type="text/javascript"></script>
+<script src="${request.contextPath}/static/assets/global/plugins/jquery-file-upload/js/vendor/tmpl.min.js" type="text/javascript"></script>
+<script src="${request.contextPath}/static/assets/global/plugins/jquery-file-upload/js/vendor/load-image.min.js" type="text/javascript"></script>
+<script src="${request.contextPath}/static/assets/global/plugins/jquery-file-upload/js/vendor/canvas-to-blob.min.js" type="text/javascript"></script>
+<script src="${request.contextPath}/static/assets/global/plugins/jquery-file-upload/blueimp-gallery/jquery.blueimp-gallery.min.js" type="text/javascript"></script>
+<script src="${request.contextPath}/static/assets/global/plugins/jquery-file-upload/js/jquery.iframe-transport.js" type="text/javascript"></script>
+<script src="${request.contextPath}/static/assets/global/plugins/jquery-file-upload/js/jquery.fileupload.js" type="text/javascript"></script>
+<script src="${request.contextPath}/static/assets/global/plugins/jquery-file-upload/js/jquery.fileupload-process.js" type="text/javascript"></script>
+<script src="${request.contextPath}/static/assets/global/plugins/jquery-file-upload/js/jquery.fileupload-image.js" type="text/javascript"></script>
+<script src="${request.contextPath}/static/assets/global/plugins/jquery-file-upload/js/jquery.fileupload-audio.js" type="text/javascript"></script>
+<script src="${request.contextPath}/static/assets/global/plugins/jquery-file-upload/js/jquery.fileupload-video.js" type="text/javascript"></script>
+<script src="${request.contextPath}/static/assets/global/plugins/jquery-file-upload/js/jquery.fileupload-validate.js" type="text/javascript"></script>
+<script src="${request.contextPath}/static/assets/global/plugins/jquery-file-upload/js/jquery.fileupload-ui.js"/>
 <script>
     function init() {
         $("#ordersTable").pagingGrid(
@@ -133,12 +162,38 @@
                 }
         );
     }
+
     //初始化
     init();
 
 </script>
 
-
+<script id="template-upload" type="text/x-tmpl"> {% for (var i=0, file; file=o.files[i]; i++) { %}
+                        <tr class="template-upload fade">
+                            <td>
+                                <span class="preview"></span>
+                            </td>
+                            <td>
+                                <p class="name">{%=file.name%}</p>
+                                <strong class="error text-danger label label-danger"></strong>
+                            </td>
+                            <td>
+                                <p class="size">Processing...</p>
+                                <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                    <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+                                </div>
+                            </td>
+                            <td> {% if (!i && !o.options.autoUpload) { %}
+                                <button class="btn blue start" disabled>
+                                    <i class="fa fa-upload"></i>
+                                    <span>Start</span>
+                                </button> {% } %} {% if (!i) { %}
+                                <button class="btn red cancel">
+                                    <i class="fa fa-ban"></i>
+                                    <span>Cancel</span>
+                                </button> {% } %} </td>
+                        </tr> {% } %}
+</script>
 </body>
 </html>
 

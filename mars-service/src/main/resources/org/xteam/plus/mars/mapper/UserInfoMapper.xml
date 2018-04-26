@@ -443,11 +443,11 @@
                 <if test="provinceName!=null ">
                     PROVINCE_NAME=#{provinceName,jdbcType=VARCHAR},
                 </if>
-                <if test="city!=null ">
-                    CITY=#{cityName,jdbcType=VARCHAR},
+                <if test="cityName!=null ">
+                    CITY_NAME=#{cityName,jdbcType=VARCHAR},
                 </if>
-                <if test="county!=null ">
-                    COUNTY=#{countyName,jdbcType=VARCHAR},
+                <if test="countyName!=null ">
+                    COUNTY_NAME=#{countyName,jdbcType=VARCHAR},
                 </if>
                 <if test="wxHeadPortrait!=null">
                     WX_HEAD_PORTRAIT=#{wxHeadPortrait,jdbcType=VARCHAR},

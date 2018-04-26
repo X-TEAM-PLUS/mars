@@ -610,7 +610,6 @@ function submitBuyCard(form) {
  * @param form
  */
 function buyCard() {
-    app.popup.open('.orderFormPopup', true);
     if (typeof WeixinJSBridge == "undefined") {
         app.dialog.alert("请在微信端内进行操作!", '信息提示');
         return false;
