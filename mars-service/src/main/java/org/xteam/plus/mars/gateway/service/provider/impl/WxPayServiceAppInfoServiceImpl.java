@@ -80,11 +80,11 @@ public class WxPayServiceAppInfoServiceImpl extends Logging implements GateWaySe
             if (wxPayJsApiReqVO.getOrderTypeEnum().getCode() == OrderTypeEnum.PLATFORM_STRAIGHT.getCode()) {
                 payOrderInfo = ordersManager.createStraightPinOrder(
                         userInfo.getUserId(), wxPayJsApiReqVO.getProductId(), BigDecimal.ONE, wxPayJsApiReqVO.getAddress(),
-                        wxPayJsApiReqVO.getContactsMobile(), wxPayJsApiReqVO.getCertificateOf(), wxPayJsApiReqVO.getUserRealName());
+                        wxPayJsApiReqVO.getContactsMobile(), wxPayJsApiReqVO.getCertificateOf(), wxPayJsApiReqVO.getUserRealName(), wxPayJsApiReqVO.getArea());
             } else {
                 payOrderInfo = ordersManager.createDistributionOrder(
                         userInfo.getUserId(), wxPayJsApiReqVO.getAddress(),
-                        wxPayJsApiReqVO.getCardNo(), wxPayJsApiReqVO.getCertificateOf(), wxPayJsApiReqVO.getUserRealName());
+                        wxPayJsApiReqVO.getCardNo(), wxPayJsApiReqVO.getCertificateOf(), wxPayJsApiReqVO.getUserRealName(), wxPayJsApiReqVO.getArea());
             }
 
             payOrderInfo.setTradeType("JSAPI");

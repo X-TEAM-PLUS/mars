@@ -26,8 +26,7 @@ var routes = [
     //开通
     {
         path: '/buyCard/',
-        url: './pages/buyCard.html',
-        name: 'buyCard',
+        componentUrl: './pages/buyCard.html',
     },
     {
         path: '/appLevel',

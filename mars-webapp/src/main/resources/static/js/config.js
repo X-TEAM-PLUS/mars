@@ -76,6 +76,8 @@ let InterFace = {
     ,GET_CHECK_RECORD_DETAIL:'cn.zaoangongcheng.api.gateway.security.user.checkRecord.detail'
     //获取用户二维码工作证
     ,GET_QR_CODE:'cn.zaoangongcheng.api.gateway.user.qrcode.get'
+    //获取地市信息
+    ,GET_AREA_INFO: 'cn.zaoangongcheng.api.gateway.area.detail'
 }
 
 /**

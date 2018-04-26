@@ -902,7 +902,6 @@ public class WxService implements IService {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        System.out.println(postResult);
 
         UnifiedOrderResult result = UnifiedOrderResult.fromXml(postResult);
         if (result.getReturnCode().equals("FAIL")) {

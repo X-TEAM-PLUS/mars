@@ -14,6 +14,7 @@ import org.xteam.plus.mars.manager.OrdersManager;
 import org.xteam.plus.mars.manager.subsidy.SubsidyManagerFactory;
 import org.xteam.plus.mars.type.*;
 import org.xteam.plus.mars.wx.bean.PayOrderInfo;
+import org.xteam.plus.mars.wx.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -109,7 +110,7 @@ public class OrdersManagerImpl extends Logging implements OrdersManager {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public PayOrderInfo createStraightPinOrder(BigDecimal userId, BigDecimal productId, BigDecimal number, String address, String contactsMobile, String certificateOf, String userRealName) throws Exception {
+    public PayOrderInfo createStraightPinOrder(BigDecimal userId, BigDecimal productId, BigDecimal number, String address, String contactsMobile, String certificateOf, String userRealName, String area) throws Exception {
         Orders orders = new Orders();
         if (userId == null) {
             throw new Exception("用户id不存在，不能生成订单!");
@@ -127,10 +128,10 @@ public class OrdersManagerImpl extends Logging implements OrdersManager {
             userInfo.setRealName(userRealName);
             userInfo.setIdNumber(certificateOf);
             userInfo.setUpdated(new Date());
-            // 回写用户数据
-            userInfoDao.update(userInfo);
         }
-
+        setArea(userInfo, area);
+        // 回写用户数据
+        userInfoDao.update(userInfo);
         orders.setProductNum(1);
         orders.setProductPrice(product.getAmount());
         orders.setOrderPrice(product.getAmount().multiply(BigDecimal.valueOf(orders.getProductNum())));
@@ -165,7 +166,7 @@ public class OrdersManagerImpl extends Logging implements OrdersManager {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public PayOrderInfo createDistributionOrder(BigDecimal userId, String address, BigDecimal cardNo, String certificateOf, String userRealName) throws Exception {
+    public PayOrderInfo createDistributionOrder(BigDecimal userId, String address, BigDecimal cardNo, String certificateOf, String userRealName, String area) throws Exception {
         String buyCardNoLockKey = WxPayServiceAppInfoServiceImpl.REDIS_TEMP_OATH_KEY + cardNo.toString();
         if (stringRedisTemplate.opsForValue().get(buyCardNoLockKey) != null) {
             throw new Exception("该卡已被锁定，可能是已被购买或其它用户正在购买中.!");
@@ -202,10 +203,10 @@ public class OrdersManagerImpl extends Logging implements OrdersManager {
             userInfo.setRealName(userRealName);
             userInfo.setIdNumber(certificateOf);
             userInfo.setUpdated(new Date());
-            // 回写用户数据
-            userInfoDao.update(userInfo);
         }
-
+        setArea(userInfo, area);
+        // 回写用户数据
+        userInfoDao.update(userInfo);
 
         Orders orders = new Orders();
         orders.setProductNum(1);
@@ -441,7 +442,7 @@ public class OrdersManagerImpl extends Logging implements OrdersManager {
 
         //记录平台佣金明细
         commissionDetailDao.insert(new CommissionDetail()
-        .setCommissionAmount(CommissionDetailTypeEnum.SALE_HEART_CARD.getAmount())
+                .setCommissionAmount(CommissionDetailTypeEnum.SALE_HEART_CARD.getAmount())
                 .setCardNo(userHealthCard.getCardNo())
                 .setOrdreNo(userHealthCard.getCardNo())
                 .setCommissionType(CommissionDetailTypeEnum.SALE_HEART_CARD.getCode())
@@ -474,5 +475,16 @@ public class OrdersManagerImpl extends Logging implements OrdersManager {
         calendar.setTime(date);
         calendar.add(calendar.YEAR, product.getSurvivalPeriodNum());//把日期往后增加一年.整数往后推,负数往前移动
         return calendar.getTime();
+    }
+
+    private void setArea(UserInfo userInfo, String area) {
+        if (!StringUtils.isEmpty(area)) {
+            String areas[] = area.split(",");
+            if (areas.length == 3) {
+                userInfo.setProvinceName(areas[0]);
+                userInfo.setCityName(areas[1]);
+                userInfo.setCountyName(areas[2]);
+            }
+        }
     }
 }

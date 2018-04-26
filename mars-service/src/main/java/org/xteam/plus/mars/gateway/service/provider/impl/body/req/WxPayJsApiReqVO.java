@@ -12,6 +12,8 @@ public class WxPayJsApiReqVO implements Serializable {
     private BigDecimal number;
     // 收获地址
     private String address;
+    // 区域
+    private String area;
     // 联系方式
     private String contactsMobile;
     // 订单类型
@@ -86,5 +88,13 @@ public class WxPayJsApiReqVO implements Serializable {
 
     public void setUserRealName(String userRealName) {
         this.userRealName = userRealName;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 }

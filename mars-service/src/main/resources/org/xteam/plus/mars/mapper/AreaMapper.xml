@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.xteam.plus.mars.dao.AreaDao">
+    <resultMap id="BaseResultMap" type="org.xteam.plus.mars.domain.Area">
+        <result column="NAME" property="name" jdbcType="VARCHAR"/>
+        <result column="PARENT_CODE" property="parentCode" jdbcType="INTEGER"/>
+        <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
+        <result column="AREA_ORDER" property="areaOrder" jdbcType="INTEGER"/>
+        <result column="AREA_TYPE" property="areaType" jdbcType="INTEGER"/>
+        <result column="OPERATOR" property="operator" jdbcType="VARCHAR"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="DATA_TYPE" property="dataType" jdbcType="INTEGER"/>
+        <result column="CODE" property="code" jdbcType="INTEGER"/>
+        <result column="CODE_VALUE" property="codeValue" jdbcType="VARCHAR"/>
+        <result column="CODE_NAME" property="codeName" jdbcType="VARCHAR"/>
+    </resultMap>
+    <!--删除记录-->
+    <delete id="delete" parameterType="org.xteam.plus.mars.domain.Area">
+        delete from T_MANAGE_AREA where CODE=#{code,jdbcType=INTEGER}
+    </delete>
+
+    <!--插入记录-->
+    <insert id="insert" parameterType="org.xteam.plus.mars.domain.Area">
+        insert into T_MANAGE_AREA ( ID
+        , NAME
+        , PARENT_CODE
+        , UPDATED
+        , AREA_ORDER
+         , AREA_TYPE
+        , OPERATOR
+        , CREATED
+        , DATA_TYPE
+        , CODE
+        )values(#{id,jdbcType=VARCHAR}
+        , #{name,jdbcType=VARCHAR}
+        , #{parentCode,jdbcType=INTEGER}
+        , #{updated,jdbcType=TIMESTAMP}
+        , #{areaOrder,jdbcType=INTEGER}
+         , #{areaType,jdbcType=INTEGER}
+        , #{operator,jdbcType=VARCHAR}
+        , #{created,jdbcType=TIMESTAMP}
+        , #{dataType,jdbcType=INTEGER}
+        , #{code,jdbcType=INTEGER}
+        )
+    </insert>
+
+    <!--更新记录-->
+    <update id="update" parameterType="org.xteam.plus.mars.domain.Area">
+        update T_MANAGE_AREA set NAME=#{name,jdbcType=VARCHAR}
+        , PARENT_CODE=#{parentCode,jdbcType=INTEGER}
+        , UPDATED=#{updated,jdbcType=TIMESTAMP}
+        , AREA_ORDER=#{areaOrder,jdbcType=INTEGER}
+         , AREA_TYPE=#{areaType,jdbcType=INTEGER}
+        , OPERATOR=#{operator,jdbcType=VARCHAR}
+        , DATA_TYPE=#{dataType,jdbcType=INTEGER}
+        , CODE=#{code,jdbcType=INTEGER}
+        where CODE=#{code,jdbcType=INTEGER}
+    </update>
+
+    <!--查询单条记录-->
+    <select id="get" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.Area">
+        select NAME
+        , PARENT_CODE
+        , UPDATED
+        , AREA_ORDER
+        ,AREA_TYPE
+        , OPERATOR
+        , CREATED
+        , DATA_TYPE
+        , CODE
+        from T_MANAGE_AREA where CODE=#{code,jdbcType=INTEGER}
+    </select>
+
+    <!--查询记录-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select NAME
+        , PARENT_CODE
+        , UPDATED
+        , AREA_ORDER
+        ,AREA_TYPE
+        , OPERATOR
+        , CREATED
+        , DATA_TYPE
+        , CODE
+        from T_MANAGE_AREA
+        ORDER  BY AREA_TYPE, CODE,CREATED
+    </select>
+
+    <!--查询记录-->
+    <select id="query" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.Area">
+        select NAME
+        , PARENT_CODE
+        , UPDATED
+        , AREA_ORDER
+        ,AREA_TYPE
+        , OPERATOR
+        , CREATED
+        , DATA_TYPE
+        , CODE
+        from T_MANAGE_AREA
+        <where>
+            <if test="name!= null and name!= ''">
+                <![CDATA[   and NAME = #{name,jdbcType=VARCHAR}]]>
+            </if>
+            <if test="parentCode!= null and parentCode!= ''">
+                <![CDATA[   and PARENT_CODE = #{parentCode,jdbcType=VARCHAR}]]>
+            </if>
+            <if test="updated!= null and updated!= ''">
+                <![CDATA[   and UPDATED = #{updated,jdbcType=TIMESTAMP}]]>
+            </if>
+            <if test="areaOrder!= null and areaOrder!= ''">
+                <![CDATA[   and AREA_ORDER = #{areaOrder,jdbcType=INTEGER}]]>
+            </if>
+            <if test="areaType!= null and areaType!= ''">
+                <![CDATA[   and AREA_TYPE = #{areaType,jdbcType=INTEGER}]]>
+            </if>
+            <if test="operator!= null and operator!= ''">
+                <![CDATA[   and OPERATOR = #{operator,jdbcType=VARCHAR}]]>
+            </if>
+            <if test="created!= null and created!= ''">
+                <![CDATA[   and CREATED = #{created,jdbcType=TIMESTAMP}]]>
+            </if>
+            <if test="dataType!= null and dataType!= ''">
+                <![CDATA[   and DATA_TYPE = #{dataType,jdbcType=INTEGER}]]>
+            </if>
+            <if test="code!= null and code!= ''">
+                <![CDATA[   and CODE = #{code,jdbcType=VARCHAR}]]>
+            </if>
+        </where>
+        ORDER BY AREA_TYPE, CODE,CREATED
+    </select>
+    <select id="getAreaAllJson" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.Area">
+    SELECT TA. CODE,TA.AREA_TYPE,TA.PARENT_CODE,
+            GROUP_CONCAT(TA. CODE) AS CODE_VALUE ,
+            GROUP_CONCAT(TA. NAME) AS CODE_NAME FROM t_manage_area TA GROUP BY TA.PARENT_CODE;
+    </select>
+</mapper>

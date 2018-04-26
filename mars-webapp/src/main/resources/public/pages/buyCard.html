@@ -1,4 +1,5 @@
-<div class="page no-toolbar" data-name="buyCard-page">
+<template>
+    <div class="page no-toolbar" data-name="buyCard-page">
         <div class="navbar">
             <div class="navbar-inner">
                 <div class="left sliding">
@@ -65,7 +66,9 @@
                 <ul>
                     <li>
                         <div class="item-content">
-                            <div class="col-50">共计：<i class="fa fa-rmb"></i><s><label id="numberLabel_all">365</label></s></div>
+                            <div class="col-50">共计：<i class="fa fa-rmb"></i><s><label
+                                    id="numberLabel_all">365</label></s>
+                            </div>
                             <div class="col-50 " style="text-align: right;padding-right: 16px"></div>
                         </div>
                         <div class="row item-content">
@@ -75,7 +78,7 @@
                                 </label>
                                 <br>
                                 <label class="color-red font-14">
-                                    <input type="checkbox" name="demo-checkbox" value=""  checked="checked"/>已阅读并了解会员服务协议
+                                    <input type="checkbox" name="demo-checkbox" value="" checked="checked"/>已阅读并了解会员服务协议
                                 </label>
                             </div>
                         </div>
@@ -85,53 +88,128 @@
         </div>
         <div class="bottomfixed">
             <div class="row">
-                <div class="col-60" style="font-size: large;margin-top: 8px;margin-left: 8px"><b>总计：<i class="fa fa-rmb"></i> <label id="numberLabel_total"> 365 </label></b></div>
-                <div class="col-40"><a href="#" class="button button-big  button-fill button-raised active"  onclick="buyCard()">确认支付</a>
+                <div class="col-60" style="font-size: large;margin-top: 8px;margin-left: 8px"><b>总计：<i
+                        class="fa fa-rmb"></i> <label id="numberLabel_total"> 365 </label></b></div>
+                <div class="col-40"><a href="#" class="button button-big  button-fill button-raised active"
+                                       onclick="buyCard()">确认支付</a>
                 </div>
             </div>
         </div>
-    <div class="popup  orderFormPopup " style="height: auto">
-        <div class="block-title"><b>请填写您的真实身份信息和联系方式</b></div>
-        <form name="orderForm" id="orderForm">
-            <input type="hidden" name="productId" value="10001">
-        <div class="list inset">
-            <ul>
-                <li class="item-drawing item-input">
-                    <div class="item-inner">
-                        <div class="item-input-wrap">
-                            <input type="text" name="userRealName" placeholder="真实姓名" maxlength="20">
-                            <span class="input-clear-button"></span>
+        <div class="popup  orderFormPopup " style="height: auto">
+            <div class="block-title"><b>请填写您的真实身份信息和联系方式</b></div>
+            <form name="orderForm" id="orderForm">
+                <input type="hidden" name="productId" value="10001">
+                <div class="list inset">
+                    <ul>
+                        <li class="item-drawing item-input">
+                            <div class="item-inner">
+                                <div class="item-input-wrap">
+                                    <input type="text" name="userRealName" placeholder="真实姓名" maxlength="20">
+                                    <span class="input-clear-button"></span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="item-drawing item-input">
+                            <div class="item-inner">
+                                <div class="item-input-wrap">
+                                    <input type="text" name="certificateOf" placeholder="身份证号" maxlength="18">
+                                    <span class="input-clear-button"></span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="item-drawing item-input">
+                            <div class="item-inner">
+                                <div class="item-input-wrap">
+                                    <input type="text" name="address" placeholder="收货地址" maxlength="120">
+                                    <span class="input-clear-button"></span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="item-drawing item-input">
+                            <div class="item-inner">
+                                <div class="item-input-wrap">
+                                    <input type="text" placeholder="请选择区域" readonly="readonly"
+                                           id="demo-picker-dependent" name="area"/>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="row">
+                        <div class="col-50">
+                            <a href="#"
+                               class="button button-big button-fill button-raised active link popup-close">取消</a>
+                        </div>
+                        <div class="col-50">
+                            <a href="#" class="button button-big button-fill button-raised active"
+                               onclick="submitBuyCard('orderForm')">确定</a>
                         </div>
                     </div>
-                </li>
-                <li class="item-drawing item-input">
-                    <div class="item-inner">
-                        <div class="item-input-wrap">
-                            <input type="text" name="certificateOf" placeholder="身份证号" maxlength="18">
-                            <span class="input-clear-button"></span>
-                        </div>
-                    </div>
-                </li>
-                <li class="item-drawing item-input">
-                    <div class="item-inner">
-                        <div class="item-input-wrap">
-                            <input type="text" name="address" placeholder="收货地址" maxlength="120">
-                            <span class="input-clear-button"></span>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-            <div class="row">
-                <div class="col-50">
-                    <a href="#" class="button button-big button-fill button-raised active link popup-close" >取消</a>
                 </div>
-                <div class="col-50">
-                    <a href="#" class="button button-big button-fill button-raised active" onclick="submitBuyCard('orderForm')">确定</a>
-                </div>
-            </div>
+            </form>
         </div>
-        </form>
     </div>
-</div>
+</template>
+<script>
+    return {
+        on: {
+            pageInit: function (e, page) {
+                loadData(userInfo, "buy-userinfo", "show-buy-userinfo");
+                var params = {
+                    method: InterFace.GET_AREA_INFO,
+                    token: sessionStorage.getItem(TOKEN)
+                };
+                app.request.json(INTERFACE_URL, params, function (response) {
+                    logInfo("areaInfo : " + response.bizContent);
+                    var bizContent = JSON.parse(response.bizContent);
+                    var provinceCode = bizContent.province_code;
+                    var provinceName = bizContent.province_name;
+
+                    var defaultCityCode = bizContent["proinvce_code_" + provinceCode[0]];
+                    var defaultCityName = bizContent["proinvce_name_" + provinceCode[0]];
+
+                    var defaultAreaCode = bizContent["city_code_" + defaultCityCode[0]];
+                    var defaultAreaName = bizContent["city_name_" + defaultCityCode[0]];
+
+                    var pickerDependent = app.picker.create({
+                        inputEl: '#demo-picker-dependent',
+                        rotateEffect: true,
+                        formatValue: function (p, values, displayValues) {
+                            return values;
+                        },
+                        cols: [
+                            {
+                                textAlign: 'left',
+                                values: provinceCode,
+                                displayValues: provinceName,
+                                onChange: function (picker, country) {
+                                    if (picker.cols[1].replaceValues) {
+                                        picker.cols[1].replaceValues(bizContent["proinvce_code_" + country], bizContent["proinvce_name_" + country]);
+                                    }
+                                    if (picker.cols[2].replaceValues) {
+                                        picker.cols[2].replaceValues(bizContent["city_code_" + bizContent["proinvce_code_" + country][0]], bizContent["city_name_" + bizContent["proinvce_code_" + country][0]]);
+                                    }
+                                }
+                            },
+                            {
+                                values: defaultCityCode,
+                                displayValues: defaultCityName,
+                                onChange: function (picker, country) {
+                                    if (picker.cols[2].replaceValues) {
+                                        picker.cols[2].replaceValues(bizContent["city_code_" + country], bizContent["city_name_" + country]);
+                                    }
+                                }
+                            },
+                            {
+                                values: defaultAreaCode,
+                                displayValues: defaultAreaName,
+                            }
+                        ]
+                    });
+                });
+            }
+        },
+    }
+
+</script>
 
 

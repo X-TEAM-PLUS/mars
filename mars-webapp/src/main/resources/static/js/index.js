@@ -57,9 +57,7 @@ $$(document).on('page:init reinit popupOpen', '.page[data-name="home"]', functio
             }
     }
 });
-$$(document).on('page:init reinit', '.page[data-name="buyCard-page"]', function (e) {
-    loadData(userInfo, "buy-userinfo", "show-buy-userinfo");
-});
+
 $$(document).on('page:init reinit', '.page[data-name="question-page"]', function (e) {
     loadBizContent(INTERFACE_URL, {method: InterFace.QUESTION_LIST}, "question-list", "show-question-list");
 });

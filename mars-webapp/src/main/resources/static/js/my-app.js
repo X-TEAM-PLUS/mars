@@ -552,6 +552,10 @@ function submitBuyCard(form) {
             app.dialog.alert('请输入您的收货地址', '信息提示');
             return false;
         }
+        if (!bizContent.area){
+            app.dialog.alert('请选择区域', '信息提示');
+            return false;
+        }
         //如果有指定的卡号
         if (sessionStorage.hasOwnProperty("cardNo")){
             bizContent["cardNo"] = sessionStorage.getItem("cardNo");
@@ -606,6 +610,7 @@ function submitBuyCard(form) {
  * @param form
  */
 function buyCard() {
+    app.popup.open('.orderFormPopup', true);
     if (typeof WeixinJSBridge == "undefined") {
         app.dialog.alert("请在微信端内进行操作!", '信息提示');
         return false;
