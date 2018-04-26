@@ -20,7 +20,7 @@
         </li>
         <li>
             <i class="fa fa-cube"></i>
-            <a href="#">导入发货信息</a>
+            <a href="#">发货信息导出</a>
         </li>
 
     </ul>
@@ -34,7 +34,7 @@
             <div class="portlet box grey-cascade">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-cube"></i>导入发货信息
+                        <i class="fa fa-cube"></i>发货信息导入
                     </div>
                     <div class="tools">
                         <a href="javascript:;" class="collapse">
@@ -45,33 +45,26 @@
                         </a>
                     </div>
                 </div>
-                <div class="portlet-body" id="ordersTable">
+                <div class="portlet-body" id="deliveredTable">
                     <div class="table-toolbar">
                         <div class="row">
                             <div class="col-md-12 pull-right">
                                 <form id="ordersTableForm" onsubmit="init();return false;">
                                     <div class="input-group">
-                                        <div class="input-icon col-md-2">
-                                            <select id="cardType" name="status" class="form-control selectpicker" data-live-search="false" placeholder="订单状态" >
-                                                <option value="" >全部</option>
-                                                <option value="0"  >已失效</option>
-                                                <option value="0"  >未支付</option>
-                                                <option value="1">已支付</option>
-                                            </select>
+                                        <input type="hidden" name="status" value="1">
+                                        <div class="input-icon date-picker input-daterange col-md-2 " data-date-format="yyyy-mm-dd">
+                                            <i class="fa fa-calendar "></i>
+                                            <input type="text" name="startDate" class="form-control " readonly="" placeholder="发货开始日期">
                                         </div>
                                         <div class="input-icon date-picker input-daterange col-md-2 " data-date-format="yyyy-mm-dd">
                                             <i class="fa fa-calendar "></i>
-                                            <input type="text" name="payTime" class="form-control " readonly="" placeholder="支付开始日期">
-                                        </div>
-                                        <div class="input-icon date-picker input-daterange col-md-2 " data-date-format="yyyy-mm-dd">
-                                            <i class="fa fa-calendar "></i>
-                                            <input type="text" name="payTime" class="form-control " readonly="" placeholder="支付截止日期">
+                                            <input type="text" name="endDate" class="form-control " readonly="" placeholder="发货截止日期">
                                         </div>
                                         <div class="input-icon col-md-1" >
                                             <button class="btn btn-success" type="submit"><i class="glyphicon glyphicon-search"/></i> 搜索</button>
                                         </div>
                                         <span class="input-group-btn">
-												<button class="btn btn-success" type="button"><i class="glyphicon glyphicon-open"/></i> 发货信息导入</button>
+                                            <a class="btn btn-success" data-toggle="modal" href="#uploadDialog"> <i class="glyphicon glyphicon-open"/></i> 导入Excel </a>
 												</span>
                                     </div>
                                 </form>
@@ -81,15 +74,18 @@
                     <table class="table table-striped table-bordered table-hover ">
                         <thead>
                         <tr>
-                            <th column="cardNo">会员卡号</th>
-                            <th column="realName">收件人姓名</th>
-                            <th column="mobileNo">收件电话</th>
-                            <th column="provinceName">收件省份</th>
-                            <th column="cityName">收件城市</th>
-                            <th column="countyName">收件区县</th>
-                            <th column="linkAddress">收件人详细地址</th>
-                            <th column="waybillNo">单号</th>
-                            <th column="deliveredDate">发件日期</th>
+                            <th column="userHealthCard.cardNo">会员卡号</th>
+                            <th column="userInfo.realName">姓名</th>
+                            <th column="userInfo.mobileNo">手机号</th>
+                            <th column="userInfo.provinceName">省</th>
+                            <th column="userInfo.cityName">市</th>
+                            <th column="userInfo.countyName">区县</th>
+                            <th column="userInfo.linkAddress">联系地址</th>
+                            <th column="userHealthCard.cardActivateTime">激活日期</th>
+                            <th column="userHealthCard.cardDeadline">有效期</th>
+                            <th column="userHealthCard.sendCount">发货次数</th>
+                            <th column="deliveredFee">快递费</th>
+                            <th column="waybillNo">快递单号</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -102,34 +98,49 @@
             <!-- END EXAMPLE TABLE PORTLET-->
         </div>
     </div>
+
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="uploadDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="categoryModalTitle">导入发货Excel</h4>
+                </div>
+                <div class="modal-body">
+                    <!-- 添加类目body-->
+                    <!-- BEGIN FORM-->
+                    <form class="form-horizontal" id="modalForm" onsubmit="return false;">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">发货Excel文件:</label>
+                                <div class="col-md-7" id="logoDiv">
+                                    <div class="file-loading" id="initDiv">
+                                        <input id="mainImgFile" class="file" name="logoImg" type="file" data-min-file-count="1">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭窗口</button>
+                    <button type="button" class="btn btn-primary" id="modalFormButton">导入数据</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
 </div>
 <@commonMacro.commonScript />
 <script>
     function init() {
-        $("#ordersTable").pagingGrid(
+        $("#deliveredTable").pagingGrid(
                 {
-                    dataUrl: '/services/mars/orders/list'
+                    dataUrl: '/services/mars/deliveredinfo/list'
                     , pageSize: 10
                     , scroll: false
-                    , dockedItems: [{
-                        name: '修改'
-                        , iconClass: 'fa fa-edit'
-                        , action: '/mars/orders/edit'
-                        , confirm: false
-                        , parmaName: 'orderNo'
-                        , column: 'orderNo'
-                    }
-                        , {
-                            name: '删除'
-                            , iconClass: 'glyphicon glyphicon-trash'
-                            , action: '/services/mars/orders/delete'
-                            , ajax: true
-                            , confirm: true
-                            , parmaName: 'orderNo'
-                            , column: 'orderNo'
-                        }
-                    ],
-                    pagingtoolbar: {
+                    ,  pagingtoolbar: {
                         displayInfo: true
                     }
                 }
@@ -137,9 +148,16 @@
     }
     //初始化
     init();
+    //下载
+    $("#downloadButton").click(function () {
+        var downloadUrl = contextPath+'/services/mars/deliveredinfo/export';
+        var startDate =$("input[name$='startDate']").val();
+        var endDate = $("input[name$='endDate']").val();
+        var params = "startDate="+startDate +"&endDate="+endDate ;
+        $.download(downloadUrl,params,'post' );
+    });
 
 </script>
-
 
 </body>
 </html>

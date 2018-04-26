@@ -126,7 +126,8 @@ public class ExcelUtils {
                 for (int columNum = 0; columNum < dataIndexs.length; columNum++) {
                     cell = bodyRow.createCell(columNum);
                     cell.setCellStyle(bodyStyle);
-                    setCellValueByKey(data.get(rowNum), dataIndexs[columNum], workBook, cell,cellStyle);
+                    cell.setCellValue(getValue(data.get(rowNum),dataIndexs[columNum]));
+                    //setCellValueByKey(data.get(rowNum), dataIndexs[columNum], workBook, cell,cellStyle);
                 }
             }
         }
@@ -147,6 +148,23 @@ public class ExcelUtils {
             }
             return objectMap.get(fieldName).toString();
         }
+    }
+
+
+    public static String getValue(Object row, String fieldName){
+         String[] keys = fieldName.split("\\.");
+        Map<String, Object> objectMap = JsonUtils.transform(row, HashMap.class);
+        for(String key: keys){
+            Object value = objectMap.get(key);
+            if(value instanceof HashMap){
+                objectMap = (Map<String, Object>) value;
+            }else if(value!=null){
+                return value.toString();
+            }else{
+                break;
+            }
+        }
+        return  "";
     }
 
     /**
@@ -246,7 +264,7 @@ public class ExcelUtils {
                 String type = f.getType().toString();
                 if (f.getName().endsWith(key)) {
                     if (null == f.get(obj)) {
-                        cell.setCellValue("-");
+                        cell.setCellValue("");
                     } else if (type.endsWith("Date")) {
                         cell.setCellValue((Date) f.get(obj));
                         if(cellStyle != null){

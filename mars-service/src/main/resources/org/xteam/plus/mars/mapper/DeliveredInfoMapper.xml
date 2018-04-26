@@ -50,6 +50,28 @@
             <result column="CITY_NAME" property="cityName" jdbcType="DECIMAL"/>
             <result column="COUNTY_NAME" property="countyName" jdbcType="DECIMAL"/>
         </association>
+
+        <association property="userHealthCard" column="CARD_NO" javaType="org.xteam.plus.mars.domain.UserHealthCard">
+            <id column="CARD_NO" property="cardNo" jdbcType="DECIMAL"/>
+            <result column="SEND_PERIOD_MODE" property="sendPeriodMode" jdbcType="INTEGER"/>
+            <result column="SEND_PERIOD" property="sendPeriod" jdbcType="INTEGER"/>
+            <result column="SEND_TOTAL_COUNT" property="sendTotalCount" jdbcType="INTEGER"/>
+            <result column="SEND_COUNT" property="sendCount" jdbcType="INTEGER"/>
+            <result column="PRODUCT_ID" property="productId" jdbcType="DECIMAL"/>
+            <result column="CARD_DEADLINE" property="cardDeadline" jdbcType="TIMESTAMP"/>
+            <result column="PRODUCT_TYPE" property="productType" jdbcType="INTEGER"/>
+            <result column="STATUS" property="status" jdbcType="INTEGER"/>
+            <result column="SURVIVAL_PERIOD_MODE" property="survivalPeriodMode" jdbcType="INTEGER"/>
+            <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+            <result column="SURVIVAL_PERIOD_NUM" property="survivalPeriodNum" jdbcType="INTEGER"/>
+            <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
+            <result column="BUYER_USER_ID" property="buyerUserId" jdbcType="DECIMAL"/>
+            <result column="ACTIVATE_USER_ID" property="activateUserId" jdbcType="DECIMAL"/>
+            <result column="CARD_ACTIVATE_TIME" property="cardActivateTime" jdbcType="TIMESTAMP"/>
+            <result column="ORDER_NO" property="orderNo" jdbcType="DECIMAL"/>
+        </association>
+
+
     </resultMap>
 
     <!--公用选择列-->
@@ -74,85 +96,16 @@
     <!--公用查询条件-->
     <sql id="queryWhere">
         <where>
-            <if test="nextDate!=null ">
+            <if test="startDate!=null ">
                 <![CDATA[
-                        and NEXT_DATE>= str_to_date(CONCAT(date_format(#{nextDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
-                        and NEXT_DATE<= str_to_date(CONCAT(date_format(#{nextDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        and CREATED>= str_to_date(CONCAT(date_format(#{startDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
                         ]]>
             </if>
-            <if test="waybillNo!=null ">
+
+            <if test="endDate!=null ">
                 <![CDATA[
-                        and WAYBILL_NO=#{waybillNo,jdbcType=VARCHAR}
+                        and CREATED<= str_to_date(CONCAT(date_format(#{endDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
                         ]]>
-            </if>
-            <if test="deliveredId!=null ">
-                <![CDATA[
-                    and DELIVERED_ID=#{deliveredId,jdbcType=DECIMAL}
-                    ]]>
-            </if>
-            <if test="deliveredDate!=null ">
-                <![CDATA[
-                        and DELIVERED_DATE>= str_to_date(CONCAT(date_format(#{deliveredDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
-                        and DELIVERED_DATE<= str_to_date(CONCAT(date_format(#{deliveredDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
-                        ]]>
-            </if>
-            <if test="userId!=null ">
-                <![CDATA[
-                    and USER_ID=#{userId,jdbcType=DECIMAL}
-                    ]]>
-            </if>
-            <if test="created!=null ">
-                <![CDATA[
-                        and CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
-                        and CREATED<= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
-                        ]]>
-            </if>
-            <if test="address!=null and  address!=''">
-                <![CDATA[
-                    and ADDRESS=#{address,jdbcType=VARCHAR}
-                    ]]>
-            </if>
-            <if test="deliveredCount!=null ">
-                <![CDATA[
-                    and DELIVERED_COUNT=#{deliveredCount,jdbcType=INTEGER}
-                    ]]>
-            </if>
-            <if test="deliveredFee!=null ">
-                <![CDATA[
-                    and DELIVERED_FEE=#{deliveredFee,jdbcType=DECIMAL}
-                    ]]>
-            </if>
-            <if test="previousDate!=null ">
-                <![CDATA[
-                        and PREVIOUS_DATE>= str_to_date(CONCAT(date_format(#{previousDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
-                        and PREVIOUS_DATE<= str_to_date(CONCAT(date_format(#{previousDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
-                        ]]>
-            </if>
-            <if test="province!=null and  province!=''">
-                <![CDATA[
-                    and PROVINCE=#{province,jdbcType=VARCHAR}
-                    ]]>
-            </if>
-            <if test="updated!=null ">
-                <![CDATA[
-                        and UPDATED>= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
-                        and UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
-                        ]]>
-            </if>
-            <if test="city!=null and  city!=''">
-                <![CDATA[
-                    and CITY=#{city,jdbcType=VARCHAR}
-                    ]]>
-            </if>
-            <if test="area!=null and  area!=''">
-                <![CDATA[
-                    and AREA=#{area,jdbcType=VARCHAR}
-                    ]]>
-            </if>
-            <if test="status!=null and status!=''">
-                <![CDATA[
-                    and STATUS=#{status,jdbcType=DECIMAL}
-                    ]]>
             </if>
         </where>
     </sql>
@@ -389,5 +342,64 @@
         FROM
         T_MARS_DELIVERED_INFO TMDI
         LEFT JOIN T_MARS_USER_INFO TMUI ON TMDI.USER_ID = TMUI.USER_ID
+    </select>
+
+    <!--查询未发货的记录-->
+    <select id="queryExportData" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.DeliveredInfo">
+        select
+            tuhc.CARD_NO,
+            tmui.REAL_NAME,
+            tmui.MOBILE_NO,
+            tmui.PROVINCE,
+            tmui.CITY,
+            tmui.COUNTY,
+            tmui.LINK_ADDRESS,
+            tuhc.CARD_ACTIVATE_TIME,
+            tuhc.CARD_DEADLINE,
+            tuhc.SEND_COUNT,
+            14 as DELIVERED_FEE
+        from
+            t_mars_user_health_card tuhc
+        left join t_mars_user_info tmui on
+            tmui.USER_ID = tuhc.ACTIVATE_USER_ID
+        <where>
+            tuhc.STATUS = 1 and  tuhc.SEND_COUNT=0
+            <if test="startDate!=null ">
+                <![CDATA[
+                        and tuhc.CARD_ACTIVATE_TIME>= str_to_date(CONCAT(date_format(#{startDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+
+            <if test="endDate!=null ">
+                <![CDATA[
+                        and tuhc.CARD_ACTIVATE_TIME<= str_to_date(CONCAT(date_format(#{endDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+        </where>
+        limit #{start},#{limit}
+    </select>
+
+    <!--查询未发货的记录条数-->
+    <select id="queryExportDataCount" resultType="int" parameterType="org.xteam.plus.mars.domain.DeliveredInfo">
+        select
+        count(*)
+        from
+        t_mars_user_health_card tuhc
+        left join t_mars_user_info tmui on
+        tmui.USER_ID = tuhc.ACTIVATE_USER_ID
+        <where>
+            tuhc.STATUS = 1 and  tuhc.SEND_COUNT=0
+            <if test="startDate!=null ">
+                <![CDATA[
+                        and tuhc.CARD_ACTIVATE_TIME>= str_to_date(CONCAT(date_format(#{startDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+
+            <if test="endDate!=null ">
+                <![CDATA[
+                        and tuhc.CARD_ACTIVATE_TIME<= str_to_date(CONCAT(date_format(#{endDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+        </where>
     </select>
 </mapper>

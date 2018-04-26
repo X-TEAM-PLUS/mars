@@ -84,4 +84,19 @@ public interface DeliveredInfoDao {
      * @return List<DeliveredInfo>
      */
     public Integer queryForUserCount(DeliveredInfo deliveredInfo) throws Exception;
+
+    /**
+     * 查询要导出的数据
+     * @param deliveredinfo
+     * @return
+     */
+    List<DeliveredInfo> queryExportData(DeliveredInfo deliveredinfo);
+
+    /**
+     * 查询要导出的数据总记录数
+     * @param deliveredinfo
+     * @return
+     */
+    Integer queryExportDataCount(DeliveredInfo deliveredinfo);
+
 }

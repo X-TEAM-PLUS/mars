@@ -3,10 +3,15 @@ package org.xteam.plus.mars.service.provider;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.xteam.plus.mars.common.JsonResult;
+import org.xteam.plus.mars.common.excel.ExcelUtils;
 import org.xteam.plus.mars.domain.DeliveredInfo;
 import org.xteam.plus.mars.manager.DeliveredInfoManager;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 
@@ -20,6 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/mars/deliveredinfo")
 public class DeliveredInfoServiceProvider extends AbstractServiceProvider {
+    private static final String CHARSET= "UTF-8";
 
     @Resource
     private DeliveredInfoManager deliveredinfoManager;
@@ -170,10 +176,19 @@ public class DeliveredInfoServiceProvider extends AbstractServiceProvider {
     public JsonResult list(DeliveredInfo deliveredinfo) throws Exception {
         JsonResult jsonResult = new JsonResult();
         try {
-            List<DeliveredInfo> data = deliveredinfoManager.query(deliveredinfo);
-            // 设置结果集
-            jsonResult.put("list", data);
-            jsonResult.put("rowCount", deliveredinfoManager.queryCount(deliveredinfo));
+            List<DeliveredInfo> data =  null;
+            if(deliveredinfo.getStatus().intValue()==0){
+                data = deliveredinfoManager.queryExportData(deliveredinfo);
+                // 设置结果集
+                jsonResult.put("list", data);
+                jsonResult.put("rowCount", deliveredinfoManager.queryExportDataCount(deliveredinfo));
+            }else{
+                data = deliveredinfoManager.query(deliveredinfo);
+                // 设置结果集
+                jsonResult.put("list", data);
+                jsonResult.put("rowCount", deliveredinfoManager.queryCount(deliveredinfo));
+            }
+
             jsonResult.setSuccess(true);
         } catch (Exception e) {
             logError("查询异常", e);
@@ -198,5 +213,82 @@ public class DeliveredInfoServiceProvider extends AbstractServiceProvider {
             jsonResult.setSuccess(false);
         }
         return jsonResult;
+    }
+
+
+    /**
+     * 导出
+     *
+     * @param deliveredinfo
+     * @return
+     */
+    @RequestMapping(value = "/export")
+    public void export(HttpServletResponse response, DeliveredInfo deliveredinfo) throws Exception{
+        OutputStream out = null;
+        try{
+            //查询
+            deliveredinfo.setLimit(Integer.MAX_VALUE);
+            List<DeliveredInfo> data = deliveredinfoManager.queryExportData(deliveredinfo);
+            //下载文件名
+            String fileName ="发货信息(全部)数据.xlsx";
+            String sheetName = "全部";
+            if(deliveredinfo.getStartDate()!=null && deliveredinfo.getEndDate()!=null) {
+                sheetName = new SimpleDateFormat("yyyy年MM月dd日").format(deliveredinfo.getStartDate()) + "-" + new SimpleDateFormat("yyyy年MM月dd日").format(deliveredinfo.getEndDate());
+                fileName = "发货信息(" + sheetName + ")数据.xlsx";
+            }else if (deliveredinfo.getStartDate()!=null ){
+                sheetName ="从" + new SimpleDateFormat("yyyy年MM月dd日").format(deliveredinfo.getStartDate())+ "起";
+                fileName = "发货信息(" + sheetName + ")数据.xlsx";
+            }else if(deliveredinfo.getEndDate()!=null){
+                sheetName = "截止到"+new SimpleDateFormat("yyyy年MM月dd日").format(deliveredinfo.getStartDate())+ "";
+                fileName = "发货信息(" + sheetName + ")数据.xlsx";
+            }
+            // 设置响应参数
+            response.setCharacterEncoding(CHARSET);
+            response.setContentType("text/csv; charset=" + CHARSET);
+            response.setHeader("Content-disposition", "attachment; filename=" + new String(fileName.getBytes(CHARSET), "ISO8859-1"));
+            out = response.getOutputStream();
+            //表头
+            String[] header = {
+                    "会员卡号"
+                    ,"姓名"
+                    ,"手机号"
+                    ,"省"
+                    ,"市"
+                    ,"区县"
+                    ,"联系地址"
+                    ,"激活日期"
+                    ,"有效期"
+                    ,"发货次数"
+                    ,"快递费"
+            };
+            //获取dataIndex
+            String[] dataIndexs = {
+                    "userHealthCard.cardNo"
+                    ,"userInfo.realName"
+                    ,"userInfo.mobileNo"
+                    ,"userInfo.provinceName"
+                    ,"userInfo.cityName"
+                    ,"userInfo.countyName"
+                    ,"userInfo.linkAddress"
+                    ,"userHealthCard.cardActivateTime"
+                    ,"userHealthCard.cardDeadline"
+                    ,"userHealthCard.sendCount"
+                    ,"deliveredFee"
+            };
+            //导出
+            ExcelUtils.export(header,dataIndexs,data,out,sheetName);
+        }catch (Exception e){
+            logError("导出数据时异常", e);
+        }finally {
+            if(out != null){
+                try {
+                    out.flush();
+                    out.close();
+                } catch (IOException e) {
+                    logError("close BufferedOutputStream error:" ,e);
+                }
+
+            }
+        }
     }
 }

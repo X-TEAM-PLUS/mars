@@ -2,6 +2,7 @@ package org.xteam.plus.mars.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 
 /**
@@ -95,8 +96,8 @@ public class DeliveredInfo implements Serializable {
     private String area;
 
     /**
-     * 体检状态
-     * 0 未检测 1 检测中 2 已检测
+     * 状态
+     * 0 未发货 1已发货
      */
     private BigDecimal status;
 
@@ -104,6 +105,22 @@ public class DeliveredInfo implements Serializable {
      * 用户信息
      */
     private UserInfo userInfo;
+
+
+    /**
+     * 用户健康卡信息
+     */
+    private UserHealthCard userHealthCard;
+
+    /**
+     * 开始日期
+     */
+    private Date startDate;
+
+    /**
+     * 截止日期
+     */
+    private Date endDate;
 
 
     /**
@@ -426,5 +443,54 @@ public class DeliveredInfo implements Serializable {
 
     public void setUserInfo(UserInfo userInfo) {
         this.userInfo = userInfo;
+    }
+
+    /**
+     * 获取开始日期
+     *
+     * @return
+     */
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    /**
+     * 设置开始日期
+     *
+     * @param startDate
+     * @return
+     */
+    public DeliveredInfo setStartDate(Date startDate) {
+        this.startDate = startDate;
+        return this;
+    }
+
+    /**
+     * 获取截止日期
+     *
+     * @return
+     */
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    /**
+     * 设置截止日期
+     *
+     * @param endDate
+     * @return
+     */
+    public DeliveredInfo setEndDate(Date endDate) {
+        this.endDate = endDate;
+        return this;
+    }
+
+    public UserHealthCard getUserHealthCard() {
+        return userHealthCard;
+    }
+
+    public DeliveredInfo setUserHealthCard(UserHealthCard userHealthCard) {
+        this.userHealthCard = userHealthCard;
+        return this;
     }
 }

@@ -45,27 +45,20 @@
                         </a>
                     </div>
                 </div>
-                <div class="portlet-body" id="ordersTable">
+                <div class="portlet-body" id="deliveredTable">
                     <div class="table-toolbar">
                         <div class="row">
                             <div class="col-md-12 pull-right">
                                 <form id="ordersTableForm" onsubmit="init();return false;">
                                     <div class="input-group">
-                                        <div class="input-icon col-md-2">
-                                            <select id="cardType" name="status" class="form-control selectpicker" data-live-search="false" placeholder="订单状态" >
-                                                <option value="" >全部</option>
-                                                <option value="0"  >已失效</option>
-                                                <option value="0"  >未支付</option>
-                                                <option value="1">已支付</option>
-                                            </select>
+                                        <input type="hidden" name="status" value="0">
+                                        <div class="input-icon date-picker input-daterange col-md-2 " data-date-format="yyyy-mm-dd">
+                                            <i class="fa fa-calendar "></i>
+                                            <input type="text" name="startDate" class="form-control " readonly="" placeholder="激活开始日期">
                                         </div>
                                         <div class="input-icon date-picker input-daterange col-md-2 " data-date-format="yyyy-mm-dd">
                                             <i class="fa fa-calendar "></i>
-                                            <input type="text" name="payTime" class="form-control " readonly="" placeholder="支付开始日期">
-                                        </div>
-                                        <div class="input-icon date-picker input-daterange col-md-2 " data-date-format="yyyy-mm-dd">
-                                            <i class="fa fa-calendar "></i>
-                                            <input type="text" name="payTime" class="form-control " readonly="" placeholder="支付截止日期">
+                                            <input type="text" name="endDate" class="form-control " readonly="" placeholder="激活截止日期">
                                         </div>
                                         <div class="input-icon col-md-1" >
                                             <button class="btn btn-success" type="submit"><i class="glyphicon glyphicon-search"/></i> 搜索</button>
@@ -81,19 +74,17 @@
                     <table class="table table-striped table-bordered table-hover ">
                         <thead>
                         <tr>
-                            <th column="cardNo">会员卡号</th>
-                            <th column="realName">姓名</th>
-                            <th column="mobileNo">手机号</th>
-                            <th column="provinceName">省</th>
-                            <th column="cityName">市</th>
-                            <th column="countyName">区县</th>
-                            <th column="linkAddress">联系地址</th>
-                            <th column="cardActivateTime">激活日期</th>
-                            <th column="cardLifeTime">有效期</th>
-                            <th column="deliveredCount">发货次数</th>
-                            <th column="freight">快递费</th>
-                            <th column="previousDate">上一支试剂发货日期</th>
-                            <th column="nextDate">下一支试剂发货日期</th>
+                            <th column="userHealthCard.cardNo">会员卡号</th>
+                            <th column="userInfo.realName">姓名</th>
+                            <th column="userInfo.mobileNo">手机号</th>
+                            <th column="userInfo.provinceName">省</th>
+                            <th column="userInfo.cityName">市</th>
+                            <th column="userInfo.countyName">区县</th>
+                            <th column="userInfo.linkAddress">联系地址</th>
+                            <th column="userHealthCard.cardActivateTime">激活日期</th>
+                            <th column="userHealthCard.cardDeadline">有效期</th>
+                            <th column="userHealthCard.sendCount">发货次数</th>
+                            <th column="deliveredFee">快递费</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -110,9 +101,9 @@
 <@commonMacro.commonScript />
 <script>
     function init() {
-        $("#ordersTable").pagingGrid(
+        $("#deliveredTable").pagingGrid(
                 {
-                    dataUrl: '/services/mars/orders/list'
+                    dataUrl: '/services/mars/deliveredinfo/list'
                     , pageSize: 10
                     , scroll: false
                  ,  pagingtoolbar: {
@@ -125,10 +116,10 @@
     init();
     //下载
     $("#downloadButton").click(function () {
-        var downloadUrl = contextPath+'/bestlease/policyinfo/export';
-        var signBeginDate =$("input[name$='signBeginDate']").val();
-        var signEndDate = $("input[name$='endDate']").val();
-        var params = "signBeginDate="+signBeginDate +"&signEndDate="+signEndDate ;
+        var downloadUrl = contextPath+'/services/mars/deliveredinfo/export';
+        var startDate =$("input[name$='startDate']").val();
+        var endDate = $("input[name$='endDate']").val();
+        var params = "startDate="+startDate +"&endDate="+endDate ;
         $.download(downloadUrl,params,'post' );
     });
 
