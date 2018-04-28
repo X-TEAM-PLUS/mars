@@ -82,10 +82,9 @@
                                             </button>
                                         </div>
                                         <div class="input-icon col-md-1">
-                                        <span class="btn btn-success fileinput-button">
-                                            <i class="fa fa-plus"></i>
-                                            <span>保险导入</span>
-                                            <input name="uploadFile" id="uploadFile" type="file" onchange="uploadImport()"> </span>
+                                            <button class="btn btn-success" type="button"><i
+                                                    class="glyphicon glyphicon-search" onclick="goImport()"/></i> 导入
+                                            </button>
                                         </div>
 
                                     </div>
@@ -185,7 +184,9 @@
             }
         });
     }
-
+    function goImport() {
+        location.href='/mars/datacenter/importInsuranceUser';
+    }
     //初始化
     init();
 

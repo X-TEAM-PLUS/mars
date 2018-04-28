@@ -1,5 +1,6 @@
 package org.xteam.plus.mars.service.provider;
 
+import com.google.common.collect.Lists;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -8,13 +9,21 @@ import org.springframework.web.multipart.MultipartFile;
 import org.xteam.plus.mars.common.JsonResult;
 import org.xteam.plus.mars.common.excel.ExcelUtils;
 import org.xteam.plus.mars.domain.PolicyInfo;
+import org.xteam.plus.mars.domain.UserInfo;
+import org.xteam.plus.mars.domain.UserInsurance;
 import org.xteam.plus.mars.manager.PolicyInfoManager;
+import org.xteam.plus.mars.manager.UserInfoManager;
+import org.xteam.plus.mars.manager.UserInsuranceManager;
+import org.xteam.plus.mars.wx.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -31,6 +40,12 @@ public class PolicyInfoServiceProvider extends AbstractServiceProvider {
     private static final String CHARSET = "UTF-8";
     @Resource
     private PolicyInfoManager policyinfoManager;
+
+    @Resource
+    private UserInsuranceManager userInsuranceManager;
+
+    @Resource
+    private UserInfoManager userInfoManager;
 
     /**
      * 查询
@@ -133,29 +148,69 @@ public class PolicyInfoServiceProvider extends AbstractServiceProvider {
 
     @RequestMapping(value = "/uploadImport")
     @ResponseBody
-    public JsonResult uploadImport(@RequestParam(required = false) MultipartFile uploadFile) {
+    public JsonResult uploadImport(@RequestParam(required = false) MultipartFile uploadFile,
+                                   @RequestParam("insuranceProductNo") String insuranceProductNo) {
         JsonResult jsonResult = new JsonResult();
         try {
             if (uploadFile == null) {
                 throw new Exception("导出文件为空!");
             }
+            if (StringUtils.isEmpty(insuranceProductNo)) {
+                throw new Exception("保险产品编号，不能为空");
+            }
             //获取dataIndex
             String[] dataIndexs = {
                     "cardNo"
-                    , "realName"
-                    , "age"
-                    , "birthDate"
-                    , "idNumber"
+                    , "userName"
+                    , "holderIdNumber"
                     , "mobileNo"
-                    , "linkAddress"
-                    , "cardActivateTime"
-                    , "premium"
-                    , "cardLifeTime"
-                    , "payTimes"
+                    , "address"
+                    , "contractNo"
+                    , "acceptInsuranceDate"
             };
-            List<PolicyInfo> policyInfo = ExcelUtils.load(dataIndexs, PolicyInfo.class, uploadFile.getInputStream());
-            jsonResult.setMessage("导入成功  总导入"+policyInfo.size());
-            jsonResult.setSuccess(true);
+            List<HashMap> userInsurances = ExcelUtils.load(dataIndexs, HashMap.class, uploadFile.getInputStream());
+            if (userInsurances.isEmpty()) {
+                jsonResult.setMessage("导入异常,数据为空");
+                jsonResult.setSuccess(false);
+                return jsonResult;
+            } else {
+                List list = Lists.newArrayList();
+                for (HashMap temp : userInsurances) {
+                    UserInsurance userInsurance = new UserInsurance();
+                    userInsurance.setInsuranceProductNo(new BigDecimal(insuranceProductNo));
+                    UserInfo userInfo = userInfoManager.getByMobileNo(temp.get("mobileNo").toString());
+                    userInsurance.setPolicyHolder(temp.get("userName").toString());
+                    userInsurance.setCreated(new Date());
+                    userInsurance.setStatus(0);
+                    if (userInfo == null) {
+                        logInfo("用户手机号不存在");
+                        continue;
+                    }
+                    userInsurance.setUserId(userInfo.getUserId());
+                    String acceptInsuranceDateStr = temp.get("acceptInsuranceDate").toString();
+                    if (StringUtils.isEmpty(acceptInsuranceDateStr)) {
+                        logInfo("日期为null");
+                        continue;
+
+                    }
+                    Date acceptInsuranceDate;
+                    try {
+                        acceptInsuranceDate = new SimpleDateFormat("yyyy-MM-dd").parse(acceptInsuranceDateStr);
+                    } catch (Exception e) {
+                        logInfo("日期格式不对");
+                        continue;
+                    }
+                    userInsurance.setAcceptInsuranceDate(acceptInsuranceDate);
+                    userInsurance.setContractNo(temp.get("contractNo").toString());
+                    userInsurance.setHolderIdNumber(new BigDecimal(temp.get("holderIdNumber").toString()));
+                    list.add(userInsurance);
+                }
+                if (!list.isEmpty()) {
+                    userInsuranceManager.batchInsert(list);
+                }
+                jsonResult.setMessage("导入成功  总导入" + list.size());
+                jsonResult.setSuccess(true);
+            }
         } catch (Exception e) {
             logError("导入异常!", e);
             jsonResult.setMessage("导入异常");

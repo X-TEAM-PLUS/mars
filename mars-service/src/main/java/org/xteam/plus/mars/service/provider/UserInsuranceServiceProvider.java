@@ -182,4 +182,27 @@ public class UserInsuranceServiceProvider extends AbstractServiceProvider {
         }
         return jsonResult;
     }
+
+    /**
+     * 查询
+     *
+     * @param userinsurance
+     * @return List<UserInsurance>
+     */
+    @RequestMapping("/listForProuct")
+    public JsonResult listForProuct(UserInsurance userinsurance) throws Exception {
+        JsonResult jsonResult = new JsonResult();
+        try {
+            List<UserInsurance> data = userinsuranceManager.queryForProduct(userinsurance);
+            // 设置结果集
+            jsonResult.put("list", data);
+            jsonResult.put("rowCount", userinsuranceManager.queryForProductCount(userinsurance));
+            jsonResult.setSuccess(true);
+        } catch (Exception e) {
+            logError("查询异常", e);
+            jsonResult.setMessage("查询异常");
+            jsonResult.setSuccess(false);
+        }
+        return jsonResult;
+    }
 }
