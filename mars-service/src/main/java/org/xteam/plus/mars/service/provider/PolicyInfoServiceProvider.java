@@ -177,6 +177,7 @@ public class PolicyInfoServiceProvider extends AbstractServiceProvider {
                 List list = Lists.newArrayList();
                 for (HashMap temp : userInsurances) {
                     UserInsurance userInsurance = new UserInsurance();
+                    userInsurance.setAddress(temp.get("address").toString());
                     userInsurance.setInsuranceProductNo(new BigDecimal(insuranceProductNo));
                     UserInfo userInfo = userInfoManager.getByMobileNo(temp.get("mobileNo").toString());
                     userInsurance.setPolicyHolder(temp.get("userName").toString());

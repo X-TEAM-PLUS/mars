@@ -14,6 +14,7 @@
         <result column="ACCEPT_INSURANCE_DATE" property="acceptInsuranceDate" jdbcType="TIMESTAMP"/>
         <result column="INSURANCE_PRODUCT_NO" property="insuranceProductNo" jdbcType="DECIMAL"/>
         <result column="USER_ID" property="userId" jdbcType="DECIMAL"/>
+        <result column="ADDRESS" property="address" jdbcType="VARCHAR"/>
         <association property="insuranceProduct" column="INSURANCE_PRODUCT_NO"
                      javaType="org.xteam.plus.mars.domain.InsuranceProduct">
             <id column="INSURANCE_PRODUCT_NO" property="insuranceProductNo" jdbcType="DECIMAL"/>
@@ -55,6 +56,7 @@
         ,ACCEPT_INSURANCE_DATE
         ,INSURANCE_PRODUCT_NO
         ,USER_ID
+        ,ADDRESS
     </sql>
 
     <!--公用查询条件-->
@@ -142,6 +144,7 @@
         ,ACCEPT_INSURANCE_DATE
         ,INSURANCE_PRODUCT_NO
         ,USER_ID
+        ,ADDRESS
         )values(
         #{expirationDate,jdbcType=TIMESTAMP}
         ,#{status,jdbcType=INTEGER}
@@ -153,6 +156,7 @@
         ,#{acceptInsuranceDate,jdbcType=TIMESTAMP}
         ,#{insuranceProductNo,jdbcType=DECIMAL}
         ,#{userId,jdbcType=DECIMAL}
+        ,#{address,jdbcType=DECIMAL}
         )
     </insert>
 
@@ -169,6 +173,7 @@
         ,ACCEPT_INSURANCE_DATE
         ,INSURANCE_PRODUCT_NO
         ,USER_ID
+        ,ADDRESS
         )values
         <foreach collection="list" item="item" index="index" separator=",">
             (
@@ -182,6 +187,7 @@
             ,#{item.acceptInsuranceDate,jdbcType=TIMESTAMP}
             ,#{item.insuranceProductNo,jdbcType=DECIMAL}
             ,#{item.userId,jdbcType=DECIMAL}
+            ,#{item.address,jdbcType=VARCHAR}
             )
         </foreach>
     </insert>
@@ -221,6 +227,9 @@
                 <if test="userId!=null ">
                     USER_ID=#{userId,jdbcType=DECIMAL},
                 </if>
+                <if test="address!=null ">
+                    ADDRESS=#{address,jdbcType=DECIMAL},
+                </if>
             </trim>
         </set>
         where INSURANCE_ORDER_ID= #{insuranceOrderId,jdbcType=DECIMAL}
@@ -240,6 +249,7 @@
         ,ACCEPT_INSURANCE_DATE
         ,INSURANCE_PRODUCT_NO
         ,USER_ID
+        ,ADDRESS
         from T_MARS_USER_INSURANCE
         where INSURANCE_ORDER_ID= #{insuranceOrderId,jdbcType=DECIMAL}
     </select>
@@ -273,6 +283,7 @@
         ,TMUI.HOLDER_ID_NUMBER
         ,TMUI.POLICY_HOLDER
         ,TMUI.ACCEPT_INSURANCE_DATE
+        ,TMUI.ADDRESS
         ,TMUI.INSURANCE_PRODUCT_NO
         ,TMUI.USER_ID
         ,TMIP.INSURANCE_PRODUCT_NO

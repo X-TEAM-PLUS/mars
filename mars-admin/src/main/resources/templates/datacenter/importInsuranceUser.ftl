@@ -73,7 +73,7 @@
 
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-1">
                                     <div class="form-group">
                                         <div class="input-icon col-md-1">
                                         <span class="btn btn-success fileinput-button">
@@ -83,13 +83,13 @@
                                                    onchange="uploadImport()"> </span>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <div class="input-icon col-md-1">
 
-                                            <button class="btn btn-success" type="button"><i
-                                                    class="glyphicon glyphicon-search" onclick="goBack()"/></i> 返回
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <div class="input-icon col-md-12">
+                                            <button class="btn btn-success" type="button"  onclick="goBack()"><i
+                                                    class="glyphicon glyphicon-search"/></i> 返回
                                             </button>
                                         </div>
                                     </div>
@@ -106,7 +106,7 @@
                             <th column="holderIdNumber">投保人身份证号</th>
                             <th column="insuranceProduct.insuranceName">保险公司名称</th>
                             <th column="policyHolder">投保人</th>
-                            <th column="linkAddress">地址</th>
+                            <th column="address">地址</th>
                             <th column="contractNo">保单号</th>
                             <th column="acceptInsuranceDate">生效日期</th>
                         </tr>
@@ -178,7 +178,10 @@
 
     function uploadImport() {
         var oMyForm = new FormData();
-        alert($('#insuranceProductNo').val());
+        if ($('#insuranceProductNo').val() == "" || $('#insuranceProductNo').val() == undefined){
+            alert("请选择保险公司后进行导入!")
+            return false;
+        }
         oMyForm.append("uploadFile", $('#uploadFile')[0].files[0]);
         oMyForm.append("insuranceProductNo", $('#insuranceProductNo').val());
         $('body').append('<div id="layer"></div>');
@@ -192,10 +195,12 @@
             success: function (data) {
                 alert(data.message);
                 $('#layer').remove();
+                init();
             },
             error: function (data) {
                 $('#serverResponse').html(data.status + " : " + data.statusText + " : " + data.responseText);
-                $('#layer').remove()
+                $('#layer').remove();
+                init();
             }
         });
     }

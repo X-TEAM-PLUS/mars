@@ -88,6 +88,8 @@ public class UserInsurance implements Serializable {
      */
     private InsuranceCompany insuranceCompany;
 
+    private String address;
+
 
     /**
      * 设置   expirationDate
@@ -352,5 +354,13 @@ public class UserInsurance implements Serializable {
 
     public void setInsuranceCompany(InsuranceCompany insuranceCompany) {
         this.insuranceCompany = insuranceCompany;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
