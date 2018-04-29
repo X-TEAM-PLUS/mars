@@ -1,17 +1,25 @@
 package org.xteam.plus.mars.service.provider;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.xteam.plus.mars.common.JsonResult;
 import org.xteam.plus.mars.common.excel.ExcelUtils;
 import org.xteam.plus.mars.domain.DeliveredInfo;
+import org.xteam.plus.mars.domain.UserHealthCard;
+import org.xteam.plus.mars.domain.UserInfo;
 import org.xteam.plus.mars.manager.DeliveredInfoManager;
+import org.xteam.plus.mars.manager.UserHealthCardManager;
+import org.xteam.plus.mars.manager.UserInfoManager;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 
@@ -29,6 +37,9 @@ public class DeliveredInfoServiceProvider extends AbstractServiceProvider {
 
     @Resource
     private DeliveredInfoManager deliveredinfoManager;
+
+    @Resource
+    private UserHealthCardManager  userHealthCardManager;
 
     /**
      * 获取
@@ -177,7 +188,7 @@ public class DeliveredInfoServiceProvider extends AbstractServiceProvider {
         JsonResult jsonResult = new JsonResult();
         try {
             List<DeliveredInfo> data =  null;
-            if(deliveredinfo.getStatus().intValue()==0){
+            if(deliveredinfo.getStatus()!=null && deliveredinfo.getStatus().intValue()==0){
                 data = deliveredinfoManager.queryExportData(deliveredinfo);
                 // 设置结果集
                 jsonResult.put("list", data);
@@ -290,5 +301,50 @@ public class DeliveredInfoServiceProvider extends AbstractServiceProvider {
 
             }
         }
+    }
+
+
+    @RequestMapping(value = "/upload")
+    public JsonResult upload(@RequestParam("file") MultipartFile file) throws Exception {
+        JsonResult jsonResult = new JsonResult();
+        try {
+            //获取dataIndex
+            String[] dataIndexs = {
+                    "userHealthCard.cardNo"
+                    ,"userInfo.realName"
+                    ,"userInfo.mobileNo"
+                    ,"province"
+                    ,"city"
+                    ,"area"
+                    ,"address"
+                    ,"waybillNo"
+                    ,"deliveredDate"
+            };
+
+            List<DeliveredInfo> deliveredInfos = ExcelUtils.load(dataIndexs,DeliveredInfo.class,file.getInputStream(),true);
+
+            //查询用户信息
+            for (DeliveredInfo  deliveredInfo: deliveredInfos){
+                UserHealthCard   userHealthCard = userHealthCardManager.get(new UserHealthCard().setCardNo(deliveredInfo.getUserHealthCard().getCardNo()));
+                deliveredInfo.setUserId(userHealthCard.getActivateUserId());
+                deliveredInfo.setCreated(new Date());
+                deliveredInfo.setUpdated(new Date());
+                deliveredInfo.setDeliveredCount(1);
+                deliveredInfo.setStatus(BigDecimal.ONE);
+            }
+            int count = deliveredinfoManager.batchInsert(deliveredInfos);
+            if(count>0) {
+                jsonResult.setSuccess(true);
+                jsonResult.setMessage("已成功导入"+count+"条数据。");
+            }else {
+                jsonResult.setSuccess(false);
+                jsonResult.setMessage("导入数据不成功。");
+            }
+        } catch (Exception e) {
+            logError("查询异常", e);
+            jsonResult.setMessage("查询异常");
+            jsonResult.setSuccess(false);
+        }
+        return jsonResult;
     }
 }

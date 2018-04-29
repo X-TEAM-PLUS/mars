@@ -43,9 +43,6 @@
             <result column="NICK_NAME" property="nickName" jdbcType="VARCHAR"/>
             <result column="ACCUMULATIVE_WITHDRAWALS" property="accumulativeWithdrawals" jdbcType="DECIMAL"/>
             <result column="ACCUMULATIVE_SUBSIDY" property="accumulativeSubsidy" jdbcType="DECIMAL"/>
-            <result column="PROVINCE" property="province" jdbcType="DECIMAL"/>
-            <result column="CITY" property="city" jdbcType="DECIMAL"/>
-            <result column="COUNTY" property="county" jdbcType="DECIMAL"/>
             <result column="PROVINCE_NAME" property="provinceName" jdbcType="DECIMAL"/>
             <result column="CITY_NAME" property="cityName" jdbcType="DECIMAL"/>
             <result column="COUNTY_NAME" property="countyName" jdbcType="DECIMAL"/>

@@ -51,7 +51,6 @@
                             <div class="col-md-12 pull-right">
                                 <form id="ordersTableForm" onsubmit="init();return false;">
                                     <div class="input-group">
-                                        <input type="hidden" name="status" value="1">
                                         <div class="input-icon date-picker input-daterange col-md-2 " data-date-format="yyyy-mm-dd">
                                             <i class="fa fa-calendar "></i>
                                             <input type="text" name="startDate" class="form-control " readonly="" placeholder="发货开始日期">
@@ -75,17 +74,14 @@
                         <thead>
                         <tr>
                             <th column="userHealthCard.cardNo">会员卡号</th>
-                            <th column="userInfo.realName">姓名</th>
-                            <th column="userInfo.mobileNo">手机号</th>
-                            <th column="userInfo.provinceName">省</th>
-                            <th column="userInfo.cityName">市</th>
-                            <th column="userInfo.countyName">区县</th>
-                            <th column="userInfo.linkAddress">联系地址</th>
-                            <th column="userHealthCard.cardActivateTime">激活日期</th>
-                            <th column="userHealthCard.cardDeadline">有效期</th>
-                            <th column="userHealthCard.sendCount">发货次数</th>
-                            <th column="deliveredFee">快递费</th>
+                            <th column="userInfo.realName">收件人姓名</th>
+                            <th column="userInfo.mobileNo">收件人电话</th>
+                            <th column="province">收件省份</th>
+                            <th column="city">收件城市</th>
+                            <th column="area">收件区县</th>
+                            <th column="address">收件人详细地址</th>
                             <th column="waybillNo">快递单号</th>
+                            <th column="deliveredDate">发件日期</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -110,13 +106,13 @@
                 <div class="modal-body">
                     <!-- 添加类目body-->
                     <!-- BEGIN FORM-->
-                    <form class="form-horizontal" id="modalForm" onsubmit="return false;">
+                    <form class="form-horizontal" id="uploadDeliveredForm"   name="uploadDeliveredForm" onsubmit="return false;">
                         <div class="form-body">
                             <div class="form-group">
                                 <label class="col-md-3 control-label">发货Excel文件:</label>
                                 <div class="col-md-7" id="logoDiv">
                                     <div class="file-loading" id="initDiv">
-                                        <input id="mainImgFile" class="file" name="logoImg" type="file" data-min-file-count="1">
+                                        <input id="mainImgFile" class="file" name="file" type="file" data-min-file-count="1">
                                     </div>
                                 </div>
                             </div>
@@ -125,7 +121,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭窗口</button>
-                    <button type="button" class="btn btn-primary" id="modalFormButton">导入数据</button>
+                    <button type="button" class="btn btn-primary" id="modalFormButton" onclick="uploadFile()">导入数据</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
@@ -137,7 +133,7 @@
     function init() {
         $("#deliveredTable").pagingGrid(
                 {
-                    dataUrl: '/services/mars/deliveredinfo/list'
+                    dataUrl: '/services/mars/deliveredinfo/list?status=1'
                     , pageSize: 10
                     , scroll: false
                     ,  pagingtoolbar: {
@@ -148,17 +144,24 @@
     }
     //初始化
     init();
-    //下载
-    $("#downloadButton").click(function () {
-        var downloadUrl = contextPath+'/services/mars/deliveredinfo/export';
-        var startDate =$("input[name$='startDate']").val();
-        var endDate = $("input[name$='endDate']").val();
-        var params = "startDate="+startDate +"&endDate="+endDate ;
-        $.download(downloadUrl,params,'post' );
+    //表单ajax提交
+    function uploadFile(){
+    $("#uploadDeliveredForm").ajaxSubmitForm({
+        url: "/services/mars/deliveredinfo/upload",
+        success:function (result) {
+            if (result.success){
+                window.wxc.xcConfirm("操作成功", window.wxc.xcConfirm.typeEnum.info);
+                $("#uploadDialog").modal('hide');  //手动关闭
+            }else {
+                window.wxc.xcConfirm(result.message, window.wxc.xcConfirm.typeEnum.error);
+            }
+        } ,
+        error:function(result){
+            window.wxc.xcConfirm("网络异常", window.wxc.xcConfirm.typeEnum.error);
+        }
     });
-
+    }
 </script>
-
 </body>
 </html>
 

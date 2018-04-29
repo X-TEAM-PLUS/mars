@@ -22,7 +22,6 @@ import java.util.List;
  */
 public class ExcelUtils {
     private static final Log log = LogFactory.getLog(ExcelUtils.class);
-
     /**
      * 导入数据
      *
@@ -34,6 +33,20 @@ public class ExcelUtils {
      * @throws Exception
      */
     public static <T> List<T> load(String[] dataIndexs, Class<T> classType, InputStream inputStream) throws Exception {
+        return load(dataIndexs,classType,inputStream,false);
+    }
+
+    /**
+     * 导入数据
+     *
+     * @param dataIndexs  属性名
+     * @param classType   对象类型
+     * @param inputStream 导入文件输入流
+     * @param  hasHeader
+     * @return
+     * @throws Exception
+     */
+    public static <T> List<T> load(String[] dataIndexs, Class<T> classType, InputStream inputStream,boolean hasHeader) throws Exception {
         List<T> results = null;
         Workbook workbook = null;
         try {
@@ -43,16 +56,19 @@ public class ExcelUtils {
                 workbook = new HSSFWorkbook(inputStream);
             }
             Sheet sheet = workbook.getSheetAt(0);
+            boolean ifFirst = true;
             results = new ArrayList<>();
             for (Row row : sheet) {
-                Map<String, String> rowMap = new HashMap<String, String>();
-                for (int i = 0; i < dataIndexs.length; i++) {
-                    row.getCell(i).setCellType(Cell.CELL_TYPE_STRING);
-                    rowMap.put(dataIndexs[i], row.getCell(i).getStringCellValue());
-                }
-                T transform = JsonUtils.transform(rowMap, classType);
-                if (transform != null) {
-                    results.add(transform);
+                if(hasHeader && ifFirst) {
+                    ifFirst=false;
+                    continue;
+                }else{
+                    Map<String, Object> rowMap = getRowMap(dataIndexs,row);
+
+                    T transform = JsonUtils.transform(rowMap, classType);
+                    if (transform != null) {
+                        results.add(transform);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -65,6 +81,33 @@ public class ExcelUtils {
         return results;
     }
 
+    /**
+     * 获取多级属性Map(注意 ：只支持两级)
+     * @param dataIndexs
+     * @param row
+     * @return
+     */
+    private static  Map<String, Object> getRowMap(String[] dataIndexs, Row row){
+        Map<String, Object> rowMap = new HashMap<String, Object>();
+        for (int i = 0; i < dataIndexs.length; i++) {
+            row.getCell(i).setCellType(Cell.CELL_TYPE_STRING);
+            String[] keyNames = dataIndexs[i].split("\\.");
+            if(keyNames.length>1){
+                if(rowMap.containsKey(keyNames[0])){
+                    Map<String, Object> map = (Map<String, Object>) rowMap.get(keyNames[0]);
+                    map.put(keyNames[1],row.getCell(i).getStringCellValue());
+                }else{
+                    Map<String, Object> map = new HashMap<>();
+                    map.put(keyNames[1],row.getCell(i).getStringCellValue());
+                    rowMap.put(keyNames[0],map);
+                }
+            }else{
+                rowMap.put(dataIndexs[i], row.getCell(i).getStringCellValue());
+            }
+        }
+
+        return  rowMap;
+    }
 
     public static void export(String[] heads, String[] dataIndexs, List data, OutputStream outputStream, String sheetName, Map<String, CellFormater> cellFormaterMap) throws Exception {
         XSSFWorkbook workBook = new XSSFWorkbook();

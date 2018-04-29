@@ -45,10 +45,10 @@
                         <div class="row">
                             <div class="col-md-10">
                                 <div class="btn-group">
-                                    <button id="newProductButton" class="btn green" onclick="location.href = 'add';">
-                                        添加健康卡产品 <i class="fa fa-plus"></i>
-                                    </button>
-                                </div>
+                                    <#--<button id="newProductButton" class="btn green" onclick="location.href = 'add';">-->
+                                        <#--添加健康卡产品 <i class="fa fa-plus"></i>-->
+                                    <#--</button>-->
+                                <#--</div>-->
                             </div>
                             <div class="col-md-2 pull-right">
                                 <form id="productTableForm" onsubmit="init();return false;">
@@ -109,15 +109,15 @@
                         , parmaName: 'productId'
                         , column: 'productId'
                     }
-                        , {
-                            name: '删除'
-                            , iconClass: 'glyphicon glyphicon-trash'
-                            , action: '/services/mars/product/delete'
-                            , ajax: true
-                            , confirm: true
-                            , parmaName: 'productId'
-                            , column: 'productId'
-                        }
+                        // , {
+                        //     name: '删除'
+                        //     , iconClass: 'glyphicon glyphicon-trash'
+                        //     , action: '/services/mars/product/delete'
+                        //     , ajax: true
+                        //     , confirm: true
+                        //     , parmaName: 'productId'
+                        //     , column: 'productId'
+                        // }
                     ],
                     pagingtoolbar: {
                         displayInfo: true
