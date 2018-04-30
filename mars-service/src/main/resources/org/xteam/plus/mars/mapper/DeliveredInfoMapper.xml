@@ -356,8 +356,8 @@
             tuhc.SEND_COUNT,
             14 as DELIVERED_FEE
         from
-            t_mars_user_health_card tuhc
-        left join t_mars_user_info tmui on
+            T_MARS_USER_HEALTH_CARD tuhc
+        left join T_MARS_USER_INFO tmui on
             tmui.USER_ID = tuhc.ACTIVATE_USER_ID
         <where>
             tuhc.STATUS = 1 and  tuhc.SEND_COUNT=0
@@ -381,8 +381,8 @@
         select
         count(*)
         from
-        t_mars_user_health_card tuhc
-        left join t_mars_user_info tmui on
+        T_MARS_USER_HEALTH_CARD tuhc
+        left join T_MARS_USER_INFO tmui on
         tmui.USER_ID = tuhc.ACTIVATE_USER_ID
         <where>
             tuhc.STATUS = 1 and  tuhc.SEND_COUNT=0
@@ -399,4 +399,73 @@
             </if>
         </where>
     </select>
+
+    <!--查询未发货的记录-->
+    <select id="queryImportData" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.DeliveredInfo">
+        select
+        tmdi.DELIVERED_ID
+        ,tmdi.WAYBILL_NO
+        ,tmdi.DELIVERED_DATE
+        ,tmdi.USER_ID
+        ,tmdi.CREATED
+        ,tmdi.ADDRESS
+        ,tmdi.DELIVERED_COUNT
+        ,tmdi.DELIVERED_FEE
+        ,tmdi.PROVINCE
+        ,tmdi.UPDATED
+        ,tmdi.CITY
+        ,tmdi.AREA
+        ,tmdi.STATUS
+        ,tmui.REAL_NAME
+        ,tmui.MOBILE_NO
+        ,tmuhc.CARD_NO
+        from
+        T_MARS_DELIVERED_INFO tmdi
+        left join T_MARS_USER_INFO tmui on tmui.USER_ID=tmdi.USER_ID
+        left join T_MARS_USER_HEALTH_CARD tmuhc  on tmuhc.ACTIVATE_USER_ID=tmui.USER_ID
+        <where>
+            tmui.STATUS = 1  and tmuhc.STATUS=1 and  tmdi.DELIVERED_COUNT=1
+            <if test="startDate!=null ">
+                <![CDATA[
+                        and tmdi.DELIVERED_DATE>= str_to_date(CONCAT(date_format(#{startDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+
+            <if test="endDate!=null ">
+                <![CDATA[
+                        and tmdi.DELIVERED_DATE<= str_to_date(CONCAT(date_format(#{endDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+        </where>
+        limit #{start},#{limit}
+    </select>
+
+    <!--查询未发货的记录条数-->
+    <select id="queryImportDataCount" resultType="int" parameterType="org.xteam.plus.mars.domain.DeliveredInfo">
+        select
+        count(tmdi.DELIVERED_ID)
+        from
+        T_MARS_DELIVERED_INFO tmdi
+        left join T_MARS_USER_INFO tmui on tmui.USER_ID=tmdi.USER_ID
+        left join T_MARS_USER_HEALTH_CARD tmuhc  on tmuhc.ACTIVATE_USER_ID=tmui.USER_ID
+        <where>
+            tmui.STATUS = 1  and tmuhc.STATUS=1 and  tmdi.DELIVERED_COUNT=1
+            <if test="startDate!=null ">
+                <![CDATA[
+                        and tmdi.DELIVERED_DATE>= str_to_date(CONCAT(date_format(#{startDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+
+            <if test="endDate!=null ">
+                <![CDATA[
+                        and tmdi.DELIVERED_DATE<= str_to_date(CONCAT(date_format(#{endDate,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+        </where>
+    </select>
+
+
+
+
+
 </mapper>

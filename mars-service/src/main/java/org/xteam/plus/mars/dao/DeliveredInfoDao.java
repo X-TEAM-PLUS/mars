@@ -99,4 +99,18 @@ public interface DeliveredInfoDao {
      */
     Integer queryExportDataCount(DeliveredInfo deliveredinfo);
 
+    /**
+     * 查询导入的数据
+     * @param deliveredinfo
+     * @return
+     */
+    List<DeliveredInfo> queryImportData(DeliveredInfo deliveredinfo);
+
+    /**
+     * 查询导入数据总记录数
+     * @param deliveredinfo
+     * @return
+     */
+    Integer queryImportDataCount(DeliveredInfo deliveredinfo);
+
 }

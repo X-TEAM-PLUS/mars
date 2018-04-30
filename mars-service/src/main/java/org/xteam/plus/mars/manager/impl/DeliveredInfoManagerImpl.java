@@ -84,4 +84,14 @@ public class DeliveredInfoManagerImpl implements DeliveredInfoManager {
         return deliveredInfoDao.queryExportDataCount(deliveredinfo);
     }
 
+    @Override
+    public List<DeliveredInfo> queryImportData(DeliveredInfo deliveredinfo) {
+        return deliveredInfoDao.queryImportData(deliveredinfo);
+    }
+
+    @Override
+    public Integer queryImportDataCount(DeliveredInfo deliveredinfo) {
+        return deliveredInfoDao.queryImportDataCount(deliveredinfo);
+    }
+
 }

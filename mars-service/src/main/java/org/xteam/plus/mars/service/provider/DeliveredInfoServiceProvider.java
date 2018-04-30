@@ -11,7 +11,6 @@ import org.xteam.plus.mars.domain.UserHealthCard;
 import org.xteam.plus.mars.domain.UserInfo;
 import org.xteam.plus.mars.manager.DeliveredInfoManager;
 import org.xteam.plus.mars.manager.UserHealthCardManager;
-import org.xteam.plus.mars.manager.UserInfoManager;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -194,10 +193,10 @@ public class DeliveredInfoServiceProvider extends AbstractServiceProvider {
                 jsonResult.put("list", data);
                 jsonResult.put("rowCount", deliveredinfoManager.queryExportDataCount(deliveredinfo));
             }else{
-                data = deliveredinfoManager.query(deliveredinfo);
+                data = deliveredinfoManager.queryImportData(deliveredinfo);
                 // 设置结果集
                 jsonResult.put("list", data);
-                jsonResult.put("rowCount", deliveredinfoManager.queryCount(deliveredinfo));
+                jsonResult.put("rowCount", deliveredinfoManager.queryImportDataCount(deliveredinfo));
             }
 
             jsonResult.setSuccess(true);
