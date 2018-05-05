@@ -97,16 +97,7 @@
                     dataUrl: '/services/mars/cardkeys/list'
                     , pageSize: 10
                     , scroll: false
-                    , dockedItems: [{
-                        name: '修改'
-                        , iconClass: 'fa fa-edit'
-                        , action: '/mars/cardkeys/edit'
-                        , confirm: false
-                        , parmaName: 'id'
-                        , column: 'id'
-                    }
-                    ],
-                    pagingtoolbar: {
+                    , pagingtoolbar: {
                         displayInfo: true
                     }
                 }

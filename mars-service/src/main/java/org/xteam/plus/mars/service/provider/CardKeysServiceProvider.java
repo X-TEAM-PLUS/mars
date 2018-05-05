@@ -182,4 +182,25 @@ public class CardKeysServiceProvider extends AbstractServiceProvider {
         }
         return jsonResult;
     }
+
+
+    /**
+     * 批量生成
+     *
+     * @param quantity
+     * @return List<CardKeys>
+     */
+    @RequestMapping("/list")
+    public JsonResult batchGenerate(Integer quantity)throws Exception{
+        JsonResult jsonResult = new JsonResult();
+        try {
+            cardkeysManager.batchGenerate(quantity);
+            jsonResult.setSuccess(true);
+        } catch (Exception e) {
+            logError("批量生成异常", e);
+            jsonResult.setMessage("批量生成异常");
+            jsonResult.setSuccess(false);
+        }
+        return jsonResult;
+    }
 }

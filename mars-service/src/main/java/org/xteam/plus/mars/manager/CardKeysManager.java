@@ -13,6 +13,10 @@ import java.util.List;
  */
 
 public interface CardKeysManager {
+    /**
+     * 批量操作的记录数
+     */
+    Integer BATCH_SIZE = 500;
 
     /**
      * 获取
@@ -69,4 +73,11 @@ public interface CardKeysManager {
      * @return List<CardKeys>
      */
     public Integer queryCount(CardKeys cardKeys) throws Exception;
+
+    /**
+     * 批量生成卡密
+     * @param quantity  数量
+     * @throws Exception
+     */
+    public void batchGenerate(Integer quantity)throws Exception;
 }

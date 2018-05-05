@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.xteam.plus.mars.dao.CardKeysDao">
+    <!--结果集对应列-->
+    <resultMap id="BaseResultMap" type="org.xteam.plus.mars.domain.CardKeys">
+        <id column="ID" property="id" jdbcType="DECIMAL"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="CARD_KEYS" property="cardKeys" jdbcType="VARCHAR"/>
+        <result column="ACTIVATE_TIME" property="activateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--公用选择列-->
+    <sql id="selectColumns">
+    ID,
+    CREATED
+,UPDATED
+,STATUS
+,CARD_KEYS
+,ACTIVATE_TIME
+    </sql>
+
+    <!--公用查询条件-->
+    <sql id="queryWhere">
+        <where>
+            <if test="created!=null ">
+                <![CDATA[
+                        and CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and CREATED<= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="updated!=null ">
+                <![CDATA[
+                        and UPDATED>= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="status!=null ">
+                <![CDATA[
+                    and STATUS=#{status,jdbcType=INTEGER}
+                    ]]>
+            </if>
+            <if test="cardKeys!=null and  cardKeys!=''">
+                <![CDATA[
+                    and CARD_KEYS=#{cardKeys,jdbcType=VARCHAR}
+                    ]]>
+            </if>
+            <if test="activateTime!=null ">
+                <![CDATA[
+                        and ACTIVATE_TIME>= str_to_date(CONCAT(date_format(#{activateTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and ACTIVATE_TIME<= str_to_date(CONCAT(date_format(#{activateTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="id!=null ">
+                <![CDATA[
+                    and ID=#{id,jdbcType=DECIMAL}
+                    ]]>
+            </if>
+        </where>
+    </sql>
+
+    <!--删除记录-->
+    <delete id="delete" parameterType="org.xteam.plus.mars.domain.CardKeys">
+        delete from  T_MARS_CARD_KEYS
+        where  ID= #{id,jdbcType=DECIMAL}
+    </delete>
+
+    <!--插入记录-->
+    <insert id="insert" parameterType="org.xteam.plus.mars.domain.CardKeys" useGeneratedKeys="true" keyProperty="id">
+                insert into  T_MARS_CARD_KEYS (
+            CREATED
+,UPDATED
+,STATUS
+,CARD_KEYS
+,ACTIVATE_TIME
+                )values(
+            #{created,jdbcType=TIMESTAMP}
+,#{updated,jdbcType=TIMESTAMP}
+,#{status,jdbcType=INTEGER}
+,#{cardKeys,jdbcType=VARCHAR}
+,#{activateTime,jdbcType=TIMESTAMP}
+                )
+            </insert>
+
+    <!--批量插入记录-->
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        insert into T_MARS_CARD_KEYS (
+        CREATED
+        ,UPDATED
+        ,STATUS
+        ,CARD_KEYS
+        ,ACTIVATE_TIME
+        )values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.created,jdbcType=TIMESTAMP}
+            ,#{item.updated,jdbcType=TIMESTAMP}
+            ,#{item.status,jdbcType=INTEGER}
+            ,#{item.cardKeys,jdbcType=VARCHAR}
+            ,#{item.activateTime,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
+    <!--更新记录-->
+    <update id="update" parameterType="org.xteam.plus.mars.domain.CardKeys">
+        update T_MARS_CARD_KEYS
+        <set>
+            <trim prefix="" suffix="" suffixOverrides=",">
+                <if test="created!=null ">
+                    CREATED=#{created,jdbcType=TIMESTAMP},
+                </if>
+                <if test="updated!=null ">
+                    UPDATED=#{updated,jdbcType=TIMESTAMP},
+                </if>
+                <if test="status!=null ">
+                    STATUS=#{status,jdbcType=INTEGER},
+                </if>
+                <if test="cardKeys!=null ">
+                    CARD_KEYS=#{cardKeys,jdbcType=VARCHAR},
+                </if>
+                <if test="activateTime!=null ">
+                    ACTIVATE_TIME=#{activateTime,jdbcType=TIMESTAMP},
+                </if>
+            </trim>
+        </set>
+        where ID= #{id,jdbcType=DECIMAL}
+    </update>
+
+    <!--查询单条记录-->
+    <select id="get" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.CardKeys">
+        select
+    ID
+        ,CREATED
+,UPDATED
+,STATUS
+,CARD_KEYS
+,ACTIVATE_TIME
+        from    T_MARS_CARD_KEYS
+        where  ID= #{id,jdbcType=DECIMAL}
+    </select>
+
+
+    <!--分页查询记录-->
+    <select id="query" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.CardKeys">
+        select
+        <include refid="selectColumns"></include>
+        from T_MARS_CARD_KEYS
+        <include refid="queryWhere"></include>
+        limit #{start},#{limit}
+    </select>
+
+    <!--查询记录数-->
+    <select id="queryCount" resultType="int" parameterType="org.xteam.plus.mars.domain.CardKeys">
+        select count(1)
+        from T_MARS_CARD_KEYS
+        <include refid="queryWhere"></include>
+    </select>
+</mapper>

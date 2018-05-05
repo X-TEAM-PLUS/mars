@@ -8,7 +8,10 @@ import org.xteam.plus.mars.dao.CardKeysDao;
 import org.xteam.plus.mars.domain.CardKeys;
 import org.xteam.plus.mars.manager.CardKeysManager;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by IntelliJ IDEA.
@@ -62,6 +65,30 @@ public class CardKeysManagerImpl implements CardKeysManager {
     @Override
     public Integer queryCount(CardKeys cardKeys) throws Exception {
         return cardKeysDao.queryCount(cardKeys);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void batchGenerate(Integer quantity) throws Exception {
+        List<CardKeys> cardKeysList = new ArrayList<CardKeys>();
+        for (int i = 0; i < quantity; i++) {
+            cardKeysList.add(new CardKeys()
+                    .setCardKeys(UUID.randomUUID().toString().toUpperCase())
+                    .setCreated(new Date())
+                    .setUpdated(new Date())
+                    .setStatus(1));
+
+            if (cardKeysList.size() >= BATCH_SIZE) {
+                cardKeysDao.batchInsert(cardKeysList);
+                cardKeysList.clear();
+            }
+        }
+
+        if (!cardKeysList.isEmpty()) {
+            cardKeysDao.batchInsert(cardKeysList);
+            cardKeysList.clear();
+        }
+
     }
 
 }
