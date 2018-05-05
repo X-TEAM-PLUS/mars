@@ -529,7 +529,44 @@ function delNumber(lableName) {
     // numberTotal = parseInt(numberTotal);
     // document.getElementById(lableName + "_total").innerText = " " + (number * 365) + " ";
 }
+function submitCardKeys(form) {
+    let bizContent = app.form.convertToData('#' + form);
+    logInfo(bizContent);
 
+    if (!bizContent.userRealName) {
+        app.dialog.alert('请输入您的真实姓名', '信息提示');
+        return false;
+    }
+    if (!bizContent.certificateOf) {
+        app.dialog.alert('请输入您的身份证号', '信息提示');
+        return false;
+    }
+    if (!bizContent.address) {
+        app.dialog.alert('请输入您的收货地址', '信息提示');
+        return false;
+    }
+    if (!bizContent.area){
+        app.dialog.alert('请选择区域', '信息提示');
+        return false;
+    }
+    let  params = {
+        method: InterFace.CARD_KEYS_BUY,
+        userId: userInfo.userId,
+        bizContent: JSON.stringify(bizContent)
+    };
+    app.request.post(INTERFACE_URL, params, function (data) {
+        logInfo(data);
+        var response = JSON.parse(data);
+        if (ResponseCode.SUCCESS == response.code) {
+            app.dialog.alert("购卡成功，您已经升级为会员!","提示信息");
+            memberView.router.navigate('/', {
+                history: true
+            });
+        }else{
+            app.dialog.alert(response.msg,"提示信息");
+        }
+    });
+}
 /**
  * 买卡提交
  * @param form

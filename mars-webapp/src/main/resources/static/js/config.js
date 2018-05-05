@@ -78,6 +78,8 @@ let InterFace = {
     ,GET_QR_CODE:'cn.zaoangongcheng.api.gateway.user.qrcode.get'
     //获取地市信息
     ,GET_AREA_INFO: 'cn.zaoangongcheng.api.gateway.area.detail'
+    //卡密购买
+    ,CARD_KEYS_BUY: 'com.zaoangongcheng.gateway.user.submitUserCardKeys'
 }
 
 /**

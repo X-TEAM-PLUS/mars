@@ -63,6 +63,9 @@ public class OrdersManagerImpl extends Logging implements OrdersManager {
     @Resource
     private CommissionDetailDao commissionDetailDao;
 
+    @Resource
+    private CardKeysDao cardKeysDao;
+
 
     @Override
     public Orders get(Orders orders) throws Exception {
@@ -450,6 +453,68 @@ public class OrdersManagerImpl extends Logging implements OrdersManager {
                 .setStatus(0)
         )
         ;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void cardKeysOrder(String keys, BigDecimal userId, String address, String certificateOf, String userRealName, String area) throws Exception {
+        UserInfo userInfo = userInfoDao.get(new UserInfo().setUserId(userId));
+        if (userInfo == null || userInfo.getUserLevel() != UserLevelEnum.TOURIST.getCode()) {
+            throw new Exception("您已经是[" + UserLevelEnum.valueOf(userInfo.getUserLevel()).getInfo() + "] 不能绑定健康卡!");
+        }
+        List<CardKeys> cardKeysList = cardKeysDao.query(new CardKeys().setCardKeys(keys));
+        if (cardKeysList == null || cardKeysList.size() != 1 || cardKeysList.get(0).getStatus() != 1) {
+            throw new Exception("卡密错误!");
+        }
+        CardKeys cardKeys = cardKeysList.get(0);
+
+        List<Product> products = productDao.query(new Product());
+        Product product = products.get(0);
+        // 插入用户卡
+        UserHealthCard userHealthCard = new UserHealthCard();
+        userHealthCard.setCreated(new Date());
+        userHealthCard.setProductId(product.getProductId());
+        userHealthCard.setProductType(1);
+        userHealthCard.setSurvivalPeriodMode(product.getSurvivalPeriodMode());
+        userHealthCard.setSurvivalPeriodNum(product.getSurvivalPeriodNum());
+        userHealthCard.setSendPeriodMode(product.getSendPeriodMode());
+        userHealthCard.setSendPeriod(product.getSendPeriod());
+        userHealthCard.setSendTotalCount(product.getSendTotalCount());
+        userHealthCard.setBuyerUserId(userId);
+        userHealthCard.setSendCount(0);
+        userHealthCard.setOrderNo(new BigDecimal(0));
+        //设置激活用户ID
+        userHealthCard.setActivateUserId(userInfo.getUserId());
+        //设置激活时间
+        userHealthCard.setCardActivateTime(new Date());
+        //设置有效期限
+        userHealthCard.setCardDeadline(computationalValidity(product));
+        //已激活
+        userHealthCard.setStatus(CardStatusTypeEnum.ATIVE.getCode());
+
+        userHealthCardDao.insert(userHealthCard);
+
+        //更新用户信息
+
+        userInfo.setCardActivateMode(2);
+        userInfo.setCardNo(userHealthCard.getCardNo());
+        userInfo.setCardActivateTime(userHealthCard.getCardActivateTime());
+        userInfo.setCardLifeTime(userHealthCard.getCardDeadline());
+        userInfo.setUpdated(new Date());
+        userInfo.setStatus(1);
+
+        if (userInfo.getUserLevel().intValue() == UserLevelEnum.TOURIST.getCode()) {
+            userInfo.setUserLevel(UserLevelEnum.MEMBER.getCode());
+            logInfo("用户ID [" + userInfo.getUserId() + "] 开始升级为会员 ");
+        }
+        userInfoDao.update(userInfo);
+
+        cardKeys.setUpdated(new Date());
+        cardKeys.setActivateTime(new Date());
+        cardKeys.setActivateUserId(userId);
+        cardKeys.setStatus(2);
+        cardKeysDao.update(cardKeys);
+        logInfo("用户购买卡自己激活 [" + JsonUtils.toJSON(userHealthCard) + "]");
     }
 
     private String getDate() {

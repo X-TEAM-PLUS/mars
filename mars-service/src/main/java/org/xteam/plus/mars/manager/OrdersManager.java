@@ -118,4 +118,17 @@ public interface OrdersManager {
      * @throws Exception
      */
     public boolean proccessOrder(Map<Object, Object> reqMap) throws Exception;
+
+    /**
+     * 卡密购买
+     *
+     * @param keys          卡密
+     * @param userId        用户ID
+     * @param address       收获地址
+     * @param certificateOf 身份证号
+     * @param userRealName  真实姓名
+     * @param area          区域
+     * @throws Exception
+     */
+    public void cardKeysOrder(String keys, BigDecimal userId, String address, String certificateOf, String userRealName, String area) throws Exception;
 }

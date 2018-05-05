@@ -164,10 +164,15 @@ var routes = [
         url: './pages/employee_card.html',
         name: 'employeeCard',
     },
-
+    //持卡会员激活
+    {
+        path: '/card_keys/',
+        componentUrl: './pages/cardKeys.html',
+    },
   // Default route (404 page). MUST BE THE LAST
   {
     path: '(.*)',
     url: './pages/404.html',
   },
+
 ];
