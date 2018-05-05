@@ -29,7 +29,7 @@
         <div class="portlet box grey-cascade">
             <div class="portlet-title">
                 <div class="caption">
-                    <i class="fa fa-adn"></i>添加卡密表
+                    <i class="fa fa-adn"></i>批量生成卡密
                 </div>
                 <div class="tools">
                     <a href="javascript:;" class="collapse">
@@ -44,78 +44,23 @@
             </div>
             <div class="portlet-body form">
                 <!-- BEGIN FORM-->
-                <form action="/services/mars/cardkeys/post" class="form-horizontal">
+                <form action="/services/mars/cardkeys/batchGenerate" class="form-horizontal">
                     <div class="form-body">
                         <div class="form-group">
                             <label class="col-md-3 control-label">
-                                创建时间<span class="required">* </span>
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10 date-picker input-daterange " data-date-format="yyyy-mm-dd">
-                                    <i class="fa fa-calendar "></i>
-                                    <input type="text" name="created" class="form-control " readonly="" validate='{required: true}'>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                更新时间
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10 date-picker input-daterange " data-date-format="yyyy-mm-dd">
-                                    <i class="fa fa-calendar "></i>
-                                    <input type="text" name="updated" class="form-control " readonly="" validate='{required: false}'>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                状态<span class="required">* </span>
+                                数量<span class="required">* </span>
                             </label>
                             <div class="col-md-5">
                                 <div class="input-icon margin-top-10">
                                     <i class="fa   fa-font "></i>
-                                    <input type="text" name="status" class="form-control" placeholder="状态" validate='{required: true,digits: true}'>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                卡密<span class="required">* </span>
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10">
-                                    <i class="fa  fa-key "></i>
-                                    <input type="text" name="cardKeys" class="form-control" placeholder="卡密" validate='{required: true}' maxlength="36">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                激活日期
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10 date-picker input-daterange " data-date-format="yyyy-mm-dd">
-                                    <i class="fa fa-calendar "></i>
-                                    <input type="text" name="activateTime" class="form-control " readonly="" validate='{required: false}'>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">
-                                流水号<span class="required">* </span>
-                            </label>
-                            <div class="col-md-5">
-                                <div class="input-icon margin-top-10">
-                                    <i class="fa   fa-font "></i>
-                                    <input type="text" name="id" class="form-control" placeholder="流水号" validate='{required: true}'>
+                                    <input type="text" name="quantity" class="form-control" placeholder="数量" validate='{required: true,digits: true}'>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="form-actions right">
                         <button type="button" class="btn default" onclick="history.go(-1)"><i class="fa fa-rotate-left"></i> 取消</button>
-                        <button type="submit" class="btn green"><i class="fa fa-check"></i> 保存</button>
+                        <button type="submit" class="btn green"><i class="fa fa-check"></i> 批量生成</button>
                     </div>
                 </form>
                 <!-- END FORM-->

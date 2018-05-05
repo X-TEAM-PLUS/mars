@@ -43,23 +43,24 @@
                 <div class="portlet-body" id="cardKeysTable">
                     <div class="table-toolbar">
                         <div class="row">
-                            <div class="col-md-10">
-                                <div class="btn-group">
-                                    <button id="newCardKeysButton" class="btn green" onclick="location.href = 'add';">
-                                        添加卡密表 <i class="fa fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-md-2 pull-right">
+                            <div class="col-md-12">
                                 <form id="cardKeysTableForm" onsubmit="init();return false;">
                                     <div class="input-group">
-                                        <div class="input-icon">
-                                            <i class="icon-magnifier"></i>
-                                            <input class="form-control" type="text" name="id" placeholder="流水号"/>
+                                        <div class="input-group-btn">
+                                            <button id="newCardKeysButton" class="btn green" onclick="location.href = 'add';">
+                                                批量生成卡密 <i class="fa fa-plus"></i>
+                                            </button>
                                         </div>
-                                        <span class="input-group-btn">
-												<button class="btn btn-success" type="submit"><i class="fa fa-arrow-left fa-fw"/></i> 搜索</button>
-												</span>
+                                        <div class="input-icon date-picker input-daterange col-md-2 " data-date-format="yyyy-mm-dd">
+                                            <i class="fa fa-calendar "></i>
+                                            <input type="text" name="created" class="form-control " readonly="" placeholder="生成时间">
+                                        </div>
+                                        <div class="input-group">
+                                            <button class="btn btn-success" type="submit"><i class="fa fa-arrow-left fa-fw"></i> 搜索</button>
+                                        </div>
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-success" type="button" id="downloadButton"><i class="glyphicon glyphicon-save"></i> 导出</button>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -71,11 +72,11 @@
                             <th column="id" type="checkbox" style="width: 50px"><input type="checkbox" id="allCheckBox" class="allCheckBox"></th>
                             <th column="id">流水号</th>
                             <th column="cardKeys">卡密</th>
-                            <th column="status"  type="enum"  enum-v="{0:'未上架',1:'已上架',2:'已激活'}">状态</th>
+                            <th column="status" type="enum" enum-v="{'0':'<span class=\'bold badge badge-default\'>未上线</span>',1:'<span class=\'bold badge badge-info\'>已上线</span>',2:'<span class=\'bold badge badge-success\'>已激活</span>'}">状态</th>
+                            <th column="activateUserId">激活用户ID</th>
                             <th column="activateTime">激活日期</th>
                             <th column="created">创建时间</th>
                             <th column="updated">更新时间</th>
-                            <th type="action" style="width: 200px">操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -97,7 +98,7 @@
                     dataUrl: '/services/mars/cardkeys/list'
                     , pageSize: 10
                     , scroll: false
-                    , pagingtoolbar: {
+                    ,pagingtoolbar: {
                         displayInfo: true
                     }
                 }
@@ -107,8 +108,19 @@
     //初始化
     init();
 
-</script>
+    //下载
+    $("#downloadButton").click(function () {
+        var downloadUrl = contextPath+'/services/mars/cardkeys/export';
+        var created =$("input[name$='created']").val();
+        if(created){
+            var params = "created="+created ;
+            $.download(downloadUrl,params,'post' );
+        }else{
+            window.wxc.xcConfirm("导出数据时，必须选择生成日期", window.wxc.xcConfirm.typeEnum.info);
+        }
+    });
 
+</script>
 
 </body>
 </html>

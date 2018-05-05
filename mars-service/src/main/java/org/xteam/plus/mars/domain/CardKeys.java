@@ -9,7 +9,7 @@ import java.util.Date;
  * Created by IntelliJ IDEA.
  * User: yankun
  * Date: 2018-05-05
- * Time: 18:13
+ * Time: 23:03
  * TableName: [T_MARS_CARD_KEYS]表
  */
 
@@ -26,6 +26,11 @@ public class CardKeys implements Serializable {
     private Integer limit = 20;
 
     /**
+     * 状态
+     */
+    private Integer status;
+
+    /**
      * 创建时间
      */
     private Date created;
@@ -36,9 +41,9 @@ public class CardKeys implements Serializable {
     private Date updated;
 
     /**
-     * 状态
+     * 激活日期
      */
-    private Integer status;
+    private Date activateTime;
 
     /**
      * 卡密
@@ -46,15 +51,34 @@ public class CardKeys implements Serializable {
     private String cardKeys;
 
     /**
-     * 激活日期
+     * 激活用户ID
      */
-    private Date activateTime;
+    private BigDecimal activateUserId;
 
     /**
      * 流水号
      */
     private BigDecimal id;
 
+
+    /**
+     * 设置   status
+     *
+     * @param status (状态)
+     */
+    public CardKeys setStatus(Integer status) {
+        this.status = status;
+        return this;
+    }
+
+    /**
+     * 获取   status (状态)
+     *
+     * @return
+     */
+    public Integer getStatus() {
+        return this.status;
+    }
 
     /**
      * 设置   created
@@ -95,22 +119,22 @@ public class CardKeys implements Serializable {
     }
 
     /**
-     * 设置   status
+     * 设置   activateTime
      *
-     * @param status (状态)
+     * @param activateTime (激活日期)
      */
-    public CardKeys setStatus(Integer status) {
-        this.status = status;
+    public CardKeys setActivateTime(Date activateTime) {
+        this.activateTime = activateTime;
         return this;
     }
 
     /**
-     * 获取   status (状态)
+     * 获取   activateTime (激活日期)
      *
      * @return
      */
-    public Integer getStatus() {
-        return this.status;
+    public Date getActivateTime() {
+        return this.activateTime;
     }
 
     /**
@@ -133,22 +157,22 @@ public class CardKeys implements Serializable {
     }
 
     /**
-     * 设置   activateTime
+     * 设置   activateUserId
      *
-     * @param activateTime (激活日期)
+     * @param activateUserId (激活用户ID)
      */
-    public CardKeys setActivateTime(Date activateTime) {
-        this.activateTime = activateTime;
+    public CardKeys setActivateUserId(BigDecimal activateUserId) {
+        this.activateUserId = activateUserId;
         return this;
     }
 
     /**
-     * 获取   activateTime (激活日期)
+     * 获取   activateUserId (激活用户ID)
      *
      * @return
      */
-    public Date getActivateTime() {
-        return this.activateTime;
+    public BigDecimal getActivateUserId() {
+        return this.activateUserId;
     }
 
     /**

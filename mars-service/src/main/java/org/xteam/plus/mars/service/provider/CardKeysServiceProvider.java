@@ -3,11 +3,19 @@ package org.xteam.plus.mars.service.provider;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.xteam.plus.mars.common.JsonResult;
+import org.xteam.plus.mars.common.excel.CellFormater;
+import org.xteam.plus.mars.common.excel.ExcelUtils;
 import org.xteam.plus.mars.domain.CardKeys;
 import org.xteam.plus.mars.manager.CardKeysManager;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -20,6 +28,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/mars/cardkeys")
 public class CardKeysServiceProvider extends AbstractServiceProvider {
+    private static final String CHARSET= "UTF-8";
 
     @Resource
     private CardKeysManager cardkeysManager;
@@ -202,5 +211,75 @@ public class CardKeysServiceProvider extends AbstractServiceProvider {
             jsonResult.setSuccess(false);
         }
         return jsonResult;
+    }
+
+    /**
+     * 导出
+     *
+     * @param cardkeys
+     * @return
+     */
+    @RequestMapping(value = "/export")
+    public void export(HttpServletResponse response, CardKeys cardkeys) throws Exception{
+        OutputStream out = null;
+        try{
+            //查询
+            cardkeys.setLimit(Integer.MAX_VALUE);
+            List<CardKeys> data = cardkeysManager.query(cardkeys);
+            //下载文件名
+
+            String sheetName = new SimpleDateFormat("yyyy年MM月dd日").format(cardkeys.getCreated());
+            String fileName = "卡密表(" + sheetName + ")数据.xlsx";
+            // 设置响应参数
+            response.setCharacterEncoding(CHARSET);
+            response.setContentType("text/csv; charset=" + CHARSET);
+            response.setHeader("Content-disposition", "attachment; filename=" + new String(fileName.getBytes(CHARSET), "ISO8859-1"));
+            out = response.getOutputStream();
+            //表头
+            String[] header = {
+                    "流水号"
+                    ,"卡密"
+                    ,"状态"
+                    ,"创建时间"
+            };
+            //获取dataIndex
+            String[] dataIndexs = {
+                    "id"
+                    ,"cardKeys"
+                    ,"status"
+                    ,"created"
+            };
+
+            Map<String, CellFormater> cellFormaterMap = new HashMap<>();
+            cellFormaterMap.put("status", new CellFormater() {
+                @Override
+                public String format(String value) throws Exception {
+                    Integer status = Integer.valueOf(value);
+                    switch (status){
+                        case 0:
+                            return "未上线";
+                        case 1:
+                            return "已上线";
+                        case 2:
+                            return "已激活";
+                    }
+                    return null;
+                }
+            });
+            //导出
+            ExcelUtils.export(header,dataIndexs,data,out,sheetName,cellFormaterMap);
+        }catch (Exception e){
+            logError("导出数据时异常", e);
+        }finally {
+            if(out != null){
+                try {
+                    out.flush();
+                    out.close();
+                } catch (IOException e) {
+                    logError("close BufferedOutputStream error:" ,e);
+                }
+
+            }
+        }
     }
 }

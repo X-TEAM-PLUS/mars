@@ -4,26 +4,33 @@
     <!--结果集对应列-->
     <resultMap id="BaseResultMap" type="org.xteam.plus.mars.domain.CardKeys">
         <id column="ID" property="id" jdbcType="DECIMAL"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
         <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
         <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
-        <result column="STATUS" property="status" jdbcType="INTEGER"/>
-        <result column="CARD_KEYS" property="cardKeys" jdbcType="VARCHAR"/>
         <result column="ACTIVATE_TIME" property="activateTime" jdbcType="TIMESTAMP"/>
+        <result column="CARD_KEYS" property="cardKeys" jdbcType="VARCHAR"/>
+        <result column="ACTIVATE_USER_ID" property="activateUserId" jdbcType="DECIMAL"/>
     </resultMap>
 
     <!--公用选择列-->
     <sql id="selectColumns">
     ID,
-    CREATED
+    STATUS
+,CREATED
 ,UPDATED
-,STATUS
-,CARD_KEYS
 ,ACTIVATE_TIME
+,CARD_KEYS
+,ACTIVATE_USER_ID
     </sql>
 
     <!--公用查询条件-->
     <sql id="queryWhere">
         <where>
+            <if test="status!=null ">
+                <![CDATA[
+                    and STATUS=#{status,jdbcType=INTEGER}
+                    ]]>
+            </if>
             <if test="created!=null ">
                 <![CDATA[
                         and CREATED>= str_to_date(CONCAT(date_format(#{created,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
@@ -36,21 +43,21 @@
                         and UPDATED<= str_to_date(CONCAT(date_format(#{updated,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
                         ]]>
             </if>
-            <if test="status!=null ">
+            <if test="activateTime!=null ">
                 <![CDATA[
-                    and STATUS=#{status,jdbcType=INTEGER}
-                    ]]>
+                        and ACTIVATE_TIME>= str_to_date(CONCAT(date_format(#{activateTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        and ACTIVATE_TIME<= str_to_date(CONCAT(date_format(#{activateTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
             </if>
             <if test="cardKeys!=null and  cardKeys!=''">
                 <![CDATA[
                     and CARD_KEYS=#{cardKeys,jdbcType=VARCHAR}
                     ]]>
             </if>
-            <if test="activateTime!=null ">
+            <if test="activateUserId!=null ">
                 <![CDATA[
-                        and ACTIVATE_TIME>= str_to_date(CONCAT(date_format(#{activateTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
-                        and ACTIVATE_TIME<= str_to_date(CONCAT(date_format(#{activateTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
-                        ]]>
+                    and ACTIVATE_USER_ID=#{activateUserId,jdbcType=DECIMAL}
+                    ]]>
             </if>
             <if test="id!=null ">
                 <![CDATA[
@@ -69,36 +76,40 @@
     <!--插入记录-->
     <insert id="insert" parameterType="org.xteam.plus.mars.domain.CardKeys" useGeneratedKeys="true" keyProperty="id">
                 insert into  T_MARS_CARD_KEYS (
-            CREATED
+            STATUS
+,CREATED
 ,UPDATED
-,STATUS
-,CARD_KEYS
 ,ACTIVATE_TIME
+,CARD_KEYS
+,ACTIVATE_USER_ID
                 )values(
-            #{created,jdbcType=TIMESTAMP}
+            #{status,jdbcType=INTEGER}
+,#{created,jdbcType=TIMESTAMP}
 ,#{updated,jdbcType=TIMESTAMP}
-,#{status,jdbcType=INTEGER}
-,#{cardKeys,jdbcType=VARCHAR}
 ,#{activateTime,jdbcType=TIMESTAMP}
+,#{cardKeys,jdbcType=VARCHAR}
+,#{activateUserId,jdbcType=DECIMAL}
                 )
             </insert>
 
     <!--批量插入记录-->
     <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
         insert into T_MARS_CARD_KEYS (
-        CREATED
+        STATUS
+        ,CREATED
         ,UPDATED
-        ,STATUS
-        ,CARD_KEYS
         ,ACTIVATE_TIME
+        ,CARD_KEYS
+        ,ACTIVATE_USER_ID
         )values
         <foreach collection="list" item="item" index="index" separator=",">
             (
-            #{item.created,jdbcType=TIMESTAMP}
+            #{item.status,jdbcType=INTEGER}
+            ,#{item.created,jdbcType=TIMESTAMP}
             ,#{item.updated,jdbcType=TIMESTAMP}
-            ,#{item.status,jdbcType=INTEGER}
-            ,#{item.cardKeys,jdbcType=VARCHAR}
             ,#{item.activateTime,jdbcType=TIMESTAMP}
+            ,#{item.cardKeys,jdbcType=VARCHAR}
+            ,#{item.activateUserId,jdbcType=DECIMAL}
             )
         </foreach>
     </insert>
@@ -108,20 +119,23 @@
         update T_MARS_CARD_KEYS
         <set>
             <trim prefix="" suffix="" suffixOverrides=",">
+                <if test="status!=null ">
+                    STATUS=#{status,jdbcType=INTEGER},
+                </if>
                 <if test="created!=null ">
                     CREATED=#{created,jdbcType=TIMESTAMP},
                 </if>
                 <if test="updated!=null ">
                     UPDATED=#{updated,jdbcType=TIMESTAMP},
                 </if>
-                <if test="status!=null ">
-                    STATUS=#{status,jdbcType=INTEGER},
+                <if test="activateTime!=null ">
+                    ACTIVATE_TIME=#{activateTime,jdbcType=TIMESTAMP},
                 </if>
                 <if test="cardKeys!=null ">
                     CARD_KEYS=#{cardKeys,jdbcType=VARCHAR},
                 </if>
-                <if test="activateTime!=null ">
-                    ACTIVATE_TIME=#{activateTime,jdbcType=TIMESTAMP},
+                <if test="activateUserId!=null ">
+                    ACTIVATE_USER_ID=#{activateUserId,jdbcType=DECIMAL},
                 </if>
             </trim>
         </set>
@@ -132,11 +146,12 @@
     <select id="get" resultMap="BaseResultMap" parameterType="org.xteam.plus.mars.domain.CardKeys">
         select
     ID
-        ,CREATED
+        ,STATUS
+,CREATED
 ,UPDATED
-,STATUS
-,CARD_KEYS
 ,ACTIVATE_TIME
+,CARD_KEYS
+,ACTIVATE_USER_ID
         from    T_MARS_CARD_KEYS
         where  ID= #{id,jdbcType=DECIMAL}
     </select>
