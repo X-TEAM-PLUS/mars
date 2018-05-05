@@ -182,10 +182,8 @@ public class ExcelUtils {
     private static String getCellValue(Object row, String fieldName, CellFormater cellFormater) throws Exception {
         Map<String, Object> objectMap = JsonUtils.transform(row, HashMap.class);
         if (cellFormater != null) {
-            System.out.println(fieldName);
             return cellFormater.format(objectMap.get(fieldName).toString());
         } else {
-            System.out.println(fieldName);
             if (null == objectMap.get(fieldName)) {
                 return "";
             }
