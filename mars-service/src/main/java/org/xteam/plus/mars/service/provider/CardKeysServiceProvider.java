@@ -190,7 +190,7 @@ public class CardKeysServiceProvider extends AbstractServiceProvider {
      * @param quantity
      * @return List<CardKeys>
      */
-    @RequestMapping("/list")
+    @RequestMapping("/batchGenerate")
     public JsonResult batchGenerate(Integer quantity)throws Exception{
         JsonResult jsonResult = new JsonResult();
         try {
