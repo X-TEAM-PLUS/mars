@@ -9,7 +9,7 @@
         <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
         <result column="UPDATED" property="updated" jdbcType="TIMESTAMP"/>
         <result column="CONTRACT_NO" property="contractNo" jdbcType="VARCHAR"/>
-        <result column="HOLDER_ID_NUMBER" property="holderIdNumber" jdbcType="DECIMAL"/>
+        <result column="HOLDER_ID_NUMBER" property="holderIdNumber" jdbcType="VARCHAR"/>
         <result column="POLICY_HOLDER" property="policyHolder" jdbcType="VARCHAR"/>
         <result column="ACCEPT_INSURANCE_DATE" property="acceptInsuranceDate" jdbcType="TIMESTAMP"/>
         <result column="INSURANCE_PRODUCT_NO" property="insuranceProductNo" jdbcType="DECIMAL"/>
@@ -92,7 +92,7 @@
             </if>
             <if test="holderIdNumber!=null ">
                 <![CDATA[
-                    and HOLDER_ID_NUMBER=#{holderIdNumber,jdbcType=DECIMAL}
+                    and HOLDER_ID_NUMBER=#{holderIdNumber,jdbcType=VARCHAR}
                     ]]>
             </if>
             <if test="policyHolder!=null and  policyHolder!=''">
@@ -151,7 +151,7 @@
         ,#{created,jdbcType=TIMESTAMP}
         ,#{updated,jdbcType=TIMESTAMP}
         ,#{contractNo,jdbcType=VARCHAR}
-        ,#{holderIdNumber,jdbcType=DECIMAL}
+        ,#{holderIdNumber,jdbcType=VARCHAR}
         ,#{policyHolder,jdbcType=VARCHAR}
         ,#{acceptInsuranceDate,jdbcType=TIMESTAMP}
         ,#{insuranceProductNo,jdbcType=DECIMAL}
@@ -182,7 +182,7 @@
             ,#{item.created,jdbcType=TIMESTAMP}
             ,#{item.updated,jdbcType=TIMESTAMP}
             ,#{item.contractNo,jdbcType=VARCHAR}
-            ,#{item.holderIdNumber,jdbcType=DECIMAL}
+            ,#{item.holderIdNumber,jdbcType=VARCHAR}
             ,#{item.policyHolder,jdbcType=VARCHAR}
             ,#{item.acceptInsuranceDate,jdbcType=TIMESTAMP}
             ,#{item.insuranceProductNo,jdbcType=DECIMAL}
@@ -213,7 +213,7 @@
                     CONTRACT_NO=#{contractNo,jdbcType=VARCHAR},
                 </if>
                 <if test="holderIdNumber!=null ">
-                    HOLDER_ID_NUMBER=#{holderIdNumber,jdbcType=DECIMAL},
+                    HOLDER_ID_NUMBER=#{holderIdNumber,jdbcType=VARCHAR},
                 </if>
                 <if test="policyHolder!=null ">
                     POLICY_HOLDER=#{policyHolder,jdbcType=VARCHAR},

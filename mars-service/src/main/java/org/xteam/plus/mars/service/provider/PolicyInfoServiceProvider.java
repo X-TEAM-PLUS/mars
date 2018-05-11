@@ -168,7 +168,7 @@ public class PolicyInfoServiceProvider extends AbstractServiceProvider {
                     , "contractNo"
                     , "acceptInsuranceDate"
             };
-            List<HashMap> userInsurances = ExcelUtils.load(dataIndexs, HashMap.class, uploadFile.getInputStream());
+            List<HashMap> userInsurances = ExcelUtils.load(dataIndexs, HashMap.class, uploadFile.getInputStream(),true);
             if (userInsurances.isEmpty()) {
                 jsonResult.setMessage("导入异常,数据为空");
                 jsonResult.setSuccess(false);
@@ -203,7 +203,7 @@ public class PolicyInfoServiceProvider extends AbstractServiceProvider {
                     }
                     userInsurance.setAcceptInsuranceDate(acceptInsuranceDate);
                     userInsurance.setContractNo(temp.get("contractNo").toString());
-                    userInsurance.setHolderIdNumber(new BigDecimal(temp.get("holderIdNumber").toString()));
+                    userInsurance.setHolderIdNumber(temp.get("holderIdNumber").toString());
                     list.add(userInsurance);
                 }
                 if (!list.isEmpty()) {

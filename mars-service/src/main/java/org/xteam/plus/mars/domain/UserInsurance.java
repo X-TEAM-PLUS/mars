@@ -51,7 +51,7 @@ public class UserInsurance implements Serializable {
     /**
      * 投保人身份证号
      */
-    private java.math.BigDecimal holderIdNumber;
+    private String  holderIdNumber;
 
     /**
      * 投保人
@@ -191,7 +191,7 @@ public class UserInsurance implements Serializable {
      *
      * @param holderIdNumber (投保人身份证号)
      */
-    public UserInsurance setHolderIdNumber(java.math.BigDecimal holderIdNumber) {
+    public UserInsurance setHolderIdNumber(String holderIdNumber) {
         this.holderIdNumber = holderIdNumber;
         return this;
     }
@@ -201,7 +201,7 @@ public class UserInsurance implements Serializable {
      *
      * @return
      */
-    public java.math.BigDecimal getHolderIdNumber() {
+    public String getHolderIdNumber() {
         return this.holderIdNumber;
     }
 
