@@ -1,6 +1,8 @@
 package org.xteam.plus.mars.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 
 /**
@@ -90,7 +92,11 @@ public class UserInsurance implements Serializable {
 
     private String address;
 
+    private BigDecimal cardNo;
 
+    private Date acceptBeginTime;
+
+    private Date acceptEndTime;
     /**
      * 设置   expirationDate
      *
@@ -362,5 +368,29 @@ public class UserInsurance implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public BigDecimal getCardNo() {
+        return cardNo;
+    }
+
+    public void setCardNo(BigDecimal cardNo) {
+        this.cardNo = cardNo;
+    }
+
+    public Date getAcceptBeginTime() {
+        return acceptBeginTime;
+    }
+
+    public void setAcceptBeginTime(Date acceptBeginTime) {
+        this.acceptBeginTime = acceptBeginTime;
+    }
+
+    public Date getAcceptEndTime() {
+        return acceptEndTime;
+    }
+
+    public void setAcceptEndTime(Date acceptEndTime) {
+        this.acceptEndTime = acceptEndTime;
     }
 }

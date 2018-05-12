@@ -15,6 +15,7 @@
         <result column="INSURANCE_PRODUCT_NO" property="insuranceProductNo" jdbcType="DECIMAL"/>
         <result column="USER_ID" property="userId" jdbcType="DECIMAL"/>
         <result column="ADDRESS" property="address" jdbcType="VARCHAR"/>
+        <result column="CARD_NO" property="cardNo" jdbcType="DECIMAL"/>
         <association property="insuranceProduct" column="INSURANCE_PRODUCT_NO"
                      javaType="org.xteam.plus.mars.domain.InsuranceProduct">
             <id column="INSURANCE_PRODUCT_NO" property="insuranceProductNo" jdbcType="DECIMAL"/>
@@ -57,6 +58,7 @@
         ,INSURANCE_PRODUCT_NO
         ,USER_ID
         ,ADDRESS
+        ,CARD_NO
     </sql>
 
     <!--公用查询条件-->
@@ -121,6 +123,11 @@
                     and USER_ID=#{userId,jdbcType=DECIMAL}
                     ]]>
             </if>
+            <if test="cardNo!=null ">
+                <![CDATA[
+                    and CARD_NO=#{cardNo,jdbcType=DECIMAL}
+                    ]]>
+            </if>
         </where>
     </sql>
 
@@ -145,6 +152,7 @@
         ,INSURANCE_PRODUCT_NO
         ,USER_ID
         ,ADDRESS
+        ,CARD_NO
         )values(
         #{expirationDate,jdbcType=TIMESTAMP}
         ,#{status,jdbcType=INTEGER}
@@ -157,6 +165,7 @@
         ,#{insuranceProductNo,jdbcType=DECIMAL}
         ,#{userId,jdbcType=DECIMAL}
         ,#{address,jdbcType=DECIMAL}
+        ,#{cardNo,jdbcType=DECIMAL}
         )
     </insert>
 
@@ -174,6 +183,7 @@
         ,INSURANCE_PRODUCT_NO
         ,USER_ID
         ,ADDRESS
+        ,CARD_NO
         )values
         <foreach collection="list" item="item" index="index" separator=",">
             (
@@ -188,6 +198,7 @@
             ,#{item.insuranceProductNo,jdbcType=DECIMAL}
             ,#{item.userId,jdbcType=DECIMAL}
             ,#{item.address,jdbcType=VARCHAR}
+            ,#{item.cardNo,jdbcType=VARCHAR}
             )
         </foreach>
     </insert>
@@ -250,6 +261,7 @@
         ,INSURANCE_PRODUCT_NO
         ,USER_ID
         ,ADDRESS
+        ,CARD_NO
         from T_MARS_USER_INSURANCE
         where INSURANCE_ORDER_ID= #{insuranceOrderId,jdbcType=DECIMAL}
     </select>
@@ -286,6 +298,7 @@
         ,TMUI.ADDRESS
         ,TMUI.INSURANCE_PRODUCT_NO
         ,TMUI.USER_ID
+        ,TMUI.CARD_NO
         ,TMIP.INSURANCE_PRODUCT_NO
         ,TMIP.REMARK
         ,TMIP.CREATED
@@ -313,6 +326,16 @@
                 <![CDATA[
                     and TMUI.USER_ID=#{userId,jdbcType=DECIMAL}
                     ]]>
+            </if>
+            <if test="acceptBeginTime!=null ">
+                <![CDATA[
+                        and ACCEPT_INSURANCE_DATE>= str_to_date(CONCAT(date_format(#{acceptBeginTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
+            </if>
+            <if test="acceptEndTime!=null ">
+                <![CDATA[
+                        and ACCEPT_INSURANCE_DATE<= str_to_date(CONCAT(date_format(#{acceptEndTime,jdbcType=TIMESTAMP},'%Y-%m-%d'), ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                        ]]>
             </if>
         </where>
     </sql>
