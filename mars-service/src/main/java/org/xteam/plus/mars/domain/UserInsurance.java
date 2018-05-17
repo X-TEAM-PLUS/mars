@@ -374,8 +374,9 @@ public class UserInsurance implements Serializable {
         return cardNo;
     }
 
-    public void setCardNo(BigDecimal cardNo) {
+    public UserInsurance setCardNo(BigDecimal cardNo) {
         this.cardNo = cardNo;
+        return this;
     }
 
     public Date getAcceptBeginTime() {

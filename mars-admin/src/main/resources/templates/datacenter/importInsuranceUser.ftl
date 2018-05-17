@@ -135,11 +135,11 @@
                             <label class="col-md-3 control-label">请选择保险产品</label>
                             <div class="col-md-7" id="logoDiv">
 
-                                    <select id="insuranceProductNo" name="insuranceProductNo"
-                                            class="form-control select2"
-                                            validate="{required: true}">
-                                        <option value="" selected>请选择</option>
-                                    </select>
+                                <select id="insuranceProductNo" name="insuranceProductNo"
+                                        class="form-control select2"
+                                        validate="{required: true}">
+                                    <option value="" selected>请选择</option>
+                                </select>
 
                             </div>
                         </div>
@@ -182,6 +182,7 @@
                     return false;
                 }
                 var select2 = document.getElementById("insuranceProductNo");
+                select2.innerText = "";
                 for (var i = 0; i < data.list.length; i++) {
                     var insuranceName = data.list[i].insuranceName;
                     var insuranceProductNo = data.list[i].insuranceProductNo;
@@ -261,16 +262,58 @@
         oMyForm.append("insuranceProductNo", $('#insuranceProductNo').val());
         $('body').append('<div id="layer"></div>');
         $.ajax({
-            url: "/services/mars/policyinfo/uploadImport",
+            url: "/services/mars/policyinfo/checkUploadImport",
             type: "POST",
             async: false,
             contentType: false,    //这个一定要写
             processData: false, //这个也一定要写，不然会报错
             data: oMyForm,
             success: function (data) {
-                alert(data.message);
-                $('#layer').remove();
-                init();
+                if (data.message == "error-data") {
+                    window.wxc.xcConfirm("数据存在重复，确定要继续覆盖导入吗?", window.wxc.xcConfirm.typeEnum.confirm, {
+                        title: '提示'
+                        , onOk: function () {
+                            $.ajax({
+                                url: "/services/mars/policyinfo/uploadImport",
+                                type: "POST",
+                                async: false,
+                                contentType: false,    //这个一定要写
+                                processData: false, //这个也一定要写，不然会报错
+                                data: oMyForm,
+                                success: function (data) {
+                                    alert(data.message);
+                                    $('#layer').remove();
+                                    init();
+                                },
+                                error: function (data) {
+                                    $('#serverResponse').html(data.status + " : " + data.statusText + " : " + data.responseText);
+                                    $('#layer').remove();
+                                    init();
+                                }
+                            });
+                        }
+                    });
+                }else{
+                    $.ajax({
+                        url: "/services/mars/policyinfo/uploadImport",
+                        type: "POST",
+                        async: false,
+                        contentType: false,    //这个一定要写
+                        processData: false, //这个也一定要写，不然会报错
+                        data: oMyForm,
+                        success: function (data) {
+                            alert(data.message);
+                            $('#layer').remove();
+                            init();
+                        },
+                        error: function (data) {
+                            $('#serverResponse').html(data.status + " : " + data.statusText + " : " + data.responseText);
+                            $('#layer').remove();
+                            init();
+                        }
+                    });
+
+                }
             },
             error: function (data) {
                 $('#serverResponse').html(data.status + " : " + data.statusText + " : " + data.responseText);
@@ -278,6 +321,7 @@
                 init();
             }
         });
+
     }
 
     function goBack() {

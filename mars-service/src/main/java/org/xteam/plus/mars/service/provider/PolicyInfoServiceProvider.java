@@ -19,6 +19,7 @@ import org.xteam.plus.mars.wx.util.StringUtils;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -158,17 +159,7 @@ public class PolicyInfoServiceProvider extends AbstractServiceProvider {
             if (StringUtils.isEmpty(insuranceProductNo)) {
                 throw new Exception("保险产品编号，不能为空");
             }
-            //获取dataIndex
-            String[] dataIndexs = {
-                    "cardNo"
-                    , "userName"
-                    , "holderIdNumber"
-                    , "mobileNo"
-                    , "address"
-                    , "contractNo"
-                    , "acceptInsuranceDate"
-            };
-            List<HashMap> userInsurances = ExcelUtils.load(dataIndexs, HashMap.class, uploadFile.getInputStream(), true);
+            List<HashMap> userInsurances = convertExcel(uploadFile.getInputStream());
             if (userInsurances.isEmpty()) {
                 jsonResult.setMessage("导入异常,数据为空");
                 jsonResult.setSuccess(false);
@@ -177,9 +168,18 @@ public class PolicyInfoServiceProvider extends AbstractServiceProvider {
                 List list = Lists.newArrayList();
                 for (HashMap temp : userInsurances) {
                     UserInsurance userInsurance = new UserInsurance();
+                    userInsurance.setCardNo(new BigDecimal(temp.get("cardNo").toString()));
+                    List<UserInsurance> queryDatas = userInsuranceManager.query(
+                            new UserInsurance().
+                                    setCardNo(new BigDecimal(temp.get("cardNo").toString()))
+                    );
+                    boolean isUpdate = false;
+                    if (queryDatas != null && queryDatas.size() > 0) {
+                        userInsurance = queryDatas.get(0);
+                        isUpdate = true;
+                    }
                     userInsurance.setAddress(temp.get("address").toString());
                     userInsurance.setInsuranceProductNo(new BigDecimal(insuranceProductNo));
-                    userInsurance.setCardNo(new BigDecimal(temp.get("cardNo").toString()));
                     UserInfo userInfo = userInfoManager.getByMobileNo(temp.get("mobileNo").toString());
                     userInsurance.setPolicyHolder(temp.get("userName").toString());
                     userInsurance.setCreated(new Date());
@@ -204,7 +204,11 @@ public class PolicyInfoServiceProvider extends AbstractServiceProvider {
                     userInsurance.setAcceptInsuranceDate(acceptInsuranceDate);
                     userInsurance.setContractNo(temp.get("contractNo").toString());
                     userInsurance.setHolderIdNumber(temp.get("holderIdNumber").toString());
-                    list.add(userInsurance);
+                    if (!isUpdate) {
+                        list.add(userInsurance);
+                    } else {
+                        userInsuranceManager.update(userInsurance);
+                    }
                 }
                 if (!list.isEmpty()) {
                     userInsuranceManager.batchInsert(list);
@@ -220,5 +224,63 @@ public class PolicyInfoServiceProvider extends AbstractServiceProvider {
         } finally {
             return jsonResult;
         }
+    }
+
+
+    @RequestMapping(value = "/checkUploadImport")
+    @ResponseBody
+    public JsonResult checkUploadImport(@RequestParam(required = false) MultipartFile uploadFile,
+                                        @RequestParam("insuranceProductNo") String insuranceProductNo) {
+        JsonResult jsonResult = new JsonResult();
+        try {
+            if (uploadFile == null) {
+                throw new Exception("导出文件为空!");
+            }
+            if (StringUtils.isEmpty(insuranceProductNo)) {
+                throw new Exception("保险产品编号，不能为空");
+            }
+
+            List<HashMap> userInsurances = convertExcel(uploadFile.getInputStream());
+
+            if (userInsurances.isEmpty()) {
+                jsonResult.setMessage("导入异常,数据为空");
+                jsonResult.setSuccess(false);
+                return jsonResult;
+            } else {
+                List list = Lists.newArrayList();
+                for (HashMap temp : userInsurances) {
+                    List<UserInsurance> queryDatas = userInsuranceManager.query(
+                            new UserInsurance().
+                                    setCardNo(new BigDecimal(temp.get("cardNo").toString()))
+                    );
+                    if (queryDatas != null && queryDatas.size() > 0) {
+                        throw new Exception("error-data");
+                    }
+                }
+                jsonResult.setMessage("校验成功");
+                jsonResult.setSuccess(true);
+            }
+        } catch (Exception e) {
+            logError("校验失败!", e);
+            jsonResult.setMessage(e.getMessage());
+            jsonResult.setSuccess(false);
+
+        } finally {
+            return jsonResult;
+        }
+    }
+
+    public List<HashMap> convertExcel(InputStream in) throws Exception {
+        //获取dataIndex
+        String[] dataIndexs = {
+                "cardNo"
+                , "userName"
+                , "holderIdNumber"
+                , "mobileNo"
+                , "address"
+                , "contractNo"
+                , "acceptInsuranceDate"
+        };
+        return ExcelUtils.load(dataIndexs, HashMap.class, in, true);
     }
 }
