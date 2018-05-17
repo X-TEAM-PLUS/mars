@@ -97,7 +97,7 @@
                             <th column="cardNo">卡号</th>
                             <th column="insuranceCompany.linkMan">保险公司联系人</th>
                             <th column="holderIdNumber">投保人身份证号</th>
-                            <th column="insuranceProduct.insuranceName">保险公司名称</th>
+                            <th column="insuranceProduct.insuranceName">保险产品名称</th>
                             <th column="policyHolder">投保人</th>
                             <th column="address">地址</th>
                             <th column="contractNo">保单号</th>
@@ -132,7 +132,7 @@
                       onsubmit="return false;">
                     <div class="form-body">
                         <div class="form-group">
-                            <label class="col-md-3 control-label">请选择保险公司</label>
+                            <label class="col-md-3 control-label">请选择保险产品</label>
                             <div class="col-md-7" id="logoDiv">
 
                                     <select id="insuranceProductNo" name="insuranceProductNo"
