@@ -269,49 +269,19 @@
             processData: false, //这个也一定要写，不然会报错
             data: oMyForm,
             success: function (data) {
-                if (data.message == "error-data") {
-                    window.wxc.xcConfirm("数据存在重复，确定要继续覆盖导入吗?", window.wxc.xcConfirm.typeEnum.confirm, {
-                        title: '提示'
-                        , onOk: function () {
-                            $.ajax({
-                                url: "/services/mars/policyinfo/uploadImport",
-                                type: "POST",
-                                async: false,
-                                contentType: false,    //这个一定要写
-                                processData: false, //这个也一定要写，不然会报错
-                                data: oMyForm,
-                                success: function (data) {
-                                    alert(data.message);
-                                    $('#layer').remove();
-                                    init();
-                                },
-                                error: function (data) {
-                                    $('#serverResponse').html(data.status + " : " + data.statusText + " : " + data.responseText);
-                                    $('#layer').remove();
-                                    init();
-                                }
-                            });
-                        }
-                    });
+                if (data.success) {
+                    if(data.isRepeated){
+                        window.wxc.xcConfirm("数据存在重复，确定要继续覆盖导入吗?", window.wxc.xcConfirm.typeEnum.confirm, {
+                            title: '提示'
+                            , onOk: function () {
+                                submitForm(oMyForm);
+                            }
+                        });
+                    }else{
+                        submitForm(oMyForm);
+                    }
                 }else{
-                    $.ajax({
-                        url: "/services/mars/policyinfo/uploadImport",
-                        type: "POST",
-                        async: false,
-                        contentType: false,    //这个一定要写
-                        processData: false, //这个也一定要写，不然会报错
-                        data: oMyForm,
-                        success: function (data) {
-                            alert(data.message);
-                            $('#layer').remove();
-                            init();
-                        },
-                        error: function (data) {
-                            $('#serverResponse').html(data.status + " : " + data.statusText + " : " + data.responseText);
-                            $('#layer').remove();
-                            init();
-                        }
-                    });
+                    window.wxc.xcConfirm(data.message, window.wxc.xcConfirm.typeEnum.error);
 
                 }
             },
@@ -322,6 +292,27 @@
             }
         });
 
+    }
+
+    function submitForm(oMyForm) {
+        $.ajax({
+            url: "/services/mars/policyinfo/uploadImport",
+            type: "POST",
+            async: false,
+            contentType: false,    //这个一定要写
+            processData: false, //这个也一定要写，不然会报错
+            data: oMyForm,
+            success: function (data) {
+                alert(data.message);
+                $('#layer').remove();
+                init();
+            },
+            error: function (data) {
+                $('#serverResponse').html(data.status + " : " + data.statusText + " : " + data.responseText);
+                $('#layer').remove();
+                init();
+            }
+        });
     }
 
     function goBack() {

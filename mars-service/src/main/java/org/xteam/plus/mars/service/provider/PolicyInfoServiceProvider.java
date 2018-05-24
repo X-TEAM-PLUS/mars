@@ -279,7 +279,8 @@ public class PolicyInfoServiceProvider extends AbstractServiceProvider {
                                     setCardNo(new BigDecimal(temp.get("cardNo").toString()))
                     );
                     if (queryDatas != null && queryDatas.size() > 0) {
-                        throw new Exception("error-data");
+                        jsonResult.put("isRepeated",true);
+                        break;
                     }
                 }
                 jsonResult.setMessage("校验成功");
