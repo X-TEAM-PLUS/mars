@@ -15,6 +15,15 @@ var app = new Framework7({
     }
 });
 
+Template7.registerHelper('dateFormat_yyyyMMdd', function (createTime){
+    if(createTime){
+        return "";
+    }else{
+        return createTime.split(" ")[0];
+    }
+
+});
+
 $$(document).on('page:init reinit popupOpen', '.page[data-name="home"]', function (e) {
     let pageParams = e.detail.route.query;
 
