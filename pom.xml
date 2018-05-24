@@ -15,7 +15,6 @@
     <version>1.0-SNAPSHOT</version>
     <name>root::主工程</name>
     <modules>
-        <module>mars-eurekaserver</module>
         <module>mars-common</module>
         <module>mars-service</module>
         <module>mars-admin</module>
