@@ -223,7 +223,7 @@ public class PolicyInfoServiceProvider extends AbstractServiceProvider {
                 if (!list.isEmpty()) {
                     userInsuranceManager.batchInsert(list);
                 }
-                jsonResult.setMessage("导入成功  总导入" + userInsurances.size());
+                jsonResult.setMessage("导入成功  总导入" + userInsurances.size() +"条数据.");
                 jsonResult.setSuccess(true);
             }
         } catch (Exception e) {
