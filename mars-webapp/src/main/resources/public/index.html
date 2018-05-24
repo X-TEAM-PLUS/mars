@@ -162,7 +162,7 @@
             <div class="row">
                 <div class="col-33">
                     <a href="/message/" class="tab-link">
-                        <i class="icon f7-icons">bell<span class="badge color-red"><span class="color-white"> {{newMessageCount}}</span></span></i>
+                        <i class="icon f7-icons">bell{{#if newMessageCount}}<span class="badge color-red"><span class="color-white"> {{newMessageCount}}</span></span>{{/if}}</i>
                         <span class="tabbar-label">消息通知</span>
                     </a>
                 </div>
@@ -220,7 +220,7 @@
             <div class="row">
                 <div class="col-33">
                     <a href="/message/" class="tab-link">
-                        <i class="icon f7-icons">bell<span class="badge color-red"><span class="color-white"> {{newMessageCount}}</span></span></i>
+                        <i class="icon f7-icons">bell{{#if newMessageCount}}<span class="badge color-red"><span class="color-white"> {{newMessageCount}}</span></span>{{/if}}</i>
                         <span class="tabbar-label">消息通知</span>
                     </a>
                 </div>
@@ -296,7 +296,7 @@
             <div class="row">
                 <div class="col-33">
                     <a href="/message/" class="tab-link">
-                        <i class="icon f7-icons">bell<span class="badge color-red"><span class="color-white"> {{newMessageCount}}</span></span></i>
+                        <i class="icon f7-icons">bell{{#if newMessageCount}}<span class="badge color-red"><span class="color-white"> {{newMessageCount}}</span></span>{{/if}}</i>
                         <span class="tabbar-label">消息通知</span>
                     </a>
                 </div>
@@ -391,7 +391,7 @@
             <div class="row">
                 <div class="col-33">
                     <a href="/message/" class="tab-link">
-                        <i class="icon f7-icons">bell<span class="badge color-red"><span class="color-white"> {{newMessageCount}}</span></span></i>
+                        <i class="icon f7-icons">bell{{#if newMessageCount}}<span class="badge color-red"><span class="color-white"> {{newMessageCount}}</span></span>{{/if}}</i>
                         <span class="tabbar-label">消息通知</span>
                     </a>
                 </div>
@@ -485,7 +485,7 @@
             <div class="row">
                 <div class="col-33">
                     <a href="/message/" class="tab-link">
-                        <i class="icon f7-icons">bell<span class="badge color-red"><span class="color-white"> {{newMessageCount}}</span></span></i>
+                        <i class="icon f7-icons">bell{{#if newMessageCount}}<span class="badge color-red"><span class="color-white"> {{newMessageCount}}</span></span>{{/if}}</i>
                         <span class="tabbar-label">消息通知</span>
                     </a>
                 </div>
@@ -504,13 +504,6 @@
             </div>
             <br>
             <div class="row">
-
-                <div class="col-33">
-                    <a href="#" class="tab-link  " onclick="jianKangKaClick()">
-                        <i class="icon fa fa-credit-card fa-2x"></i>
-                        <span class="tabbar-label ">健康卡</span>
-                    </a>
-                </div>
                 <div class="col-33">
                     <a href="#" class="tab-link  " onclick="meTuiGuangMa()">
                         <i class="icon fa fa-paper-plane-o fa-2x "></i>
@@ -523,13 +516,19 @@
                         <span class="tabbar-label ">我的TM</span>
                     </a>
                 </div>
-            </div>
-            <br>
-            <div class="row">
                 <div class="col-33">
                     <a href="#" class="tab-link " onclick="xiaoKaBaoClick()">
                         <i class="icon fa fa-suitcase fa-2x "></i>
                         <span class="tabbar-label ">小卡包</span>
+                    </a>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-33">
+                    <a href="#" class="tab-link  " onclick="jianKangKaClick()">
+                        <i class="icon fa fa-credit-card fa-2x"></i>
+                        <span class="tabbar-label ">健康卡</span>
                     </a>
                 </div>
                 <div class="col-33">
