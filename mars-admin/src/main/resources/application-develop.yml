@@ -35,14 +35,28 @@ spring:
     parser: true
     serialization: true
 zuul:
+  host:
+    socket-timeout-millis: 60000
+    connect-timeout-millis: 60000
   routes:
     mars-admin:
       path: /services/**
       serviceId: mars-service
+hystrix:
+  command:
+    default:
+        execution:
+             timeout:
+                enabled: true
+                isolation:
+                    thread:
+                        timeoutInMilliseconds: 60000
 ribbon:
-    ReadTimeout: 30000
-    ConnectTimeout: 30000
+  ReadTimeout: 60000
+  ConnectTimeout: 60000
 logging:
   path: d:/logs
   level: debug
   config: classpath:admin-logback.xml
+
+

@@ -63,3 +63,17 @@ mars:
   employeeCard:
     backGround: backgroud.jpg
     url: http://t.kuai-kaifa.com/index.html?employeeCardNo=
+ribbon:
+  ReadTimeout: 60000
+  ConnectTimeout: 60000
+zuul:
+  host:
+    socket-timeout-millis: 60000
+    connect-timeout-millis: 60000
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
