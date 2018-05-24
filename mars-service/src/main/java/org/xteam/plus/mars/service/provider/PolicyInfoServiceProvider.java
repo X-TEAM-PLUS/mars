@@ -1,6 +1,7 @@
 package org.xteam.plus.mars.service.provider;
 
 import com.google.common.collect.Lists;
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -8,9 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.xteam.plus.mars.common.JsonResult;
 import org.xteam.plus.mars.common.excel.ExcelUtils;
+import org.xteam.plus.mars.domain.InsuranceProduct;
 import org.xteam.plus.mars.domain.PolicyInfo;
 import org.xteam.plus.mars.domain.UserInfo;
 import org.xteam.plus.mars.domain.UserInsurance;
+import org.xteam.plus.mars.manager.InsuranceProductManager;
 import org.xteam.plus.mars.manager.PolicyInfoManager;
 import org.xteam.plus.mars.manager.UserInfoManager;
 import org.xteam.plus.mars.manager.UserInsuranceManager;
@@ -48,6 +51,8 @@ public class PolicyInfoServiceProvider extends AbstractServiceProvider {
     @Resource
     private UserInfoManager userInfoManager;
 
+    @Resource
+    private InsuranceProductManager insuranceProductManager;
     /**
      * 查询
      *
@@ -159,6 +164,10 @@ public class PolicyInfoServiceProvider extends AbstractServiceProvider {
             if (StringUtils.isEmpty(insuranceProductNo)) {
                 throw new Exception("保险产品编号，不能为空");
             }
+
+            //查询保险产品信息
+            InsuranceProduct  insuranceProduct = insuranceProductManager.get(new InsuranceProduct().setInsuranceProductNo(new BigDecimal(insuranceProductNo)));
+
             List<HashMap> userInsurances = convertExcel(uploadFile.getInputStream());
             if (userInsurances.isEmpty()) {
                 jsonResult.setMessage("导入异常,数据为空");
@@ -202,6 +211,7 @@ public class PolicyInfoServiceProvider extends AbstractServiceProvider {
                         continue;
                     }
                     userInsurance.setAcceptInsuranceDate(acceptInsuranceDate);
+                    userInsurance.setExpirationDate(getExpirationDate(acceptInsuranceDate,insuranceProduct));
                     userInsurance.setContractNo(temp.get("contractNo").toString());
                     userInsurance.setHolderIdNumber(temp.get("holderIdNumber").toString());
                     if (!isUpdate) {
@@ -226,6 +236,21 @@ public class PolicyInfoServiceProvider extends AbstractServiceProvider {
         }
     }
 
+    /**
+     * 获取截止日期
+     * @param acceptInsuranceDate
+     * @param insuranceProduct
+     * @return
+     */
+    private Date getExpirationDate(Date acceptInsuranceDate, InsuranceProduct insuranceProduct) {
+        switch (insuranceProduct.getPeriodsMode().intValue()){
+            case 0:
+                return  DateUtils.addMonths(acceptInsuranceDate,insuranceProduct.getPeriodsNum());
+            case 1:
+                return  DateUtils.addYears(acceptInsuranceDate,insuranceProduct.getPeriodsNum());
+        }
+        return null;
+    }
 
     @RequestMapping(value = "/checkUploadImport")
     @ResponseBody
