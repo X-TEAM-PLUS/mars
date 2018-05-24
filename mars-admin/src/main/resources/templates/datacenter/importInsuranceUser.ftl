@@ -302,7 +302,7 @@
             processData: false, //这个也一定要写，不然会报错
             data: oMyForm,
             success: function (data) {
-                alert(data.message);
+                window.wxc.xcConfirm(data.message, window.wxc.xcConfirm.typeEnum.info);
                 $('#layer').remove();
                 init();
             },
