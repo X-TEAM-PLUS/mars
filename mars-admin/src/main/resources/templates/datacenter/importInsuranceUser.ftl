@@ -282,7 +282,6 @@
                     }
                 }else{
                     window.wxc.xcConfirm(data.message, window.wxc.xcConfirm.typeEnum.error);
-
                 }
             },
             error: function (data) {
