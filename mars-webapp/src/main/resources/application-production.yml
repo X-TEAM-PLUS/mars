@@ -4,7 +4,7 @@ server:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8888/eureka/
+      defaultZone: http://server-01:8888/eureka/,http://server-02:8888/eureka/
 spring:
   application:
     name: mars-webapp
